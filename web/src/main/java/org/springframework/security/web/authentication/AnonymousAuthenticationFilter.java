@@ -53,14 +53,6 @@ public class AnonymousAuthenticationFilter extends GenericFilterBean  implements
     private String key;
     private Object principal;
     private List<GrantedAuthority> authorities;
-
-    /**
-     * @deprecated Use constructor injection version
-     */
-    @Deprecated
-    public AnonymousAuthenticationFilter() {
-    }
-
     /**
      * Creates a filter with a principal named "anonymousUser" and the single authority "ROLE_ANONYMOUS".
      *
@@ -148,24 +140,5 @@ public class AnonymousAuthenticationFilter extends GenericFilterBean  implements
 
     public List<GrantedAuthority> getAuthorities() {
         return authorities;
-    }
-
-    /**
-     *
-     * @deprecated use constructor injection instead
-     */
-    @Deprecated
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    /**
-     *
-     * @deprecated use constructor injection instead
-     */
-    @Deprecated
-    public void setUserAttribute(UserAttribute userAttributeDefinition) {
-        this.principal = userAttributeDefinition.getPassword();
-        this.authorities = userAttributeDefinition.getAuthorities();
     }
 }

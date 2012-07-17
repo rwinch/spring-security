@@ -84,23 +84,6 @@ public abstract class AbstractAccessDecisionManager implements AccessDecisionMan
         this.allowIfAllAbstainDecisions = allowIfAllAbstainDecisions;
     }
 
-    /**
-     * @deprecated Use constructor
-     */
-    @Deprecated
-    public void setDecisionVoters(List<AccessDecisionVoter> newList) {
-        Assert.notEmpty(newList);
-
-        Iterator<AccessDecisionVoter> iter = newList.iterator();
-
-        while (iter.hasNext()) {
-            Object currentObject = iter.next();
-            Assert.isInstanceOf(AccessDecisionVoter.class, currentObject, "AccessDecisionVoter " +
-                    currentObject.getClass().getName() + " must implement AccessDecisionVoter");
-        }
-
-        this.decisionVoters = newList;
-    }
 
     public void setMessageSource(MessageSource messageSource) {
         this.messages = new MessageSourceAccessor(messageSource);

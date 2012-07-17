@@ -37,13 +37,6 @@ public class RememberMeAuthenticationProvider implements AuthenticationProvider,
     protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
     private String key;
 
-    /**
-     * @deprecated Use constructor injection
-     */
-    @Deprecated
-    public RememberMeAuthenticationProvider() {
-    }
-
     public RememberMeAuthenticationProvider(String key) {
         this.key = key;
     }
@@ -70,15 +63,6 @@ public class RememberMeAuthenticationProvider implements AuthenticationProvider,
 
     public String getKey() {
         return key;
-    }
-
-    /**
-     *
-     * @deprecated Use constructor injection
-     */
-    @Deprecated
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public void setMessageSource(MessageSource messageSource) {

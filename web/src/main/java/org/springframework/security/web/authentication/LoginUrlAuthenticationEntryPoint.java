@@ -82,13 +82,6 @@ public class LoginUrlAuthenticationEntryPoint implements AuthenticationEntryPoin
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     /**
-     * @deprecated Use constructor injection
-     */
-    @Deprecated
-    public LoginUrlAuthenticationEntryPoint() {
-    }
-
-    /**
      *
      * @param loginFormUrl URL where the login page can be found. Should either be relative to the web-app context path
      * (include a leading {@code /}) or an absolute URL.
@@ -238,18 +231,6 @@ public class LoginUrlAuthenticationEntryPoint implements AuthenticationEntryPoin
 
     protected boolean isForceHttps() {
         return forceHttps;
-    }
-
-    /**
-     * The URL where the <code>UsernamePasswordAuthenticationFilter</code> login
-     * page can be found. Should either be relative to the web-app context path
-     * (include a leading {@code /}) or an absolute URL.
-     *
-     * @deprecated use constructor injection
-     */
-    @Deprecated
-    public void setLoginFormUrl(String loginFormUrl) {
-        this.loginFormUrl = loginFormUrl;
     }
 
     public String getLoginFormUrl() {

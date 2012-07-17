@@ -97,12 +97,6 @@ public class BasicAuthenticationFilter extends GenericFilterBean {
     private String credentialsCharset = "UTF-8";
 
     /**
-     * @deprecated Use constructor injection
-     */
-    public BasicAuthenticationFilter() {
-    }
-
-    /**
      * Creates an instance which will authenticate against the supplied {@code AuthenticationManager}
      * and which will ignore failed authentication attempts, allowing the request to proceed down the filter chain.
      *
@@ -268,37 +262,12 @@ public class BasicAuthenticationFilter extends GenericFilterBean {
         return authenticationEntryPoint;
     }
 
-    /**
-     * @deprecated Use constructor injection
-     */
-    @Deprecated
-    public void setAuthenticationEntryPoint(AuthenticationEntryPoint authenticationEntryPoint) {
-        this.authenticationEntryPoint = authenticationEntryPoint;
-    }
-
     protected AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
     }
 
-    /**
-     * @deprecated Use constructor injection
-     */
-    @Deprecated
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
     protected boolean isIgnoreFailure() {
         return ignoreFailure;
-    }
-
-    /**
-     *
-     * @deprecated Use the constructor which takes a single AuthenticationManager parameter
-     */
-    @Deprecated
-    public void setIgnoreFailure(boolean ignoreFailure) {
-        this.ignoreFailure = ignoreFailure;
     }
 
     public void setAuthenticationDetailsSource(AuthenticationDetailsSource<HttpServletRequest,?> authenticationDetailsSource) {

@@ -64,13 +64,6 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
     //~ Methods ========================================================================================================
 
-
-    /**
-     * @deprecated Use constructor which injects the <tt>SessionRegistry</tt>.
-     */
-    public ConcurrentSessionFilter() {
-    }
-
     public ConcurrentSessionFilter(SessionRegistry sessionRegistry) {
         this(sessionRegistry, null);
     }
@@ -135,22 +128,6 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
         for (LogoutHandler handler : handlers) {
             handler.logout(request, response, auth);
         }
-    }
-
-    /**
-     * @deprecated use constructor injection instead
-     */
-    @Deprecated
-    public void setExpiredUrl(String expiredUrl) {
-        this.expiredUrl = expiredUrl;
-    }
-
-    /**
-     * @deprecated use constructor injection instead
-     */
-    @Deprecated
-    public void setSessionRegistry(SessionRegistry sessionRegistry) {
-        this.sessionRegistry = sessionRegistry;
     }
 
     public void setLogoutHandlers(LogoutHandler[] handlers) {
