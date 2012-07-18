@@ -24,6 +24,7 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.x509.SubjectDnX509PrincipalExtractor;
 import org.springframework.security.web.authentication.preauth.x509.X509AuthenticationFilter;
@@ -93,6 +94,8 @@ final class AuthenticationConfigBuilder {
     private BeanReference x509ProviderRef;
     private String x509ProviderId;
     private BeanDefinition logoutFilter;
+    @SuppressWarnings("rawtypes")
+    private ManagedList logoutHandlers;
     private BeanDefinition loginPageGenerationFilter;
     private BeanDefinition etf;
     private BeanReference requestCache;
@@ -344,8 +347,21 @@ final class AuthenticationConfigBuilder {
     void createLogoutFilter() {
         Element logoutElt = DomUtils.getChildElementByTagName(httpElt, Elements.LOGOUT);
         if (logoutElt != null || autoConfig) {
-            logoutFilter = new LogoutBeanDefinitionParser(rememberMeServicesId).parse(logoutElt, pc);
+            LogoutBeanDefinitionParser logoutParser = new LogoutBeanDefinitionParser(rememberMeServicesId);
+            logoutFilter = logoutParser.parse(logoutElt, pc);
+            logoutHandlers = logoutParser.getLogoutHandlers();
         }
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    ManagedList getLogoutHandlers() {
+        if(logoutHandlers == null && rememberMeProviderRef != null) {
+            logoutHandlers = new ManagedList();
+            logoutHandlers.add(new RuntimeBeanReference(rememberMeServicesId));
+            logoutHandlers.add(new RootBeanDefinition(SecurityContextLogoutHandler.class));
+        }
+
+        return logoutHandlers;
     }
 
     void createAnonymousFilter() {

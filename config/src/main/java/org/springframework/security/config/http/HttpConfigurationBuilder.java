@@ -138,6 +138,13 @@ class HttpConfigurationBuilder {
         }
     }
 
+    @SuppressWarnings("rawtypes")
+    void setLogoutHandlers(ManagedList logoutHandlers) {
+        if(logoutHandlers != null && concurrentSessionFilter != null) {
+            concurrentSessionFilter.getPropertyValues().add("logoutHandlers", logoutHandlers);
+        }
+    }
+
     // Needed to account for placeholders
     static String createPath(String path, boolean lowerCase) {
         return lowerCase ? path.toLowerCase() : path;
