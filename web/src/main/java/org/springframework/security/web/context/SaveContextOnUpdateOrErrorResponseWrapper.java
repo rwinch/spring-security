@@ -182,6 +182,7 @@ public abstract class SaveContextOnUpdateOrErrorResponseWrapper extends HttpServ
         }
 
         public void close() {
+            new RuntimeException("**************************************PrintWriter.close()******************************").printStackTrace();
             doSaveContext();
             super.close();
         }
@@ -211,6 +212,7 @@ public abstract class SaveContextOnUpdateOrErrorResponseWrapper extends HttpServ
 
         @Override
         public void close() throws IOException {
+            new RuntimeException("**************************************ServletOutputStream.close()******************************").printStackTrace();
             doSaveContext();
             super.close();
         }
