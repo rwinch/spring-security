@@ -1,5 +1,6 @@
 package org.springframework.security.config.method;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.springframework.security.config.ConfigTestUtils.AUTH_PROVIDER_XML;
 
@@ -32,6 +33,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.ConfigTestUtils;
+import org.springframework.security.config.MockBeanPostProcessor;
 import org.springframework.security.config.PostProcessedMockUserDetailsService;
 import org.springframework.security.config.util.InMemoryXmlApplicationContext;
 import org.springframework.security.core.AuthenticationException;
@@ -118,6 +120,25 @@ public class GlobalMethodSecurityBeanDefinitionParserTests {
         PostProcessedMockUserDetailsService service = (PostProcessedMockUserDetailsService)appContext.getBean("myUserService");
 
         assertEquals("Hello from the post processor!", service.getPostProcessorWasHere());
+    }
+
+    @Test
+    public void customExpressionHandlerDoesntInterfereWithBeanPostProcessing() {
+        setContext(
+                "<b:bean id='expressionHandler' class='org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler'/>" +
+                "<global-method-security pre-post-annotations='enabled'>" +
+                "  <expression-handler ref='expressionHandler'/>" +
+                "</global-method-security>" +
+                "<authentication-manager>" +
+                "   <authentication-provider user-service-ref='myUserService'/>" +
+                "</authentication-manager>" +
+                "<b:bean id='myUserService' class='org.springframework.security.config.PostProcessedMockUserDetailsService'/>" +
+                "<b:bean id='beanPostProcessor' class='org.springframework.security.config.MockBeanPostProcessor'/>"
+        );
+
+        MockBeanPostProcessor beanPostProcessor = appContext.getBean("beanPostProcessor",MockBeanPostProcessor.class);
+
+        assertThat(beanPostProcessor.getPostProcessBeforeInitializationBeanNames()).contains("expressionHandler");
     }
 
     @Test(expected=AccessDeniedException.class)
