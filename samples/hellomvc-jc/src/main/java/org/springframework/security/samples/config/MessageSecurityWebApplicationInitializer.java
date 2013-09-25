@@ -15,8 +15,11 @@
  */
 package org.springframework.security.samples.config;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.web.multipart.support.MultipartFilter;
 
 /**
  * No customizations of {@link AbstractSecurityWebApplicationInitializer} are necessary.
@@ -25,4 +28,10 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  */
 @Order(2)
 public class MessageSecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
+
+    @Override
+    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
+//        insertFilters(servletContext, new MultipartFilter());
+    }
+
 }
