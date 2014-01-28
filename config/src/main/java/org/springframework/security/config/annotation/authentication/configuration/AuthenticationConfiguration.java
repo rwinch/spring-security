@@ -34,4 +34,9 @@ public class AuthenticationConfiguration {
     public AuthenticationManagerBuilder authenticationManagerBuilder(ObjectPostProcessor<Object> objectPostProcessor) {
         return new AuthenticationManagerBuilder(objectPostProcessor);
     }
+
+    @Bean
+    public AuthenticationManagerBuilderPostProcessor authenticationManagerBuilderPostProcessor() {
+        return new AuthenticationManagerBuilderPostProcessor();
+    }
 }
