@@ -540,4 +540,15 @@ public class ExpressionUrlAuthorizationConfigurerTests extends BaseSpringSpec {
         then: "custom bean expression denies access"
             response.status == HttpServletResponse.SC_FORBIDDEN
     }
+
+    def "Custom ConfigAttribute"() {
+        setup:
+            loadConfig(CustomConfigAttributeConfig)
+        when: "invoke custom bean as expression that denies access"
+            login()
+            request.servletPath = "/admin/1"
+            springSecurityFilterChain.doFilter(request, response, chain)
+        then: "custom bean expression denies access"
+            response.status == HttpServletResponse.SC_FORBIDDEN
+    }
 }

@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.expression.SecurityExpressionOperations;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -150,6 +151,39 @@ public class ExpressionUrlAuthorizationConfigurerConfigs {
             public boolean check(String customArg) {
                 Authentication auth = this.getAuthentication();
                 return auth.getName().contains(customArg);
+            }
+        }
+    }
+
+    @EnableWebSecurity
+    @Configuration
+    static class CustomConfigAttributeConfig extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            auth
+                .inMemoryAuthentication()
+                    .withUser("user").password("password").roles("USER");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                .authorizeRequests()
+                    .antMatchers("/admin/**").access(new UsernameConfigAttr("admin"))
+                    .anyRequest().hasRole("USER");
+        }
+
+
+        static class UsernameConfigAttr implements ConfigAttribute {
+            private final String username;
+
+            UsernameConfigAttr(String username) {
+                this.username = username;
+            }
+
+            public  String getAttribute() {
+                return username;
             }
         }
     }

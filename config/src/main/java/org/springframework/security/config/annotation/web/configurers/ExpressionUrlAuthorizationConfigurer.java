@@ -16,6 +16,7 @@
 package org.springframework.security.config.annotation.web.configurers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -351,6 +352,17 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
                 attribute = "!" + attribute;
             }
             interceptUrl(requestMatchers, SecurityConfig.createList(attribute));
+            return ExpressionUrlAuthorizationConfigurer.this.REGISTRY;
+        }
+
+        /**
+         * Allows specifying that URLs are secured by an arbitrary expression
+         *
+         * @param attribute the expression to secure the URLs (i.e. "hasRole('ROLE_USER') and hasRole('ROLE_SUPER')")
+         * @return the {@link ExpressionUrlAuthorizationConfigurer} for further customization
+         */
+        public ExpressionInterceptUrlRegistry access(ConfigAttribute... attributes) {
+            interceptUrl(requestMatchers, Arrays.asList(attributes));
             return ExpressionUrlAuthorizationConfigurer.this.REGISTRY;
         }
     }
