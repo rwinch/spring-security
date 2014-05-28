@@ -9,6 +9,7 @@ dependencies {
             project(":spring-security-samples-messages-jc"),
             project(":spring-security-core"),
             project(":spring-security-web"),
+            project(":spring-security-session"),
             "org.springframework:spring-webmvc:$springVersion",
             "org.springframework:spring-jdbc:$springVersion",
             "org.slf4j:slf4j-api:$slf4jVersion",

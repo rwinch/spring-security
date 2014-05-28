@@ -10,7 +10,8 @@ def String[] modules = [
     'taglibs',
     'aspects',
     'crypto',
-    'test'
+    'test',
+    'session'
 ]
 
 def String[] samples = [
