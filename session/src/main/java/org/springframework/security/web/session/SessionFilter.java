@@ -42,8 +42,17 @@ public class SessionFilter extends OncePerRequestFilter {
             filterChain.doFilter(wrappedRequest, response);
         } finally {
             HttpSessionWrapper wrappedSession = wrappedRequest.currentSession;
-            if(wrappedSession != null) {
-                sessionRepository.save(wrappedSession.session);
+            if(wrappedSession == null) {
+                if(wrappedRequest.isInvalidateClientSession()) {
+                    Cookie sessionCookie = new Cookie("SESSION","");
+                    sessionCookie.setMaxAge(0);
+                    response.addCookie(sessionCookie);
+                }
+            } else {
+                Session session = wrappedSession.session;
+                sessionRepository.save(session);
+                Cookie cookie = new Cookie("SESSION", session.getId());
+                response.addCookie(cookie);
             }
         }
     }
@@ -51,10 +60,15 @@ public class SessionFilter extends OncePerRequestFilter {
     private class SessionRequestWrapper extends HttpServletRequestWrapper {
         private final HttpServletResponse response;
         private HttpSessionWrapper currentSession;
+        private boolean requestedValidSession;
 
         private SessionRequestWrapper(HttpServletRequest request, HttpServletResponse response) {
             super(request);
             this.response = response;
+        }
+
+        private boolean isInvalidateClientSession() {
+            return currentSession == null && requestedValidSession;
         }
 
         @Override
@@ -62,38 +76,30 @@ public class SessionFilter extends OncePerRequestFilter {
             if(currentSession != null) {
                 return currentSession;
             }
-            String sessionId = getRequestedSessionId();
-            if(sessionId != null) {
-                Session session = sessionRepository.getSession(sessionId);
+            String requestedSessionId = getRequestedSessionId();
+            if(requestedSessionId != null) {
+                Session session = sessionRepository.getSession(requestedSessionId);
                 if(session != null) {
-                    // session.old
+                    this.requestedValidSession = true;
+                    session.setOld(false);
                     session.updateLastAccessedTime();
-                    return new HttpSessionWrapper(session, getServletContext()) {
+                    currentSession = new HttpSessionWrapper(session, getServletContext()) {
                         void doInvalidate() {
                             currentSession = null;
                             sessionRepository.delete(getId());
-                            Cookie sessionCookie = new Cookie("SESSION","");
-                            sessionCookie.setMaxAge(0);
-                            response.addCookie(sessionCookie);
                         }
                     };
+                    return currentSession;
                 }
             }
             if(!create) {
                 return null;
             }
-            Session session = new Session(sessionRepository);
-            sessionId = session.getId();
-            sessionRepository.save(session);
-            Cookie cookie = new Cookie("SESSION", sessionId);
-            response.addCookie(cookie);
+            Session session = new Session();
             currentSession = new HttpSessionWrapper(session, getServletContext()) {
                 void doInvalidate() {
                     currentSession = null;
                     sessionRepository.delete(getId());
-                    Cookie sessionCookie = new Cookie("SESSION","");
-                    sessionCookie.setMaxAge(0);
-                    response.addCookie(sessionCookie);
                 }
             };
             return currentSession;

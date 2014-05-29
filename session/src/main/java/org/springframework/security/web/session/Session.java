@@ -21,7 +21,6 @@ import java.util.*;
 * @author Rob Winch
 */
 public class Session {
-    private final SessionRepository sessionRepository;
     private String id = UUID.randomUUID().toString();
     private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
@@ -29,8 +28,9 @@ public class Session {
     private long lastAccessedTime = System.currentTimeMillis();
     private long creationTime = lastAccessedTime;
 
+    Session() {}
+
     Session(Session session) {
-        this(session.sessionRepository);
         this.id = session.getId();
         this.invalid = session.invalid;
         this.sessionAttrs = new HashMap<String, Object>(session.sessionAttrs);
@@ -39,8 +39,12 @@ public class Session {
         this.creationTime = session.creationTime;
     }
 
-    Session(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    boolean isOld() {
+        return this.old;
+    }
+
+    void setOld(boolean old) {
+        this.old = old;
     }
 
     void updateLastAccessedTime() {
