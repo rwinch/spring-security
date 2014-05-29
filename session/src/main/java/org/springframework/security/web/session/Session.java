@@ -20,7 +20,7 @@ import java.util.*;
 /**
 * @author Rob Winch
 */
-public class Session {
+public final class Session {
     private String id = UUID.randomUUID().toString();
     private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
