@@ -22,7 +22,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.*;
 
 /**
  * @author Rob Winch
@@ -37,7 +36,7 @@ public class SessionFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(request, response);
+        SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(sessionRepository, request);
         try {
             filterChain.doFilter(wrappedRequest, response);
         } finally {
@@ -57,14 +56,14 @@ public class SessionFilter extends OncePerRequestFilter {
         }
     }
 
-    private class SessionRequestWrapper extends HttpServletRequestWrapper {
-        private final HttpServletResponse response;
+    private static final class SessionRequestWrapper extends HttpServletRequestWrapper {
+        private final SessionRepository sessionRepository;
         private HttpSessionWrapper currentSession;
         private boolean requestedValidSession;
 
-        private SessionRequestWrapper(HttpServletRequest request, HttpServletResponse response) {
+        private SessionRequestWrapper(SessionRepository sessionRepository, HttpServletRequest request) {
             super(request);
-            this.response = response;
+            this.sessionRepository = sessionRepository;
         }
 
         private boolean isInvalidateClientSession() {
