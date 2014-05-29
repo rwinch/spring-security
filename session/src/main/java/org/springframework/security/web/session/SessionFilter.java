@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -29,16 +28,29 @@ import java.util.*;
  * @author Rob Winch
  */
 public class SessionFilter extends OncePerRequestFilter {
-    private Map<String,Session> sessions = new HashMap<String,Session>();
+    private final SessionRepository sessionRepository;
+
+    public SessionFilter(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
+    }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        filterChain.doFilter(new SessionRequestWrapper(request, response), response);
+        SessionRequestWrapper wrappedRequest = new SessionRequestWrapper(request, response);
+        try {
+            filterChain.doFilter(wrappedRequest, response);
+        } finally {
+            HttpSessionWrapper wrappedSession = wrappedRequest.currentSession;
+            if(wrappedSession != null) {
+                sessionRepository.save(wrappedSession.session);
+            }
+        }
     }
 
     private class SessionRequestWrapper extends HttpServletRequestWrapper {
         private final HttpServletResponse response;
-        private String sessionId;
+        private HttpSessionWrapper currentSession;
 
         private SessionRequestWrapper(HttpServletRequest request, HttpServletResponse response) {
             super(request);
@@ -47,34 +59,49 @@ public class SessionFilter extends OncePerRequestFilter {
 
         @Override
         public HttpSession getSession(boolean create) {
-            String sessionId = getSessionId();
+            if(currentSession != null) {
+                return currentSession;
+            }
+            String sessionId = getRequestedSessionId();
             if(sessionId != null) {
-                Session session = sessions.get(sessionId);
-                // session.old
-                session.lastAccessedTime = System.currentTimeMillis();
-                return session;
+                Session session = sessionRepository.getSession(sessionId);
+                if(session != null) {
+                    // session.old
+                    session.updateLastAccessedTime();
+                    return new HttpSessionWrapper(session, getServletContext()) {
+                        void doInvalidate() {
+                            currentSession = null;
+                            sessionRepository.delete(getId());
+                            Cookie sessionCookie = new Cookie("SESSION","");
+                            sessionCookie.setMaxAge(0);
+                            response.addCookie(sessionCookie);
+                        }
+                    };
+                }
             }
             if(!create) {
                 return null;
             }
-            Session session = new Session(response);
+            Session session = new Session(sessionRepository);
             sessionId = session.getId();
-            sessions.put(sessionId, session);
+            sessionRepository.save(session);
             Cookie cookie = new Cookie("SESSION", sessionId);
             response.addCookie(cookie);
-            return session;
+            currentSession = new HttpSessionWrapper(session, getServletContext()) {
+                void doInvalidate() {
+                    currentSession = null;
+                    sessionRepository.delete(getId());
+                    Cookie sessionCookie = new Cookie("SESSION","");
+                    sessionCookie.setMaxAge(0);
+                    response.addCookie(sessionCookie);
+                }
+            };
+            return currentSession;
         }
 
         @Override
         public HttpSession getSession() {
             return getSession(true);
-        }
-
-        private String getSessionId() {
-            if(sessionId == null) {
-                sessionId = getRequestedSessionId();
-            }
-            return sessionId;
         }
 
         @Override
@@ -84,123 +111,4 @@ public class SessionFilter extends OncePerRequestFilter {
         }
     }
 
-    private class Session implements HttpSession {
-        private String id = UUID.randomUUID().toString();
-        private boolean invalid;
-        private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
-        private boolean old;
-        private long lastAccessedTime = System.currentTimeMillis();
-        private long creationTime = lastAccessedTime;
-        private final HttpServletResponse response;
-
-        private Session(HttpServletResponse response) {
-            this.response = response;
-        }
-
-        @Override
-        public long getCreationTime() {
-            return creationTime;
-        }
-
-        @Override
-        public String getId() {
-            return id;
-        }
-
-        @Override
-        public long getLastAccessedTime() {
-            return lastAccessedTime;
-        }
-
-        @Override
-        public ServletContext getServletContext() {
-            return null;
-        }
-
-        @Override
-        public void setMaxInactiveInterval(int interval) {
-
-        }
-
-        @Override
-        public int getMaxInactiveInterval() {
-            return 0;
-        }
-
-        @Override
-        public HttpSessionContext getSessionContext() {
-            return null;
-        }
-
-        @Override
-        public Object getAttribute(String name) {
-            return sessionAttrs.get(name);
-        }
-
-        @Override
-        public Object getValue(String name) {
-            return getAttribute(name);
-        }
-
-        @Override
-        public Enumeration<String> getAttributeNames() {
-            return Collections.enumeration(sessionAttrs.keySet());
-        }
-
-        @Override
-        public String[] getValueNames() {
-            return sessionAttrs.keySet().toArray(new String[0]);
-        }
-
-        @Override
-        public void setAttribute(String name, Object value) {
-            sessionAttrs.put(name, value);
-        }
-
-        @Override
-        public void putValue(String name, Object value) {
-            setAttribute(name, value);
-        }
-
-        @Override
-        public void removeAttribute(String name) {
-            sessionAttrs.remove(name);
-        }
-
-        @Override
-        public void removeValue(String name) {
-            removeAttribute(name);
-        }
-
-        @Override
-        public void invalidate() {
-            checkState();
-            sessions.remove(getId());
-            Cookie sessionCookie = new Cookie("SESSION","");
-            sessionCookie.setMaxAge(0);
-            response.addCookie(sessionCookie);
-            this.invalid = true;
-        }
-
-        @Override
-        public boolean isNew() {
-            return !old;
-        }
-
-        private void checkState() {
-            if(invalid) {
-                throw new IllegalStateException("The session is invalided");
-            }
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return id.equals(((Session)obj).getId());
-        }
-
-        @Override
-        public int hashCode() {
-            return id.hashCode();
-        }
-    }
 }

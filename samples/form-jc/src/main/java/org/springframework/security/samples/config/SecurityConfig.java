@@ -7,7 +7,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.security.web.session.Session;
 import org.springframework.security.web.session.SessionFilter;
+
+import java.util.HashMap;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -16,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .addFilterBefore(new SessionFilter(), SecurityContextPersistenceFilter.class)
+            .addFilterBefore(new SessionFilter(new HashMap<String, Session>()), SecurityContextPersistenceFilter.class)
             .authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
