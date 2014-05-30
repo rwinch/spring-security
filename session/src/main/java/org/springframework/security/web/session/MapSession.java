@@ -20,7 +20,7 @@ import java.util.*;
 /**
 * @author Rob Winch
 */
-public final class Session {
+public final class MapSession {
     private String id = UUID.randomUUID().toString();
     private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
@@ -28,9 +28,9 @@ public final class Session {
     private long lastAccessedTime = creationTime;
     private int maxInactiveInterval = 1800;
 
-    Session() {}
+    MapSession() {}
 
-    Session(Session session) {
+    MapSession(MapSession session) {
         this.id = session.getId();
         this.invalid = session.invalid;
         this.sessionAttrs = new HashMap<String, Object>(session.sessionAttrs);
@@ -39,7 +39,7 @@ public final class Session {
         this.maxInactiveInterval = session.maxInactiveInterval;
     }
 
-    void updateLastAccessedTime() {
+    public void updateLastAccessedTime() {
         this.lastAccessedTime = System.currentTimeMillis();
     }
 
@@ -63,41 +63,24 @@ public final class Session {
         return maxInactiveInterval;
     }
 
-
     public Object getAttribute(String name) {
         return sessionAttrs.get(name);
     }
 
-    public Object getValue(String name) {
-        return getAttribute(name);
-    }
-
-    public Enumeration<String> getAttributeNames() {
-        return Collections.enumeration(sessionAttrs.keySet());
-    }
-
-    public String[] getValueNames() {
-        return sessionAttrs.keySet().toArray(new String[0]);
+    public Set<String> getAttributeNames() {
+        return sessionAttrs.keySet();
     }
 
     public void setAttribute(String name, Object value) {
         sessionAttrs.put(name, value);
     }
 
-    public void putValue(String name, Object value) {
-        setAttribute(name, value);
-    }
-
     public void removeAttribute(String name) {
         sessionAttrs.remove(name);
     }
 
-    public void removeValue(String name) {
-        removeAttribute(name);
-    }
-
     public boolean equals(Object obj) {
-        return id.equals(((Session)obj).getId());
+        return id.equals(((MapSession) obj).getId());
     }
 
     public int hashCode() {

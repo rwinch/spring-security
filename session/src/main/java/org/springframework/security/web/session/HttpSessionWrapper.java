@@ -18,20 +18,18 @@ package org.springframework.security.web.session;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author Rob Winch
  */
 abstract class HttpSessionWrapper implements HttpSession {
-    final Session session;
+    final MapSession session;
     private final ServletContext servletContext;
     private boolean invalidated;
     private boolean old;
 
-    public HttpSessionWrapper(Session session, ServletContext servletContext) {
+    public HttpSessionWrapper(MapSession session, ServletContext servletContext) {
         this.session = session;
         this.servletContext = servletContext;
     }
@@ -86,20 +84,20 @@ abstract class HttpSessionWrapper implements HttpSession {
 
     @Override
     public Object getValue(String name) {
-        checkState();
-        return session.getValue(name);
+        return getAttribute(name);
     }
 
     @Override
     public Enumeration<String> getAttributeNames() {
         checkState();
-        return session.getAttributeNames();
+        return Collections.enumeration(session.getAttributeNames());
     }
 
     @Override
     public String[] getValueNames() {
         checkState();
-        return session.getValueNames();
+        Set<String> attrs = session.getAttributeNames();
+        return attrs.toArray(new String[0]);
     }
 
     @Override
@@ -110,8 +108,7 @@ abstract class HttpSessionWrapper implements HttpSession {
 
     @Override
     public void putValue(String name, Object value) {
-        checkState();
-        session.putValue(name, value);
+        setAttribute(name, value);
     }
 
     @Override
@@ -122,8 +119,7 @@ abstract class HttpSessionWrapper implements HttpSession {
 
     @Override
     public void removeValue(String name) {
-        checkState();
-        session.removeValue(name);
+        removeAttribute(name);
     }
 
     @Override

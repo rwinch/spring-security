@@ -22,15 +22,15 @@ import java.util.Map;
  * @author Rob Winch
  */
 public class InMemorySessionRepository implements SessionRepository {
-    private Map<String,Session> sessions = new HashMap<String,Session>();
+    private Map<String,MapSession> sessions = new HashMap<String,MapSession>();
 
-    public void save(Session session) {
-        sessions.put(session.getId(), new Session(session));
+    public void save(MapSession session) {
+        sessions.put(session.getId(), new MapSession(session));
     }
 
-    public Session getSession(String id) {
-        Session result = sessions.get(id);
-        return result == null ? null : new Session(result);
+    public MapSession getSession(String id) {
+        MapSession result = sessions.get(id);
+        return result == null ? null : new MapSession(result);
     }
 
     public void delete(String id) {

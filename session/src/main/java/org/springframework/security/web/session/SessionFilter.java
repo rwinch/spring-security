@@ -50,7 +50,7 @@ public class SessionFilter extends OncePerRequestFilter {
                     response.addCookie(sessionCookie);
                 }
             } else {
-                Session session = wrappedSession.session;
+                MapSession session = wrappedSession.session;
                 sessionRepository.save(session);
                 Cookie cookie = new Cookie("SESSION", session.getId());
                 cookie.setHttpOnly(true);
@@ -81,7 +81,7 @@ public class SessionFilter extends OncePerRequestFilter {
             }
             String requestedSessionId = getRequestedSessionId();
             if(requestedSessionId != null) {
-                Session session = sessionRepository.getSession(requestedSessionId);
+                MapSession session = sessionRepository.getSession(requestedSessionId);
                 if(session != null) {
                     this.requestedValidSession = true;
                     session.updateLastAccessedTime();
@@ -98,7 +98,7 @@ public class SessionFilter extends OncePerRequestFilter {
             if(!create) {
                 return null;
             }
-            Session session = new Session();
+            MapSession session = new MapSession();
             currentSession = new HttpSessionWrapper(session, getServletContext()) {
                 void doInvalidate() {
                     currentSession = null;
