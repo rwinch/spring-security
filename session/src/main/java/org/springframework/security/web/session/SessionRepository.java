@@ -4,7 +4,7 @@ package org.springframework.security.web.session;
  * @author Rob Winch
  */
 public interface SessionRepository {
-    void save(MapSession session);
+    void save(Session session);
 
     MapSession getSession(String id);
 

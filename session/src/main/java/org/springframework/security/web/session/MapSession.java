@@ -20,9 +20,8 @@ import java.util.*;
 /**
 * @author Rob Winch
 */
-public final class MapSession {
+public final class MapSession implements Session {
     private String id = UUID.randomUUID().toString();
-    private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
     private long creationTime = System.currentTimeMillis();
     private long lastAccessedTime = creationTime;
@@ -30,51 +29,64 @@ public final class MapSession {
 
     MapSession() {}
 
-    MapSession(MapSession session) {
+    MapSession(Session session) {
         this.id = session.getId();
-        this.invalid = session.invalid;
-        this.sessionAttrs = new HashMap<String, Object>(session.sessionAttrs);
-        this.lastAccessedTime = session.lastAccessedTime;
-        this.creationTime = session.creationTime;
-        this.maxInactiveInterval = session.maxInactiveInterval;
+        this.sessionAttrs = new HashMap<String, Object>(session.getAttributeNames().size());
+        for(String attrName : session.getAttributeNames()) {
+            Object attrValue = session.getAttribute(attrName);
+            this.sessionAttrs.put(attrName, attrValue);
+        }
+        this.lastAccessedTime = session.getLastAccessedTime();
+        this.creationTime = session.getCreationTime();
+        this.maxInactiveInterval = session.getMaxInactiveInterval();
     }
 
+    @Override
     public void updateLastAccessedTime() {
         this.lastAccessedTime = System.currentTimeMillis();
     }
 
+    @Override
     public long getCreationTime() {
         return creationTime;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public long getLastAccessedTime() {
         return lastAccessedTime;
     }
 
+    @Override
     public void setMaxInactiveInterval(int interval) {
         this.maxInactiveInterval = interval;
     }
 
+    @Override
     public int getMaxInactiveInterval() {
         return maxInactiveInterval;
     }
 
+    @Override
     public Object getAttribute(String name) {
         return sessionAttrs.get(name);
     }
 
+    @Override
     public Set<String> getAttributeNames() {
         return sessionAttrs.keySet();
     }
 
+    @Override
     public void setAttribute(String name, Object value) {
         sessionAttrs.put(name, value);
     }
 
+    @Override
     public void removeAttribute(String name) {
         sessionAttrs.remove(name);
     }

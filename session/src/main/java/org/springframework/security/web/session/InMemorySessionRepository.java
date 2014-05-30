@@ -24,7 +24,7 @@ import java.util.Map;
 public class InMemorySessionRepository implements SessionRepository {
     private Map<String,MapSession> sessions = new HashMap<String,MapSession>();
 
-    public void save(MapSession session) {
+    public void save(Session session) {
         sessions.put(session.getId(), new MapSession(session));
     }
 

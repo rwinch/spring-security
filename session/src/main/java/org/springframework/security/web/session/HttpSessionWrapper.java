@@ -24,12 +24,12 @@ import java.util.*;
  * @author Rob Winch
  */
 abstract class HttpSessionWrapper implements HttpSession {
-    final MapSession session;
+    final Session session;
     private final ServletContext servletContext;
     private boolean invalidated;
     private boolean old;
 
-    public HttpSessionWrapper(MapSession session, ServletContext servletContext) {
+    public HttpSessionWrapper(Session session, ServletContext servletContext) {
         this.session = session;
         this.servletContext = servletContext;
     }
