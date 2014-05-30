@@ -281,8 +281,8 @@ public class SessionFilterTests {
         doFilter(new DoInFilter() {
             @Override
             public void doFilter(HttpServletRequest wrappedRequest) {
-                assertThat(wrappedRequest.getSession().isNew());
-                assertThat(wrappedRequest.getSession().isNew());
+                assertThat(wrappedRequest.getSession().isNew()).isTrue();
+                assertThat(wrappedRequest.getSession().isNew()).isTrue();
             }
         });
     }
@@ -292,7 +292,16 @@ public class SessionFilterTests {
         doFilter(new DoInFilter() {
             @Override
             public void doFilter(HttpServletRequest wrappedRequest) {
-                wrappedRequest.getSession().isNew();
+                wrappedRequest.getSession();
+            }
+        });
+
+        setupSession();
+
+        doFilter(new DoInFilter() {
+            @Override
+            public void doFilter(HttpServletRequest wrappedRequest) {
+                assertThat(wrappedRequest.getSession().isNew()).isFalse();
             }
         });
     }

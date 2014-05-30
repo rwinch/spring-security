@@ -24,7 +24,6 @@ public final class Session {
     private String id = UUID.randomUUID().toString();
     private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
-    private boolean old;
     private long creationTime = System.currentTimeMillis();
     private long lastAccessedTime = creationTime;
     private int maxInactiveInterval = 1800;
@@ -35,18 +34,9 @@ public final class Session {
         this.id = session.getId();
         this.invalid = session.invalid;
         this.sessionAttrs = new HashMap<String, Object>(session.sessionAttrs);
-        this.old = session.old;
         this.lastAccessedTime = session.lastAccessedTime;
         this.creationTime = session.creationTime;
         this.maxInactiveInterval = session.maxInactiveInterval;
-    }
-
-    boolean isOld() {
-        return this.old;
-    }
-
-    void setOld(boolean old) {
-        this.old = old;
     }
 
     void updateLastAccessedTime() {

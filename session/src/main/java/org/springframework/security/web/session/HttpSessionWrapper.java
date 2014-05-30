@@ -29,6 +29,7 @@ abstract class HttpSessionWrapper implements HttpSession {
     final Session session;
     private final ServletContext servletContext;
     private boolean invalidated;
+    private boolean old;
 
     public HttpSessionWrapper(Session session, ServletContext servletContext) {
         this.session = session;
@@ -134,10 +135,14 @@ abstract class HttpSessionWrapper implements HttpSession {
 
     abstract void doInvalidate();
 
+    public void setNew(boolean isNew) {
+        this.old = !isNew;
+    }
+
     @Override
     public boolean isNew() {
         checkState();
-        return false;
+        return !old;
     }
 
     private void checkState() {

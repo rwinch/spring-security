@@ -84,7 +84,6 @@ public class SessionFilter extends OncePerRequestFilter {
                 Session session = sessionRepository.getSession(requestedSessionId);
                 if(session != null) {
                     this.requestedValidSession = true;
-                    session.setOld(false);
                     session.updateLastAccessedTime();
                     currentSession = new HttpSessionWrapper(session, getServletContext()) {
                         void doInvalidate() {
@@ -92,6 +91,7 @@ public class SessionFilter extends OncePerRequestFilter {
                             sessionRepository.delete(getId());
                         }
                     };
+                    currentSession.setNew(false);
                     return currentSession;
                 }
             }
