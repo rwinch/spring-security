@@ -45,12 +45,16 @@ public class SessionFilter extends OncePerRequestFilter {
                 if(wrappedRequest.isInvalidateClientSession()) {
                     Cookie sessionCookie = new Cookie("SESSION","");
                     sessionCookie.setMaxAge(0);
+                    sessionCookie.setHttpOnly(true);
+                    sessionCookie.setSecure(request.isSecure());
                     response.addCookie(sessionCookie);
                 }
             } else {
                 Session session = wrappedSession.session;
                 sessionRepository.save(session);
                 Cookie cookie = new Cookie("SESSION", session.getId());
+                cookie.setHttpOnly(true);
+                cookie.setSecure(request.isSecure());
                 response.addCookie(cookie);
             }
         }

@@ -25,8 +25,9 @@ public final class Session {
     private boolean invalid;
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
     private boolean old;
-    private long lastAccessedTime = System.currentTimeMillis();
-    private long creationTime = lastAccessedTime;
+    private long creationTime = System.currentTimeMillis();
+    private long lastAccessedTime = creationTime;
+    private int maxInactiveInterval = 1800;
 
     Session() {}
 
@@ -37,6 +38,7 @@ public final class Session {
         this.old = session.old;
         this.lastAccessedTime = session.lastAccessedTime;
         this.creationTime = session.creationTime;
+        this.maxInactiveInterval = session.maxInactiveInterval;
     }
 
     boolean isOld() {
@@ -64,11 +66,11 @@ public final class Session {
     }
 
     public void setMaxInactiveInterval(int interval) {
-
+        this.maxInactiveInterval = interval;
     }
 
     public int getMaxInactiveInterval() {
-        return 0;
+        return maxInactiveInterval;
     }
 
 

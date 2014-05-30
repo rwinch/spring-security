@@ -18,7 +18,9 @@ package org.springframework.security.web.session;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 /**
  * @author Rob Winch
@@ -152,7 +154,19 @@ abstract class HttpSessionWrapper implements HttpSession {
 
         @Override
         public Enumeration<String> getIds() {
-            return null;
+            return EMPTY_ENUMERATION;
+        }
+    };
+
+    private final static Enumeration<String> EMPTY_ENUMERATION = new Enumeration<String>() {
+        @Override
+        public boolean hasMoreElements() {
+            return false;
+        }
+
+        @Override
+        public String nextElement() {
+            throw new NoSuchElementException("a");
         }
     };
 }
