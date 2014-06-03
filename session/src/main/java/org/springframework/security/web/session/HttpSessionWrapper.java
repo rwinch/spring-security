@@ -36,7 +36,7 @@ abstract class HttpSessionWrapper implements HttpSession {
 
     void updateLastAccessedTime() {
         checkState();
-        session.updateLastAccessedTime();
+        session.setLastAccessedTime(System.currentTimeMillis());
     }
 
     @Override

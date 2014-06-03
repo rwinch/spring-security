@@ -42,8 +42,8 @@ public final class MapSession implements Session {
     }
 
     @Override
-    public void updateLastAccessedTime() {
-        this.lastAccessedTime = System.currentTimeMillis();
+    public void setLastAccessedTime(long lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
     }
 
     @Override

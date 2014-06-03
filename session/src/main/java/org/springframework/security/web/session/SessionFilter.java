@@ -81,10 +81,10 @@ public class SessionFilter extends OncePerRequestFilter {
             }
             String requestedSessionId = getRequestedSessionId();
             if(requestedSessionId != null) {
-                MapSession session = sessionRepository.getSession(requestedSessionId);
+                Session session = sessionRepository.getSession(requestedSessionId);
                 if(session != null) {
                     this.requestedValidSession = true;
-                    session.updateLastAccessedTime();
+                    session.setLastAccessedTime(System.currentTimeMillis());
                     currentSession = new HttpSessionWrapper(session, getServletContext()) {
                         void doInvalidate() {
                             currentSession = null;
@@ -98,7 +98,7 @@ public class SessionFilter extends OncePerRequestFilter {
             if(!create) {
                 return null;
             }
-            Session session = new MapSession();
+            Session session = sessionRepository.createSession();
             currentSession = new HttpSessionWrapper(session, getServletContext()) {
                 void doInvalidate() {
                     currentSession = null;

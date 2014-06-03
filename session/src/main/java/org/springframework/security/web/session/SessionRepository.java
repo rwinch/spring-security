@@ -6,7 +6,9 @@ package org.springframework.security.web.session;
 public interface SessionRepository {
     void save(Session session);
 
-    MapSession getSession(String id);
+    Session getSession(String id);
 
     void delete(String id);
+
+    Session createSession();
 }

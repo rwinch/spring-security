@@ -6,7 +6,7 @@ import java.util.Set;
  * @author Rob Winch
  */
 public interface Session {
-    void updateLastAccessedTime();
+    void setLastAccessedTime(long lastAccessedTime);
 
     long getCreationTime();
 

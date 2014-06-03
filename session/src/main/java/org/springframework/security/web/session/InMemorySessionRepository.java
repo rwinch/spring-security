@@ -28,12 +28,16 @@ public class InMemorySessionRepository implements SessionRepository {
         sessions.put(session.getId(), new MapSession(session));
     }
 
-    public MapSession getSession(String id) {
+    public Session getSession(String id) {
         MapSession result = sessions.get(id);
         return result == null ? null : new MapSession(result);
     }
 
     public void delete(String id) {
         sessions.remove(id);
+    }
+
+    public Session createSession() {
+        return new MapSession();
     }
 }
