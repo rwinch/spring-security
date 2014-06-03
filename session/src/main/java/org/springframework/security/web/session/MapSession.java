@@ -27,9 +27,9 @@ public final class MapSession implements Session {
     private long lastAccessedTime = creationTime;
     private int maxInactiveInterval = 1800;
 
-    MapSession() {}
+    public MapSession() {}
 
-    MapSession(Session session) {
+    public MapSession(Session session) {
         this.id = session.getId();
         this.sessionAttrs = new HashMap<String, Object>(session.getAttributeNames().size());
         for(String attrName : session.getAttributeNames()) {
@@ -46,9 +46,16 @@ public final class MapSession implements Session {
         this.lastAccessedTime = lastAccessedTime;
     }
 
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
     @Override
     public long getCreationTime() {
         return creationTime;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -89,6 +96,10 @@ public final class MapSession implements Session {
     @Override
     public void removeAttribute(String name) {
         sessionAttrs.remove(name);
+    }
+
+    public void setAttributes(Map<String, Object> attributes) {
+        this.sessionAttrs = new HashMap<String,Object>(attributes);
     }
 
     public boolean equals(Object obj) {
