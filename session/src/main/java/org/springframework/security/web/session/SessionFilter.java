@@ -27,7 +27,7 @@ import java.io.IOException;
  * @author Rob Winch
  */
 public class SessionFilter extends OncePerRequestFilter {
-    private final SessionRepository sessionRepository;
+    private final SessionRepository<Session> sessionRepository;
 
     public SessionFilter(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;

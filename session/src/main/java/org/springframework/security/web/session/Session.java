@@ -1,18 +1,11 @@
 package org.springframework.security.web.session;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.springframework.security.web.session.serializers.SessionDeserializer;
-import org.springframework.security.web.session.serializers.SessionSerializer;
-
 import java.io.Serializable;
 import java.util.Set;
 
 /**
  * @author Rob Winch
  */
-@JsonSerialize(using = SessionSerializer.class)
-@JsonDeserialize(using = SessionDeserializer.class)
 public interface Session extends Serializable {
     void setLastAccessedTime(long lastAccessedTime);
 

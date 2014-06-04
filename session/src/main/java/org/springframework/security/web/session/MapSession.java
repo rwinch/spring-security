@@ -25,7 +25,7 @@ public final class MapSession implements Session {
     private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
     private long creationTime = System.currentTimeMillis();
     private long lastAccessedTime = creationTime;
-    private int maxInactiveInterval = 1800;
+    private int maxInactiveInterval = 15;
 
     public MapSession() {}
 

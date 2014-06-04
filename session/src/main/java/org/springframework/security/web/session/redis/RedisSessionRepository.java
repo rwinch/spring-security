@@ -16,43 +16,154 @@
 package org.springframework.security.web.session.redis;
 
 import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.security.web.session.MapSession;
 import org.springframework.security.web.session.Session;
 import org.springframework.security.web.session.SessionRepository;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Rob Winch
  */
-public class RedisSessionRepository implements SessionRepository {
-    private final String BOUNDED_HASH_KEY = "spring-security-sessions";
-    private final RedisTemplate<String,Session> redisTemplate;
+public class RedisSessionRepository implements SessionRepository<RedisSessionRepository.RedisSession> {
+    private final String BOUNDED_HASH_KEY_PREFIX = "spring-security-sessions:";
+    private final String CREATION_TIME_ATTR = "creationTime";
+    private final String MAX_INACTIVE_ATTR = "maxInactiveInterval";
+    private final String LAST_ACCESSED_ATTR = "lastAccessedTime";
+    private final String SESSION_ATTR_PREFIX = "sessionAttr:";
 
-    public RedisSessionRepository(RedisTemplate<String, Session> redisTemplate) {
+
+    private final RedisOperations<String,Session> redisTemplate;
+
+    public RedisSessionRepository(RedisOperations<String, Session> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     @Override
-    public void save(Session session) {
-        BoundHashOperations<String, Object, Object> operations = this.redisTemplate.boundHashOps(BOUNDED_HASH_KEY);
-        operations.put(session.getId(),session);
+    public void save(RedisSession session) {
+        session.saveDelta();
     }
 
     @Override
     public Session getSession(String id) {
-        Object map = this.redisTemplate.boundHashOps(BOUNDED_HASH_KEY).get(id);
-        return (Session) map;
+        Map<Object, Object> entries = getOperations(id).entries();
+        if(entries.isEmpty()) {
+            return null;
+        }
+        MapSession loaded = new MapSession();
+        loaded.setId(id);
+        for(Map.Entry<Object,Object> entry : entries.entrySet()) {
+            String key = (String) entry.getKey();
+            if(CREATION_TIME_ATTR.equals(key)) {
+                loaded.setCreationTime((Long) entry.getValue());
+            } else if(MAX_INACTIVE_ATTR.equals(key)) {
+                loaded.setMaxInactiveInterval((Integer) entry.getValue());
+            } else if(LAST_ACCESSED_ATTR.equals(key)) {
+                loaded.setLastAccessedTime((Long) entry.getValue());
+            } else if(key.startsWith(SESSION_ATTR_PREFIX)) {
+                loaded.setAttribute(key.substring(SESSION_ATTR_PREFIX.length()), entry.getValue());
+            }
+        }
+        return new RedisSession(loaded);
     }
 
     @Override
-    public void delete(String id) {
-
+    public void delete(String sessionId) {
+        String key = getKey(sessionId);
+        this.redisTemplate.delete(key);
     }
 
     @Override
-    public Session createSession() {
-        return new MapSession();
+    public RedisSession createSession() {
+        return new RedisSession();
+    }
+
+    private String getKey(String sessionId) {
+        return BOUNDED_HASH_KEY_PREFIX + sessionId;
+    }
+
+    private BoundHashOperations<String, Object, Object> getOperations(String sessionId) {
+        String key = getKey(sessionId);
+        return this.redisTemplate.boundHashOps(key);
+    }
+
+    class RedisSession implements Session {
+        private final MapSession cached;
+        private Map<String, Object> delta = new HashMap<String,Object>();
+
+        private RedisSession() {
+            this(new MapSession());
+            delta.put(CREATION_TIME_ATTR, getCreationTime());
+            delta.put(MAX_INACTIVE_ATTR, getMaxInactiveInterval());
+            delta.put(LAST_ACCESSED_ATTR, getLastAccessedTime());
+        }
+
+        private RedisSession(MapSession cached) {
+            this.cached = cached;
+        }
+
+        @Override
+        public void setLastAccessedTime(long lastAccessedTime) {
+            cached.setLastAccessedTime(lastAccessedTime);
+            delta.put(LAST_ACCESSED_ATTR, getLastAccessedTime());
+        }
+
+        @Override
+        public long getCreationTime() {
+            return cached.getCreationTime();
+        }
+
+        @Override
+        public String getId() {
+            return cached.getId();
+        }
+
+        @Override
+        public long getLastAccessedTime() {
+            return cached.getLastAccessedTime();
+        }
+
+        @Override
+        public void setMaxInactiveInterval(int interval) {
+            cached.setMaxInactiveInterval(interval);
+            delta.put(MAX_INACTIVE_ATTR, getMaxInactiveInterval());
+        }
+
+        @Override
+        public int getMaxInactiveInterval() {
+            return cached.getMaxInactiveInterval();
+        }
+
+        @Override
+        public Object getAttribute(String name) {
+            return cached.getAttribute(name);
+        }
+
+        @Override
+        public Set<String> getAttributeNames() {
+            return cached.getAttributeNames();
+        }
+
+        @Override
+        public void setAttribute(String name, Object value) {
+            cached.setAttribute(name, value);
+            delta.put(SESSION_ATTR_PREFIX + name, value);
+        }
+
+        @Override
+        public void removeAttribute(String name) {
+            cached.removeAttribute(name);
+            delta.put(SESSION_ATTR_PREFIX + name, null);
+        }
+
+        private void saveDelta() {
+            getOperations(getId()).putAll(delta);
+            getOperations(getId()).expire(getMaxInactiveInterval(), TimeUnit.SECONDS);
+            delta.clear();
+        }
     }
 }
