@@ -5,5 +5,6 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-databind:2.2.2"
     provided "javax.servlet:javax.servlet-api:$servletApiVersion"
     testCompile "redis.clients:jedis:2.4.1",
-            "org.apache.commons:commons-pool2:2.2"
+            "org.apache.commons:commons-pool2:2.2",
+            project(":spring-security-core")
 }

@@ -3,6 +3,7 @@ package org.springframework.security.web.session.redis;
 import static org.fest.assertions.Assertions.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.std.SerializableSerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,13 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.session.MapSession;
 import org.springframework.security.web.session.Session;
 import org.springframework.security.web.session.SessionRepository;
@@ -32,6 +39,10 @@ public class RedisSessionRepositoryTests {
     public void saves() {
         MapSession toSave = new MapSession();
         toSave.setAttribute("a", "b");
+        Authentication toSaveToken = new UsernamePasswordAuthenticationToken("user","password", AuthorityUtils.createAuthorityList("ROLE_USER"));
+        SecurityContext toSaveContext = SecurityContextHolder.createEmptyContext();
+        toSaveContext.setAuthentication(toSaveToken);
+        toSave.setAttribute("SPRING_SECURITY_CONTEXT", toSaveContext);
 
         repository.save(toSave);
 
@@ -40,6 +51,8 @@ public class RedisSessionRepositoryTests {
         assertThat(session.getId()).isEqualTo(toSave.getId());
         assertThat(session.getAttributeNames()).isEqualTo(session.getAttributeNames());
         assertThat(session.getAttribute("a")).isEqualTo(toSave.getAttribute("a"));
+
+        SecurityContext context = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
     }
 
     @Configuration
@@ -54,9 +67,12 @@ public class RedisSessionRepositoryTests {
             RedisTemplate<String, Session> template = new RedisTemplate<String, Session>();
             template.setKeySerializer(new StringRedisSerializer());
             Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Session.class);
-            template.setHashValueSerializer(serializer);
-            template.setHashKeySerializer(new StringRedisSerializer());
+            ObjectMapper mapper = new ObjectMapper();
+            serializer.setObjectMapper(mapper);
+//            template.setHashValueSerializer(serializer);
+//            template.setHashKeySerializer(new StringRedisSerializer());
             template.setConnectionFactory(connectionFactory);
+            template.setDefaultSerializer(new JdkSerializationRedisSerializer());
             return template;
         }
 
