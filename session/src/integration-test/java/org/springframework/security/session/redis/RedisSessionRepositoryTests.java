@@ -1,7 +1,7 @@
-package org.springframework.security.web.session.redis;
+package org.springframework.security.session.redis;
 
-import static org.fest.assertions.Assertions.*;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +10,42 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.session.Session;
-import org.springframework.security.web.session.SessionRepository;
+import org.springframework.security.session.Session;
+import org.springframework.security.session.SessionRepository;
+import org.springframework.security.session.redis.RedisSessionRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.embedded.RedisServer;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class RedisSessionRepositoryTests {
+    private RedisServer redisServer;
 
     @Autowired
     private SessionRepository repository;
+
+    @Before
+    public void setup() throws IOException {
+        redisServer = new RedisServer(getPort());
+        redisServer.start();
+    }
+
+    @After
+    public void shutdown() throws InterruptedException {
+        redisServer.stop();
+    }
 
     @Test
     public void saves() {
@@ -57,8 +74,10 @@ public class RedisSessionRepositoryTests {
     @Configuration
     static class Config {
         @Bean
-        public JedisConnectionFactory connectionFactory() {
-            return new JedisConnectionFactory();
+        public JedisConnectionFactory connectionFactory() throws Exception {
+            JedisConnectionFactory factory = new JedisConnectionFactory();
+            factory.setPort(getPort());
+            return factory;
         }
 
         @Bean
@@ -74,5 +93,16 @@ public class RedisSessionRepositoryTests {
         public RedisSessionRepository sessionRepository(RedisTemplate<String, Session> redisTemplate) {
             return new RedisSessionRepository(redisTemplate);
         }
+    }
+
+    private static Integer availablePort;
+
+    private static int getPort() throws IOException {
+        if(availablePort == null) {
+            ServerSocket socket = new ServerSocket(0);
+            availablePort = socket.getLocalPort();
+            socket.close();
+        }
+        return availablePort;
     }
 }

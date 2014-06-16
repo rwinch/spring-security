@@ -1,4 +1,4 @@
-package org.springframework.security.web.session;
+package org.springframework.security.session;
 
 /**
  * @author Rob Winch

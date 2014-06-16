@@ -1,10 +1,13 @@
-package org.springframework.security.web.session;
+package org.springframework.security.session.web;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.session.InMemorySessionRepository;
+import org.springframework.security.session.web.SessionFilter;
+import org.springframework.security.session.SessionRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +15,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.NoSuchElementException;

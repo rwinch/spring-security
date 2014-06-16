@@ -13,7 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.springframework.security.web.session;
+package org.springframework.security.session.web;
+
+import org.springframework.security.session.Session;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpSessionContext;
 import java.util.*;
 
 /**
+ * A {@link javax.servlet.http.HttpSession} implementation that delegates to a {@link org.springframework.security.session.Session}.
+ *
  * @author Rob Winch
  */
 abstract class HttpSessionWrapper implements HttpSession {

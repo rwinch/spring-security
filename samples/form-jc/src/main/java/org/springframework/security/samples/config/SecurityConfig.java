@@ -7,12 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import org.springframework.security.web.session.InMemorySessionRepository;
-import org.springframework.security.web.session.MapSession;
-import org.springframework.security.web.session.Session;
-import org.springframework.security.web.session.SessionFilter;
-
-import java.util.HashMap;
+import org.springframework.security.session.InMemorySessionRepository;
+import org.springframework.security.session.web.SessionFilter;
 
 @Configuration
 @EnableWebMvcSecurity

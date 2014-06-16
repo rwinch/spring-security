@@ -13,13 +13,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.springframework.security.web.session.redis;
+package org.springframework.security.session.redis;
 
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.security.web.session.MapSession;
-import org.springframework.security.web.session.Session;
-import org.springframework.security.web.session.SessionRepository;
+import org.springframework.security.session.MapSession;
+import org.springframework.security.session.Session;
+import org.springframework.security.session.SessionRepository;
 
 import java.util.HashMap;
 import java.util.Map;

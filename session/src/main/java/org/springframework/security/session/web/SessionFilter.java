@@ -13,8 +13,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.springframework.security.web.session;
+package org.springframework.security.session.web;
 
+import org.springframework.security.session.Session;
+import org.springframework.security.session.SessionRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
