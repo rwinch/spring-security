@@ -139,8 +139,8 @@ public class RedisSessionRepository implements SessionRepository<RedisSessionRep
         }
 
         @Override
-        public Object getAttribute(String name) {
-            return cached.getAttribute(name);
+        public Object getAttribute(String attributeName) {
+            return cached.getAttribute(attributeName);
         }
 
         @Override
@@ -149,15 +149,15 @@ public class RedisSessionRepository implements SessionRepository<RedisSessionRep
         }
 
         @Override
-        public void setAttribute(String name, Object value) {
-            cached.setAttribute(name, value);
-            delta.put(SESSION_ATTR_PREFIX + name, value);
+        public void setAttribute(String attributeName, Object attributeValue) {
+            cached.setAttribute(attributeName, attributeValue);
+            delta.put(SESSION_ATTR_PREFIX + attributeName, attributeValue);
         }
 
         @Override
-        public void removeAttribute(String name) {
-            cached.removeAttribute(name);
-            delta.put(SESSION_ATTR_PREFIX + name, null);
+        public void removeAttribute(String attributeName) {
+            cached.removeAttribute(attributeName);
+            delta.put(SESSION_ATTR_PREFIX + attributeName, null);
         }
 
         private void saveDelta() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -79,8 +79,8 @@ public final class MapSession implements Session {
     }
 
     @Override
-    public Object getAttribute(String name) {
-        return sessionAttrs.get(name);
+    public Object getAttribute(String attributeName) {
+        return sessionAttrs.get(attributeName);
     }
 
     @Override
@@ -89,13 +89,17 @@ public final class MapSession implements Session {
     }
 
     @Override
-    public void setAttribute(String name, Object value) {
-        sessionAttrs.put(name, value);
+    public void setAttribute(String attributeName, Object attributeValue) {
+        if(attributeValue == null) {
+            removeAttribute(attributeName);
+        } else {
+            sessionAttrs.put(attributeName, attributeValue);
+        }
     }
 
     @Override
-    public void removeAttribute(String name) {
-        sessionAttrs.remove(name);
+    public void removeAttribute(String attributeName) {
+        sessionAttrs.remove(attributeName);
     }
 
     public void setAttributes(Map<String, Object> attributes) {
