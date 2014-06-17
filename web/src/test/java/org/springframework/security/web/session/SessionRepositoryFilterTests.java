@@ -1,4 +1,4 @@
-package org.springframework.security.session.web;
+package org.springframework.security.web.session;
 
 import org.junit.Before;
 import org.junit.Test;

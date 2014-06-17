@@ -8,7 +8,8 @@ dependencies {
             "org.springframework:spring-expression:$springVersion",
             "org.springframework:spring-web:$springVersion"
 
-    optional "org.springframework:spring-webmvc:$springVersion",
+    optional project(':spring-security-session'),
+            "org.springframework:spring-webmvc:$springVersion",
             "org.springframework:spring-jdbc:$springVersion",
             "org.springframework:spring-tx:$springVersion"
 
