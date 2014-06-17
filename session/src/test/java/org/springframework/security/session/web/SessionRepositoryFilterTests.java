@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.session.InMemorySessionRepository;
-import org.springframework.security.session.web.SessionFilter;
+import org.springframework.security.session.MapSessionRepository;
 import org.springframework.security.session.SessionRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,12 +21,12 @@ import java.util.NoSuchElementException;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
-public class SessionFilterTests {
+public class SessionRepositoryFilterTests {
     private final static String SESSION_ATTR_NAME = HttpSession.class.getName();
 
     private SessionRepository sessionRepository;
 
-    private SessionFilter filter;
+    private SessionRepositoryFilter filter;
 
     private MockHttpServletRequest request;
 
@@ -37,8 +36,8 @@ public class SessionFilterTests {
 
     @Before
     public void setup() throws Exception {
-        sessionRepository = new InMemorySessionRepository();
-        filter = new SessionFilter(sessionRepository);
+        sessionRepository = new MapSessionRepository();
+        filter = new SessionRepositoryFilter(sessionRepository);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
         chain = new MockFilterChain();

@@ -15,24 +15,54 @@
  */
 package org.springframework.security.session;
 
+import org.springframework.util.Assert;
+
 import java.util.*;
 
 /**
-* @author Rob Winch
-*/
+ * <p>
+ * A {@link Session} implementation that is backed by a {@link java.util.Map}. The defaults for the properties are:
+ * </p>
+ * <ul>
+ *     <li>id - a secure random generated id</li>
+ *     <li>creationTime - the moment the {@link MapSession} was instantiated</li>
+ *     <li>lastAccessedTime - the moment the {@link MapSession} was instantiated</li>
+ *     <li>maxInactiveInterval - 30 minutes</li>
+ * </ul>
+ *
+ * <p>
+ * This implementation has no synchronization, so it is best to use the copy constructor when working on multiple threads.
+ * </p>
+ *
+ * @author Rob Winch
+ */
 public final class MapSession implements Session {
     private String id = UUID.randomUUID().toString();
-    private Map<String,Object> sessionAttrs = new HashMap<String, Object>();
+    private Map<String, Object> sessionAttrs = new HashMap<String, Object>();
     private long creationTime = System.currentTimeMillis();
     private long lastAccessedTime = creationTime;
-    private int maxInactiveInterval = 15;
 
-    public MapSession() {}
+    /**
+     * Defaults to 30 minutes
+     */
+    private int maxInactiveInterval = 1800;
 
+    /**
+     * Creates a new instance
+     */
+    public MapSession() {
+    }
+
+    /**
+     * Creates a new instance from the provided {@link Session}
+     *
+     * @param session the {@link Session} to initialize this {@link Session} with. Cannot be null.
+     */
     public MapSession(Session session) {
+        Assert.notNull(session, "session cannot be null");
         this.id = session.getId();
         this.sessionAttrs = new HashMap<String, Object>(session.getAttributeNames().size());
-        for(String attrName : session.getAttributeNames()) {
+        for (String attrName : session.getAttributeNames()) {
             Object attrValue = session.getAttribute(attrName);
             this.sessionAttrs.put(attrName, attrValue);
         }
@@ -46,16 +76,9 @@ public final class MapSession implements Session {
         this.lastAccessedTime = lastAccessedTime;
     }
 
-    public void setCreationTime(long creationTime) {
-        this.creationTime = creationTime;
-    }
     @Override
     public long getCreationTime() {
         return creationTime;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     @Override
@@ -90,7 +113,7 @@ public final class MapSession implements Session {
 
     @Override
     public void setAttribute(String attributeName, Object attributeValue) {
-        if(attributeValue == null) {
+        if (attributeValue == null) {
             removeAttribute(attributeName);
         } else {
             sessionAttrs.put(attributeName, attributeValue);
@@ -102,12 +125,25 @@ public final class MapSession implements Session {
         sessionAttrs.remove(attributeName);
     }
 
-    public void setAttributes(Map<String, Object> attributes) {
-        this.sessionAttrs = new HashMap<String,Object>(attributes);
+    /**
+     * Sets the time that this {@link Session} was created in milliseconds since midnight of 1/1/1970 GMT. The default is when the {@link Session} was instantiated.
+     * @param creationTime the time that this {@link Session} was created in milliseconds since midnight of 1/1/1970 GMT.
+     */
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    /**
+     * Sets the identifier for this {@link Session}. The id should be a secure random generated value to prevent malicious users from guessing this value.   The default is a secure random generated identifier.
+     *
+     * @param id the identifier for this session.
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     public boolean equals(Object obj) {
-        return id.equals(((MapSession) obj).getId());
+        return obj instanceof Session && id.equals(((Session) obj).getId());
     }
 
     public int hashCode() {
