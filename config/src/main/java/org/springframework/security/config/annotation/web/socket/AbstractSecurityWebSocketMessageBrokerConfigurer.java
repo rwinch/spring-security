@@ -83,7 +83,7 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends A
     public final void configureClientOutboundChannel(ChannelRegistration registration) {
         ChannelSecurityInterceptor outboundChannelSecurity = outboundChannelSecurity();
         if(outboundRegistry.containsMapping()) {
-            registration.setInterceptors(securityContextChannelInterceptor(),outboundChannelSecurity);
+            registration.setInterceptors(outboundChannelSecurity);
         }
     }
 
