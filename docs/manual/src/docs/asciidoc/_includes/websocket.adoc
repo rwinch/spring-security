@@ -1,0 +1,64 @@
+[[websocket]]
+== WebSocket Security
+
+Spring Security 4 added support for WebSocket Security by building on top of Spring's WebSocket support.
+This section describes how to use Spring Security's WebSocket support.
+
+.Direct JSR-356 Support
+****
+We have entertained integrating directly with JSR-356.
+However, at this time it is very difficult since JSR-356 is very low level and currently does not provide the abstractions necessary.
+
+For example, JSR-356 has no prescriptive format for a WebSocket message.
+This means Spring Security has no means to provide authorization rules on a message since the message is in an unknown format.
+Furthermore, JSR-356 has no way to intercept a WebSocket message (i.e. similar to a Servlet Filter).
+This means that Spring Security would need to be embedded in all of the user's code (which is far from ideal).
+****
+
+[[websocket-authentication]]
+=== WebSocket Authentication
+
+WebSockets reuse the same authentication information that is found in the HTTP request when the WebSocket connection was made.
+This means that the `Principal` on the `HttpServletRequest` will be handed off to WebSockets.
+If you are using Spring Security, the `Principal` on the `HttpServletRequest` is overridden automatically.
+
+More concretely, to ensure a user has authenticated to your WebSocket application, all that is necessary is to ensure that you setup Spring Security to authenticate your HTTP based web application.
+
+[[websocket-authorization]]
+=== WebSocket Authorization
+
+
+Spring Security 4.0 has introduced authorization support for WebSockets through the Spring Messaging abstraction.
+To configure authorization using Java Configuration, simply extend the `AbstractSecurityWebSocketMessageBrokerConfigurer` and configure the `MessageSecurityMetadataSourceRegistry`.
+For example:
+
+[source,java]
+----
+public class WebSocketSecurityConfig extends
+          AbstractSecurityWebSocketMessageBrokerConfigurer {
+    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+      messages
+        .antMatchers("/user/queue/errors").permitAll() // <1>
+        .antMatchers("/**").hasRole("ADMIN"); // <2>
+    }
+}
+----
+
+This will ensure that:
+
+<1> The /user/queue/errors destination can be accessed by any user
+<2> Any other Message containing a destination header can only be accessed by users with the role of ROLE_ADMIN
+
+Spring Security also provides <<nsa-messages,XML Namespace>> support for securing WebSockets.
+A comparable XML based configuration looks like the following:
+
+[source,xml]
+----
+<messages>
+    <message-interceptor pattern="/user/queue/errors" access="permitAll" /> <!--1-->
+    <message-interceptor pattern="/**" access="hasRole('ROLE_ADMIN')" /> <!--2-->
+</messages>
+----
+
+<1> The /user/queue/errors destination can be accessed by any user
+<2> Any other Message containing a destination header can only be accessed by users with the role of ROLE_ADMIN
