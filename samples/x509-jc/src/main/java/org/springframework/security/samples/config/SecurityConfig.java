@@ -10,22 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.
-            inMemoryAuthentication()
-                .withUser("dianne").password("password").roles("USER").and()
-                .withUser("rod").password("password").roles("USER","ADMIN").and()
-                .withUser("scott").password("password").roles("USER");
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("dianne").password("password")
+				.roles("USER").and().withUser("rod").password("password")
+				.roles("USER", "ADMIN").and().withUser("scott").password("password")
+				.roles("USER");
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-            .x509();
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().anyRequest().authenticated().and().x509();
+	}
 }

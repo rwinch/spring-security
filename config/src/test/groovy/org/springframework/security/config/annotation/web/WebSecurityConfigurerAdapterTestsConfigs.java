@@ -34,41 +34,34 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
  */
 public class WebSecurityConfigurerAdapterTestsConfigs {
 
-    // necessary because groovy resolves incorrect method when using generics
-    @EnableWebSecurity
-    static class MessageSourcesPopulatedConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                .antMatcher("/role1/**")
-                .authorizeRequests()
-                    .anyRequest().hasRole("1");
-        }
+	// necessary because groovy resolves incorrect method when using generics
+	@EnableWebSecurity
+	static class MessageSourcesPopulatedConfig extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.antMatcher("/role1/**").authorizeRequests().anyRequest().hasRole("1");
+		}
 
-        @Bean
-        public BaseLdapPathContextSource contextSource() throws Exception {
-            DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource("ldap://127.0.0.1:33389/dc=springframework,dc=org");
-            contextSource.setUserDn("uid=admin,ou=system");
-            contextSource.setPassword("secret");
-            return contextSource;
-        }
+		@Bean
+		public BaseLdapPathContextSource contextSource() throws Exception {
+			DefaultSpringSecurityContextSource contextSource = new DefaultSpringSecurityContextSource(
+					"ldap://127.0.0.1:33389/dc=springframework,dc=org");
+			contextSource.setUserDn("uid=admin,ou=system");
+			contextSource.setPassword("secret");
+			return contextSource;
+		}
 
-        @Bean
-        public DataSource dataSource() {
-            EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-            return builder.setType(EmbeddedDatabaseType.HSQL).build();
-        }
+		@Bean
+		public DataSource dataSource() {
+			EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+			return builder.setType(EmbeddedDatabaseType.HSQL).build();
+		}
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .inMemoryAuthentication().and()
-                .jdbcAuthentication()
-                    .dataSource(dataSource())
-                    .and()
-                .ldapAuthentication()
-                    .userDnPatterns("uid={0},ou=people")
-                    .contextSource(contextSource());
-        }
-    }
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication().and().jdbcAuthentication()
+					.dataSource(dataSource()).and().ldapAuthentication()
+					.userDnPatterns("uid={0},ou=people").contextSource(contextSource());
+		}
+	}
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.springframework.security.test.web.servlet.showcase.csrf;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,64 +41,54 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=CustomCsrfShowcaseTests.Config.class)
+@ContextConfiguration(classes = CustomCsrfShowcaseTests.Config.class)
 @WebAppConfiguration
 public class CustomCsrfShowcaseTests {
 
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    @Autowired
-    private CsrfTokenRepository repository;
+	@Autowired
+	private CsrfTokenRepository repository;
 
-    private MockMvc mvc;
+	private MockMvc mvc;
 
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .defaultRequest(get("/").with(csrf()))
-                .apply(springSecurity())
-                .build();
-    }
+	@Before
+	public void setup() {
+		mvc = MockMvcBuilders.webAppContextSetup(context)
+				.defaultRequest(get("/").with(csrf())).apply(springSecurity()).build();
+	}
 
-    @Test
-    public void postWithCsrfWorks() throws Exception {
-        mvc
-            .perform(post("/").with(csrf()))
-            .andExpect(status().isNotFound());
-    }
+	@Test
+	public void postWithCsrfWorks() throws Exception {
+		mvc.perform(post("/").with(csrf())).andExpect(status().isNotFound());
+	}
 
-    @Test
-    public void postWithCsrfWorksWithPut() throws Exception {
-        mvc
-        .perform(put("/").with(csrf()))
-        .andExpect(status().isNotFound());
-    }
+	@Test
+	public void postWithCsrfWorksWithPut() throws Exception {
+		mvc.perform(put("/").with(csrf())).andExpect(status().isNotFound());
+	}
 
-    @EnableWebSecurity
-    @EnableWebMvc
-    static class Config extends WebSecurityConfigurerAdapter {
+	@EnableWebSecurity
+	@EnableWebMvc
+	static class Config extends WebSecurityConfigurerAdapter {
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                .csrf()
-                    .csrfTokenRepository(repo());
-        }
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.csrf().csrfTokenRepository(repo());
+		}
 
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER");
-        }
+		@Autowired
+		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication().withUser("user").password("password")
+					.roles("USER");
+		}
 
-        @Bean
-        public CsrfTokenRepository repo() {
-            HttpSessionCsrfTokenRepository repo = new HttpSessionCsrfTokenRepository();
-            repo.setParameterName("custom_csrf");
-            return repo;
-        }
-    }
+		@Bean
+		public CsrfTokenRepository repo() {
+			HttpSessionCsrfTokenRepository repo = new HttpSessionCsrfTokenRepository();
+			repo.setParameterName("custom_csrf");
+			return repo;
+		}
+	}
 }

@@ -39,57 +39,47 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=CsrfShowcaseTests.Config.class)
+@ContextConfiguration(classes = CsrfShowcaseTests.Config.class)
 @WebAppConfiguration
 public class CsrfShowcaseTests {
 
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    private MockMvc mvc;
+	private MockMvc mvc;
 
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
-                .build();
-    }
+	@Before
+	public void setup() {
+		mvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
+	}
 
-    @Test
-    public void postWithCsrfWorks() throws Exception {
-        mvc
-            .perform(post("/").with(csrf()))
-            .andExpect(status().isNotFound());
-    }
+	@Test
+	public void postWithCsrfWorks() throws Exception {
+		mvc.perform(post("/").with(csrf())).andExpect(status().isNotFound());
+	}
 
-    @Test
-    public void postWithCsrfWorksWithPut() throws Exception {
-        mvc
-        .perform(put("/").with(csrf()))
-        .andExpect(status().isNotFound());
-    }
+	@Test
+	public void postWithCsrfWorksWithPut() throws Exception {
+		mvc.perform(put("/").with(csrf())).andExpect(status().isNotFound());
+	}
 
-    @Test
-    public void postWithNoCsrfForbidden() throws Exception {
-        mvc
-            .perform(post("/"))
-            .andExpect(status().isForbidden());
-    }
+	@Test
+	public void postWithNoCsrfForbidden() throws Exception {
+		mvc.perform(post("/")).andExpect(status().isForbidden());
+	}
 
-    @EnableWebSecurity
-    @EnableWebMvc
-    static class Config extends WebSecurityConfigurerAdapter {
+	@EnableWebSecurity
+	@EnableWebMvc
+	static class Config extends WebSecurityConfigurerAdapter {
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-        }
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+		}
 
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("USER");
-        }
-    }
+		@Autowired
+		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication().withUser("user").password("password")
+					.roles("USER");
+		}
+	}
 }

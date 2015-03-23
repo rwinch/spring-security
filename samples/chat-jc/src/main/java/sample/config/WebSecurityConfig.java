@@ -27,44 +27,30 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig
-    extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-        http
-            .headers()
-                .frameOptions().sameOrigin()
-                .and()
-            .csrf()
-                .ignoringAntMatchers("/chat/**")
-                .and()
-            .authorizeRequests()
-                .antMatchers("/resources/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .logout()
-                .permitAll();
-    }
+		http.headers().frameOptions().sameOrigin().and().csrf()
+				.ignoringAntMatchers("/chat/**").and().authorizeRequests()
+				.antMatchers("/resources/**").permitAll().anyRequest().authenticated()
+				.and().formLogin().loginPage("/login").permitAll().and().logout()
+				.permitAll();
+	}
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, UserDetailsService userDetailsService) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-                .passwordEncoder(new BCryptPasswordEncoder());
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth,
+			UserDetailsService userDetailsService) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(
+				new BCryptPasswordEncoder());
+	}
 
-    @Bean
-    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-        return new SecurityEvaluationContextExtension();
-    }
+	@Bean
+	public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+		return new SecurityEvaluationContextExtension();
+	}
 }

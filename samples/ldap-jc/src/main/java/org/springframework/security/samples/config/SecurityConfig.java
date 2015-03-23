@@ -8,12 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @EnableWebSecurity
 public class SecurityConfig {
-    @Autowired
-    public void configureGlobal(
-            AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .ldapAuthentication()
-                .userDnPatterns("uid={0},ou=people")
-                .groupSearchBase("ou=groups");
-    }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.ldapAuthentication().userDnPatterns("uid={0},ou=people")
+				.groupSearchBase("ou=groups");
+	}
 }

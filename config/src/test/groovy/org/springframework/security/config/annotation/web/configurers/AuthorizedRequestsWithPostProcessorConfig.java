@@ -26,25 +26,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 
 @EnableWebSecurity
-public class AuthorizedRequestsWithPostProcessorConfig extends WebSecurityConfigurerAdapter {
-    static ApplicationListener<AuthorizedEvent> AL;
+public class AuthorizedRequestsWithPostProcessorConfig extends
+		WebSecurityConfigurerAdapter {
+	static ApplicationListener<AuthorizedEvent> AL;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .anyRequest().permitAll()
-                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-                    public <O extends FilterSecurityInterceptor> O postProcess(
-                            O fsi) {
-                        fsi.setPublishAuthorizationSuccess(true);
-                        return fsi;
-                    }
-                });
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.anyRequest()
+				.permitAll()
+				.withObjectPostProcessor(
+						new ObjectPostProcessor<FilterSecurityInterceptor>() {
+							public <O extends FilterSecurityInterceptor> O postProcess(
+									O fsi) {
+								fsi.setPublishAuthorizationSuccess(true);
+								return fsi;
+							}
+						});
+	}
 
-    @Bean
-    public ApplicationListener<AuthorizedEvent> applicationListener() {
-        return AL;
-    }
+	@Bean
+	public ApplicationListener<AuthorizedEvent> applicationListener() {
+		return AL;
+	}
 }

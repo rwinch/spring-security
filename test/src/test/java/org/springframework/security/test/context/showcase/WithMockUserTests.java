@@ -61,10 +61,11 @@ public class WithMockUserTests {
 	}
 
 	@Test
-	@WithMockUser(username="admin",roles={"USER","ADMIN"})
+	@WithMockUser(username = "admin", roles = { "USER", "ADMIN" })
 	public void getMessageWithMockUserCustomUser() {
 		String message = messageService.getMessage();
-		assertThat(message).contains("admin").contains("ROLE_USER").contains("ROLE_ADMIN");
+		assertThat(message).contains("admin").contains("ROLE_USER")
+				.contains("ROLE_ADMIN");
 	}
 
 	@EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -72,9 +73,8 @@ public class WithMockUserTests {
 	static class Config {
 		@Autowired
 		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-			auth
-				.inMemoryAuthentication()
-					.withUser("user").password("password").roles("USER");
+			auth.inMemoryAuthentication().withUser("user").password("password")
+					.roles("USER");
 		}
 	}
 }

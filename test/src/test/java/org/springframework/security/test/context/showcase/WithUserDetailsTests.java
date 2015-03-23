@@ -72,8 +72,7 @@ public class WithUserDetailsTests {
 	static class Config {
 		@Autowired
 		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-			auth
-					.userDetailsService(userDetailsService());
+			auth.userDetailsService(userDetailsService());
 		}
 
 		@Bean
@@ -88,7 +87,8 @@ public class WithUserDetailsTests {
 
 	static class CustomUserDetailsService implements UserDetailsService {
 
-		public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		public UserDetails loadUserByUsername(final String username)
+				throws UsernameNotFoundException {
 			return new CustomUserDetails("name", username);
 		}
 	}

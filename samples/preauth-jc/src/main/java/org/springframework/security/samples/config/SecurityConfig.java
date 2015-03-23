@@ -8,14 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/login","/resources/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .jee()
-                .mappableRoles("USER","ADMIN");
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/login", "/resources/**").permitAll()
+				.anyRequest().authenticated().and().jee().mappableRoles("USER", "ADMIN");
+	}
 }

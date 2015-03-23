@@ -26,49 +26,46 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ContextConfiguration(classes = SecurityMockMvcResultMatchersTests.Config.class)
 @WebAppConfiguration
 public class SecurityMockMvcResultMatchersTests {
-    @Autowired
-    private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-                    .apply(springSecurity())
-                    .build();
-    }
+	@Before
+	public void setup() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity())
+				.build();
+	}
 
-    // SEC-2719
-    @Test
-    public void withRolesNotOrderSensitive() throws Exception {
-        mockMvc.perform(formLogin())
-            .andExpect(authenticated().withRoles("USER","SELLER"))
-            .andExpect(authenticated().withRoles("SELLER","USER"));
-    }
+	// SEC-2719
+	@Test
+	public void withRolesNotOrderSensitive() throws Exception {
+		mockMvc.perform(formLogin())
+				.andExpect(authenticated().withRoles("USER", "SELLER"))
+				.andExpect(authenticated().withRoles("SELLER", "USER"));
+	}
 
-    @Test(expected = AssertionError.class)
-    public void withRolesFailsIfNotAllRoles() throws Exception {
-        mockMvc.perform(formLogin())
-            .andExpect(authenticated().withRoles("USER"));
-    }
+	@Test(expected = AssertionError.class)
+	public void withRolesFailsIfNotAllRoles() throws Exception {
+		mockMvc.perform(formLogin()).andExpect(authenticated().withRoles("USER"));
+	}
 
-    @EnableWebSecurity
-    @EnableWebMvc
-    static class Config extends WebSecurityConfigurerAdapter {
+	@EnableWebSecurity
+	@EnableWebMvc
+	static class Config extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .inMemoryAuthentication()
-                    .withUser("user").roles("USER","SELLER").password("password");
-        }
+		@Autowired
+		public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+			auth.inMemoryAuthentication().withUser("user").roles("USER", "SELLER")
+					.password("password");
+		}
 
-        @RestController
-        static class Controller {
-            @RequestMapping("/")
-            public String ok() {
-                return "ok";
-            }
-        }
-    }
+		@RestController
+		static class Controller {
+			@RequestMapping("/")
+			public String ok() {
+				return "ok";
+			}
+		}
+	}
 }
