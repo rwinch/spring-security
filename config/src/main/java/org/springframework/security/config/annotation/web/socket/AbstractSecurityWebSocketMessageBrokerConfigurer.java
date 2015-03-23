@@ -15,6 +15,11 @@
  */
 package org.springframework.security.config.annotation.web.socket;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -22,6 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
+import org.springframework.messaging.simp.annotation.support.SimpAnnotationMethodMessageHandler;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -33,6 +39,7 @@ import org.springframework.security.messaging.context.AuthenticationPrincipalArg
 import org.springframework.security.messaging.context.SecurityContextChannelInterceptor;
 import org.springframework.security.messaging.web.csrf.CsrfChannelInterceptor;
 import org.springframework.security.messaging.web.socket.server.CsrfTokenHandshakeInterceptor;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -41,10 +48,6 @@ import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler
 import org.springframework.web.socket.sockjs.SockJsService;
 import org.springframework.web.socket.sockjs.support.SockJsHttpRequestHandler;
 import org.springframework.web.socket.sockjs.transport.TransportHandlingSockJsService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Allows configuring WebSocket Authorization.
@@ -57,7 +60,7 @@ import java.util.Map;
  * &#064;Configuration
  * public class WebSocketSecurityConfig extends
  * 		AbstractSecurityWebSocketMessageBrokerConfigurer {
- * 
+ *
  * 	&#064;Override
  * 	protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
  * 		messages.simpDestMatchers(&quot;/user/queue/errors&quot;).permitAll()
@@ -94,9 +97,21 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 			registration.setInterceptors(csrfChannelInterceptor());
 		}
 		if (inboundRegistry.containsMapping()) {
+			PathMatcher pathMatcher = getDefaultPathMatcher();
+			if(pathMatcher != null) {
+				inboundRegistry.simpDestPathMatcher(pathMatcher);
+			}
 			registration.setInterceptors(inboundChannelSecurity);
 		}
 		customizeClientInboundChannel(registration);
+	}
+
+	private PathMatcher getDefaultPathMatcher() {
+		try {
+			return context.getBean(SimpAnnotationMethodMessageHandler.class).getPathMatcher();
+		} catch(NoSuchBeanDefinitionException e) {
+			return null;
+		}
 	}
 
 	/**
