@@ -39,6 +39,7 @@ import org.springframework.security.messaging.context.AuthenticationPrincipalArg
 import org.springframework.security.messaging.context.SecurityContextChannelInterceptor;
 import org.springframework.security.messaging.web.csrf.CsrfChannelInterceptor;
 import org.springframework.security.messaging.web.socket.server.CsrfTokenHandshakeInterceptor;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -97,10 +98,6 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 			registration.setInterceptors(csrfChannelInterceptor());
 		}
 		if (inboundRegistry.containsMapping()) {
-			PathMatcher pathMatcher = getDefaultPathMatcher();
-			if(pathMatcher != null) {
-				inboundRegistry.simpDestPathMatcher(pathMatcher);
-			}
 			registration.setInterceptors(inboundChannelSecurity);
 		}
 		customizeClientInboundChannel(registration);
@@ -110,7 +107,7 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 		try {
 			return context.getBean(SimpAnnotationMethodMessageHandler.class).getPathMatcher();
 		} catch(NoSuchBeanDefinitionException e) {
-			return null;
+			return new AntPathMatcher();
 		}
 	}
 
@@ -184,6 +181,11 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 		protected boolean containsMapping() {
 			return super.containsMapping();
 		}
+
+		@Override
+		protected boolean isSimpDestPathMatcherConfigured() {
+			return super.isSimpDestPathMatcherConfigured();
+		}
 	}
 
 	@Autowired
@@ -239,6 +241,11 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 								+ " is expected to contain mappings to either a SockJsHttpRequestHandler or a WebSocketHttpRequestHandler but got "
 								+ object);
 			}
+		}
+
+		if (inboundRegistry.containsMapping() && !inboundRegistry.isSimpDestPathMatcherConfigured()) {
+			PathMatcher pathMatcher = getDefaultPathMatcher();
+			inboundRegistry.simpDestPathMatcher(pathMatcher);
 		}
 	}
 }

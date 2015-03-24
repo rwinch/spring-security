@@ -254,13 +254,13 @@ public class AbstractSecurityWebSocketMessageBrokerConfigurerTests {
 	static class MsmsRegistryCustomPatternMatcherConfig extends
 			AbstractSecurityWebSocketMessageBrokerConfigurer {
 
+		// @formatter:off
 		public void registerStompEndpoints(StompEndpointRegistry registry) {
-			registry.addEndpoint("/other").setHandshakeHandler(testHandshakeHandler())
-					.withSockJS().setInterceptors(new HttpSessionHandshakeInterceptor());
-
-			registry.addEndpoint("/chat").setHandshakeHandler(testHandshakeHandler())
-					.withSockJS().setInterceptors(new HttpSessionHandshakeInterceptor());
+			registry
+				.addEndpoint("/other")
+				.setHandshakeHandler(testHandshakeHandler());
 		}
+		// @formatter:on
 
 		// @formatter:off
 		@Override
@@ -274,6 +274,111 @@ public class AbstractSecurityWebSocketMessageBrokerConfigurerTests {
 		@Override
 		public void configureMessageBroker(MessageBrokerRegistry registry) {
 			registry.setPathMatcher(new AntPathMatcher("."));
+			registry.enableSimpleBroker("/queue/", "/topic/");
+			registry.setApplicationDestinationPrefixes("/app");
+		}
+
+		@Bean
+		public TestHandshakeHandler testHandshakeHandler() {
+			return new TestHandshakeHandler();
+		}
+	}
+
+	@Test
+	public void overrideMsmsRegistryCustomPatternMatcher()
+			throws Exception {
+		loadConfig(OverrideMsmsRegistryCustomPatternMatcherConfig.class);
+
+		clientInboundChannel().send(message("/app/a/b"));
+
+		try {
+			clientInboundChannel().send(message("/app/a/b/c"));
+			fail("Expected Exception");
+		}
+		catch (MessageDeliveryException expected) {
+			assertThat(expected.getCause()).isInstanceOf(AccessDeniedException.class);
+		}
+	}
+
+	@Configuration
+	@EnableWebSocketMessageBroker
+	@Import(SyncExecutorConfig.class)
+	static class OverrideMsmsRegistryCustomPatternMatcherConfig extends
+			AbstractSecurityWebSocketMessageBrokerConfigurer {
+
+		// @formatter:off
+		public void registerStompEndpoints(StompEndpointRegistry registry) {
+			registry
+				.addEndpoint("/other")
+				.setHandshakeHandler(testHandshakeHandler());
+		}
+		// @formatter:on
+
+
+		// @formatter:off
+		@Override
+		protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+			messages
+				.simpDestPathMatcher(new AntPathMatcher())
+				.simpDestMatchers("/app/a/*").permitAll()
+				.anyMessage().denyAll();
+		}
+		// @formatter:on
+
+		@Override
+		public void configureMessageBroker(MessageBrokerRegistry registry) {
+			registry.setPathMatcher(new AntPathMatcher("."));
+			registry.enableSimpleBroker("/queue/", "/topic/");
+			registry.setApplicationDestinationPrefixes("/app");
+		}
+
+		@Bean
+		public TestHandshakeHandler testHandshakeHandler() {
+			return new TestHandshakeHandler();
+		}
+	}
+
+	@Test
+	public void defaultPatternMatcher()
+			throws Exception {
+		loadConfig(DefaultPatternMatcherConfig.class);
+
+		clientInboundChannel().send(message("/app/a/b"));
+
+		try {
+			clientInboundChannel().send(message("/app/a/b/c"));
+			fail("Expected Exception");
+		}
+		catch (MessageDeliveryException expected) {
+			assertThat(expected.getCause()).isInstanceOf(AccessDeniedException.class);
+		}
+	}
+
+	@Configuration
+	@EnableWebSocketMessageBroker
+	@Import(SyncExecutorConfig.class)
+	static class DefaultPatternMatcherConfig extends
+			AbstractSecurityWebSocketMessageBrokerConfigurer {
+
+		// @formatter:off
+		public void registerStompEndpoints(StompEndpointRegistry registry) {
+			registry
+				.addEndpoint("/other")
+				.setHandshakeHandler(testHandshakeHandler());
+		}
+		// @formatter:on
+
+		// @formatter:off
+		@Override
+		protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+			messages
+				.simpDestMatchers("/app/a/*").permitAll()
+				.anyMessage().denyAll();
+		}
+		// @formatter:on
+
+		@Override
+		public void configureMessageBroker(MessageBrokerRegistry registry) {
 			registry.enableSimpleBroker("/queue/", "/topic/");
 			registry.setApplicationDestinationPrefixes("/app");
 		}
