@@ -121,7 +121,6 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 		return new CsrfChannelInterceptor();
 	}
 
-	@Bean
 	public ChannelSecurityInterceptor inboundChannelSecurity() {
 		ChannelSecurityInterceptor channelSecurityInterceptor = new ChannelSecurityInterceptor(
 				inboundMessageSecurityMetadataSource());
@@ -137,7 +136,6 @@ public abstract class AbstractSecurityWebSocketMessageBrokerConfigurer extends
 		return new SecurityContextChannelInterceptor();
 	}
 
-	@Bean
 	public MessageSecurityMetadataSource inboundMessageSecurityMetadataSource() {
 		configureInbound(inboundRegistry);
 		return inboundRegistry.createMetadataSource();
