@@ -18,6 +18,7 @@ package org.springframework.security.web.access.channel;
 import static org.mockito.Mockito.mock;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import org.springframework.security.MockPortResolver;
 
@@ -92,8 +93,7 @@ public class RetryWithHttpEntryPointTests extends TestCase {
 		ep.setPortResolver(new MockPortResolver(80, 443));
 
 		ep.commence(request, response);
-		assertEquals("http://www.example.com/bigWebApp/hello/pathInfo.html?open=true",
-				response.getRedirectedUrl());
+		assertThat(response.getRedirectedUrl()).isEqualTo("http://www.example.com/bigWebApp/hello/pathInfo.html?open=true");
 	}
 
 	public void testNormalOperationWithNullQueryString() throws Exception {
@@ -110,8 +110,7 @@ public class RetryWithHttpEntryPointTests extends TestCase {
 		ep.setPortResolver(new MockPortResolver(80, 443));
 
 		ep.commence(request, response);
-		assertEquals("http://www.example.com/bigWebApp/hello",
-				response.getRedirectedUrl());
+		assertThat(response.getRedirectedUrl()).isEqualTo("http://www.example.com/bigWebApp/hello");
 	}
 
 	public void testOperationWhenTargetPortIsUnknown() throws Exception {
@@ -151,8 +150,7 @@ public class RetryWithHttpEntryPointTests extends TestCase {
 		ep.setPortMapper(portMapper);
 
 		ep.commence(request, response);
-		assertEquals(
-				"http://www.example.com:8888/bigWebApp/hello/pathInfo.html?open=true",
-				response.getRedirectedUrl());
+		assertThat(response.getRedirectedUrl()).isEqualTo(
+				"http://www.example.com:8888/bigWebApp/hello/pathInfo.html?open=true");
 	}
 }

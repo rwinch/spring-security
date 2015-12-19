@@ -1,5 +1,7 @@
 package org.springframework.security.web.authentication.preauth;
 
+import static org.assertj.core.api.Assertions.*;
+
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 
@@ -22,7 +24,7 @@ public class Http403ForbiddenEntryPointTests extends TestCase {
 		try {
 			fep.commence(req, resp,
 					new AuthenticationCredentialsNotFoundException("test"));
-			assertThat(resp.getStatus().isEqualTo("Incorrect status"),
+			assertThat(resp.getStatus()).withFailMessage("Incorrect status").isEqualTo(
 					HttpServletResponse.SC_FORBIDDEN);
 		}
 		catch (IOException e) {

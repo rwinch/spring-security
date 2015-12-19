@@ -16,6 +16,7 @@
 package org.springframework.security.web.authentication.www;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;

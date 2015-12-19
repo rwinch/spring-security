@@ -1,6 +1,8 @@
 package org.springframework.security.core.authority.mapping;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
+
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.*;
@@ -107,9 +109,9 @@ public class SimpleRoles2GrantedAuthoritiesMapperTests extends TestCase {
 			resultColl.add(result.get(i).getAuthority());
 		}
 		Collection<String> expectedColl = Arrays.asList(expectedGas);
-		assertTrue("Role collections do not match; result: " + resultColl
-				+ ", expected: " + expectedColl, expectedColl.containsAll(resultColl)
-				&& resultColl.containsAll(expectedColl));
+		assertThat(expectedColl.containsAll(resultColl)
+				&& resultColl.containsAll(expectedColl)).withFailMessage("Role collections do not match; result: " + resultColl
+				+ ", expected: " + expectedColl).isTrue();
 	}
 
 	private SimpleAttributes2GrantedAuthoritiesMapper getDefaultMapper() {

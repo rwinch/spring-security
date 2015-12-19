@@ -15,13 +15,13 @@
 
 package org.springframework.security.authentication.rcp;
 
-import java.util.Collection;
+import static org.assertj.core.api.Assertions.*;
 
 import junit.framework.TestCase;
+import java.util.Collection;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -78,8 +78,7 @@ public class RemoteAuthenticationProviderTests extends TestCase {
 				.authenticate(new UsernamePasswordAuthenticationToken("rod", "password"));
 		assertThat(result.getPrincipal()).isEqualTo("rod");
 		assertThat(result.getCredentials()).isEqualTo("password");
-		assertThat(AuthorityUtils.authorityListToSet(result.getAuthorities()).isTrue().contains(
-				"foo"));
+		assertThat(AuthorityUtils.authorityListToSet(result.getAuthorities()).contains("foo"));
 	}
 
 	public void testNullCredentialsDoesNotCauseNullPointerException() {

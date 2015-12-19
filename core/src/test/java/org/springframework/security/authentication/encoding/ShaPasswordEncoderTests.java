@@ -15,6 +15,7 @@
 
 package org.springframework.security.authentication.encoding;
 
+import static org.assertj.core.api.Assertions.*;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 import junit.framework.TestCase;
@@ -59,11 +60,9 @@ public class ShaPasswordEncoderTests extends TestCase {
 	public void test256() throws Exception {
 		ShaPasswordEncoder pe = new ShaPasswordEncoder(256);
 		String encoded = pe.encodePassword("abc123", null);
-		assertEquals("6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090",
-				encoded);
+		assertThat(encoded).isEqualTo("6ca13d52ca70c883e0f0bb101e425a89e8624de51db2d2392593af6a84118090");
 		String encodedWithSalt = pe.encodePassword("abc123", "THIS_IS_A_SALT");
-		assertEquals("4b79b7de23eb23b78cc5ede227d532b8a51f89b2ec166f808af76b0dbedc47d7",
-				encodedWithSalt);
+		assertThat(encodedWithSalt).isEqualTo("4b79b7de23eb23b78cc5ede227d532b8a51f89b2ec166f808af76b0dbedc47d7");
 	}
 
 	public void testInvalidStrength() throws Exception {

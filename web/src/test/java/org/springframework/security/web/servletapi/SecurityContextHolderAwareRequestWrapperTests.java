@@ -16,6 +16,7 @@
 package org.springframework.security.web.servletapi;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.TestingAuthenticationToken;

@@ -16,6 +16,7 @@
 package org.springframework.security.authentication.rememberme;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.RememberMeAuthenticationProvider;

@@ -15,6 +15,8 @@
 
 package org.springframework.security.authentication.event;
 
+import static org.assertj.core.api.Assertions.*;
+
 import junit.framework.TestCase;
 
 import org.springframework.security.authentication.DisabledException;
@@ -43,13 +45,6 @@ public class AuthenticationEventTests extends TestCase {
 		return authentication;
 	}
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(AuthenticationEventTests.class);
-	}
-
-	public final void setUp() throws Exception {
-		super.setUp();
-	}
 
 	public void testAbstractAuthenticationEvent() {
 		Authentication auth = getAuthentication();

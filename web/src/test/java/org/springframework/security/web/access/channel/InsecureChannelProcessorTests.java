@@ -16,6 +16,7 @@
 package org.springframework.security.web.access.channel;
 
 import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.servlet.FilterChain;
 
@@ -53,7 +54,6 @@ public class InsecureChannelProcessorTests extends TestCase {
 
 		assertThat(fi.getResponse().isCommitted()).isFalse();
 	}
-
 	public void testDecideDetectsUnacceptableChannel() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setQueryString("info=true");

@@ -1,6 +1,7 @@
 package org.springframework.security.web.savedrequest;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.servlet.http.Cookie;
 

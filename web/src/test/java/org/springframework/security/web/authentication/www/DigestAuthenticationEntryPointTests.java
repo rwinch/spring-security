@@ -15,9 +15,10 @@
 
 package org.springframework.security.web.authentication.www;
 
-import java.util.Map;
+import static org.assertj.core.api.Assertions.*;
 
 import junit.framework.TestCase;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -103,8 +104,7 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 
 		// Check response is properly formed
 		assertThat(response.getStatus()).isEqualTo(401);
-		assertEquals(true,
-				response.getHeader("WWW-Authenticate").toString().startsWith("Digest "));
+		assertThat(response.getHeader("WWW-Authenticate").toString()).startsWith("Digest ");
 
 		// Break up response header
 		String header = response.getHeader("WWW-Authenticate").toString().substring(7);
@@ -135,8 +135,8 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 
 		// Check response is properly formed
 		assertThat(response.getStatus()).isEqualTo(401);
-		assertThat(response.getHeader("WWW-Authenticate").toString().isTrue()
-				.startsWith("Digest "));
+		assertThat(response.getHeader("WWW-Authenticate").toString())
+				.startsWith("Digest ");
 
 		// Break up response header
 		String header = response.getHeader("WWW-Authenticate").toString().substring(7);

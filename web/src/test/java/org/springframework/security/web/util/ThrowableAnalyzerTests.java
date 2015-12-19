@@ -1,5 +1,7 @@
 package org.springframework.security.web.util;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.security.web.util.ThrowableAnalyzer;
@@ -140,9 +142,8 @@ public class ThrowableAnalyzerTests extends TestCase {
 			for (int j = 0; j < i; ++j) {
 				Class prevClazz = registeredTypes[j];
 
-				assertFalse("Unexpected order of registered classes: " + prevClazz
-						+ " is assignable from " + clazz,
-						prevClazz.isAssignableFrom(clazz));
+				assertThat(prevClazz.isAssignableFrom(clazz)).withFailMessage("Unexpected order of registered classes: " 
+						+ prevClazz + " is assignable from " + clazz).isFalse();
 			}
 		}
 	}
@@ -159,8 +160,8 @@ public class ThrowableAnalyzerTests extends TestCase {
 			}
 		};
 
-		assertEquals("Unexpected number of registered types", 0,
-				analyzer.getRegisteredTypes().length);
+		assertThat(analyzer.getRegisteredTypes().length).withFailMessage(
+				"Unexpected number of registered types").isEqualTo(0);
 
 		Throwable t = this.testTrace[0];
 		Throwable[] chain = analyzer.determineCauseChain(t);
@@ -172,8 +173,8 @@ public class ThrowableAnalyzerTests extends TestCase {
 	public void testDetermineCauseChainWithDefaultExtractors() {
 		ThrowableAnalyzer analyzer = this.standardAnalyzer;
 
-		assertEquals("Unexpected number of registered types", 2,
-				analyzer.getRegisteredTypes().length);
+		assertThat(analyzer.getRegisteredTypes().length).withFailMessage(
+				"Unexpected number of registered types").isEqualTo(2);
 
 		Throwable[] chain = analyzer.determineCauseChain(this.testTrace[0]);
 
@@ -181,7 +182,7 @@ public class ThrowableAnalyzerTests extends TestCase {
 		// by default
 		assertThat(chain.length).as("Unexpected chain size").isEqualTo(3);
 		for (int i = 0; i < 3; ++i) {
-			assertThat(chain[i]).isEqualTo("Unexpected chain entry: " + i, this.testTrace[i]);
+			assertThat(chain[i]).withFailMessage("Unexpected chain entry: " + i).isEqualTo(this.testTrace[i]);
 		}
 	}
 
@@ -192,7 +193,7 @@ public class ThrowableAnalyzerTests extends TestCase {
 
 		assertThat(chain.length).as("Unexpected chain size").isEqualTo(this.testTrace.length);
 		for (int i = 0; i < chain.length; ++i) {
-			assertThat(chain[i]).isEqualTo("Unexpected chain entry: " + i, this.testTrace[i]);
+			assertThat(chain[i]).withFailMessage("Unexpected chain entry: " + i).isEqualTo(this.testTrace[i]);
 		}
 	}
 

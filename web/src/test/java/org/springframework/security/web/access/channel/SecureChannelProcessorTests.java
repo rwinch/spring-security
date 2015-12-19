@@ -16,6 +16,7 @@
 package org.springframework.security.web.access.channel;
 
 import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.*;
 
 import javax.servlet.FilterChain;
 

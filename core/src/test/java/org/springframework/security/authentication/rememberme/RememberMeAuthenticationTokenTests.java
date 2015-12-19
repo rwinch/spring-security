@@ -15,6 +15,9 @@
 
 package org.springframework.security.authentication.rememberme;
 
+
+import static org.assertj.core.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,9 +84,9 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token.getKeyHash()).isEqualTo("key".hashCode());
 		assertThat(token.getPrincipal()).isEqualTo("Test");
 		assertThat(token.getCredentials()).isEqualTo("");
-		assertThat(AuthorityUtils.authorityListToSet(token.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(token.getAuthorities()).contains(
 				"ROLE_ONE"));
-		assertThat(AuthorityUtils.authorityListToSet(token.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(token.getAuthorities()).contains(
 				"ROLE_TWO"));
 		assertThat(token.isAuthenticated()).isTrue();
 	}

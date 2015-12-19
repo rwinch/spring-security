@@ -16,6 +16,7 @@
 package org.springframework.security.core.userdetails.jdbc;
 
 import junit.framework.TestCase;
+import static org.assertj.core.api.Assertions.*;
 
 import org.springframework.security.PopulatedDatabase;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -56,9 +57,9 @@ public class JdbcDaoImplTests extends TestCase {
 		assertThat(user.getPassword()).isEqualTo("koala");
 		assertThat(user.isEnabled()).isTrue();
 
-		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).contains(
 				"ROLE_TELLER"));
-		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).contains(
 				"ROLE_SUPERVISOR"));
 	}
 
@@ -66,14 +67,14 @@ public class JdbcDaoImplTests extends TestCase {
 		JdbcDaoImpl dao = makePopulatedJdbcDao();
 		UserDetails user = dao.loadUserByUsername("scott");
 		assertThat(user.getAuthorities()).hasSize(1);
-		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).contains(
 				"ROLE_TELLER"));
 	}
 
 	public void testCheckDaoReturnsCorrectDisabledProperty() throws Exception {
 		JdbcDaoImpl dao = makePopulatedJdbcDao();
 		UserDetails user = dao.loadUserByUsername("peter");
-		assertThat(!user.isEnabled()).isTrue();
+		assertThat(user.isEnabled()).isFalse();
 	}
 
 	public void testGettersSetters() {
@@ -122,9 +123,9 @@ public class JdbcDaoImplTests extends TestCase {
 		assertThat(user.getUsername()).isEqualTo("rod");
 		assertThat(user.getAuthorities()).hasSize(2);
 
-		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).contains(
 				"ARBITRARY_PREFIX_ROLE_TELLER"));
-		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).isTrue().contains(
+		assertThat(AuthorityUtils.authorityListToSet(user.getAuthorities()).contains(
 				"ARBITRARY_PREFIX_ROLE_SUPERVISOR"));
 	}
 
