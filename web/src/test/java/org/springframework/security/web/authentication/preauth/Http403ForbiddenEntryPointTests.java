@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-public class Http403ForbiddenEntryPointTests extends TestCase {
+public class Http403ForbiddenEntryPointTests {
 
 	public void testCommence() {
 		MockHttpServletRequest req = new MockHttpServletRequest();

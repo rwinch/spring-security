@@ -21,8 +21,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import javax.servlet.ServletException;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -38,7 +36,7 @@ import org.springframework.security.core.AuthenticationException;
  *
  * @author Ben Alex
  */
-public class UsernamePasswordAuthenticationFilterTests extends TestCase {
+public class UsernamePasswordAuthenticationFilterTests {
 	// ~ Methods
 	// ========================================================================================================
 

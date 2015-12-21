@@ -17,6 +17,8 @@ package org.springframework.security.authentication.event;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 import org.springframework.security.authentication.DisabledException;
@@ -33,7 +35,7 @@ import org.springframework.security.core.AuthenticationException;
  *
  * @author Ben Alex
  */
-public class AuthenticationEventTests extends TestCase {
+public class AuthenticationEventTests {
 	// ~ Methods
 	// ========================================================================================================
 
@@ -45,13 +47,14 @@ public class AuthenticationEventTests extends TestCase {
 		return authentication;
 	}
 
-
+	@Test
 	public void testAbstractAuthenticationEvent() {
 		Authentication auth = getAuthentication();
 		AbstractAuthenticationEvent event = new AuthenticationSuccessEvent(auth);
 		assertThat(event.getAuthentication()).isEqualTo(auth);
 	}
 
+	@Test
 	public void testAbstractAuthenticationFailureEvent() {
 		Authentication auth = getAuthentication();
 		AuthenticationException exception = new DisabledException("TEST");
@@ -61,6 +64,7 @@ public class AuthenticationEventTests extends TestCase {
 		assertThat(event.getException()).isEqualTo(exception);
 	}
 
+	@Test
 	public void testRejectsNullAuthentication() {
 		AuthenticationException exception = new DisabledException("TEST");
 
@@ -73,6 +77,7 @@ public class AuthenticationEventTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testRejectsNullAuthenticationException() {
 		try {
 			new AuthenticationFailureDisabledEvent(getAuthentication(), null);

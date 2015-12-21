@@ -21,8 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
+import org.junit.Test;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,13 +32,13 @@ import org.springframework.security.core.authority.AuthorityUtils;
  *
  * @author Ben Alex
  */
-public class RememberMeAuthenticationTokenTests extends TestCase {
+public class RememberMeAuthenticationTokenTests {
 	private static final List<GrantedAuthority> ROLES_12 = AuthorityUtils
 			.createAuthorityList("ROLE_ONE", "ROLE_TWO");
 
 	// ~ Methods
 	// ========================================================================================================
-
+	@Test
 	public void testConstructorRejectsNulls() {
 		try {
 			new RememberMeAuthenticationToken(null, "Test", ROLES_12);
@@ -68,6 +67,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testEqualsWhenEqual() {
 		RememberMeAuthenticationToken token1 = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);
@@ -77,6 +77,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token2).isEqualTo(token1);
 	}
 
+	@Test
 	public void testGetters() {
 		RememberMeAuthenticationToken token = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);
@@ -91,6 +92,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token.isAuthenticated()).isTrue();
 	}
 
+	@Test
 	public void testNotEqualsDueToAbstractParentEqualsCheck() {
 		RememberMeAuthenticationToken token1 = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);
@@ -100,6 +102,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token1.equals(token2)).isFalse();
 	}
 
+	@Test
 	public void testNotEqualsDueToDifferentAuthenticationClass() {
 		RememberMeAuthenticationToken token1 = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);
@@ -109,6 +112,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token1.equals(token2)).isFalse();
 	}
 
+	@Test
 	public void testNotEqualsDueToKey() {
 		RememberMeAuthenticationToken token1 = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);
@@ -118,6 +122,7 @@ public class RememberMeAuthenticationTokenTests extends TestCase {
 		assertThat(token1.equals(token2)).isFalse();
 	}
 
+	@Test
 	public void testSetAuthenticatedIgnored() {
 		RememberMeAuthenticationToken token = new RememberMeAuthenticationToken("key",
 				"Test", ROLES_12);

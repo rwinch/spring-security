@@ -17,11 +17,11 @@ package org.springframework.security.web.authentication.www;
 
 import static org.assertj.core.api.Assertions.*;
 
-import junit.framework.TestCase;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.DisabledException;
@@ -32,7 +32,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Ben Alex
  */
-public class DigestAuthenticationEntryPointTests extends TestCase {
+public class DigestAuthenticationEntryPointTests {
 	// ~ Methods
 	// ========================================================================================================
 
@@ -50,6 +50,7 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 		assertThat(nonceTokens[1]).isEqualTo(expectedNonceSignature);
 	}
 
+	@Test
 	public void testDetectsMissingKey() throws Exception {
 		DigestAuthenticationEntryPoint ep = new DigestAuthenticationEntryPoint();
 		ep.setRealmName("realm");
@@ -62,7 +63,8 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 			assertThat(expected.getMessage()).isEqualTo("key must be specified");
 		}
 	}
-
+	
+	@Test
 	public void testDetectsMissingRealmName() throws Exception {
 		DigestAuthenticationEntryPoint ep = new DigestAuthenticationEntryPoint();
 		ep.setKey("dcdc");
@@ -76,7 +78,8 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 			assertThat(expected.getMessage()).isEqualTo("realmName must be specified");
 		}
 	}
-
+	
+	@Test
 	public void testGettersSetters() {
 		DigestAuthenticationEntryPoint ep = new DigestAuthenticationEntryPoint();
 		assertThat(ep.getNonceValiditySeconds()).isEqualTo(300); // 5 mins default
@@ -87,7 +90,8 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 		ep.setNonceValiditySeconds(12);
 		assertThat(ep.getNonceValiditySeconds()).isEqualTo(12);
 	}
-
+	
+	@Test
 	public void testNormalOperation() throws Exception {
 		DigestAuthenticationEntryPoint ep = new DigestAuthenticationEntryPoint();
 		ep.setRealmName("hello");
@@ -118,7 +122,8 @@ public class DigestAuthenticationEntryPointTests extends TestCase {
 
 		checkNonceValid((String) headerMap.get("nonce"));
 	}
-
+	
+	@Test
 	public void testOperationIfDueToStaleNonce() throws Exception {
 		DigestAuthenticationEntryPoint ep = new DigestAuthenticationEntryPoint();
 		ep.setRealmName("hello");
