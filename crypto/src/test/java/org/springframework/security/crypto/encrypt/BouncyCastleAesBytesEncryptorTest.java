@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2012-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import org.bouncycastle.util.Arrays;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 
@@ -35,25 +36,25 @@ public class BouncyCastleAesBytesEncryptorTest {
 	public void setup() {
 		// generate random password, salt, and test data
 		SecureRandom secureRandom = new SecureRandom();
-		password = UUID.randomUUID().toString();
+		this.password = UUID.randomUUID().toString();
 		byte[] saltBytes = new byte[16];
 		secureRandom.nextBytes(saltBytes);
-		salt = new String(Hex.encode(saltBytes));
-		testData = new byte[1024 * 1024];
-		secureRandom.nextBytes(testData);
+		this.salt = new String(Hex.encode(saltBytes));
+		this.testData = new byte[1024 * 1024];
+		secureRandom.nextBytes(this.testData);
 	}
 
 	@Test
 	public void bcWithSecureIvGeneratesDifferentMessages() throws Exception {
-		BytesEncryptor bcEncryptor = new BouncyCastleAesBytesEncryptor(password, salt,
-				KeyGenerators.secureRandom(16));
-		byte[] encrypted1 = bcEncryptor.encrypt(testData);
-		byte[] encrypted2 = bcEncryptor.encrypt(testData);
+		BytesEncryptor bcEncryptor = new BouncyCastleAesBytesEncryptor(this.password,
+				this.salt, KeyGenerators.secureRandom(16));
+		byte[] encrypted1 = bcEncryptor.encrypt(this.testData);
+		byte[] encrypted2 = bcEncryptor.encrypt(this.testData);
 		Assert.assertFalse(Arrays.areEqual(encrypted1, encrypted2));
 		byte[] decrypted1 = bcEncryptor.decrypt(encrypted1);
 		byte[] decrypted2 = bcEncryptor.decrypt(encrypted2);
-		Assert.assertArrayEquals(testData, decrypted1);
-		Assert.assertArrayEquals(testData, decrypted2);
+		Assert.assertArrayEquals(this.testData, decrypted1);
+		Assert.assertArrayEquals(this.testData, decrypted2);
 	}
 
 }

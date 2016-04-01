@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2012-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
  */
 package org.springframework.security.crypto.encrypt;
 
-import static org.springframework.security.crypto.util.EncodingUtils.concatenate;
-import static org.springframework.security.crypto.util.EncodingUtils.subArray;
-
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.PBEParametersGenerator;
 import org.bouncycastle.crypto.engines.AESFastEngine;
@@ -26,14 +23,17 @@ import org.bouncycastle.crypto.modes.CBCBlockCipher;
 import org.bouncycastle.crypto.paddings.PKCS7Padding;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.ParametersWithIV;
+
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.keygen.BytesKeyGenerator;
 
+import static org.springframework.security.crypto.util.EncodingUtils.concatenate;
+import static org.springframework.security.crypto.util.EncodingUtils.subArray;
+
 /**
- * An Encryptor equivalent to {@link AesBytesEncryptor} that uses BouncyCastle
- * instead of JCE. Only CBC is supported. The algorithm is equivalent to
- * "AES/CBC/PKCS5Padding".
- * 
+ * An Encryptor equivalent to {@link AesBytesEncryptor} that uses BouncyCastle instead of
+ * JCE. Only CBC is supported. The algorithm is equivalent to "AES/CBC/PKCS5Padding".
+ *
  * @author William Tran
  *
  */
@@ -44,13 +44,13 @@ public class BouncyCastleAesBytesEncryptor implements BytesEncryptor {
 
 	public BouncyCastleAesBytesEncryptor(String password, CharSequence salt,
 			BytesKeyGenerator ivGenerator) {
-		blockCipher = new PaddedBufferedBlockCipher(
+		this.blockCipher = new PaddedBufferedBlockCipher(
 				new CBCBlockCipher(new AESFastEngine()), new PKCS7Padding());
 		PBEParametersGenerator keyGenerator = new PKCS5S2ParametersGenerator();
 		final byte[] pkcs12PasswordBytes = PBEParametersGenerator
 				.PKCS5PasswordToUTF8Bytes(password.toCharArray());
 		keyGenerator.init(pkcs12PasswordBytes, Hex.decode(salt), 1024);
-		secretKey = keyGenerator.generateDerivedParameters(256);
+		this.secretKey = keyGenerator.generateDerivedParameters(256);
 		this.ivGenerator = ivGenerator;
 	}
 
@@ -58,44 +58,47 @@ public class BouncyCastleAesBytesEncryptor implements BytesEncryptor {
 		this(password, salt, null);
 	}
 
+	@Override
 	public byte[] encrypt(byte[] bytes) {
 		synchronized (this.blockCipher) {
 			byte[] iv = null;
-			CipherParameters key = secretKey;
-			if (ivGenerator != null) {
-				iv = ivGenerator.generateKey();
-				key = new ParametersWithIV(secretKey, iv);
+			CipherParameters key = this.secretKey;
+			if (this.ivGenerator != null) {
+				iv = this.ivGenerator.generateKey();
+				key = new ParametersWithIV(this.secretKey, iv);
 			}
-			blockCipher.init(true, key);
+			this.blockCipher.init(true, key);
 			byte[] encrypted = process(bytes);
 			return iv != null ? concatenate(iv, encrypted) : encrypted;
 		}
 	}
 
+	@Override
 	public byte[] decrypt(byte[] encryptedBytes) {
 		synchronized (this.blockCipher) {
 			byte[] iv = null;
-			CipherParameters key = secretKey;
-			if (ivGenerator != null) {
-				iv = subArray(encryptedBytes, 0, ivGenerator.getKeyLength());
-				key = new ParametersWithIV(secretKey, iv);
-				encryptedBytes = subArray(encryptedBytes, ivGenerator.getKeyLength(),
+			CipherParameters key = this.secretKey;
+			if (this.ivGenerator != null) {
+				iv = subArray(encryptedBytes, 0, this.ivGenerator.getKeyLength());
+				key = new ParametersWithIV(this.secretKey, iv);
+				encryptedBytes = subArray(encryptedBytes, this.ivGenerator.getKeyLength(),
 						encryptedBytes.length);
 			}
-			blockCipher.init(false, key);
+			this.blockCipher.init(false, key);
 			return process(encryptedBytes);
 		}
 	}
 
 	private byte[] process(byte[] bytes) {
 		try {
-			byte[] temp = new byte[blockCipher.getOutputSize(bytes.length)];
-			int offset = blockCipher.processBytes(bytes, 0, bytes.length, temp, 0);
-			int last = blockCipher.doFinal(temp, offset);
+			byte[] temp = new byte[this.blockCipher.getOutputSize(bytes.length)];
+			int offset = this.blockCipher.processBytes(bytes, 0, bytes.length, temp, 0);
+			int last = this.blockCipher.doFinal(temp, offset);
 			final byte[] output = new byte[offset + last];
 			System.arraycopy(temp, 0, output, 0, output.length);
 			return output;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
