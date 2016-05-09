@@ -35,6 +35,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
@@ -163,6 +164,57 @@ public class AuthorizeRequestsTests {
 			auth
 				.inMemoryAuthentication();
 			// @formatter:on
+		}
+	}
+
+	@Test
+	public void gh3781() throws Exception {
+		loadConfig(Gh3781Config.class);
+
+		this.request.setServletPath("/user/homes");
+
+		this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
+
+		assertThat(this.response.getStatus()).isEqualTo(HttpServletResponse.SC_OK);
+
+		this.setup();
+		this.request.setServletPath("/other/homes");
+
+		this.springSecurityFilterChain.doFilter(this.request, this.response, this.chain);
+
+		assertThat(this.response.getStatus()).isEqualTo(HttpServletResponse.SC_FORBIDDEN);
+	}
+
+	@EnableWebSecurity
+	@Configuration
+	static class Gh3781Config extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			// @formatter:off
+			http
+				.authorizeRequests()
+					.antMatchers("/{userid}/homes").access("@webSecurity.checkUserId(authentication,#userid)")
+					.anyRequest().denyAll();
+			// @formatter:on
+		}
+
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			// @formatter:off
+			auth
+				.inMemoryAuthentication();
+			// @formatter:on
+		}
+
+		@Bean
+		public WebSecurity webSecurity() {
+			return new WebSecurity();
+		}
+
+		static class WebSecurity {
+			public boolean checkUserId(Authentication authentication, String userid) {
+				return "user".equals(userid);
+			}
 		}
 	}
 
