@@ -38,12 +38,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -164,10 +162,6 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	@Override
 	public void afterPropertiesSet() {
 		Assert.notNull(authenticationManager, "authenticationManager must be specified");
-
-		if (rememberMeServices == null) {
-			rememberMeServices = new NullRememberMeServices();
-		}
 	}
 
 	/**
@@ -387,7 +381,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	}
 
 	public void setRememberMeServices(RememberMeServices rememberMeServices) {
-		Assert.notNull("rememberMeServices cannot be null");
+		Assert.notNull(rememberMeServices, "rememberMeServices cannot be null");
 		this.rememberMeServices = rememberMeServices;
 	}
 
