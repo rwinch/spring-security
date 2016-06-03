@@ -33,10 +33,10 @@ allprojects {
 	group = 'org.springframework.security'
 
 	repositories {
-	mavenCentral()
-	maven { url "https://repo.spring.io/libs-snapshot" }
-	maven { url "https://repo.spring.io/plugins-release" }
-	maven { url "http://repo.terracotta.org/maven2/" }
+		mavenCentral()
+		maven { url "https://repo.spring.io/libs-snapshot" }
+		maven { url "https://repo.spring.io/plugins-release" }
+		maven { url "http://repo.terracotta.org/maven2/" }
 	}
 
 	eclipse.project.name = "${project.name}-4.1.x"
