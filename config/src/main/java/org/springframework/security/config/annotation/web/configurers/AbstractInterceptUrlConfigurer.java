@@ -17,6 +17,7 @@ package org.springframework.security.config.annotation.web.configurers;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
@@ -50,9 +51,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
  * The following shared objects are used:
  *
  * <ul>
- * <li>
- * {@link AuthenticationManager}
- * </li>
+ * <li>{@link AuthenticationManager}</li>
  * </ul>
  *
  *
@@ -72,15 +71,16 @@ abstract class AbstractInterceptUrlConfigurer<C extends AbstractInterceptUrlConf
 
 	@Override
 	public void configure(H http) throws Exception {
-		FilterInvocationSecurityMetadataSource metadataSource = createMetadataSource(http);
+		FilterInvocationSecurityMetadataSource metadataSource = createMetadataSource(
+				http);
 		if (metadataSource == null) {
 			return;
 		}
 		FilterSecurityInterceptor securityInterceptor = createFilterSecurityInterceptor(
 				http, metadataSource, http.getSharedObject(AuthenticationManager.class));
-		if (filterSecurityInterceptorOncePerRequest != null) {
-			securityInterceptor
-					.setObserveOncePerRequest(filterSecurityInterceptorOncePerRequest);
+		if (this.filterSecurityInterceptorOncePerRequest != null) {
+			securityInterceptor.setObserveOncePerRequest(
+					this.filterSecurityInterceptorOncePerRequest);
 		}
 		securityInterceptor = postProcess(securityInterceptor);
 		http.addFilter(securityInterceptor);
@@ -112,6 +112,13 @@ abstract class AbstractInterceptUrlConfigurer<C extends AbstractInterceptUrlConf
 
 	abstract class AbstractInterceptUrlRegistry<R extends AbstractInterceptUrlRegistry<R, T>, T>
 			extends AbstractConfigAttributeRequestMatcherRegistry<T> {
+
+		/**
+		 * @param context
+		 */
+		public AbstractInterceptUrlRegistry(ApplicationContext context) {
+			super(context);
+		}
 
 		/**
 		 * Allows setting the {@link AccessDecisionManager}. If none is provided, a
@@ -162,18 +169,18 @@ abstract class AbstractInterceptUrlConfigurer<C extends AbstractInterceptUrlConf
 
 	/**
 	 * If currently null, creates a default {@link AccessDecisionManager} using
-	 * {@link #createDefaultAccessDecisionManager(HttpSecurityBuilder)}. Otherwise returns the
-	 * {@link AccessDecisionManager}.
+	 * {@link #createDefaultAccessDecisionManager(HttpSecurityBuilder)}. Otherwise returns
+	 * the {@link AccessDecisionManager}.
 	 *
 	 * @param http the builder to use
 	 *
 	 * @return the {@link AccessDecisionManager} to use
 	 */
 	private AccessDecisionManager getAccessDecisionManager(H http) {
-		if (accessDecisionManager == null) {
-			accessDecisionManager = createDefaultAccessDecisionManager(http);
+		if (this.accessDecisionManager == null) {
+			this.accessDecisionManager = createDefaultAccessDecisionManager(http);
 		}
-		return accessDecisionManager;
+		return this.accessDecisionManager;
 	}
 
 	/**

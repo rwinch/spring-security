@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder;
@@ -61,6 +62,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.PortMapper;
 import org.springframework.security.web.PortMapperImpl;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -109,7 +111,7 @@ public final class HttpSecurity extends
 		AbstractConfiguredSecurityBuilder<DefaultSecurityFilterChain, HttpSecurity>
 		implements SecurityBuilder<DefaultSecurityFilterChain>,
 		HttpSecurityBuilder<HttpSecurity> {
-	private final RequestMatcherConfigurer requestMatcherConfigurer = new RequestMatcherConfigurer();
+	private final RequestMatcherConfigurer requestMatcherConfigurer;
 	private List<Filter> filters = new ArrayList<Filter>();
 	private RequestMatcher requestMatcher = AnyRequestMatcher.INSTANCE;
 	private FilterComparator comparator = new FilterComparator();
@@ -122,15 +124,24 @@ public final class HttpSecurity extends
 	 * @param sharedObjects the shared Objects to initialize the {@link HttpSecurity} with
 	 * @see WebSecurityConfiguration
 	 */
+	@SuppressWarnings("unchecked")
 	public HttpSecurity(ObjectPostProcessor<Object> objectPostProcessor,
 			AuthenticationManagerBuilder authenticationBuilder,
-			Map<Class<Object>, Object> sharedObjects) {
+			Map<Class<? extends Object>, Object> sharedObjects) {
 		super(objectPostProcessor);
 		Assert.notNull(authenticationBuilder, "authenticationBuilder cannot be null");
 		setSharedObject(AuthenticationManagerBuilder.class, authenticationBuilder);
-		for (Map.Entry<Class<Object>, Object> entry : sharedObjects.entrySet()) {
-			setSharedObject(entry.getKey(), entry.getValue());
+		for (Map.Entry<Class<? extends Object>, Object> entry : sharedObjects
+				.entrySet()) {
+			setSharedObject((Class<Object>) entry.getKey(), entry.getValue());
 		}
+		ApplicationContext context = (ApplicationContext) sharedObjects
+				.get(ApplicationContext.class);
+		this.requestMatcherConfigurer = new RequestMatcherConfigurer(context);
+	}
+
+	private ApplicationContext getContext() {
+		return getSharedObject(ApplicationContext.class);
 	}
 
 	/**
@@ -219,8 +230,8 @@ public final class HttpSecurity extends
 
 	/**
 	 * Adds the Security headers to the response. This is activated by default when using
-	 * {@link WebSecurityConfigurerAdapter}'s default constructor. Accepting the
-	 * default provided by {@link WebSecurityConfigurerAdapter} or only invoking
+	 * {@link WebSecurityConfigurerAdapter}'s default constructor. Accepting the default
+	 * provided by {@link WebSecurityConfigurerAdapter} or only invoking
 	 * {@link #headers()} without invoking additional methods on it, is the equivalent of:
 	 *
 	 * <pre>
@@ -264,9 +275,9 @@ public final class HttpSecurity extends
 	 * </pre>
 	 *
 	 * You can enable only a few of the headers by first invoking
-	 * {@link HeadersConfigurer#defaultsDisabled()}
-	 * and then invoking the appropriate methods on the {@link #headers()} result.
-	 * For example, the following will enable {@link HeadersConfigurer#cacheControl()} and
+	 * {@link HeadersConfigurer#defaultsDisabled()} and then invoking the appropriate
+	 * methods on the {@link #headers()} result. For example, the following will enable
+	 * {@link HeadersConfigurer#cacheControl()} and
 	 * {@link HeadersConfigurer#frameOptions()} only.
 	 *
 	 * <pre>
@@ -288,8 +299,8 @@ public final class HttpSecurity extends
 	 * }
 	 * </pre>
 	 *
-	 * You can also choose to keep the defaults but explicitly disable a subset of headers.
-	 * For example, the following will enable all the default headers except
+	 * You can also choose to keep the defaults but explicitly disable a subset of
+	 * headers. For example, the following will enable all the default headers except
 	 * {@link HeadersConfigurer#frameOptions()}.
 	 *
 	 * <pre>
@@ -365,7 +376,8 @@ public final class HttpSecurity extends
 	 * @return the {@link SessionManagementConfigurer} for further customizations
 	 * @throws Exception
 	 */
-	public SessionManagementConfigurer<HttpSecurity> sessionManagement() throws Exception {
+	public SessionManagementConfigurer<HttpSecurity> sessionManagement()
+			throws Exception {
 		return getOrApply(new SessionManagementConfigurer<HttpSecurity>());
 	}
 
@@ -413,8 +425,8 @@ public final class HttpSecurity extends
 	}
 
 	/**
-	 * Configures container based pre authentication. In this case, authentication
-	 * is managed by the Servlet Container.
+	 * Configures container based pre authentication. In this case, authentication is
+	 * managed by the Servlet Container.
 	 *
 	 * <h2>Example Configuration</h2>
 	 *
@@ -617,7 +629,8 @@ public final class HttpSecurity extends
 	 */
 	public ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests()
 			throws Exception {
-		return getOrApply(new ExpressionUrlAuthorizationConfigurer<HttpSecurity>())
+		ApplicationContext context = getSharedObject(ApplicationContext.class);
+		return getOrApply(new ExpressionUrlAuthorizationConfigurer<HttpSecurity>(context))
 				.getRegistry();
 	}
 
@@ -642,7 +655,8 @@ public final class HttpSecurity extends
 	 * @return the {@link ExceptionHandlingConfigurer} for further customizations
 	 * @throws Exception
 	 */
-	public ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling() throws Exception {
+	public ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling()
+			throws Exception {
 		return getOrApply(new ExceptionHandlingConfigurer<HttpSecurity>());
 	}
 
@@ -693,7 +707,8 @@ public final class HttpSecurity extends
 	 * @throws Exception
 	 */
 	public CsrfConfigurer<HttpSecurity> csrf() throws Exception {
-		return getOrApply(new CsrfConfigurer<HttpSecurity>());
+		ApplicationContext context = getContext();
+		return getOrApply(new CsrfConfigurer<HttpSecurity>(context));
 	}
 
 	/**
@@ -873,8 +888,8 @@ public final class HttpSecurity extends
 	 * The example below demonstrates how to require HTTPs for every request. Only
 	 * requiring HTTPS for some requests is supported, but not recommended since an
 	 * application that allows for HTTP introduces many security vulnerabilities. For one
-	 * such example, read about <a
-	 * href="http://en.wikipedia.org/wiki/Firesheep">Firesheep</a>.
+	 * such example, read about
+	 * <a href="http://en.wikipedia.org/wiki/Firesheep">Firesheep</a>.
 	 *
 	 * <pre>
 	 * &#064;Configuration
@@ -900,7 +915,9 @@ public final class HttpSecurity extends
 	 */
 	public ChannelSecurityConfigurer<HttpSecurity>.ChannelRequestMatcherRegistry requiresChannel()
 			throws Exception {
-		return getOrApply(new ChannelSecurityConfigurer<HttpSecurity>()).getRegistry();
+		ApplicationContext context = getContext();
+		return getOrApply(new ChannelSecurityConfigurer<HttpSecurity>(context))
+				.getRegistry();
 	}
 
 	/**
@@ -936,6 +953,7 @@ public final class HttpSecurity extends
 		return getOrApply(new HttpBasicConfigurer<HttpSecurity>());
 	}
 
+	@Override
 	public <C> void setSharedObject(Class<C> sharedType, C object) {
 		super.setSharedObject(sharedType, object);
 	}
@@ -947,17 +965,18 @@ public final class HttpSecurity extends
 
 	@Override
 	protected DefaultSecurityFilterChain performBuild() throws Exception {
-		Collections.sort(filters, comparator);
-		return new DefaultSecurityFilterChain(requestMatcher, filters);
+		Collections.sort(this.filters, this.comparator);
+		return new DefaultSecurityFilterChain(this.requestMatcher, this.filters);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * org.springframework.security.config.annotation.web.HttpBuilder#authenticationProvider
+	 * @see org.springframework.security.config.annotation.web.HttpBuilder#
+	 * authenticationProvider
 	 * (org.springframework.security.authentication.AuthenticationProvider)
 	 */
+	@Override
 	public HttpSecurity authenticationProvider(
 			AuthenticationProvider authenticationProvider) {
 		getAuthenticationRegistry().authenticationProvider(authenticationProvider);
@@ -971,6 +990,7 @@ public final class HttpSecurity extends
 	 * org.springframework.security.config.annotation.web.HttpBuilder#userDetailsService
 	 * (org.springframework.security.core.userdetails.UserDetailsService)
 	 */
+	@Override
 	public HttpSecurity userDetailsService(UserDetailsService userDetailsService)
 			throws Exception {
 		getAuthenticationRegistry().userDetailsService(userDetailsService);
@@ -988,8 +1008,10 @@ public final class HttpSecurity extends
 	 * org.springframework.security.config.annotation.web.HttpBuilder#addFilterAfter(javax
 	 * .servlet.Filter, java.lang.Class)
 	 */
-	public HttpSecurity addFilterAfter(Filter filter, Class<? extends Filter> afterFilter) {
-		comparator.registerAfter(filter.getClass(), afterFilter);
+	@Override
+	public HttpSecurity addFilterAfter(Filter filter,
+			Class<? extends Filter> afterFilter) {
+		this.comparator.registerAfter(filter.getClass(), afterFilter);
 		return addFilter(filter);
 	}
 
@@ -1000,9 +1022,10 @@ public final class HttpSecurity extends
 	 * org.springframework.security.config.annotation.web.HttpBuilder#addFilterBefore(
 	 * javax.servlet.Filter, java.lang.Class)
 	 */
+	@Override
 	public HttpSecurity addFilterBefore(Filter filter,
 			Class<? extends Filter> beforeFilter) {
-		comparator.registerBefore(filter.getClass(), beforeFilter);
+		this.comparator.registerBefore(filter.getClass(), beforeFilter);
 		return addFilter(filter);
 	}
 
@@ -1013,13 +1036,12 @@ public final class HttpSecurity extends
 	 * org.springframework.security.config.annotation.web.HttpBuilder#addFilter(javax.
 	 * servlet.Filter)
 	 */
+	@Override
 	public HttpSecurity addFilter(Filter filter) {
 		Class<? extends Filter> filterClass = filter.getClass();
-		if (!comparator.isRegistered(filterClass)) {
-			throw new IllegalArgumentException(
-					"The Filter class "
-							+ filterClass.getName()
-							+ " does not have a registered order and cannot be added without a specified order. Consider using addFilterBefore or addFilterAfter instead.");
+		if (!this.comparator.isRegistered(filterClass)) {
+			throw new IllegalArgumentException("The Filter class " + filterClass.getName()
+					+ " does not have a registered order and cannot be added without a specified order. Consider using addFilterBefore or addFilterAfter instead.");
 		}
 		this.filters.add(filter);
 		return this;
@@ -1152,7 +1174,7 @@ public final class HttpSecurity extends
 	 * @return the {@link RequestMatcherConfigurer} for further customizations
 	 */
 	public RequestMatcherConfigurer requestMatchers() {
-		return requestMatcherConfigurer;
+		return this.requestMatcherConfigurer;
 	}
 
 	/**
@@ -1222,14 +1244,23 @@ public final class HttpSecurity extends
 	 * @author Rob Winch
 	 * @since 3.2
 	 */
-	public final class RequestMatcherConfigurer extends
-			AbstractRequestMatcherRegistry<RequestMatcherConfigurer> {
+	public final class RequestMatcherConfigurer
+			extends AbstractRequestMatcherRegistry<RequestMatcherConfigurer> {
+
 		private List<RequestMatcher> matchers = new ArrayList<RequestMatcher>();
 
+		/**
+		 * @param context
+		 */
+		public RequestMatcherConfigurer(ApplicationContext context) {
+			super(context);
+		}
+
+		@Override
 		protected RequestMatcherConfigurer chainRequestMatchers(
 				List<RequestMatcher> requestMatchers) {
-			matchers.addAll(requestMatchers);
-			requestMatcher(new OrRequestMatcher(matchers));
+			this.matchers.addAll(requestMatchers);
+			requestMatcher(new OrRequestMatcher(this.matchers));
 			return this;
 		}
 
@@ -1242,8 +1273,6 @@ public final class HttpSecurity extends
 			return HttpSecurity.this;
 		}
 
-		private RequestMatcherConfigurer() {
-		}
 	}
 
 	/**

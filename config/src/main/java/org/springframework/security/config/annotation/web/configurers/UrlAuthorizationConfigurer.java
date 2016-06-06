@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -27,7 +28,6 @@ import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -56,8 +56,8 @@ import org.springframework.util.Assert;
  * The following Filters are populated
  *
  * <ul>
- * <li>
- * {@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}</li>
+ * <li>{@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}
+ * </li>
  * </ul>
  *
  * <h2>Shared Objects Created</h2>
@@ -66,8 +66,8 @@ import org.springframework.util.Assert;
  * {@link org.springframework.security.config.annotation.SecurityConfigurer}'s to
  * customize:
  * <ul>
- * <li>
- * {@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}</li>
+ * <li>{@link org.springframework.security.web.access.intercept.FilterSecurityInterceptor}
+ * </li>
  * </ul>
  *
  * <h2>Shared Objects Used</h2>
@@ -75,8 +75,7 @@ import org.springframework.util.Assert;
  * The following shared objects are used:
  *
  * <ul>
- * <li>
- * AuthenticationManager</li>
+ * <li>AuthenticationManager</li>
  * </ul>
  *
  * @param <H> the type of {@link HttpSecurityBuilder} that is being configured
@@ -85,9 +84,13 @@ import org.springframework.util.Assert;
  * @since 3.2
  * @see ExpressionUrlAuthorizationConfigurer
  */
-public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> extends
-		AbstractInterceptUrlConfigurer<UrlAuthorizationConfigurer<H>, H> {
-	private final StandardInterceptUrlRegistry REGISTRY = new StandardInterceptUrlRegistry();
+public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>>
+		extends AbstractInterceptUrlConfigurer<UrlAuthorizationConfigurer<H>, H> {
+	private final StandardInterceptUrlRegistry REGISTRY;
+
+	public UrlAuthorizationConfigurer(ApplicationContext context) {
+		this.REGISTRY = new StandardInterceptUrlRegistry(context);
+	}
 
 	/**
 	 * The StandardInterceptUrlRegistry is what users will interact with after applying
@@ -96,7 +99,7 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 	 * @return
 	 */
 	public StandardInterceptUrlRegistry getRegistry() {
-		return REGISTRY;
+		return this.REGISTRY;
 	}
 
 	/**
@@ -105,15 +108,22 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 	 * @param objectPostProcessor
 	 * @return the {@link UrlAuthorizationConfigurer} for further customizations
 	 */
+	@Override
 	public UrlAuthorizationConfigurer<H> withObjectPostProcessor(
 			ObjectPostProcessor<?> objectPostProcessor) {
 		addObjectPostProcessor(objectPostProcessor);
 		return this;
 	}
 
-	public class StandardInterceptUrlRegistry
-			extends
+	public class StandardInterceptUrlRegistry extends
 			ExpressionUrlAuthorizationConfigurer<H>.AbstractInterceptUrlRegistry<StandardInterceptUrlRegistry, AuthorizedUrl> {
+
+		/**
+		 * @param context
+		 */
+		public StandardInterceptUrlRegistry(ApplicationContext context) {
+			super(context);
+		}
 
 		@Override
 		protected final AuthorizedUrl chainRequestMatchersInternal(
@@ -164,7 +174,7 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 	@Override
 	FilterInvocationSecurityMetadataSource createMetadataSource(H http) {
 		return new DefaultFilterInvocationSecurityMetadataSource(
-				REGISTRY.createRequestMap());
+				this.REGISTRY.createRequestMap());
 	}
 
 	/**
@@ -180,10 +190,11 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 			Iterable<? extends RequestMatcher> requestMatchers,
 			Collection<ConfigAttribute> configAttributes) {
 		for (RequestMatcher requestMatcher : requestMatchers) {
-			REGISTRY.addMapping(new AbstractConfigAttributeRequestMatcherRegistry.UrlMapping(
-					requestMatcher, configAttributes));
+			this.REGISTRY.addMapping(
+					new AbstractConfigAttributeRequestMatcherRegistry.UrlMapping(
+							requestMatcher, configAttributes));
 		}
-		return REGISTRY;
+		return this.REGISTRY;
 	}
 
 	/**
@@ -194,10 +205,8 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 	 * @return the {@link ConfigAttribute} expressed as a String
 	 */
 	private static String hasRole(String role) {
-		Assert.isTrue(
-				!role.startsWith("ROLE_"),
-				role
-						+ " should not start with ROLE_ since ROLE_ is automatically prepended when using hasRole. Consider using hasAuthority or access instead.");
+		Assert.isTrue(!role.startsWith("ROLE_"), role
+				+ " should not start with ROLE_ since ROLE_ is automatically prepended when using hasRole. Consider using hasAuthority or access instead.");
 		return "ROLE_" + role;
 	}
 
@@ -304,7 +313,7 @@ public final class UrlAuthorizationConfigurer<H extends HttpSecurityBuilder<H>> 
 		 * @return the {@link UrlAuthorizationConfigurer} for further customization
 		 */
 		public StandardInterceptUrlRegistry access(String... attributes) {
-			addMapping(requestMatchers, SecurityConfig.createList(attributes));
+			addMapping(this.requestMatchers, SecurityConfig.createList(attributes));
 			return UrlAuthorizationConfigurer.this.REGISTRY;
 		}
 	}

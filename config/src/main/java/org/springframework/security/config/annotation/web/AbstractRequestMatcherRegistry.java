@@ -19,13 +19,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configurers.AbstractConfigAttributeRequestMatcherRegistry;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.util.ObjectUtils;
+import org.springframework.web.servlet.support.HandlerMappingIntrospector;
 
 /**
  * A base class for registering {@link RequestMatcher}'s. For example, it might allow for
@@ -39,6 +41,12 @@ import org.springframework.util.ObjectUtils;
  */
 public abstract class AbstractRequestMatcherRegistry<C> {
 	private static final RequestMatcher ANY_REQUEST = AnyRequestMatcher.INSTANCE;
+
+	private ApplicationContext context;
+
+	public AbstractRequestMatcherRegistry(ApplicationContext context) {
+		this.context = context;
+	}
 
 	/**
 	 * Maps any request.
@@ -54,8 +62,7 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	 * {@link org.springframework.security.web.util.matcher.AntPathRequestMatcher}
 	 * instances.
 	 *
-	 * @param method the {@link HttpMethod} to use for any
-	 * {@link HttpMethod}.
+	 * @param method the {@link HttpMethod} to use for any {@link HttpMethod}.
 	 *
 	 * @return the object that is chained after creating the {@link RequestMatcher}
 	 */
@@ -70,7 +77,8 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	 *
 	 * @param method the {@link HttpMethod} to use or {@code null} for any
 	 * {@link HttpMethod}.
-	 * @param antPatterns the ant patterns to create. If {@code null} or empty, then matches on nothing.
+	 * @param antPatterns the ant patterns to create. If {@code null} or empty, then
+	 * matches on nothing.
 	 * {@link org.springframework.security.web.util.matcher.AntPathRequestMatcher} from
 	 *
 	 * @return the object that is chained after creating the {@link RequestMatcher}
@@ -91,6 +99,15 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	 */
 	public C antMatchers(String... antPatterns) {
 		return chainRequestMatchers(RequestMatchers.antMatchers(antPatterns));
+	}
+
+	public C mvcMatchers(String... mvcPatterns) {
+		HandlerMappingIntrospector resolver = this.context
+				.getBean(HandlerMappingIntrospector.class);
+		// FIXME use all patterns
+		List<RequestMatcher> matchers = Arrays
+				.<RequestMatcher>asList(new MvcRequestMatcher(resolver, mvcPatterns[0]));
+		return chainRequestMatchers(matchers);
 	}
 
 	/**

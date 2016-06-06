@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.DelegatingFilterProxy;
@@ -57,7 +58,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	private final LinkedHashMap<Class<? extends SecurityConfigurer<O, B>>, List<SecurityConfigurer<O, B>>> configurers = new LinkedHashMap<Class<? extends SecurityConfigurer<O, B>>, List<SecurityConfigurer<O, B>>>();
 	private final List<SecurityConfigurer<O, B>> configurersAddedInInitializing = new ArrayList<SecurityConfigurer<O, B>>();
 
-	private final Map<Class<Object>, Object> sharedObjects = new HashMap<Class<Object>, Object>();
+	private final Map<Class<? extends Object>, Object> sharedObjects = new HashMap<Class<? extends Object>, Object>();
 
 	private final boolean allowConfigurersOfSameType;
 
@@ -107,7 +108,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 				return build();
 			}
 			catch (Exception e) {
-				logger.debug("Failed to perform build. Returning null", e);
+				this.logger.debug("Failed to perform build. Returning null", e);
 				return null;
 			}
 		}
@@ -127,7 +128,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	@SuppressWarnings("unchecked")
 	public <C extends SecurityConfigurerAdapter<O, B>> C apply(C configurer)
 			throws Exception {
-		configurer.addObjectPostProcessor(objectPostProcessor);
+		configurer.addObjectPostProcessor(this.objectPostProcessor);
 		configurer.setBuilder((B) this);
 		add(configurer);
 		return configurer;
@@ -155,7 +156,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 */
 	@SuppressWarnings("unchecked")
 	public <C> void setSharedObject(Class<C> sharedType, C object) {
-		this.sharedObjects.put((Class<Object>) sharedType, object);
+		this.sharedObjects.put(sharedType, object);
 	}
 
 	/**
@@ -173,7 +174,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 * Gets the shared objects
 	 * @return
 	 */
-	public Map<Class<Object>, Object> getSharedObjects() {
+	public Map<Class<? extends Object>, Object> getSharedObjects() {
 		return Collections.unmodifiableMap(this.sharedObjects);
 	}
 
@@ -190,19 +191,19 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 
 		Class<? extends SecurityConfigurer<O, B>> clazz = (Class<? extends SecurityConfigurer<O, B>>) configurer
 				.getClass();
-		synchronized (configurers) {
-			if (buildState.isConfigured()) {
-				throw new IllegalStateException("Cannot apply " + configurer
-						+ " to already built object");
+		synchronized (this.configurers) {
+			if (this.buildState.isConfigured()) {
+				throw new IllegalStateException(
+						"Cannot apply " + configurer + " to already built object");
 			}
-			List<SecurityConfigurer<O, B>> configs = allowConfigurersOfSameType ? this.configurers
-					.get(clazz) : null;
+			List<SecurityConfigurer<O, B>> configs = this.allowConfigurersOfSameType
+					? this.configurers.get(clazz) : null;
 			if (configs == null) {
 				configs = new ArrayList<SecurityConfigurer<O, B>>(1);
 			}
 			configs.add(configurer);
 			this.configurers.put(clazz, configs);
-			if (buildState.isInitializing()) {
+			if (this.buildState.isInitializing()) {
 				this.configurersAddedInInitializing.add(configurer);
 			}
 		}
@@ -232,7 +233,8 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public <C extends SecurityConfigurer<O, B>> List<C> removeConfigurers(Class<C> clazz) {
+	public <C extends SecurityConfigurer<O, B>> List<C> removeConfigurers(
+			Class<C> clazz) {
 		List<C> configs = (List<C>) this.configurers.remove(clazz);
 		if (configs == null) {
 			return new ArrayList<C>();
@@ -300,7 +302,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 * @return the possibly modified Object to use
 	 */
 	protected <P> P postProcess(P object) {
-		return (P) this.objectPostProcessor.postProcess(object);
+		return this.objectPostProcessor.postProcess(object);
 	}
 
 	/**
@@ -317,22 +319,22 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 */
 	@Override
 	protected final O doBuild() throws Exception {
-		synchronized (configurers) {
-			buildState = BuildState.INITIALIZING;
+		synchronized (this.configurers) {
+			this.buildState = BuildState.INITIALIZING;
 
 			beforeInit();
 			init();
 
-			buildState = BuildState.CONFIGURING;
+			this.buildState = BuildState.CONFIGURING;
 
 			beforeConfigure();
 			configure();
 
-			buildState = BuildState.BUILDING;
+			this.buildState = BuildState.BUILDING;
 
 			O result = performBuild();
 
-			buildState = BuildState.BUILT;
+			this.buildState = BuildState.BUILT;
 
 			return result;
 		}
@@ -370,7 +372,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 			configurer.init((B) this);
 		}
 
-		for (SecurityConfigurer<O, B> configurer : configurersAddedInInitializing) {
+		for (SecurityConfigurer<O, B> configurer : this.configurersAddedInInitializing) {
 			configurer.init((B) this);
 		}
 	}
@@ -397,8 +399,8 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 	 * @return true, if unbuilt else false
 	 */
 	private boolean isUnbuilt() {
-		synchronized (configurers) {
-			return buildState == BuildState.UNBUILT;
+		synchronized (this.configurers) {
+			return this.buildState == BuildState.UNBUILT;
 		}
 	}
 
@@ -447,7 +449,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 		}
 
 		public boolean isInitializing() {
-			return INITIALIZING.order == order;
+			return INITIALIZING.order == this.order;
 		}
 
 		/**
@@ -455,7 +457,7 @@ public abstract class AbstractConfiguredSecurityBuilder<O, B extends SecurityBui
 		 * @return
 		 */
 		public boolean isConfigured() {
-			return order >= CONFIGURING.order;
+			return this.order >= CONFIGURING.order;
 		}
 	}
 }

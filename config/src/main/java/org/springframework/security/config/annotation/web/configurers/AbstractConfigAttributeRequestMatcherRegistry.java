@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -37,8 +38,16 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * @see UrlAuthorizationConfigurer
  * @see ExpressionUrlAuthorizationConfigurer
  */
-public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
-		AbstractRequestMatcherRegistry<C> {
+public abstract class AbstractConfigAttributeRequestMatcherRegistry<C>
+		extends AbstractRequestMatcherRegistry<C> {
+
+	/**
+	 * @param context
+	 */
+	public AbstractConfigAttributeRequestMatcherRegistry(ApplicationContext context) {
+		super(context);
+	}
+
 	private List<UrlMapping> urlMappings = new ArrayList<UrlMapping>();
 	private List<RequestMatcher> unmappedMatchers;
 
@@ -50,7 +59,7 @@ public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
 	 * {@link #chainRequestMatchers(java.util.List)}
 	 */
 	final List<UrlMapping> getUrlMappings() {
-		return urlMappings;
+		return this.urlMappings;
 	}
 
 	/**
@@ -73,6 +82,7 @@ public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
 	 * @return the chained Object for the subclass which allows association of something
 	 * else to the {@link RequestMatcher}
 	 */
+	@Override
 	protected final C chainRequestMatchers(List<RequestMatcher> requestMatchers) {
 		this.unmappedMatchers = requestMatchers;
 		return chainRequestMatchersInternal(requestMatchers);
@@ -86,7 +96,8 @@ public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
 	 * @return the chained Object for the subclass which allows association of something
 	 * else to the {@link RequestMatcher}
 	 */
-	protected abstract C chainRequestMatchersInternal(List<RequestMatcher> requestMatchers);
+	protected abstract C chainRequestMatchersInternal(
+			List<RequestMatcher> requestMatchers);
 
 	/**
 	 * Adds a {@link UrlMapping} added by subclasses in
@@ -107,11 +118,10 @@ public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
 	 * {@link ConfigAttribute} instances. Cannot be null.
 	 */
 	final LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> createRequestMap() {
-		if (unmappedMatchers != null) {
-			throw new IllegalStateException(
-					"An incomplete mapping was found for "
-							+ unmappedMatchers
-							+ ". Try completing it with something like requestUrls().<something>.hasRole('USER')");
+		if (this.unmappedMatchers != null) {
+			throw new IllegalStateException("An incomplete mapping was found for "
+					+ this.unmappedMatchers
+					+ ". Try completing it with something like requestUrls().<something>.hasRole('USER')");
 		}
 
 		LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
@@ -131,17 +141,18 @@ public abstract class AbstractConfigAttributeRequestMatcherRegistry<C> extends
 		private RequestMatcher requestMatcher;
 		private Collection<ConfigAttribute> configAttrs;
 
-		UrlMapping(RequestMatcher requestMatcher, Collection<ConfigAttribute> configAttrs) {
+		UrlMapping(RequestMatcher requestMatcher,
+				Collection<ConfigAttribute> configAttrs) {
 			this.requestMatcher = requestMatcher;
 			this.configAttrs = configAttrs;
 		}
 
 		public RequestMatcher getRequestMatcher() {
-			return requestMatcher;
+			return this.requestMatcher;
 		}
 
 		public Collection<ConfigAttribute> getConfigAttrs() {
-			return configAttrs;
+			return this.configAttrs;
 		}
 	}
 }

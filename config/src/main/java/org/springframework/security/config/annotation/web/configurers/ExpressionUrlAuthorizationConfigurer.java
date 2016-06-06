@@ -42,7 +42,8 @@ import org.springframework.util.StringUtils;
  * Adds URL based authorization based upon SpEL expressions to an application. At least
  * one {@link org.springframework.web.bind.annotation.RequestMapping} needs to be mapped
  * to {@link ConfigAttribute}'s for this {@link SecurityContextConfigurer} to have
- * meaning. <h2>Security Filters</h2>
+ * meaning.
+ * <h2>Security Filters</h2>
  *
  * The following Filters are populated
  *
@@ -84,7 +85,7 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 	private static final String fullyAuthenticated = "fullyAuthenticated";
 	private static final String rememberMe = "rememberMe";
 
-	private final ExpressionInterceptUrlRegistry REGISTRY = new ExpressionInterceptUrlRegistry();
+	private final ExpressionInterceptUrlRegistry REGISTRY;
 
 	private SecurityExpressionHandler<FilterInvocation> expressionHandler;
 
@@ -92,16 +93,23 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 	 * Creates a new instance
 	 * @see HttpSecurity#authorizeRequests()
 	 */
-	public ExpressionUrlAuthorizationConfigurer() {
+	public ExpressionUrlAuthorizationConfigurer(ApplicationContext context) {
+		this.REGISTRY = new ExpressionInterceptUrlRegistry(context);
 	}
 
 	public ExpressionInterceptUrlRegistry getRegistry() {
-		return REGISTRY;
+		return this.REGISTRY;
 	}
 
-	public class ExpressionInterceptUrlRegistry
-			extends
+	public class ExpressionInterceptUrlRegistry extends
 			ExpressionUrlAuthorizationConfigurer<H>.AbstractInterceptUrlRegistry<ExpressionInterceptUrlRegistry, AuthorizedUrl> {
+
+		/**
+		 * @param context
+		 */
+		public ExpressionInterceptUrlRegistry(ApplicationContext context) {
+			super(context);
+		}
 
 		@Override
 		protected final AuthorizedUrl chainRequestMatchersInternal(
@@ -154,8 +162,9 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 	private void interceptUrl(Iterable<? extends RequestMatcher> requestMatchers,
 			Collection<ConfigAttribute> configAttributes) {
 		for (RequestMatcher requestMatcher : requestMatchers) {
-			REGISTRY.addMapping(new AbstractConfigAttributeRequestMatcherRegistry.UrlMapping(
-					requestMatcher, configAttributes));
+			this.REGISTRY.addMapping(
+					new AbstractConfigAttributeRequestMatcherRegistry.UrlMapping(
+							requestMatcher, configAttributes));
 		}
 	}
 
@@ -172,7 +181,7 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 	@Override
 	final ExpressionBasedFilterInvocationSecurityMetadataSource createMetadataSource(
 			H http) {
-		LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = REGISTRY
+		LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = this.REGISTRY
 				.createRequestMap();
 		if (requestMap.isEmpty()) {
 			throw new IllegalStateException(
@@ -183,7 +192,7 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 	}
 
 	private SecurityExpressionHandler<FilterInvocation> getExpressionHandler(H http) {
-		if (expressionHandler == null) {
+		if (this.expressionHandler == null) {
 			DefaultWebSecurityExpressionHandler defaultHandler = new DefaultWebSecurityExpressionHandler();
 			AuthenticationTrustResolver trustResolver = http
 					.getSharedObject(AuthenticationTrustResolver.class);
@@ -191,17 +200,19 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 				defaultHandler.setTrustResolver(trustResolver);
 			}
 			ApplicationContext context = http.getSharedObject(ApplicationContext.class);
-			if(context != null) {
-				String[] roleHiearchyBeanNames = context.getBeanNamesForType(RoleHierarchy.class);
-				if(roleHiearchyBeanNames.length == 1) {
-					defaultHandler.setRoleHierarchy(context.getBean(roleHiearchyBeanNames[0], RoleHierarchy.class));
+			if (context != null) {
+				String[] roleHiearchyBeanNames = context
+						.getBeanNamesForType(RoleHierarchy.class);
+				if (roleHiearchyBeanNames.length == 1) {
+					defaultHandler.setRoleHierarchy(context
+							.getBean(roleHiearchyBeanNames[0], RoleHierarchy.class));
 				}
 			}
 
-			expressionHandler = postProcess(defaultHandler);
+			this.expressionHandler = postProcess(defaultHandler);
 		}
 
-		return expressionHandler;
+		return this.expressionHandler;
 	}
 
 	private static String hasAnyRole(String... authorities) {
@@ -305,8 +316,8 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 		 * customization
 		 */
 		public ExpressionInterceptUrlRegistry hasAnyAuthority(String... authorities) {
-			return access(ExpressionUrlAuthorizationConfigurer
-					.hasAnyAuthority(authorities));
+			return access(
+					ExpressionUrlAuthorizationConfigurer.hasAnyAuthority(authorities));
 		}
 
 		/**
@@ -396,10 +407,10 @@ public final class ExpressionUrlAuthorizationConfigurer<H extends HttpSecurityBu
 		 * customization
 		 */
 		public ExpressionInterceptUrlRegistry access(String attribute) {
-			if (not) {
+			if (this.not) {
 				attribute = "!" + attribute;
 			}
-			interceptUrl(requestMatchers, SecurityConfig.createList(attribute));
+			interceptUrl(this.requestMatchers, SecurityConfig.createList(attribute));
 			return ExpressionUrlAuthorizationConfigurer.this.REGISTRY;
 		}
 	}

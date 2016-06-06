@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -74,23 +75,24 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * @author Rob Winch
  * @since 3.2
  */
-public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> extends
-		AbstractHttpConfigurer<ChannelSecurityConfigurer<H>, H> {
+public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>>
+		extends AbstractHttpConfigurer<ChannelSecurityConfigurer<H>, H> {
 	private ChannelProcessingFilter channelFilter = new ChannelProcessingFilter();
 	private LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
 	private List<ChannelProcessor> channelProcessors;
 
-	private final ChannelRequestMatcherRegistry REGISTRY = new ChannelRequestMatcherRegistry();
+	private final ChannelRequestMatcherRegistry REGISTRY;
 
 	/**
 	 * Creates a new instance
 	 * @see HttpSecurity#requiresChannel()
 	 */
-	public ChannelSecurityConfigurer() {
+	public ChannelSecurityConfigurer(ApplicationContext context) {
+		this.REGISTRY = new ChannelRequestMatcherRegistry(context);
 	}
 
 	public ChannelRequestMatcherRegistry getRegistry() {
-		return REGISTRY;
+		return this.REGISTRY;
 	}
 
 	@Override
@@ -99,19 +101,20 @@ public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> e
 		channelDecisionManager.setChannelProcessors(getChannelProcessors(http));
 		channelDecisionManager = postProcess(channelDecisionManager);
 
-		channelFilter.setChannelDecisionManager(channelDecisionManager);
+		this.channelFilter.setChannelDecisionManager(channelDecisionManager);
 
 		DefaultFilterInvocationSecurityMetadataSource filterInvocationSecurityMetadataSource = new DefaultFilterInvocationSecurityMetadataSource(
-				requestMap);
-		channelFilter.setSecurityMetadataSource(filterInvocationSecurityMetadataSource);
+				this.requestMap);
+		this.channelFilter
+				.setSecurityMetadataSource(filterInvocationSecurityMetadataSource);
 
-		channelFilter = postProcess(channelFilter);
-		http.addFilter(channelFilter);
+		this.channelFilter = postProcess(this.channelFilter);
+		http.addFilter(this.channelFilter);
 	}
 
 	private List<ChannelProcessor> getChannelProcessors(H http) {
-		if (channelProcessors != null) {
-			return channelProcessors;
+		if (this.channelProcessors != null) {
+			return this.channelProcessors;
 		}
 
 		InsecureChannelProcessor insecureChannelProcessor = new InsecureChannelProcessor();
@@ -129,7 +132,7 @@ public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> e
 		}
 		insecureChannelProcessor = postProcess(insecureChannelProcessor);
 		secureChannelProcessor = postProcess(secureChannelProcessor);
-		return Arrays.<ChannelProcessor> asList(insecureChannelProcessor,
+		return Arrays.<ChannelProcessor>asList(insecureChannelProcessor,
 				secureChannelProcessor);
 	}
 
@@ -137,14 +140,14 @@ public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> e
 			List<RequestMatcher> matchers) {
 		for (RequestMatcher matcher : matchers) {
 			Collection<ConfigAttribute> attrs = Arrays
-					.<ConfigAttribute> asList(new SecurityConfig(attribute));
-			requestMap.put(matcher, attrs);
+					.<ConfigAttribute>asList(new SecurityConfig(attribute));
+			this.requestMap.put(matcher, attrs);
 		}
-		return REGISTRY;
+		return this.REGISTRY;
 	}
 
-	public final class ChannelRequestMatcherRegistry extends
-			AbstractConfigAttributeRequestMatcherRegistry<RequiresChannelUrl> {
+	public final class ChannelRequestMatcherRegistry
+			extends AbstractConfigAttributeRequestMatcherRegistry<RequiresChannelUrl> {
 
 		@Override
 		protected RequiresChannelUrl chainRequestMatchersInternal(
@@ -186,7 +189,8 @@ public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> e
 			return ChannelSecurityConfigurer.this.and();
 		}
 
-		private ChannelRequestMatcherRegistry() {
+		private ChannelRequestMatcherRegistry(ApplicationContext context) {
+			super(context);
 		}
 	}
 
@@ -206,7 +210,7 @@ public final class ChannelSecurityConfigurer<H extends HttpSecurityBuilder<H>> e
 		}
 
 		public ChannelRequestMatcherRegistry requires(String attribute) {
-			return addAttribute(attribute, requestMatchers);
+			return addAttribute(attribute, this.requestMatchers);
 		}
 	}
 }
