@@ -35,6 +35,13 @@ import org.springframework.web.util.UrlPathHelper;
  * A {@link RequestMatcher} that uses Spring MVC's {@link HandlerMappingIntrospector} to
  * match the path and extract variables.
  *
+ * <p>
+ * It is important to understand that Spring MVC's matching is relative to the servlet
+ * path. This means if you have mapped any servlet to a path that starts with "/" and is
+ * greater than one, you should also specify the {@link #setServletPath(String)}
+ * attribute to differentiate mappings.
+ * </p>
+ *
  * @author Rob Winch
  * @since 4.1.1
  */
@@ -45,6 +52,7 @@ public final class MvcRequestMatcher
 	private final HandlerMappingIntrospector introspector;
 	private final String pattern;
 	private HttpMethod method;
+	private String servletPath;
 
 	public MvcRequestMatcher(HandlerMappingIntrospector introspector, String pattern) {
 		this.introspector = introspector;
@@ -54,6 +62,9 @@ public final class MvcRequestMatcher
 	@Override
 	public boolean matches(HttpServletRequest request) {
 		if (this.method != null && !this.method.name().equals(request.getMethod())) {
+			return false;
+		}
+		if(servletPath != null && !servletPath.equals(request.getServletPath())) {
 			return false;
 		}
 		MatchableHandlerMapping mapping = getMapping(request);
@@ -95,6 +106,16 @@ public final class MvcRequestMatcher
 	 */
 	public void setMethod(HttpMethod method) {
 		this.method = method;
+	}
+
+	/**
+	 * The servlet path to match on. The default is undefined which means any servlet
+	 * path.
+	 *
+	 * @param servletPath the servletPath to set
+	 */
+	public void setServletPath(String servletPath) {
+		this.servletPath = servletPath;
 	}
 
 	private class DefaultMatcher implements RequestMatcher, RequestVariablesExtractor {
