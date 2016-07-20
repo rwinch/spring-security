@@ -16,11 +16,6 @@
 
 package org.springframework.security.web.servlet.util.matcher;
 
-import java.util.Collections;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestVariablesExtractor;
@@ -30,6 +25,10 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.servlet.handler.MatchableHandlerMapping;
 import org.springframework.web.servlet.handler.RequestMatchResult;
 import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * A {@link RequestMatcher} that uses Spring MVC's {@link HandlerMappingIntrospector} to
@@ -64,7 +63,7 @@ public class MvcRequestMatcher
 		if (this.method != null && !this.method.name().equals(request.getMethod())) {
 			return false;
 		}
-		if(servletPath != null && !servletPath.equals(request.getServletPath())) {
+		if (this.servletPath != null && !this.servletPath.equals(request.getServletPath())) {
 			return false;
 		}
 		MatchableHandlerMapping mapping = getMapping(request);
