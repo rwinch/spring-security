@@ -45,7 +45,7 @@ import org.springframework.web.util.UrlPathHelper;
  * @author Rob Winch
  * @since 4.1.1
  */
-public final class MvcRequestMatcher
+public class MvcRequestMatcher
 		implements RequestMatcher, RequestVariablesExtractor {
 	private final DefaultMatcher defaultMatcher = new DefaultMatcher();
 
@@ -116,6 +116,10 @@ public final class MvcRequestMatcher
 	 */
 	public void setServletPath(String servletPath) {
 		this.servletPath = servletPath;
+	}
+
+	protected String getServletPath() {
+		return this.servletPath;
 	}
 
 	private class DefaultMatcher implements RequestMatcher, RequestVariablesExtractor {
