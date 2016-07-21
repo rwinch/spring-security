@@ -49,6 +49,15 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	}
 
 	/**
+	 * Gets the {@link ApplicationContext}
+	 *
+	 * @return the {@link ApplicationContext}
+	 */
+	protected final ApplicationContext getApplicationContext() {
+		return this.context;
+	}
+
+	/**
 	 * Maps any request.
 	 *
 	 * @return the object that is chained after creating the {@link RequestMatcher}
@@ -117,9 +126,7 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	 * Spring MVC
 	 * @return the object that is chained after creating the {@link RequestMatcher}.
 	 */
-	public C mvcMatchers(String... mvcPatterns) {
-		return mvcMatchers(null, mvcPatterns);
-	}
+	public abstract C mvcMatchers(String... mvcPatterns);
 
 	/**
 	 * <p>
@@ -138,10 +145,21 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 	 * Spring MVC
 	 * @return the object that is chained after creating the {@link RequestMatcher}.
 	 */
-	public C mvcMatchers(HttpMethod method, String... mvcPatterns) {
+	public abstract C mvcMatchers(HttpMethod method, String... mvcPatterns);
+
+	/**
+	 * Creates {@link MvcRequestMatcher} instances for the method and patterns passed in
+	 *
+	 * @param method the HTTP method to use or null if any should be used
+	 * @param mvcPatterns the Spring MVC patterns to match on
+	 * @return a List of {@link MvcRequestMatcher} instances
+	 */
+	protected final List<MvcRequestMatcher> createMvcMatchers(HttpMethod method,
+			String... mvcPatterns) {
 		HandlerMappingIntrospector introspector = new HandlerMappingIntrospector(
 				this.context);
-		List<RequestMatcher> matchers = new ArrayList<RequestMatcher>(mvcPatterns.length);
+		List<MvcRequestMatcher> matchers = new ArrayList<MvcRequestMatcher>(
+				mvcPatterns.length);
 		for (String mvcPattern : mvcPatterns) {
 			MvcRequestMatcher matcher = new MvcRequestMatcher(introspector, mvcPattern);
 			if (method != null) {
@@ -149,7 +167,7 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 			}
 			matchers.add(matcher);
 		}
-		return chainRequestMatchers(matchers);
+		return matchers;
 	}
 
 	/**
