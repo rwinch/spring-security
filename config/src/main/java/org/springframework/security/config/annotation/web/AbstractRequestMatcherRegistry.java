@@ -333,12 +333,19 @@ public abstract class AbstractRequestMatcherRegistry<C> {
 		 */
 		@Override
 		public void afterSingletonsInstantiated() {
+			if(getServletPath() != null) {
+				return;
+			}
 			Collection<? extends ServletRegistration> registrations = servletContext.getServletRegistrations().values();
 			for(ServletRegistration registration : registrations) {
 				Collection<String> mappings = registration.getMappings();
 				for(String mapping : mappings) {
 					if(mapping.startsWith("/") && mapping.length() > 1) {
-						throw new IllegalStateException("servletPath must not be null when providing a servlet mapping of " + mapping);
+						throw new IllegalStateException(
+								"servletPath must not be null for mvcPattern \"" + getMvcPattern()
+										+ "\" when providing a servlet mapping of "
+										+ mapping + " for servlet "
+										+ registration.getClassName());
 					}
 				}
 			}

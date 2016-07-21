@@ -117,8 +117,12 @@ public class MvcRequestMatcher
 		this.servletPath = servletPath;
 	}
 
-	protected String getServletPath() {
+	protected final String getServletPath() {
 		return this.servletPath;
+	}
+
+	protected final String getMvcPattern() {
+		return this.pattern;
 	}
 
 	private class DefaultMatcher implements RequestMatcher, RequestVariablesExtractor {
