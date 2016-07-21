@@ -54,7 +54,7 @@ public class FilterInvocationSecurityMetadataSourceParser implements BeanDefinit
 
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
 		List<Element> interceptUrls = DomUtils.getChildElementsByTagName(element,
-				"intercept-url");
+			Elements.INTERCEPT_URL);
 
 		// Check for attributes that aren't allowed in this context
 		for (Element elt : interceptUrls) {
@@ -175,6 +175,9 @@ public class FilterInvocationSecurityMetadataSourceParser implements BeanDefinit
 			String servletPath = urlElt.getAttribute(ATT_SERVLET_PATH);
 			if (!StringUtils.hasText(servletPath)) {
 				servletPath = null;
+			} else if (!MatcherType.mvc.equals(matcherType)) {
+				parserContext.getReaderContext().error(
+					ATT_SERVLET_PATH + " is not applicable for request-matcher: '" + matcherType.name() + "'", urlElt);
 			}
 
 			BeanDefinition matcher = matcherType.createMatcher(parserContext, path,
