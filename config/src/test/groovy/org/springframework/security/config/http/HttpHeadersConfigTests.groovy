@@ -48,6 +48,18 @@ class HttpHeadersConfigTests extends AbstractHttpConfigTests {
 		then:
 			!hf
 	}
+	
+	// gh-3986
+	def 'headers defaults-disabled'() {
+		setup:
+			httpAutoConfig { 'headers'('defaults-disabled':true) }
+			createAppContext()
+
+		when:
+			def hf = getFilter(HeaderWriterFilter)
+		then:
+			!hf
+	}
 
 	def 'headers disabled with child fails'() {
 		when:

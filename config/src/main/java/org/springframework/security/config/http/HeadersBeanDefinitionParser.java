@@ -119,6 +119,8 @@ public class HeadersBeanDefinitionParser implements BeanDefinitionParser {
 								element);
 			}
 			return null;
+		} else if (headerWriters.isEmpty()) {
+			return null;
 		}
 
 		builder.addConstructorArgValue(headerWriters);
