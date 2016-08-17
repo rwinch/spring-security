@@ -22,6 +22,21 @@ plugins {
 }
 
 apply plugin: 'base'
+apply plugin: 'com.jfrog.artifactory'
+
+artifactory {
+	contextUrl = 'https://repo.spring.io'
+	publish {
+		repository {
+			repoKey = 'libs-snapshot-local'
+			username = "${artifactory_username}" // The publisher user name
+			password = "${artifactory_password}" // The publisher password
+		}
+	}
+	resolve {
+		repoKey = 'jcenter'
+	}
+}
 
 description = 'Spring Security'
 
