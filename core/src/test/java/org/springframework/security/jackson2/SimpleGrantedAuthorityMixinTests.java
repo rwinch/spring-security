@@ -21,9 +21,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.json.JSONException;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -57,6 +60,14 @@ public class SimpleGrantedAuthorityMixinTests extends AbstractMixinTests {
 		SimpleGrantedAuthority authority = mapper.readValue(AUTHORITY_JSON, SimpleGrantedAuthority.class);
 		assertThat(authority).isNotNull();
 		assertThat(authority.getAuthority()).isNotNull().isEqualTo("ROLE_USER");
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void deserializeGrantedAuthoritiesTest() throws IOException {
+		Set<GrantedAuthority> authorities = mapper.readValue(AUTHORITIES_SET_JSON, Set.class);
+		assertThat(authorities).isNotNull();
+		assertThat(authorities).extracting("authority").containsOnly("ROLE_USER");
 	}
 
 	@Test(expected = JsonMappingException.class)
