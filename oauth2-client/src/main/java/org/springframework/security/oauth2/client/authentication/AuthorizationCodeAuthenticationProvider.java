@@ -42,9 +42,8 @@ public class AuthorizationCodeAuthenticationProvider implements AuthenticationPr
 			UserInfoUserDetailsService userInfoUserDetailsService) {
 
 		Assert.notNull(authorizationCodeTokenExchanger, "authorizationCodeTokenExchanger cannot be null");
-		this.authorizationCodeTokenExchanger = authorizationCodeTokenExchanger;
-
 		Assert.notNull(userInfoUserDetailsService, "userInfoUserDetailsService cannot be null");
+		this.authorizationCodeTokenExchanger = authorizationCodeTokenExchanger;
 		this.userInfoUserDetailsService = userInfoUserDetailsService;
 	}
 

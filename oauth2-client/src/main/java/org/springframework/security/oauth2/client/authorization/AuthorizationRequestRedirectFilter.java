@@ -70,13 +70,11 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 												AuthorizationRequestUriBuilder authorizationUriBuilder) {
 
 		Assert.notNull(filterProcessingUri, "filterProcessingUri cannot be null");
+		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
+		Assert.notNull(authorizationUriBuilder, "authorizationUriBuilder cannot be null");
 		this.authorizationRequestMatcher = new AntPathRequestMatcher(
 				normalizeUri(filterProcessingUri) + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}");
-
-		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
 		this.clientRegistrationRepository = clientRegistrationRepository;
-
-		Assert.notNull(authorizationUriBuilder, "authorizationUriBuilder cannot be null");
 		this.authorizationUriBuilder = authorizationUriBuilder;
 	}
 

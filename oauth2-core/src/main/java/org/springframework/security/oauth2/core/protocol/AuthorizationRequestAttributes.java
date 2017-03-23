@@ -41,17 +41,13 @@ public class AuthorizationRequestAttributes implements Serializable {
 											Set<String> scopes, String state) {
 
 		Assert.notNull(authorizeUri, "authorizeUri cannot be null");
-		this.authorizeUri = authorizeUri;
-
 		Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
-		this.authorizationGrantType = authorizationGrantType;
-
 		Assert.notNull(responseType, "responseType cannot be null");
-		this.responseType = responseType;
-
 		Assert.notNull(clientId, "clientId cannot be null");
+		this.authorizeUri = authorizeUri;
+		this.authorizationGrantType = authorizationGrantType;
+		this.responseType = responseType;
 		this.clientId = clientId;
-
 		this.redirectUri = redirectUri;
 		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
 		this.state = state;

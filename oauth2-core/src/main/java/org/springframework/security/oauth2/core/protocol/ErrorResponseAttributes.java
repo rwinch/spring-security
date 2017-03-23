@@ -39,7 +39,6 @@ public class ErrorResponseAttributes {
 	public ErrorResponseAttributes(String errorCode, String errorDescription, URI errorUri, String state) {
 		Assert.notNull(errorCode, "errorCode cannot be null");
 		this.errorCode = errorCode;
-
 		this.errorDescription = errorDescription;
 		this.errorUri = errorUri;
 		this.state = state;

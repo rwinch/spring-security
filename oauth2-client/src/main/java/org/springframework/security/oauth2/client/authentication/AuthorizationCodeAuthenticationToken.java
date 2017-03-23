@@ -29,13 +29,10 @@ public class AuthorizationCodeAuthenticationToken extends AuthorizationGrantAuth
 
 	public AuthorizationCodeAuthenticationToken(String authorizationCode, ClientRegistration clientRegistration) {
 		super(AuthorizationGrantType.AUTHORIZATION_CODE, AuthorityUtils.NO_AUTHORITIES);
-
 		Assert.hasText(authorizationCode, "authorizationCode cannot be empty");
-		this.authorizationCode = authorizationCode;
-
 		Assert.notNull(clientRegistration, "clientRegistration cannot be null");
+		this.authorizationCode = authorizationCode;
 		this.clientRegistration = clientRegistration;
-
 		this.setAuthenticated(false);
 	}
 
