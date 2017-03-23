@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.openid.connect.core;
+package org.springframework.security.oauth2.oidc.core;
 
 /**
  * @author Joe Grandja
  */
-public interface OpenIDConnectAttributes {
+public interface OidcAttributes {
 
 	interface Claim {
 		String SUB = "sub";

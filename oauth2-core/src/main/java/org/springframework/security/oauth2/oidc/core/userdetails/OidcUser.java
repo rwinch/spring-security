@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.openid.connect.core.userdetails;
+package org.springframework.security.oauth2.oidc.core.userdetails;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.userdetails.OAuth2User;
@@ -23,24 +23,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.springframework.security.openid.connect.core.OpenIDConnectAttributes.Claim.*;
+import static org.springframework.security.oauth2.oidc.core.OidcAttributes.Claim.*;
 
 /**
  * @author Joe Grandja
  */
-public class OpenIDConnectUser extends OAuth2User {
+public class OidcUser extends OAuth2User {
 
-	public OpenIDConnectUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes) {
+	public OidcUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes) {
 		this(identifier, attributes, Collections.emptySet());
 	}
 
-	public OpenIDConnectUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes, Set<GrantedAuthority> authorities) {
+	public OidcUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes, Set<GrantedAuthority> authorities) {
 		this(identifier, attributes, authorities, true, true, true, true);
 	}
 
 
-	public OpenIDConnectUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes, Set<GrantedAuthority> authorities,
-								boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
+	public OidcUser(OAuth2UserAttribute identifier, List<OAuth2UserAttribute> attributes, Set<GrantedAuthority> authorities,
+					boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
 
 		super(identifier, attributes, authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, enabled);
 		this.setUserNameAttributeName(SUB);

@@ -36,7 +36,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.userdetails.OAuth2UserBuilder;
 import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
-import org.springframework.security.openid.connect.core.userdetails.OpenIDConnectUserBuilder;
+import org.springframework.security.oauth2.oidc.core.userdetails.OidcUserBuilder;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -139,7 +139,7 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 		try {
 			Map<String, Object> userAttributes = (Map<String, Object>) this.jacksonHttpMessageConverter.read(Map.class, clientHttpResponse);
 			if (clientRegistration.getProviderDetails().isOpenIdProvider()) {
-				oauth2User = new OpenIDConnectUserBuilder().userAttributes(userAttributes).build();
+				oauth2User = new OidcUserBuilder().userAttributes(userAttributes).build();
 			} else {
 				oauth2User = new OAuth2UserBuilder().userAttributes(userAttributes).build();
 			}
