@@ -48,8 +48,8 @@ public final class OAuth2Error {
 		INVALID_REDIRECT_URI_PARAMETER("invalid_redirect_uri_parameter", HttpStatus.UNAUTHORIZED),
 		UNKNOWN_ERROR_CODE("unknown_error_code", HttpStatus.BAD_REQUEST);
 
-		private String errorCode;
-		private HttpStatus mappedStatusCode;
+		private final String errorCode;
+		private final HttpStatus mappedStatusCode;
 
 		ErrorCode(String errorCode, HttpStatus mappedStatusCode) {
 			this.errorCode = errorCode;

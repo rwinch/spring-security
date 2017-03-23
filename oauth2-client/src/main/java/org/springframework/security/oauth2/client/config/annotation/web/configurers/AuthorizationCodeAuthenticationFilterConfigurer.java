@@ -43,13 +43,9 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		AbstractAuthenticationFilterConfigurer<H, AuthorizationCodeAuthenticationFilterConfigurer<H>, AuthorizationCodeAuthenticationProcessingFilter> {
 
 	private static final String DEFAULT_CLIENTS_PAGE_URI = "/oauth2/clients";
-
 	private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
-
 	private UserInfoUserDetailsService userInfoUserDetailsService;
-
 	private Map<URI, Class<? extends OAuth2UserDetails>> userInfoTypeMapping = new HashMap<>();
-
 
 	AuthorizationCodeAuthenticationFilterConfigurer() {
 		super(new AuthorizationCodeAuthenticationProcessingFilter(), null);

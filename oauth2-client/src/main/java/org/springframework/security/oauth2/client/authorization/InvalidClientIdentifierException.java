@@ -34,7 +34,7 @@ public class InvalidClientIdentifierException extends OAuth2Exception {
 		this.clientIdentifier = clientIdentifier;
 	}
 
-	public final String getClientIdentifier() {
+	public String getClientIdentifier() {
 		return this.clientIdentifier;
 	}
 }

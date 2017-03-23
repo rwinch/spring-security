@@ -44,39 +44,39 @@ public class ClientRegistration {
 	protected ClientRegistration() {
 	}
 
-	public final String getClientId() {
+	public String getClientId() {
 		return this.clientId;
 	}
 
-	public final String getClientSecret() {
+	public String getClientSecret() {
 		return this.clientSecret;
 	}
 
-	public final ClientAuthenticationMethod getClientAuthenticationMethod() {
+	public ClientAuthenticationMethod getClientAuthenticationMethod() {
 		return this.clientAuthenticationMethod;
 	}
 
-	public final AuthorizationGrantType getAuthorizedGrantType() {
+	public AuthorizationGrantType getAuthorizedGrantType() {
 		return this.authorizedGrantType;
 	}
 
-	public final URI getRedirectUri() {
+	public URI getRedirectUri() {
 		return this.redirectUri;
 	}
 
-	public final Set<String> getScopes() {
+	public Set<String> getScopes() {
 		return this.scopes;
 	}
 
-	public final ProviderDetails getProviderDetails() {
+	public ProviderDetails getProviderDetails() {
 		return this.providerDetails;
 	}
 
-	public final String getClientName() {
+	public String getClientName() {
 		return this.clientName;
 	}
 
-	public final String getClientAlias() {
+	public String getClientAlias() {
 		return this.clientAlias;
 	}
 
@@ -89,19 +89,19 @@ public class ClientRegistration {
 		protected ProviderDetails() {
 		}
 
-		public final URI getAuthorizationUri() {
+		public URI getAuthorizationUri() {
 			return this.authorizationUri;
 		}
 
-		public final URI getTokenUri() {
+		public URI getTokenUri() {
 			return this.tokenUri;
 		}
 
-		public final URI getUserInfoUri() {
+		public URI getUserInfoUri() {
 			return this.userInfoUri;
 		}
 
-		public final boolean isOpenIdProvider() {
+		public boolean isOpenIdProvider() {
 			return this.openIdProvider;
 		}
 	}
@@ -133,27 +133,27 @@ public class ClientRegistration {
 			this.clientAlias(clientRegistrationProperties.getClientAlias());
 		}
 
-		public final Builder clientSecret(String clientSecret) {
+		public Builder clientSecret(String clientSecret) {
 			this.clientRegistration.clientSecret = clientSecret;
 			return this;
 		}
 
-		public final Builder clientAuthenticationMethod(ClientAuthenticationMethod clientAuthenticationMethod) {
+		public Builder clientAuthenticationMethod(ClientAuthenticationMethod clientAuthenticationMethod) {
 			this.clientRegistration.clientAuthenticationMethod = clientAuthenticationMethod;
 			return this;
 		}
 
-		public final Builder authorizedGrantType(AuthorizationGrantType authorizedGrantType) {
+		public Builder authorizedGrantType(AuthorizationGrantType authorizedGrantType) {
 			this.clientRegistration.authorizedGrantType = authorizedGrantType;
 			return this;
 		}
 
-		public final Builder redirectUri(String redirectUri) {
+		public Builder redirectUri(String redirectUri) {
 			this.clientRegistration.redirectUri = this.toURI(redirectUri);
 			return this;
 		}
 
-		public final Builder scopes(String... scopes) {
+		public Builder scopes(String... scopes) {
 			if (scopes != null && scopes.length > 0) {
 				this.clientRegistration.scopes = Collections.unmodifiableSet(
 						new LinkedHashSet<>(Arrays.asList(scopes)));
@@ -161,32 +161,32 @@ public class ClientRegistration {
 			return this;
 		}
 
-		public final Builder authorizationUri(String authorizationUri) {
+		public Builder authorizationUri(String authorizationUri) {
 			this.clientRegistration.providerDetails.authorizationUri = this.toURI(authorizationUri);
 			return this;
 		}
 
-		public final Builder tokenUri(String tokenUri) {
+		public Builder tokenUri(String tokenUri) {
 			this.clientRegistration.providerDetails.tokenUri = this.toURI(tokenUri);
 			return this;
 		}
 
-		public final Builder userInfoUri(String userInfoUri) {
+		public Builder userInfoUri(String userInfoUri) {
 			this.clientRegistration.providerDetails.userInfoUri = this.toURI(userInfoUri);
 			return this;
 		}
 
-		public final Builder openIdProvider() {
+		public Builder openIdProvider() {
 			this.clientRegistration.providerDetails.openIdProvider = true;
 			return this;
 		}
 
-		public final Builder clientName(String clientName) {
+		public Builder clientName(String clientName) {
 			this.clientRegistration.clientName = clientName;
 			return this;
 		}
 
-		public final Builder clientAlias(String clientAlias) {
+		public Builder clientAlias(String clientAlias) {
 			this.clientRegistration.clientAlias = clientAlias;
 			return this;
 		}

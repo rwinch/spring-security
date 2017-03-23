@@ -46,9 +46,7 @@ import java.net.URI;
  */
 public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 	private ClientRegistrationRepository clientRegistrationRepository;
-
 	private AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
-
 
 	public AuthorizationCodeAuthenticationProcessingFilter() {
 		super(AuthorizationCodeAuthenticationProcessingFilter::isAuthorizationCodeResponse);
@@ -69,13 +67,13 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 			ErrorResponseAttributes authorizationError = ResponseAttributesExtractor.extractErrorResponse(request);
 			OAuth2Error oauth2Error = OAuth2Error.valueOf(authorizationError.getErrorCode(),
 					authorizationError.getErrorDescription(), authorizationError.getErrorUri());
-			this.authorizationRequestRepository.removeAuthorizationRequest(request);
+			this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 
 		AuthorizationRequestAttributes matchingAuthorizationRequest = this.resolveAuthorizationRequest(request);
 
-		ClientRegistration clientRegistration = this.clientRegistrationRepository.getRegistrationByClientId(
+		ClientRegistration clientRegistration = this.getClientRegistrationRepository().getRegistrationByClientId(
 				matchingAuthorizationRequest.getClientId());
 
 		AuthorizationCodeAuthorizationResponseAttributes authorizationCodeResponseAttributes =
@@ -91,9 +89,17 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		return authenticated;
 	}
 
+	protected ClientRegistrationRepository getClientRegistrationRepository() {
+		return this.clientRegistrationRepository;
+	}
+
 	public final void setClientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {
 		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
 		this.clientRegistrationRepository = clientRegistrationRepository;
+	}
+
+	protected AuthorizationRequestRepository getAuthorizationRequestRepository() {
+		return this.authorizationRequestRepository;
 	}
 
 	public final void setAuthorizationRequestRepository(AuthorizationRequestRepository authorizationRequestRepository) {
@@ -117,12 +123,12 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 
 	private AuthorizationRequestAttributes resolveAuthorizationRequest(HttpServletRequest request) {
 		AuthorizationRequestAttributes authorizationRequest =
-				this.authorizationRequestRepository.loadAuthorizationRequest(request);
+				this.getAuthorizationRequestRepository().loadAuthorizationRequest(request);
 		if (authorizationRequest == null) {
 			OAuth2Error oauth2Error = OAuth2Error.authorizationRequestNotFound();
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
-		this.authorizationRequestRepository.removeAuthorizationRequest(request);
+		this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
 		this.assertMatchingAuthorizationRequest(request, authorizationRequest);
 		return authorizationRequest;
 	}

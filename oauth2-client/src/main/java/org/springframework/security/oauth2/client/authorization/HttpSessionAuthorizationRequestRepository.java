@@ -26,9 +26,7 @@ import javax.servlet.http.HttpSession;
 public final class HttpSessionAuthorizationRequestRepository implements AuthorizationRequestRepository {
 	private static final String DEFAULT_AUTHORIZATION_REQUEST_ATTR_NAME =
 			HttpSessionAuthorizationRequestRepository.class.getName() +  ".AUTHORIZATION_REQUEST";
-
 	private String sessionAttributeName = DEFAULT_AUTHORIZATION_REQUEST_ATTR_NAME;
-
 
 	@Override
 	public AuthorizationRequestAttributes loadAuthorizationRequest(HttpServletRequest request) {

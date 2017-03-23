@@ -60,15 +60,15 @@ public class AccessToken extends AbstractToken {
 		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
 	}
 
-	public final TokenType getTokenType() {
+	public TokenType getTokenType() {
 		return this.tokenType;
 	}
 
-	public final Instant getExpiresAt() {
+	public Instant getExpiresAt() {
 		return this.expiresAt;
 	}
 
-	public final Set<String> getScopes() {
+	public Set<String> getScopes() {
 		return this.scopes;
 	}
 }

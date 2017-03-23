@@ -24,7 +24,7 @@ import java.util.Optional;
 /**
  * @author Joe Grandja
  */
-public class InMemoryClientRegistrationRepository implements ClientRegistrationRepository {
+public final class InMemoryClientRegistrationRepository implements ClientRegistrationRepository {
 	private final List<ClientRegistration> clientRegistrations;
 
 	public InMemoryClientRegistrationRepository(List<ClientRegistration> clientRegistrations) {

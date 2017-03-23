@@ -46,13 +46,13 @@ public abstract class AbstractOAuth2UserDetailsBuilder<O extends OAuth2UserDetai
 
 	public abstract O build();
 
-	protected final List<OAuth2UserAttribute> getUserAttributes() {
+	protected List<OAuth2UserAttribute> getUserAttributes() {
 		List<OAuth2UserAttribute> userAttributes = this.userAttributes.entrySet().stream()
 				.map(e -> new OAuth2UserAttribute(e.getKey(), e.getValue())).collect(Collectors.toList());
 		return userAttributes;
 	}
 
-	protected final OAuth2UserAttribute findIdentifier(List<OAuth2UserAttribute> userAttributes) {
+	protected OAuth2UserAttribute findIdentifier(List<OAuth2UserAttribute> userAttributes) {
 		Optional<OAuth2UserAttribute> identifierAttribute = userAttributes.stream()
 				.filter(e -> e.getName().equalsIgnoreCase(this.identifierAttributeName)).findFirst();
 		Assert.isTrue(identifierAttribute.isPresent(), "Unable to find identifier attribute '" +

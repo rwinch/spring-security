@@ -22,7 +22,7 @@ import java.net.URI;
 /**
  * @author Joe Grandja
  */
-public class ErrorResponseAttributes {
+public final class ErrorResponseAttributes {
 	private final String errorCode;
 	private final String errorDescription;
 	private final URI errorUri;
@@ -44,19 +44,19 @@ public class ErrorResponseAttributes {
 		this.state = state;
 	}
 
-	public final String getErrorCode() {
+	public String getErrorCode() {
 		return this.errorCode;
 	}
 
-	public final String getErrorDescription() {
+	public String getErrorDescription() {
 		return this.errorDescription;
 	}
 
-	public final URI getErrorUri() {
+	public URI getErrorUri() {
 		return this.errorUri;
 	}
 
-	public final String getState() {
+	public String getState() {
 		return this.state;
 	}
 }

@@ -20,7 +20,6 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -77,7 +76,7 @@ public class OAuth2User implements OAuth2UserDetails {
 		return this.userNameAttributeName;
 	}
 
-	public void setUserNameAttributeName(String userNameAttributeName) {
+	public final void setUserNameAttributeName(String userNameAttributeName) {
 		Assert.notNull(userNameAttributeName, "userNameAttributeName cannot be null");
 		this.userNameAttributeName = userNameAttributeName;
 	}
@@ -154,17 +153,9 @@ public class OAuth2User implements OAuth2UserDetails {
 		}
 
 		SortedSet<GrantedAuthority> sortedAuthorities =
-				new TreeSet<>(new GrantedAuthorityComparator());
+			new TreeSet<>((g1, g2) -> g1.getAuthority().compareTo(g2.getAuthority()));
 		authorities.stream().forEach(sortedAuthorities::add);
 
 		return sortedAuthorities;
-	}
-
-	private static class GrantedAuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
-		private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-
-		public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-			return g1.getAuthority().compareTo(g2.getAuthority());
-		}
 	}
 }
