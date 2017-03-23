@@ -32,17 +32,17 @@ import java.util.Collection;
 /**
  * @author Joe Grandja
  */
-public class AuthorizationCodeGrantAuthenticationProvider implements AuthenticationProvider {
-	private final AuthorizationGrantTokenExchanger<AuthorizationCodeGrantAuthenticationToken> authorizationCodeGrantTokenExchanger;
+public class AuthorizationCodeAuthenticationProvider implements AuthenticationProvider {
+	private final AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
 	private final UserInfoUserDetailsService userInfoUserDetailsService;
 	private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
-	public AuthorizationCodeGrantAuthenticationProvider(
-			AuthorizationGrantTokenExchanger<AuthorizationCodeGrantAuthenticationToken> authorizationCodeGrantTokenExchanger,
+	public AuthorizationCodeAuthenticationProvider(
+			AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger,
 			UserInfoUserDetailsService userInfoUserDetailsService) {
 
-		Assert.notNull(authorizationCodeGrantTokenExchanger, "authorizationCodeGrantTokenExchanger cannot be null");
-		this.authorizationCodeGrantTokenExchanger = authorizationCodeGrantTokenExchanger;
+		Assert.notNull(authorizationCodeTokenExchanger, "authorizationCodeTokenExchanger cannot be null");
+		this.authorizationCodeTokenExchanger = authorizationCodeTokenExchanger;
 
 		Assert.notNull(userInfoUserDetailsService, "userInfoUserDetailsService cannot be null");
 		this.userInfoUserDetailsService = userInfoUserDetailsService;
@@ -50,17 +50,17 @@ public class AuthorizationCodeGrantAuthenticationProvider implements Authenticat
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		AuthorizationCodeGrantAuthenticationToken authorizationCodeGrantAuthentication =
-				(AuthorizationCodeGrantAuthenticationToken) authentication;
+		AuthorizationCodeAuthenticationToken authorizationCodeAuthentication =
+				(AuthorizationCodeAuthenticationToken) authentication;
 
 		TokenResponseAttributes tokenResponse =
-				this.authorizationCodeGrantTokenExchanger.exchange(authorizationCodeGrantAuthentication);
+				this.authorizationCodeTokenExchanger.exchange(authorizationCodeAuthentication);
 
 		AccessToken accessToken = new AccessToken(tokenResponse.getAccessTokenType(),
 				tokenResponse.getAccessToken(), tokenResponse.getExpiresAt(), tokenResponse.getScopes());
 		OAuth2AuthenticationToken accessTokenAuthentication = new OAuth2AuthenticationToken(
-				authorizationCodeGrantAuthentication.getClientRegistration(), accessToken);
-		accessTokenAuthentication.setDetails(authorizationCodeGrantAuthentication.getDetails());
+				authorizationCodeAuthentication.getClientRegistration(), accessToken);
+		accessTokenAuthentication.setDetails(authorizationCodeAuthentication.getDetails());
 
 		UserDetails userDetails = this.userInfoUserDetailsService.loadUserDetails(accessTokenAuthentication);
 
@@ -76,7 +76,7 @@ public class AuthorizationCodeGrantAuthenticationProvider implements Authenticat
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return AuthorizationCodeGrantAuthenticationToken.class.isAssignableFrom(authentication);
+		return AuthorizationCodeAuthenticationToken.class.isAssignableFrom(authentication);
 	}
 
 	public final void setAuthoritiesMapper(GrantedAuthoritiesMapper authoritiesMapper) {

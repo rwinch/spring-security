@@ -57,10 +57,9 @@ public class AuthorizationRequestAttributes implements Serializable {
 		this.state = state;
 	}
 
-	public static AuthorizationRequestAttributes authorizationCodeGrant(URI authorizeUri, String clientId,
-																		URI redirectUri, Set<String> scopes,
-																		String state) {
-
+	public static AuthorizationRequestAttributes authorizationCode(URI authorizeUri, String clientId,
+																	URI redirectUri, Set<String> scopes,
+																	String state) {
 		return new AuthorizationRequestAttributes(authorizeUri, AuthorizationGrantType.AUTHORIZATION_CODE,
 				ResponseType.CODE, clientId, redirectUri, scopes, state);
 	}
