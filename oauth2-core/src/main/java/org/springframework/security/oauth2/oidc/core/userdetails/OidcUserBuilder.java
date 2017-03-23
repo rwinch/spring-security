@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.openid.connect.core.userdetails;
+package org.springframework.security.oauth2.oidc.core.userdetails;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.userdetails.AbstractOAuth2UserDetailsBuilder;
 import org.springframework.security.oauth2.core.userdetails.OAuth2UserAttribute;
-import org.springframework.security.openid.connect.core.OpenIDConnectAttributes;
+import org.springframework.security.oauth2.oidc.core.OidcAttributes;
 
 import java.util.List;
 import java.util.Set;
@@ -26,17 +26,17 @@ import java.util.Set;
 /**
  * @author Joe Grandja
  */
-public class OpenIDConnectUserBuilder extends AbstractOAuth2UserDetailsBuilder<OpenIDConnectUser> {
+public class OidcUserBuilder extends AbstractOAuth2UserDetailsBuilder<OidcUser> {
 
-	public OpenIDConnectUserBuilder() {
-		this.identifierAttributeName(OpenIDConnectAttributes.Claim.SUB);
+	public OidcUserBuilder() {
+		this.identifierAttributeName(OidcAttributes.Claim.SUB);
 	}
 
 	@Override
-	public OpenIDConnectUser build() {
+	public OidcUser build() {
 		List<OAuth2UserAttribute> userAttributes = this.getUserAttributes();
 		OAuth2UserAttribute identifierAttribute = this.findIdentifier(userAttributes);
 		Set<GrantedAuthority> authorities = this.loadAuthorities(identifierAttribute);
-		return new OpenIDConnectUser(identifierAttribute, userAttributes, authorities);
+		return new OidcUser(identifierAttribute, userAttributes, authorities);
 	}
 }
