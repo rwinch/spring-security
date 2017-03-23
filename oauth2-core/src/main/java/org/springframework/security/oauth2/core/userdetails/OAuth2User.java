@@ -52,11 +52,9 @@ public class OAuth2User implements OAuth2UserDetails {
 						boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
 
 		Assert.notNull(identifier, "identifier cannot be null");
-		this.identifier = identifier;
-
 		Assert.notEmpty(attributes, "attributes cannot be empty");
+		this.identifier = identifier;
 		this.attributes = Collections.unmodifiableList(attributes);
-
 		this.userNameAttributeName = USERNAME_ATTRIBUTE_NAME_EMAIL;
 		this.authorities = Collections.unmodifiableSet(this.sortAuthorities(authorities));
 		this.accountNonExpired = accountNonExpired;

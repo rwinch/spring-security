@@ -30,7 +30,6 @@ public class InvalidClientIdentifierException extends OAuth2Exception {
 
 	public InvalidClientIdentifierException(String clientIdentifier, String message) {
 		super(message);
-
 		Assert.notNull(clientIdentifier, "clientIdentifier cannot be null");
 		this.clientIdentifier = clientIdentifier;
 	}

@@ -45,14 +45,11 @@ public class TokenResponseAttributes {
 									Set<String> scopes, Map<String,String> additionalParameters) {
 
 		Assert.notNull(accessToken, "accessToken cannot be null");
-		this.accessToken = accessToken;
-
 		Assert.notNull(accessTokenType, "accessTokenType cannot be null");
-		this.accessTokenType = accessTokenType;
-
 		Assert.isTrue(expiresIn >= 0, "expiresIn must be a positive number");
+		this.accessToken = accessToken;
+		this.accessTokenType = accessTokenType;
 		this.expiresAt = Instant.now().plusSeconds(expiresIn);
-
 		this.scopes = Collections.unmodifiableSet(scopes != null ? scopes : Collections.emptySet());
 		this.additionalParameters = Collections.unmodifiableMap(additionalParameters != null ?
 				additionalParameters : Collections.emptyMap());

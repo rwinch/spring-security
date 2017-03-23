@@ -34,7 +34,6 @@ public abstract class AuthorizationGrantAuthenticationToken extends AbstractAuth
 													Collection<? extends GrantedAuthority> authorities) {
 
 		super(authorities);
-
 		Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
 		this.authorizationGrantType = authorizationGrantType;
 	}

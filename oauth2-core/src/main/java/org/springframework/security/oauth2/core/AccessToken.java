@@ -53,13 +53,10 @@ public class AccessToken extends AbstractToken {
 
 	public AccessToken(TokenType tokenType, String value, Instant expiresAt, Set<String> scopes) {
 		super(value);
-
 		Assert.notNull(tokenType, "tokenType cannot be null");
-		this.tokenType = tokenType;
-
 		Assert.notNull(expiresAt, "expiresAt cannot be null");
+		this.tokenType = tokenType;
 		this.expiresAt = expiresAt;
-
 		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
 	}
 

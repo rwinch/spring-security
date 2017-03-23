@@ -43,15 +43,11 @@ public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 										ClientRegistration clientRegistration, AccessToken accessToken) {
 
 		super(authorities);
-
-		this.principal = principal;
-
 		Assert.notNull(clientRegistration, "clientRegistration cannot be null");
-		this.clientRegistration = clientRegistration;
-
 		Assert.notNull(accessToken, "accessToken cannot be null");
+		this.principal = principal;
+		this.clientRegistration = clientRegistration;
 		this.accessToken = accessToken;
-
 		this.setAuthenticated(principal != null);
 	}
 

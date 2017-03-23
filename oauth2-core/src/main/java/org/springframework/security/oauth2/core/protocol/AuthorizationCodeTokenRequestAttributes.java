@@ -29,11 +29,9 @@ public class AuthorizationCodeTokenRequestAttributes {
 
 	public AuthorizationCodeTokenRequestAttributes(String code, String clientId, URI redirectUri) {
 		Assert.notNull(code, "code cannot be null");
-		this.code = code;
-
 		Assert.notNull(clientId, "clientId cannot be null");
+		this.code = code;
 		this.clientId = clientId;
-
 		this.redirectUri = redirectUri;
 	}
 
