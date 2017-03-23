@@ -15,114 +15,32 @@
  */
 package org.springframework.security.samples.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationProperties;
 import org.springframework.security.samples.userdetails.GitHubOAuth2UserDetails;
+
+import java.net.URI;
 
 import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.oauth2Login;
 
 /**
  * @author Joe Grandja
  */
-@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	@Autowired(required = false)
-	@Qualifier("githubClientRegistration")
-	private ClientRegistration githubClientRegistration;
 
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		OAuth2LoginSecurityConfigurer<HttpSecurity> oauth2LoginConfigurer = oauth2Login();
-		if (this.githubClientRegistration != null) {
-			oauth2LoginConfigurer
-				.userInfoEndpoint()
-					.userInfoTypeMapping(GitHubOAuth2UserDetails.class,
-						this.githubClientRegistration.getProviderDetails().getUserInfoUri());
-		}
-
 		http
 			.authorizeRequests()
 				.antMatchers("/favicon.ico").permitAll()
 				.anyRequest().authenticated()
 				.and()
-			.apply(oauth2LoginConfigurer);
+			.apply(oauth2Login()
+					.userInfoEndpoint()
+						.userInfoTypeMapping(GitHubOAuth2UserDetails.class, new URI("https://api.github.com/user")));
 	}
 	// @formatter:on
-
-	@Configuration
-	@Profile("google-login")
-	static class GoogleClientConfig {
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.google")
-		@Bean
-		ClientRegistrationProperties googleClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		ClientRegistration googleClientRegistration() {
-			return new ClientRegistration.Builder(this.googleClientRegistrationProperties()).build();
-		}
-	}
-
-	@Configuration
-	@Profile("github-login")
-	static class GitHubClientConfig {
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.github")
-		@Bean
-		ClientRegistrationProperties githubClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		ClientRegistration githubClientRegistration() {
-			return new ClientRegistration.Builder(this.githubClientRegistrationProperties()).build();
-		}
-	}
-
-	@Configuration
-	@Profile("facebook-login")
-	static class FacebookClientConfig {
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.facebook")
-		@Bean
-		ClientRegistrationProperties facebookClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		ClientRegistration facebookClientRegistration() {
-			return new ClientRegistration.Builder(this.facebookClientRegistrationProperties()).build();
-		}
-	}
-
-	@Configuration
-	@Profile("okta-login")
-	static class OktaClientConfig {
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.okta")
-		@Bean
-		ClientRegistrationProperties oktaClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		ClientRegistration oktaClientRegistration() {
-			return new ClientRegistration.Builder(this.oktaClientRegistrationProperties()).build();
-		}
-	}
 }
