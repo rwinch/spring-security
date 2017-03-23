@@ -29,12 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,7 +42,6 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationCo
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authorization.AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
@@ -94,6 +91,13 @@ public class OAuth2LoginApplicationTests {
 	@Qualifier("githubClientRegistration")
 	private ClientRegistration githubClientRegistration;
 
+	@Autowired
+	@Qualifier("facebookClientRegistration")
+	private ClientRegistration facebookClientRegistration;
+
+	@Autowired
+	@Qualifier("oktaClientRegistration")
+	private ClientRegistration oktaClientRegistration;
 
 	@Before
 	public void setup() {
@@ -328,22 +332,29 @@ public class OAuth2LoginApplicationTests {
 	private void assertClientsPage(HtmlPage page) throws Exception {
 		assertThat(page.getTitleText()).isEqualTo("OAuth2 Client Login Page");
 
-		assertThat(page.getElementsByTagName("li").size()).isEqualTo(2);
+		int expectedClients = 4;
+
+		assertThat(page.getElementsByTagName("li").size()).isEqualTo(expectedClients);
 
 		List<HtmlAnchor> clientAnchorElements = page.getAnchors();
-		assertThat(clientAnchorElements.size()).isEqualTo(2);
+		assertThat(clientAnchorElements.size()).isEqualTo(expectedClients);
 
 		String baseAuthorizeUri = AuthorizationRequestRedirectFilter.DEFAULT_FILTER_PROCESSING_URI + "/";
 		String googleClientAuthorizeUri = baseAuthorizeUri + this.googleClientRegistration.getClientAlias();
 		String githubClientAuthorizeUri = baseAuthorizeUri + this.githubClientRegistration.getClientAlias();
+		String facebookClientAuthorizeUri = baseAuthorizeUri + this.facebookClientRegistration.getClientAlias();
+		String oktaClientAuthorizeUri = baseAuthorizeUri + this.oktaClientRegistration.getClientAlias();
 
-		assertThat(clientAnchorElements.get(0).getAttribute("href")).isIn(googleClientAuthorizeUri, githubClientAuthorizeUri);
-		assertThat(clientAnchorElements.get(0).asText()).isIn(
-				this.googleClientRegistration.getClientName(), this.githubClientRegistration.getClientName());
-
-		assertThat(clientAnchorElements.get(1).getAttribute("href")).isIn(googleClientAuthorizeUri, githubClientAuthorizeUri);
-		assertThat(clientAnchorElements.get(1).asText()).isIn(
-				this.googleClientRegistration.getClientName(), this.githubClientRegistration.getClientName());
+		for (int i=0; i<expectedClients; i++) {
+			assertThat(clientAnchorElements.get(i).getAttribute("href")).isIn(
+				googleClientAuthorizeUri, githubClientAuthorizeUri,
+				facebookClientAuthorizeUri, oktaClientAuthorizeUri);
+			assertThat(clientAnchorElements.get(i).asText()).isIn(
+				this.googleClientRegistration.getClientName(),
+				this.githubClientRegistration.getClientName(),
+				this.facebookClientRegistration.getClientName(),
+				this.oktaClientRegistration.getClientName());
+		}
 	}
 
 	private void assertUserInfoPage(HtmlPage page) throws Exception {
@@ -375,7 +386,6 @@ public class OAuth2LoginApplicationTests {
 		return response;
 	}
 
-	@Configuration
 	@EnableWebSecurity
 	public static class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 
@@ -383,37 +393,15 @@ public class OAuth2LoginApplicationTests {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
-					.authorizeRequests()
-						.anyRequest().authenticated()
-						.and()
-					.apply(oauth2Login()
-							.authorizationCodeGrantTokenExchanger(this.mockAuthorizationCodeGrantTokenExchanger())
-							.userInfoEndpoint()
-								.userInfoService(this.mockUserInfoEndpointService()));
+				.authorizeRequests()
+					.anyRequest().authenticated()
+					.and()
+				.apply(oauth2Login()
+					.authorizationCodeGrantTokenExchanger(this.mockAuthorizationCodeGrantTokenExchanger())
+					.userInfoEndpoint()
+						.userInfoService(this.mockUserInfoEndpointService()));
 		}
 		// @formatter:on
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.google")
-		@Bean
-		public ClientRegistrationProperties googleClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		public ClientRegistration googleClientRegistration() {
-			return new ClientRegistration.Builder(this.googleClientRegistrationProperties()).build();
-		}
-
-		@ConfigurationProperties(prefix = "security.oauth2.client.github")
-		@Bean
-		public ClientRegistrationProperties githubClientRegistrationProperties() {
-			return new ClientRegistrationProperties();
-		}
-
-		@Bean
-		public ClientRegistration githubClientRegistration() {
-			return new ClientRegistration.Builder(this.githubClientRegistrationProperties()).build();
-		}
 
 		private AuthorizationGrantTokenExchanger<AuthorizationCodeGrantAuthenticationToken> mockAuthorizationCodeGrantTokenExchanger() {
 			TokenResponseAttributes tokenResponse = new TokenResponseAttributes(
