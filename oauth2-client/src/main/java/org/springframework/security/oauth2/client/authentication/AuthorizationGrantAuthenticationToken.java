@@ -38,7 +38,7 @@ public abstract class AuthorizationGrantAuthenticationToken extends AbstractAuth
 		this.authorizationGrantType = authorizationGrantType;
 	}
 
-	public final AuthorizationGrantType getGrantType() {
+	public AuthorizationGrantType getGrantType() {
 		return this.authorizationGrantType;
 	}
 }

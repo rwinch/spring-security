@@ -45,13 +45,9 @@ public final class OAuth2LoginSecurityConfigurer<B extends HttpSecurityBuilder<B
 		AbstractHttpConfigurer<OAuth2LoginSecurityConfigurer<B>, B> {
 
 	private final AuthorizationRequestRedirectFilterConfigurer<B> authorizationRequestRedirectFilterConfigurer;
-
 	private final AuthorizationCodeAuthenticationFilterConfigurer<B> authorizationCodeAuthenticationFilterConfigurer;
-
 	private final UserInfoEndpointConfig userInfoEndpointConfig;
-
 	private boolean loginPageFilterEnabled;
-
 
 	public OAuth2LoginSecurityConfigurer() {
 		this.authorizationRequestRedirectFilterConfigurer = new AuthorizationRequestRedirectFilterConfigurer<>();
@@ -103,7 +99,7 @@ public final class OAuth2LoginSecurityConfigurer<B extends HttpSecurityBuilder<B
 		return this.userInfoEndpointConfig;
 	}
 
-	public final class UserInfoEndpointConfig {
+	public class UserInfoEndpointConfig {
 
 		private UserInfoEndpointConfig() {
 		}

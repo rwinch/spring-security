@@ -33,7 +33,6 @@ final class AuthorizationRequestRedirectFilterConfigurer<B extends HttpSecurityB
 		AbstractHttpConfigurer<AuthorizationRequestRedirectFilterConfigurer<B>, B> {
 
 	private String authorizationProcessingUri;
-
 	private AuthorizationRequestUriBuilder authorizationRequestBuilder;
 
 	AuthorizationRequestRedirectFilterConfigurer<B> clientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {

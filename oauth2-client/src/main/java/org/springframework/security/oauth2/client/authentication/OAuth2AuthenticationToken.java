@@ -52,20 +52,20 @@ public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 	}
 
 	@Override
-	public final Object getPrincipal() {
+	public Object getPrincipal() {
 		return this.principal;
 	}
 
 	@Override
-	public final Object getCredentials() {
+	public Object getCredentials() {
 		return (this.principal != null ? this.principal.getPassword() : null);
 	}
 
-	public final ClientRegistration getClientRegistration() {
+	public ClientRegistration getClientRegistration() {
 		return this.clientRegistration;
 	}
 
-	public final AccessToken getAccessToken() {
+	public AccessToken getAccessToken() {
 		return this.accessToken;
 	}
 }

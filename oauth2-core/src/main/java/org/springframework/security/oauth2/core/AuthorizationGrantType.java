@@ -27,7 +27,7 @@ public enum AuthorizationGrantType {
 		this.value = value;
 	}
 
-	public final String value() {
+	public String value() {
 		return this.value;
 	}
 }

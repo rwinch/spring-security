@@ -79,6 +79,7 @@ public class AuthorizationCodeAuthenticationProvider implements AuthenticationPr
 	}
 
 	public final void setAuthoritiesMapper(GrantedAuthoritiesMapper authoritiesMapper) {
+		Assert.notNull(authoritiesMapper, "authoritiesMapper cannot be null");
 		this.authoritiesMapper = authoritiesMapper;
 	}
 }

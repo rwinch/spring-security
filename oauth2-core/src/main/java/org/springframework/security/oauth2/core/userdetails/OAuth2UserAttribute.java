@@ -15,6 +15,8 @@
  */
 package org.springframework.security.oauth2.core.userdetails;
 
+import org.springframework.util.Assert;
+
 import java.io.Serializable;
 
 /**
@@ -25,15 +27,16 @@ public class OAuth2UserAttribute implements Serializable {
 	private final Object value;
 
 	public OAuth2UserAttribute(String name, Object value) {
+		Assert.notNull(name, "name cannot be null");
 		this.name = name;
 		this.value = value;
 	}
 
-	public final String getName() {
+	public String getName() {
 		return this.name;
 	}
 
-	public final Object getValue() {
+	public Object getValue() {
 		return this.value;
 	}
 

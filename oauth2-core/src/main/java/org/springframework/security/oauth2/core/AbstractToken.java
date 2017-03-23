@@ -30,7 +30,7 @@ public abstract class AbstractToken implements Serializable {
 		this.value = value;
 	}
 
-	public final String getValue() {
+	public String getValue() {
 		return this.value;
 	}
 }

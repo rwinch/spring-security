@@ -29,9 +29,7 @@ import java.nio.charset.Charset;
  * @author Joe Grandja
  */
 final class NimbusClientHttpResponse extends AbstractClientHttpResponse {
-
 	private final HTTPResponse httpResponse;
-
 	private final HttpHeaders headers;
 
 	NimbusClientHttpResponse(HTTPResponse httpResponse) {

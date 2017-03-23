@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Joe Grandja
  */
-public class TokenResponseAttributes {
+public final class TokenResponseAttributes {
 	private final String accessToken;
 	private final AccessToken.TokenType accessTokenType;
 	private final Instant expiresAt;
@@ -55,23 +55,23 @@ public class TokenResponseAttributes {
 				additionalParameters : Collections.emptyMap());
 	}
 
-	public final String getAccessToken() {
+	public String getAccessToken() {
 		return this.accessToken;
 	}
 
-	public final AccessToken.TokenType getAccessTokenType() {
+	public AccessToken.TokenType getAccessTokenType() {
 		return this.accessTokenType;
 	}
 
-	public final Instant getExpiresAt() {
+	public Instant getExpiresAt() {
 		return this.expiresAt;
 	}
 
-	public final Set<String> getScopes() {
+	public Set<String> getScopes() {
 		return this.scopes;
 	}
 
-	public final Map<String, String> getAdditionalParameters() {
+	public Map<String, String> getAdditionalParameters() {
 		return this.additionalParameters;
 	}
 }

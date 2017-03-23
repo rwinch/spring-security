@@ -31,7 +31,7 @@ public final class ResponseAttributesExtractor {
 	private ResponseAttributesExtractor() {
 	}
 
-	public static final AuthorizationCodeAuthorizationResponseAttributes extractAuthorizationCodeResponse(HttpServletRequest request) {
+	public static AuthorizationCodeAuthorizationResponseAttributes extractAuthorizationCodeResponse(HttpServletRequest request) {
 		AuthorizationCodeAuthorizationResponseAttributes response;
 
 		String code = request.getParameter(OAuth2Attributes.CODE);
@@ -44,7 +44,7 @@ public final class ResponseAttributesExtractor {
 		return response;
 	}
 
-	public static final ErrorResponseAttributes extractErrorResponse(HttpServletRequest request) {
+	public static ErrorResponseAttributes extractErrorResponse(HttpServletRequest request) {
 		ErrorResponseAttributes response;
 
 		String error = request.getParameter(OAuth2Attributes.ERROR);

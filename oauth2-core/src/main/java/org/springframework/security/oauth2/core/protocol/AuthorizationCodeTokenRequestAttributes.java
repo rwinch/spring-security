@@ -22,7 +22,7 @@ import java.net.URI;
 /**
  * @author Joe Grandja
  */
-public class AuthorizationCodeTokenRequestAttributes {
+public final class AuthorizationCodeTokenRequestAttributes {
 	private final String code;
 	private final String clientId;
 	private final URI redirectUri;
@@ -35,15 +35,15 @@ public class AuthorizationCodeTokenRequestAttributes {
 		this.redirectUri = redirectUri;
 	}
 
-	public final String getCode() {
+	public String getCode() {
 		return this.code;
 	}
 
-	public final String getClientId() {
+	public String getClientId() {
 		return this.clientId;
 	}
 
-	public final URI getRedirectUri() {
+	public URI getRedirectUri() {
 		return this.redirectUri;
 	}
 }

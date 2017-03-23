@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
 /**
  * @author Joe Grandja
  */
-public class AuthorizationCodeAuthorizationResponseAttributes {
+public final class AuthorizationCodeAuthorizationResponseAttributes {
 	private final String code;
 	private final String state;
 
@@ -30,11 +30,11 @@ public class AuthorizationCodeAuthorizationResponseAttributes {
 		this.state = state;
 	}
 
-	public final String getCode() {
+	public String getCode() {
 		return this.code;
 	}
 
-	public final String getState() {
+	public String getState() {
 		return this.state;
 	}
 }

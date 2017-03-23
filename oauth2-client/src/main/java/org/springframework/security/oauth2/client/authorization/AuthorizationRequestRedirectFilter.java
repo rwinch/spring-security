@@ -43,21 +43,13 @@ import java.net.URISyntaxException;
  */
 public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 	public static final String DEFAULT_FILTER_PROCESSING_URI = "/oauth2/authorize";
-
 	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
-
 	private final AntPathRequestMatcher authorizationRequestMatcher;
-
 	private final ClientRegistrationRepository clientRegistrationRepository;
-
 	private final AuthorizationRequestUriBuilder authorizationUriBuilder;
-
 	private final RedirectStrategy authorizationRedirectStrategy = new DefaultRedirectStrategy();
-
 	private final StringKeyGenerator stateGenerator = new DefaultStateGenerator();
-
 	private AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
-
 
 	public AuthorizationRequestRedirectFilter(ClientRegistrationRepository clientRegistrationRepository,
 												AuthorizationRequestUriBuilder authorizationUriBuilder) {
@@ -79,7 +71,7 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	public final void afterPropertiesSet() {
+	public void afterPropertiesSet() {
 		Assert.notEmpty(this.clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
 	}
 
@@ -89,14 +81,14 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected final void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		if (this.authorizationRequestMatcher.matches(request)) {
+		if (this.requiresAuthorization(request, response)) {
 			try {
 				this.obtainAuthorization(request, response);
 			} catch (OAuth2Exception failed) {
-				this.unsuccessfulAuthorizationRequest(request, response, failed);
+				this.unsuccessfulAuthorization(request, response, failed);
 			}
 			return;
 		}
@@ -104,7 +96,11 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private void obtainAuthorization(HttpServletRequest request, HttpServletResponse response)
+	protected boolean requiresAuthorization(HttpServletRequest request, HttpServletResponse response) {
+		return this.authorizationRequestMatcher.matches(request);
+	}
+
+	protected void obtainAuthorization(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
 		String clientAlias = this.authorizationRequestMatcher
@@ -134,8 +130,8 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 		this.authorizationRedirectStrategy.sendRedirect(request, response, redirectUri.toString());
 	}
 
-	private void unsuccessfulAuthorizationRequest(HttpServletRequest request, HttpServletResponse response,
-													OAuth2Exception failed) throws IOException, ServletException {
+	protected void unsuccessfulAuthorization(HttpServletRequest request, HttpServletResponse response,
+												OAuth2Exception failed) throws IOException, ServletException {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Authorization Request failed: " + failed.toString(), failed);

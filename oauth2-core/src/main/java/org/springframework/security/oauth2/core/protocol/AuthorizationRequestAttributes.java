@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * @author Joe Grandja
  */
-public class AuthorizationRequestAttributes implements Serializable {
+public final class AuthorizationRequestAttributes implements Serializable {
 	private final URI authorizeUri;
 	private final AuthorizationGrantType authorizationGrantType;
 	private final ResponseType responseType;
@@ -60,31 +60,31 @@ public class AuthorizationRequestAttributes implements Serializable {
 				ResponseType.CODE, clientId, redirectUri, scopes, state);
 	}
 
-	public final URI getAuthorizeUri() {
+	public URI getAuthorizeUri() {
 		return this.authorizeUri;
 	}
 
-	public final AuthorizationGrantType getGrantType() {
+	public AuthorizationGrantType getGrantType() {
 		return this.authorizationGrantType;
 	}
 
-	public final ResponseType getResponseType() {
+	public ResponseType getResponseType() {
 		return this.responseType;
 	}
 
-	public final String getClientId() {
+	public String getClientId() {
 		return this.clientId;
 	}
 
-	public final URI getRedirectUri() {
+	public URI getRedirectUri() {
 		return this.redirectUri;
 	}
 
-	public final Set<String> getScopes() {
+	public Set<String> getScopes() {
 		return this.scopes;
 	}
 
-	public final String getState() {
+	public String getState() {
 		return this.state;
 	}
 }

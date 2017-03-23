@@ -48,11 +48,8 @@ import java.util.Map;
  * @author Joe Grandja
  */
 public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsService {
-
 	private final HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-
 	private final Map<URI, Class<? extends OAuth2UserDetails>> userInfoTypeMapping = new HashMap<>();
-
 
 	@Override
 	public UserDetails loadUserDetails(OAuth2AuthenticationToken authenticationToken) throws OAuth2AuthenticationException {

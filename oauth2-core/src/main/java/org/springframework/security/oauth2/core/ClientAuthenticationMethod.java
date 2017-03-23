@@ -28,7 +28,7 @@ public enum ClientAuthenticationMethod {
 		this.value = value;
 	}
 
-	public final String value() {
+	public String value() {
 		return this.value;
 	}
 }
