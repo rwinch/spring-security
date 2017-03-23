@@ -25,7 +25,7 @@ import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import com.nimbusds.oauth2.sdk.id.ClientID;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.oauth2.client.authentication.AuthorizationCodeGrantAuthenticationToken;
+import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AccessToken;
@@ -46,16 +46,16 @@ import java.util.stream.Collectors;
 /**
  * @author Joe Grandja
  */
-public class NimbusAuthorizationCodeGrantTokenExchanger implements AuthorizationGrantTokenExchanger<AuthorizationCodeGrantAuthenticationToken> {
+public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> {
 
 	@Override
-	public TokenResponseAttributes exchange(AuthorizationCodeGrantAuthenticationToken authorizationGrantAuthentication)
+	public TokenResponseAttributes exchange(AuthorizationCodeAuthenticationToken authorizationCodeAuthenticationToken)
 			throws OAuth2AuthenticationException {
 
-		ClientRegistration clientRegistration = authorizationGrantAuthentication.getClientRegistration();
+		ClientRegistration clientRegistration = authorizationCodeAuthenticationToken.getClientRegistration();
 
 		// Build the authorization code grant request for the token endpoint
-		AuthorizationCode authorizationCode = new AuthorizationCode(authorizationGrantAuthentication.getAuthorizationCode());
+		AuthorizationCode authorizationCode = new AuthorizationCode(authorizationCodeAuthenticationToken.getAuthorizationCode());
 		URI redirectUri = clientRegistration.getRedirectUri();
 		AuthorizationGrant authorizationCodeGrant = new AuthorizationCodeGrant(authorizationCode, redirectUri);
 		URI tokenUri = clientRegistration.getProviderDetails().getTokenUri();

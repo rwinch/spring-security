@@ -37,8 +37,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.authentication.AuthorizationCodeGrantAuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.AuthorizationCodeGrantProcessingFilter;
+import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
+import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authorization.AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -70,7 +70,7 @@ import static org.springframework.security.oauth2.client.config.annotation.web.c
 
 /**
  * Integration tests for the OAuth 2.0 client filters {@link AuthorizationRequestRedirectFilter}
- * and {@link AuthorizationCodeGrantProcessingFilter}.
+ * and {@link AuthorizationCodeAuthenticationProcessingFilter}.
  * These filters work together to realize the Authorization Code Grant flow.
  *
  * @author Joe Grandja
@@ -397,13 +397,13 @@ public class OAuth2LoginApplicationTests {
 					.anyRequest().authenticated()
 					.and()
 				.apply(oauth2Login()
-					.authorizationCodeGrantTokenExchanger(this.mockAuthorizationCodeGrantTokenExchanger())
+					.authorizationCodeTokenExchanger(this.mockAuthorizationCodeTokenExchanger())
 					.userInfoEndpoint()
 						.userInfoService(this.mockUserInfoEndpointService()));
 		}
 		// @formatter:on
 
-		private AuthorizationGrantTokenExchanger<AuthorizationCodeGrantAuthenticationToken> mockAuthorizationCodeGrantTokenExchanger() {
+		private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> mockAuthorizationCodeTokenExchanger() {
 			TokenResponseAttributes tokenResponse = new TokenResponseAttributes(
 					"access-token-1234", AccessToken.TokenType.BEARER, 60 * 1000, Collections.singleton("openid"));
 

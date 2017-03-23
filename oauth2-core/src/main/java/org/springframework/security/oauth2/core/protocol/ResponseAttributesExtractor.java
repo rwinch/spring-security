@@ -31,15 +31,15 @@ public final class ResponseAttributesExtractor {
 	private ResponseAttributesExtractor() {
 	}
 
-	public static final AuthorizationCodeGrantAuthorizationResponseAttributes extractAuthorizationCodeGrantResponse(HttpServletRequest request) {
-		AuthorizationCodeGrantAuthorizationResponseAttributes response;
+	public static final AuthorizationCodeAuthorizationResponseAttributes extractAuthorizationCodeResponse(HttpServletRequest request) {
+		AuthorizationCodeAuthorizationResponseAttributes response;
 
 		String code = request.getParameter(OAuth2Attributes.CODE);
 		Assert.hasText(code, OAuth2Attributes.CODE + " attribute is required");
 
 		String state = request.getParameter(OAuth2Attributes.STATE);
 
-		response = new AuthorizationCodeGrantAuthorizationResponseAttributes(code, state);
+		response = new AuthorizationCodeAuthorizationResponseAttributes(code, state);
 
 		return response;
 	}

@@ -44,31 +44,31 @@ import static org.mockito.Mockito.*;
 import static org.springframework.security.oauth2.client.ClientRegistrationTestUtil.*;
 
 /**
- * Tests {@link AuthorizationCodeGrantProcessingFilter}.
+ * Tests {@link AuthorizationCodeAuthenticationProcessingFilter}.
  *
  * @author Joe Grandja
  */
-public class AuthorizationCodeGrantProcessingFilterTests {
+public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void afterPropertiesSetWhenClientRegistrationRepositoryIsNullThenThrowIllegalArgumentException() {
-		AuthorizationCodeGrantProcessingFilter filter = new AuthorizationCodeGrantProcessingFilter();
+		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
 		filter.setAuthenticationManager(mock(AuthenticationManager.class));
 		filter.afterPropertiesSet();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void afterPropertiesSetWhenAuthenticationManagerIsNullThenThrowIllegalArgumentException() {
-		AuthorizationCodeGrantProcessingFilter filter = new AuthorizationCodeGrantProcessingFilter();
+		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
 		filter.setClientRegistrationRepository(mock(ClientRegistrationRepository.class));
 		filter.afterPropertiesSet();
 	}
 
 	@Test
-	public void doFilterWhenNotAuthorizationCodeGrantResponseThenContinueChain() throws Exception {
+	public void doFilterWhenNotAuthorizationCodeResponseThenContinueChain() throws Exception {
 		ClientRegistration clientRegistration = googleClientRegistration();
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 
 		String requestURI = "/path";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
@@ -83,10 +83,10 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 	}
 
 	@Test
-	public void doFilterWhenAuthorizationCodeGrantErrorResponseThenAuthenticationFailureHandlerIsCalled() throws Exception {
+	public void doFilterWhenAuthorizationCodeErrorResponseThenAuthenticationFailureHandlerIsCalled() throws Exception {
 		ClientRegistration clientRegistration = githubClientRegistration();
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 
@@ -107,7 +107,7 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 	}
 
 	@Test
-	public void doFilterWhenAuthorizationCodeGrantSuccessResponseThenAuthenticationSuccessHandlerIsCalled() throws Exception {
+	public void doFilterWhenAuthorizationCodeSuccessResponseThenAuthenticationSuccessHandlerIsCalled() throws Exception {
 		TestingAuthenticationToken authentication = new TestingAuthenticationToken("joe", "password", "user", "admin");
 		AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
 		when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authentication);
@@ -115,7 +115,7 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 		String requestURI = "/path";
 		ClientRegistration clientRegistration = githubClientRegistration(requestURI);	// requestUri must be same as client redirectUri to pass validation
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(authenticationManager, clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(authenticationManager, clientRegistration));
 		AuthenticationSuccessHandler successHandler = mock(AuthenticationSuccessHandler.class);
 		filter.setAuthenticationSuccessHandler(successHandler);
 		AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
@@ -142,10 +142,10 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 	}
 
 	@Test
-	public void doFilterWhenAuthorizationCodeGrantSuccessResponseAndNoMatchingAuthorizationRequestThenThrowOAuth2AuthenticationExceptionAuthorizationRequestNotFound() throws Exception {
+	public void doFilterWhenAuthorizationCodeSuccessResponseAndNoMatchingAuthorizationRequestThenThrowOAuth2AuthenticationExceptionAuthorizationRequestNotFound() throws Exception {
 		ClientRegistration clientRegistration = githubClientRegistration();
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 
@@ -165,10 +165,10 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 	}
 
 	@Test
-	public void doFilterWhenAuthorizationCodeGrantSuccessResponseWithInvalidStateParamThenThrowOAuth2AuthenticationExceptionInvalidStateParameter() throws Exception {
+	public void doFilterWhenAuthorizationCodeSuccessResponseWithInvalidStateParamThenThrowOAuth2AuthenticationExceptionInvalidStateParameter() throws Exception {
 		ClientRegistration clientRegistration = githubClientRegistration();
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 		AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
@@ -191,11 +191,11 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 	}
 
 	@Test
-	public void doFilterWhenAuthorizationCodeGrantSuccessResponseWithInvalidRedirectUriParamThenThrowOAuth2AuthenticationExceptionInvalidRedirectUriParameter() throws Exception {
+	public void doFilterWhenAuthorizationCodeSuccessResponseWithInvalidRedirectUriParamThenThrowOAuth2AuthenticationExceptionInvalidRedirectUriParameter() throws Exception {
 		String requestURI = "/path2";
 		ClientRegistration clientRegistration = githubClientRegistration("/path");
 
-		AuthorizationCodeGrantProcessingFilter filter = spy(setupFilter(clientRegistration));
+		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 		AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
@@ -216,7 +216,7 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, OAuth2Error.ErrorCode.INVALID_REDIRECT_URI_PARAMETER);
 	}
 
-	private void verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(AuthorizationCodeGrantProcessingFilter filter,
+	private void verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(AuthorizationCodeAuthenticationProcessingFilter filter,
 																		AuthenticationFailureHandler failureHandler,
 																		OAuth2Error.ErrorCode errorCode) throws Exception {
 
@@ -233,18 +233,18 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 		assertThat(oauth2AuthenticationException.getErrorObject().getErrorCode()).isEqualTo(errorCode);
 	}
 
-	private AuthorizationCodeGrantProcessingFilter setupFilter(ClientRegistration... clientRegistrations) throws Exception {
+	private AuthorizationCodeAuthenticationProcessingFilter setupFilter(ClientRegistration... clientRegistrations) throws Exception {
 		AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
 
 		return setupFilter(authenticationManager, clientRegistrations);
 	}
 
-	private AuthorizationCodeGrantProcessingFilter setupFilter(
+	private AuthorizationCodeAuthenticationProcessingFilter setupFilter(
 			AuthenticationManager authenticationManager, ClientRegistration... clientRegistrations) throws Exception {
 
 		ClientRegistrationRepository clientRegistrationRepository = clientRegistrationRepository(clientRegistrations);
 
-		AuthorizationCodeGrantProcessingFilter filter = new AuthorizationCodeGrantProcessingFilter();
+		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
 		filter.setClientRegistrationRepository(clientRegistrationRepository);
 		filter.setAuthenticationManager(authenticationManager);
 		filter.afterPropertiesSet();
@@ -258,7 +258,7 @@ public class AuthorizationCodeGrantProcessingFilterTests {
 											String state) {
 
 		AuthorizationRequestAttributes authorizationRequestAttributes =
-				AuthorizationRequestAttributes.authorizationCodeGrant(
+				AuthorizationRequestAttributes.authorizationCode(
 						clientRegistration.getProviderDetails().getAuthorizationUri(),
 						clientRegistration.getClientId(),
 						clientRegistration.getRedirectUri(),

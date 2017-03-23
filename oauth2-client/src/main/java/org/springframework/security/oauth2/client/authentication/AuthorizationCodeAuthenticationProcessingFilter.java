@@ -24,7 +24,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.OAuth2Attributes;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.protocol.AuthorizationCodeGrantAuthorizationResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
 import org.springframework.security.oauth2.core.protocol.ErrorResponseAttributes;
 import org.springframework.security.oauth2.core.protocol.ResponseAttributesExtractor;
@@ -44,14 +44,14 @@ import java.net.URI;
  *
  * @author Joe Grandja
  */
-public class AuthorizationCodeGrantProcessingFilter extends AbstractAuthenticationProcessingFilter {
+public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
 	private ClientRegistrationRepository clientRegistrationRepository;
 
 	private AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
 
 
-	public AuthorizationCodeGrantProcessingFilter() {
-		super(AuthorizationCodeGrantProcessingFilter::isAuthorizationCodeGrantResponse);
+	public AuthorizationCodeAuthenticationProcessingFilter() {
+		super(AuthorizationCodeAuthenticationProcessingFilter::isAuthorizationCodeResponse);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class AuthorizationCodeGrantProcessingFilter extends AbstractAuthenticati
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
-		if (isAuthorizationCodeGrantErrorResponse(request)) {
+		if (isAuthorizationCodeErrorResponse(request)) {
 			ErrorResponseAttributes authorizationError = ResponseAttributesExtractor.extractErrorResponse(request);
 			OAuth2Error oauth2Error = OAuth2Error.valueOf(authorizationError.getErrorCode(),
 					authorizationError.getErrorDescription(), authorizationError.getErrorUri());
@@ -78,11 +78,11 @@ public class AuthorizationCodeGrantProcessingFilter extends AbstractAuthenticati
 		ClientRegistration clientRegistration = this.clientRegistrationRepository.getRegistrationByClientId(
 				matchingAuthorizationRequest.getClientId());
 
-		AuthorizationCodeGrantAuthorizationResponseAttributes authorizationCodeGrantAttributes =
-				ResponseAttributesExtractor.extractAuthorizationCodeGrantResponse(request);
+		AuthorizationCodeAuthorizationResponseAttributes authorizationCodeResponseAttributes =
+				ResponseAttributesExtractor.extractAuthorizationCodeResponse(request);
 
-		AuthorizationCodeGrantAuthenticationToken authRequest = new AuthorizationCodeGrantAuthenticationToken(
-				authorizationCodeGrantAttributes.getCode(), clientRegistration);
+		AuthorizationCodeAuthenticationToken authRequest = new AuthorizationCodeAuthenticationToken(
+				authorizationCodeResponseAttributes.getCode(), clientRegistration);
 
 		authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
 
@@ -101,18 +101,18 @@ public class AuthorizationCodeGrantProcessingFilter extends AbstractAuthenticati
 		this.authorizationRequestRepository = authorizationRequestRepository;
 	}
 
-	public static final boolean isAuthorizationCodeGrantSuccessResponse(HttpServletRequest request) {
+	public static final boolean isAuthorizationCodeSuccessResponse(HttpServletRequest request) {
 		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.CODE)) &&
 				!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
 	}
 
-	public static final boolean isAuthorizationCodeGrantErrorResponse(HttpServletRequest request) {
+	public static final boolean isAuthorizationCodeErrorResponse(HttpServletRequest request) {
 		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.ERROR)) &&
 				!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
 	}
 
-	public static final boolean isAuthorizationCodeGrantResponse(HttpServletRequest request) {
-		return isAuthorizationCodeGrantSuccessResponse(request) || isAuthorizationCodeGrantErrorResponse(request);
+	public static final boolean isAuthorizationCodeResponse(HttpServletRequest request) {
+		return isAuthorizationCodeSuccessResponse(request) || isAuthorizationCodeErrorResponse(request);
 	}
 
 	private AuthorizationRequestAttributes resolveAuthorizationRequest(HttpServletRequest request) {

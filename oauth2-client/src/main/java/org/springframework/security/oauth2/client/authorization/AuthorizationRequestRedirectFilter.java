@@ -37,7 +37,7 @@ import java.net.URISyntaxException;
 
 
 /**
- * Initiates an OAuth 2.0 Authorization Request redirect for the Authorization Code Grant and Implicit Grant flows.
+ * Initiates an OAuth 2.0 Authorization Request redirect for the Authorization Code Grant flow.
  *
  * @author Joe Grandja
  */
@@ -117,7 +117,7 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 		}
 
 		AuthorizationRequestAttributes authorizationRequestAttributes =
-				AuthorizationRequestAttributes.authorizationCodeGrant(
+				AuthorizationRequestAttributes.authorizationCode(
 						clientRegistration.getProviderDetails().getAuthorizationUri(),
 						clientRegistration.getClientId(),
 						clientRegistration.getRedirectUri(),

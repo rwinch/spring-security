@@ -23,11 +23,11 @@ import org.springframework.util.Assert;
 /**
  * @author Joe Grandja
  */
-public class AuthorizationCodeGrantAuthenticationToken extends AuthorizationGrantAuthenticationToken {
+public class AuthorizationCodeAuthenticationToken extends AuthorizationGrantAuthenticationToken {
 	private final String authorizationCode;
 	private final ClientRegistration clientRegistration;
 
-	public AuthorizationCodeGrantAuthenticationToken(String authorizationCode, ClientRegistration clientRegistration) {
+	public AuthorizationCodeAuthenticationToken(String authorizationCode, ClientRegistration clientRegistration) {
 		super(AuthorizationGrantType.AUTHORIZATION_CODE, AuthorityUtils.NO_AUTHORITIES);
 
 		Assert.hasText(authorizationCode, "authorizationCode cannot be empty");
