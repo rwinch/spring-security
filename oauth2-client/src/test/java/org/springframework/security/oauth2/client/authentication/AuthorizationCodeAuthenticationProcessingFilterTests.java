@@ -50,20 +50,6 @@ import static org.springframework.security.oauth2.client.ClientRegistrationTestU
  */
 public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
-	@Test(expected = IllegalArgumentException.class)
-	public void afterPropertiesSetWhenClientRegistrationRepositoryIsNullThenThrowIllegalArgumentException() {
-		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
-		filter.setAuthenticationManager(mock(AuthenticationManager.class));
-		filter.afterPropertiesSet();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void afterPropertiesSetWhenAuthenticationManagerIsNullThenThrowIllegalArgumentException() {
-		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
-		filter.setClientRegistrationRepository(mock(ClientRegistrationRepository.class));
-		filter.afterPropertiesSet();
-	}
-
 	@Test
 	public void doFilterWhenNotAuthorizationCodeResponseThenContinueChain() throws Exception {
 		ClientRegistration clientRegistration = googleClientRegistration();
@@ -247,7 +233,6 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		AuthorizationCodeAuthenticationProcessingFilter filter = new AuthorizationCodeAuthenticationProcessingFilter();
 		filter.setClientRegistrationRepository(clientRegistrationRepository);
 		filter.setAuthenticationManager(authenticationManager);
-		filter.afterPropertiesSet();
 
 		return filter;
 	}
