@@ -59,7 +59,7 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 			ClientRegistration clientRegistration = authenticationToken.getClientRegistration();
 
 			URI userInfoUri = clientRegistration.getProviderDetails().getUserInfoUri();
-			BearerAccessToken accessToken = new BearerAccessToken(authenticationToken.getAccessToken().getValue());
+			BearerAccessToken accessToken = new BearerAccessToken(authenticationToken.getAccessToken().getTokenValue());
 
 			// Request the User Info
 			UserInfoRequest userInfoRequest = new UserInfoRequest(userInfoUri, accessToken);

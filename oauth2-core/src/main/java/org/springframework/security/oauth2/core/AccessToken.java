@@ -26,7 +26,6 @@ import java.util.Set;
  */
 public class AccessToken extends AbstractToken {
 	private final TokenType tokenType;
-	private final Instant expiresAt;
 	private final Set<String> scopes;
 
 	public enum TokenType {
@@ -43,29 +42,19 @@ public class AccessToken extends AbstractToken {
 		}
 	}
 
-	public AccessToken(TokenType tokenType, String value) {
-		this(tokenType, value, Instant.now());
+	public AccessToken(TokenType tokenType, String tokenValue, Instant issuedAt, Instant expiresAt) {
+		this(tokenType, tokenValue, issuedAt, expiresAt, Collections.emptySet());
 	}
 
-	public AccessToken(TokenType tokenType, String value, Instant expiresAt) {
-		this(tokenType, value, expiresAt, Collections.emptySet());
-	}
-
-	public AccessToken(TokenType tokenType, String value, Instant expiresAt, Set<String> scopes) {
-		super(value);
+	public AccessToken(TokenType tokenType, String tokenValue, Instant issuedAt, Instant expiresAt, Set<String> scopes) {
+		super(tokenValue, issuedAt, expiresAt);
 		Assert.notNull(tokenType, "tokenType cannot be null");
-		Assert.notNull(expiresAt, "expiresAt cannot be null");
 		this.tokenType = tokenType;
-		this.expiresAt = expiresAt;
 		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
 	}
 
 	public TokenType getTokenType() {
 		return this.tokenType;
-	}
-
-	public Instant getExpiresAt() {
-		return this.expiresAt;
 	}
 
 	public Set<String> getScopes() {
