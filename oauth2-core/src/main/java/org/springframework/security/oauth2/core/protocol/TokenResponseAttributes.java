@@ -29,6 +29,7 @@ import java.util.Set;
 public final class TokenResponseAttributes {
 	private final String accessToken;
 	private final AccessToken.TokenType accessTokenType;
+	private final Instant issuedAt;
 	private final Instant expiresAt;
 	private final Set<String> scopes;
 	private final Map<String,String> additionalParameters;
@@ -49,7 +50,8 @@ public final class TokenResponseAttributes {
 		Assert.isTrue(expiresIn >= 0, "expiresIn must be a positive number");
 		this.accessToken = accessToken;
 		this.accessTokenType = accessTokenType;
-		this.expiresAt = Instant.now().plusSeconds(expiresIn);
+		this.issuedAt = Instant.now();
+		this.expiresAt = this.issuedAt.plusSeconds(expiresIn);
 		this.scopes = Collections.unmodifiableSet(scopes != null ? scopes : Collections.emptySet());
 		this.additionalParameters = Collections.unmodifiableMap(additionalParameters != null ?
 				additionalParameters : Collections.emptyMap());
@@ -61,6 +63,10 @@ public final class TokenResponseAttributes {
 
 	public AccessToken.TokenType getAccessTokenType() {
 		return this.accessTokenType;
+	}
+
+	public Instant getIssuedAt() {
+		return this.issuedAt;
 	}
 
 	public Instant getExpiresAt() {

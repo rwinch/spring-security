@@ -15,22 +15,39 @@
  */
 package org.springframework.security.oauth2.core;
 
+import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * @author Joe Grandja
  */
 public abstract class AbstractToken implements Serializable {
-	private final String value;
+	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+	private final String tokenValue;
+	private final Instant issuedAt;
+	private final Instant expiresAt;
 
-	protected AbstractToken(String value) {
-		Assert.hasLength(value, "token value cannot be empty");
-		this.value = value;
+	protected AbstractToken(String tokenValue, Instant issuedAt, Instant expiresAt) {
+		Assert.hasLength(tokenValue, "tokenValue cannot be empty");
+		Assert.notNull(issuedAt, "issuedAt cannot be null");
+		Assert.notNull(expiresAt, "expiresAt cannot be null");
+		this.tokenValue = tokenValue;
+		this.issuedAt = issuedAt;
+		this.expiresAt = expiresAt;
 	}
 
-	public String getValue() {
-		return this.value;
+	public String getTokenValue() {
+		return this.tokenValue;
+	}
+
+	public Instant getIssuedAt() {
+		return this.issuedAt;
+	}
+
+	public Instant getExpiresAt() {
+		return this.expiresAt;
 	}
 }
