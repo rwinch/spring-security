@@ -48,36 +48,72 @@ public class ClientRegistration {
 		return this.clientId;
 	}
 
+	protected void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
 	public String getClientSecret() {
 		return this.clientSecret;
+	}
+
+	protected void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
 	}
 
 	public ClientAuthenticationMethod getClientAuthenticationMethod() {
 		return this.clientAuthenticationMethod;
 	}
 
+	protected void setClientAuthenticationMethod(ClientAuthenticationMethod clientAuthenticationMethod) {
+		this.clientAuthenticationMethod = clientAuthenticationMethod;
+	}
+
 	public AuthorizationGrantType getAuthorizedGrantType() {
 		return this.authorizedGrantType;
+	}
+
+	protected void setAuthorizedGrantType(AuthorizationGrantType authorizedGrantType) {
+		this.authorizedGrantType = authorizedGrantType;
 	}
 
 	public URI getRedirectUri() {
 		return this.redirectUri;
 	}
 
+	protected void setRedirectUri(URI redirectUri) {
+		this.redirectUri = redirectUri;
+	}
+
 	public Set<String> getScopes() {
 		return this.scopes;
+	}
+
+	protected void setScopes(Set<String> scopes) {
+		this.scopes = scopes;
 	}
 
 	public ProviderDetails getProviderDetails() {
 		return this.providerDetails;
 	}
 
+	protected void setProviderDetails(ProviderDetails providerDetails) {
+		this.providerDetails = providerDetails;
+	}
+
 	public String getClientName() {
 		return this.clientName;
 	}
 
+	protected void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+
 	public String getClientAlias() {
 		return this.clientAlias;
+	}
+
+	protected void setClientAlias(String clientAlias) {
+		this.clientAlias = clientAlias;
 	}
 
 	public class ProviderDetails {
@@ -93,25 +129,51 @@ public class ClientRegistration {
 			return this.authorizationUri;
 		}
 
+		protected void setAuthorizationUri(URI authorizationUri) {
+			this.authorizationUri = authorizationUri;
+		}
+
 		public URI getTokenUri() {
 			return this.tokenUri;
+		}
+
+		protected void setTokenUri(URI tokenUri) {
+			this.tokenUri = tokenUri;
 		}
 
 		public URI getUserInfoUri() {
 			return this.userInfoUri;
 		}
 
+		protected void setUserInfoUri(URI userInfoUri) {
+			this.userInfoUri = userInfoUri;
+		}
+
 		public boolean isOpenIdProvider() {
 			return this.openIdProvider;
+		}
+
+		protected void setOpenIdProvider(boolean openIdProvider) {
+			this.openIdProvider = openIdProvider;
 		}
 	}
 
 	public static class Builder {
-		private final ClientRegistration clientRegistration;
+		protected String clientId;
+		protected String clientSecret;
+		protected ClientAuthenticationMethod clientAuthenticationMethod = ClientAuthenticationMethod.HEADER;
+		protected AuthorizationGrantType authorizedGrantType;
+		protected URI redirectUri;
+		protected Set<String> scopes;
+		protected URI authorizationUri;
+		protected URI tokenUri;
+		protected URI userInfoUri;
+		protected boolean openIdProvider;
+		protected String clientName;
+		protected String clientAlias;
 
 		public Builder(String clientId) {
-			this.clientRegistration = new ClientRegistration();
-			this.clientRegistration.clientId = clientId;
+			this.clientId = clientId;
 		}
 
 		public Builder(ClientRegistrationProperties clientRegistrationProperties) {
@@ -134,84 +196,102 @@ public class ClientRegistration {
 		}
 
 		public Builder clientSecret(String clientSecret) {
-			this.clientRegistration.clientSecret = clientSecret;
+			this.clientSecret = clientSecret;
 			return this;
 		}
 
 		public Builder clientAuthenticationMethod(ClientAuthenticationMethod clientAuthenticationMethod) {
-			this.clientRegistration.clientAuthenticationMethod = clientAuthenticationMethod;
+			this.clientAuthenticationMethod = clientAuthenticationMethod;
 			return this;
 		}
 
 		public Builder authorizedGrantType(AuthorizationGrantType authorizedGrantType) {
-			this.clientRegistration.authorizedGrantType = authorizedGrantType;
+			this.authorizedGrantType = authorizedGrantType;
 			return this;
 		}
 
 		public Builder redirectUri(String redirectUri) {
-			this.clientRegistration.redirectUri = this.toURI(redirectUri);
+			this.redirectUri = this.toURI(redirectUri);
 			return this;
 		}
 
 		public Builder scopes(String... scopes) {
 			if (scopes != null && scopes.length > 0) {
-				this.clientRegistration.scopes = Collections.unmodifiableSet(
+				this.scopes = Collections.unmodifiableSet(
 						new LinkedHashSet<>(Arrays.asList(scopes)));
 			}
 			return this;
 		}
 
 		public Builder authorizationUri(String authorizationUri) {
-			this.clientRegistration.providerDetails.authorizationUri = this.toURI(authorizationUri);
+			this.authorizationUri = this.toURI(authorizationUri);
 			return this;
 		}
 
 		public Builder tokenUri(String tokenUri) {
-			this.clientRegistration.providerDetails.tokenUri = this.toURI(tokenUri);
+			this.tokenUri = this.toURI(tokenUri);
 			return this;
 		}
 
 		public Builder userInfoUri(String userInfoUri) {
-			this.clientRegistration.providerDetails.userInfoUri = this.toURI(userInfoUri);
+			this.userInfoUri = this.toURI(userInfoUri);
 			return this;
 		}
 
 		public Builder openIdProvider() {
-			this.clientRegistration.providerDetails.openIdProvider = true;
+			this.openIdProvider = true;
 			return this;
 		}
 
 		public Builder clientName(String clientName) {
-			this.clientRegistration.clientName = clientName;
+			this.clientName = clientName;
 			return this;
 		}
 
 		public Builder clientAlias(String clientAlias) {
-			this.clientRegistration.clientAlias = clientAlias;
+			this.clientAlias = clientAlias;
 			return this;
 		}
 
 		public ClientRegistration build() {
-			if (!AuthorizationGrantType.AUTHORIZATION_CODE.equals(this.clientRegistration.getAuthorizedGrantType())) {
-				throw new UnsupportedOperationException((this.clientRegistration.getAuthorizedGrantType() != null ?
-						this.clientRegistration.getAuthorizedGrantType().value() :
-						"null") + " authorization grant type is currently not supported");
-			}
 			this.validateClientWithAuthorizationCodeGrantType();
-			return this.clientRegistration;
+			ClientRegistration clientRegistration = new ClientRegistration();
+			this.setProperties(clientRegistration);
+			return clientRegistration;
 		}
 
-		private void validateClientWithAuthorizationCodeGrantType() {
-			Assert.hasText(this.clientRegistration.clientId, "clientId cannot be empty");
-			Assert.hasText(this.clientRegistration.clientSecret, "clientSecret cannot be empty");
-			Assert.notNull(this.clientRegistration.clientAuthenticationMethod, "clientAuthenticationMethod cannot be null");
-			Assert.notNull(this.clientRegistration.redirectUri, "redirectUri cannot be null");
-			Assert.notEmpty(this.clientRegistration.scopes, "scopes cannot be empty");
-			Assert.notNull(this.clientRegistration.providerDetails.authorizationUri, "authorizationUri cannot be null");
-			Assert.notNull(this.clientRegistration.providerDetails.tokenUri, "tokenUri cannot be null");
-			Assert.notNull(this.clientRegistration.providerDetails.userInfoUri, "userInfoUri cannot be null");
-			Assert.hasText(this.clientRegistration.clientName, "clientName cannot be empty");
-			Assert.hasText(this.clientRegistration.clientAlias, "clientAlias cannot be empty");
+		protected void setProperties(ClientRegistration clientRegistration) {
+			clientRegistration.setClientId(this.clientId);
+			clientRegistration.setClientSecret(this.clientSecret);
+			clientRegistration.setClientAuthenticationMethod(this.clientAuthenticationMethod);
+			clientRegistration.setAuthorizedGrantType(this.authorizedGrantType);
+			clientRegistration.setRedirectUri(this.redirectUri);
+			clientRegistration.setScopes(this.scopes);
+
+			ProviderDetails providerDetails = clientRegistration.new ProviderDetails();
+			providerDetails.setAuthorizationUri(this.authorizationUri);
+			providerDetails.setTokenUri(this.tokenUri);
+			providerDetails.setUserInfoUri(this.userInfoUri);
+			providerDetails.setOpenIdProvider(this.openIdProvider);
+			clientRegistration.setProviderDetails(providerDetails);
+
+			clientRegistration.setClientName(this.clientName);
+			clientRegistration.setClientAlias(this.clientAlias);
+		}
+
+		protected void validateClientWithAuthorizationCodeGrantType() {
+			Assert.isTrue(AuthorizationGrantType.AUTHORIZATION_CODE.equals(this.authorizedGrantType),
+				"authorizedGrantType must be " + AuthorizationGrantType.AUTHORIZATION_CODE.value());
+			Assert.hasText(this.clientId, "clientId cannot be empty");
+			Assert.hasText(this.clientSecret, "clientSecret cannot be empty");
+			Assert.notNull(this.clientAuthenticationMethod, "clientAuthenticationMethod cannot be null");
+			Assert.notNull(this.redirectUri, "redirectUri cannot be null");
+			Assert.notEmpty(this.scopes, "scopes cannot be empty");
+			Assert.notNull(this.authorizationUri, "authorizationUri cannot be null");
+			Assert.notNull(this.tokenUri, "tokenUri cannot be null");
+			Assert.notNull(this.userInfoUri, "userInfoUri cannot be null");
+			Assert.hasText(this.clientName, "clientName cannot be empty");
+			Assert.hasText(this.clientAlias, "clientAlias cannot be empty");
 		}
 
 		private URI toURI(String uriStr) {
