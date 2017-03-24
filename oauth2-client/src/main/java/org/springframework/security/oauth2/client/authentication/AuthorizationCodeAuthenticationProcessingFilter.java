@@ -53,13 +53,6 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	}
 
 	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(this.clientRegistrationRepository, "clientRegistrationRepository cannot be null");
-		Assert.notEmpty(this.clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
-	}
-
-	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
@@ -95,6 +88,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 
 	public final void setClientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {
 		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
+		Assert.notEmpty(clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
 		this.clientRegistrationRepository = clientRegistrationRepository;
 	}
 
