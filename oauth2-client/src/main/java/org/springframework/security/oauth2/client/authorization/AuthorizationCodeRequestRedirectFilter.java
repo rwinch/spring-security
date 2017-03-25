@@ -41,9 +41,10 @@ import java.net.URISyntaxException;
  *
  * @author Joe Grandja
  */
-public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
-	public static final String DEFAULT_FILTER_PROCESSING_URI = "/oauth2/authorize";
+public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter {
+	public static final String AUTHORIZATION_BASE_URI = "/oauth2/authorization/code";
 	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
+	private static final String AUTHORIZATION_URI = AUTHORIZATION_BASE_URI + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}";
 	private final AntPathRequestMatcher authorizationRequestMatcher;
 	private final ClientRegistrationRepository clientRegistrationRepository;
 	private final AuthorizationRequestUriBuilder authorizationUriBuilder;
@@ -51,28 +52,14 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 	private final StringKeyGenerator stateGenerator = new DefaultStateGenerator();
 	private AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
 
-	public AuthorizationRequestRedirectFilter(ClientRegistrationRepository clientRegistrationRepository,
-												AuthorizationRequestUriBuilder authorizationUriBuilder) {
+	public AuthorizationCodeRequestRedirectFilter(ClientRegistrationRepository clientRegistrationRepository,
+													AuthorizationRequestUriBuilder authorizationUriBuilder) {
 
-		this(DEFAULT_FILTER_PROCESSING_URI, clientRegistrationRepository, authorizationUriBuilder);
-	}
-
-	public AuthorizationRequestRedirectFilter(String filterProcessingUri,
-												ClientRegistrationRepository clientRegistrationRepository,
-												AuthorizationRequestUriBuilder authorizationUriBuilder) {
-
-		Assert.notNull(filterProcessingUri, "filterProcessingUri cannot be null");
 		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
 		Assert.notNull(authorizationUriBuilder, "authorizationUriBuilder cannot be null");
-		this.authorizationRequestMatcher = new AntPathRequestMatcher(
-				normalizeUri(filterProcessingUri) + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}");
+		this.authorizationRequestMatcher = new AntPathRequestMatcher(AUTHORIZATION_URI);
 		this.clientRegistrationRepository = clientRegistrationRepository;
 		this.authorizationUriBuilder = authorizationUriBuilder;
-	}
-
-	@Override
-	public void afterPropertiesSet() {
-		Assert.notEmpty(this.clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
 	}
 
 	public final void setAuthorizationRequestRepository(AuthorizationRequestRepository authorizationRequestRepository) {
@@ -137,17 +124,5 @@ public class AuthorizationRequestRedirectFilter extends OncePerRequestFilter {
 			logger.debug("Authorization Request failed: " + failed.toString(), failed);
 		}
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST, failed.getMessage());
-	}
-
-	private String normalizeUri(String uri) {
-		if (!uri.startsWith("/")) {
-			uri = "/" + uri;
-		}
-		// Check for and remove trailing '/'
-		if (uri.endsWith("/")) {
-			uri = uri.replaceAll("/$", "");
-			uri = normalizeUri(uri);		// There may be more
-		}
-		return uri;
 	}
 }

@@ -23,6 +23,8 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationCo
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.nimbus.NimbusAuthorizationCodeTokenExchanger;
+import org.springframework.security.oauth2.client.authentication.ui.DefaultOAuth2LoginPageGeneratingFilter;
+import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
 import org.springframework.security.oauth2.client.userdetails.nimbus.NimbusUserInfoUserDetailsService;
@@ -34,6 +36,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.security.oauth2.client.authentication.ui.AbstractLoginPageGeneratingFilter.ERROR_PARAMETER_NAME;
+import static org.springframework.security.oauth2.client.authentication.ui.AbstractLoginPageGeneratingFilter.LOGOUT_PARAMETER_NAME;
 import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.getDefaultClientRegistrationRepository;
 
 /**
@@ -42,7 +46,6 @@ import static org.springframework.security.oauth2.client.config.annotation.web.c
 final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecurityBuilder<H>> extends
 		AbstractAuthenticationFilterConfigurer<H, AuthorizationCodeAuthenticationFilterConfigurer<H>, AuthorizationCodeAuthenticationProcessingFilter> {
 
-	private static final String DEFAULT_CLIENTS_PAGE_URI = "/oauth2/clients";
 	private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
 	private UserInfoUserDetailsService userInfoUserDetailsService;
 	private Map<URI, Class<? extends OAuth2UserDetails>> userInfoTypeMapping = new HashMap<>();
@@ -55,12 +58,6 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
 		Assert.notEmpty(clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
 		this.getBuilder().setSharedObject(ClientRegistrationRepository.class, clientRegistrationRepository);
-		return this;
-	}
-
-	AuthorizationCodeAuthenticationFilterConfigurer<H> clientsPage(String clientsPage) {
-		Assert.notNull(clientsPage, "clientsPage cannot be null");
-		this.loginPage(clientsPage);
 		return this;
 	}
 
@@ -87,20 +84,10 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 
 	@Override
 	public void init(H http) throws Exception {
-		if (!this.isCustomLoginPage()) {
-			// Override the default login page /login (if not already configured by the user)
-			//	NOTE:
-			// 		This is not really a login page per se, rather a page that displays
-			// 		all the registered clients with a link that initiates the 'Authorization Request' flow
-			this.loginPage(DEFAULT_CLIENTS_PAGE_URI);
-			this.permitAll();
-		}
-
 		AuthorizationCodeAuthenticationProvider authenticationProvider = new AuthorizationCodeAuthenticationProvider(
 				this.getAuthorizationCodeTokenExchanger(), this.getUserInfoUserDetailsService());
 		authenticationProvider = this.postProcess(authenticationProvider);
 		http.authenticationProvider(authenticationProvider);
-
 		super.init(http);
 	}
 
@@ -109,17 +96,12 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		AuthorizationCodeAuthenticationProcessingFilter authFilter = this.getAuthenticationFilter();
 		authFilter.setClientRegistrationRepository(this.getClientRegistrationRepository());
 		super.configure(http);
+		this.initDefaultLoginFilter(http);
 	}
 
 	@Override
 	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
-		// NOTE: loginProcessingUrl is purposely ignored as the matcher depends
-		// 			on specific request parameters instead of the requestUri
-		return AuthorizationCodeAuthenticationProcessingFilter::isAuthorizationCodeResponse;
-	}
-
-	String getClientsPage() {
-		return this.getLoginPage();
+		return this.getAuthenticationFilter().getAuthorizeRequestMatcher();
 	}
 
 	private ClientRegistrationRepository getClientRegistrationRepository() {
@@ -147,5 +129,19 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 					.forEach(e -> this.userInfoUserDetailsService.mapUserInfoType(e.getValue(), e.getKey()));
 		}
 		return this.userInfoUserDetailsService;
+	}
+
+	private void initDefaultLoginFilter(H http) {
+		if (this.isCustomLoginPage()) {
+			return;
+		}
+		DefaultOAuth2LoginPageGeneratingFilter loginPageGeneratingFilter = new DefaultOAuth2LoginPageGeneratingFilter(
+			this.getBuilder().getSharedObject(ClientRegistrationRepository.class));
+		loginPageGeneratingFilter.setLoginPageUrl(this.getLoginPage());
+		loginPageGeneratingFilter.setLogoutSuccessUrl(this.getLoginPage() + "?" + LOGOUT_PARAMETER_NAME);
+		loginPageGeneratingFilter.setFailureUrl(this.getLoginPage() + "?" + ERROR_PARAMETER_NAME);
+		loginPageGeneratingFilter.setAuthenticationUrl(AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI);
+		loginPageGeneratingFilter.setLoginEnabled(true);
+		http.addFilter(this.postProcess(loginPageGeneratingFilter));
 	}
 }

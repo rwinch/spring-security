@@ -41,6 +41,7 @@ public final class OAuth2Error {
 		INVALID_SCOPE("invalid_scope", HttpStatus.BAD_REQUEST),
 
 		// Non-standard Errors
+		ACCESS_DENIED("access_denied", HttpStatus.FORBIDDEN),
 		INVALID_TOKEN_RESPONSE("invalid_token_response", HttpStatus.UNPROCESSABLE_ENTITY),
 		INVALID_USER_INFO_RESPONSE("invalid_user_info_response", HttpStatus.UNPROCESSABLE_ENTITY),
 		AUTHORIZATION_REQUEST_NOT_FOUND("authorization_request_not_found", HttpStatus.UNAUTHORIZED),

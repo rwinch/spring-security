@@ -29,6 +29,8 @@ import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAtt
 import org.springframework.security.oauth2.core.protocol.ErrorResponseAttributes;
 import org.springframework.security.oauth2.core.protocol.ResponseAttributesExtractor;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -45,18 +47,22 @@ import java.net.URI;
  * @author Joe Grandja
  */
 public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
+	private static final String AUTHORIZE_BASE_URI = "/oauth2/authorize/code";
+	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
+	private static final String AUTHORIZE_URI = AUTHORIZE_BASE_URI + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}";
+	private final RequestMatcher authorizeRequestMatcher = new AntPathRequestMatcher(AUTHORIZE_URI);
 	private ClientRegistrationRepository clientRegistrationRepository;
 	private AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
 
 	public AuthorizationCodeAuthenticationProcessingFilter() {
-		super(AuthorizationCodeAuthenticationProcessingFilter::isAuthorizationCodeResponse);
+		super(AUTHORIZE_URI);
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 
-		if (isAuthorizationCodeErrorResponse(request)) {
+		if (this.isAuthorizationCodeErrorResponse(request)) {
 			ErrorResponseAttributes authorizationError = ResponseAttributesExtractor.extractErrorResponse(request);
 			OAuth2Error oauth2Error = OAuth2Error.valueOf(authorizationError.getErrorCode(),
 					authorizationError.getErrorDescription(), authorizationError.getErrorUri());
@@ -82,6 +88,10 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		return authenticated;
 	}
 
+	public RequestMatcher getAuthorizeRequestMatcher() {
+		return this.authorizeRequestMatcher;
+	}
+
 	protected ClientRegistrationRepository getClientRegistrationRepository() {
 		return this.clientRegistrationRepository;
 	}
@@ -99,20 +109,6 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	public final void setAuthorizationRequestRepository(AuthorizationRequestRepository authorizationRequestRepository) {
 		Assert.notNull(authorizationRequestRepository, "authorizationRequestRepository cannot be null");
 		this.authorizationRequestRepository = authorizationRequestRepository;
-	}
-
-	public static final boolean isAuthorizationCodeSuccessResponse(HttpServletRequest request) {
-		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.CODE)) &&
-				!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
-	}
-
-	public static final boolean isAuthorizationCodeErrorResponse(HttpServletRequest request) {
-		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.ERROR)) &&
-				!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
-	}
-
-	public static final boolean isAuthorizationCodeResponse(HttpServletRequest request) {
-		return isAuthorizationCodeSuccessResponse(request) || isAuthorizationCodeErrorResponse(request);
 	}
 
 	private AuthorizationRequestAttributes resolveAuthorizationRequest(HttpServletRequest request) {
@@ -139,5 +135,19 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 			OAuth2Error oauth2Error = OAuth2Error.invalidRedirectUriParameter();
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
+	}
+
+	private boolean isAuthorizationCodeSuccessResponse(HttpServletRequest request) {
+		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.CODE)) &&
+			!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
+	}
+
+	private boolean isAuthorizationCodeErrorResponse(HttpServletRequest request) {
+		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.ERROR)) &&
+			!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
+	}
+
+	private boolean isAuthorizationCodeResponse(HttpServletRequest request) {
+		return this.isAuthorizationCodeSuccessResponse(request) || this.isAuthorizationCodeErrorResponse(request);
 	}
 }

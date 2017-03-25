@@ -18,7 +18,7 @@ package org.springframework.security.oauth2.client.config.annotation.web.configu
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.client.authorization.AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
 import org.springframework.security.oauth2.client.authorization.AuthorizationRequestUriBuilder;
 import org.springframework.security.oauth2.client.authorization.DefaultAuthorizationRequestUriBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -29,26 +29,19 @@ import static org.springframework.security.oauth2.client.config.annotation.web.c
 /**
  * @author Joe Grandja
  */
-final class AuthorizationRequestRedirectFilterConfigurer<B extends HttpSecurityBuilder<B>> extends
-		AbstractHttpConfigurer<AuthorizationRequestRedirectFilterConfigurer<B>, B> {
+final class AuthorizationCodeRequestRedirectFilterConfigurer<B extends HttpSecurityBuilder<B>> extends
+		AbstractHttpConfigurer<AuthorizationCodeRequestRedirectFilterConfigurer<B>, B> {
 
-	private String authorizationProcessingUri;
 	private AuthorizationRequestUriBuilder authorizationRequestBuilder;
 
-	AuthorizationRequestRedirectFilterConfigurer<B> clientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {
+	AuthorizationCodeRequestRedirectFilterConfigurer<B> clientRegistrationRepository(ClientRegistrationRepository clientRegistrationRepository) {
 		Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
 		Assert.notEmpty(clientRegistrationRepository.getRegistrations(), "clientRegistrationRepository cannot be empty");
 		this.getBuilder().setSharedObject(ClientRegistrationRepository.class, clientRegistrationRepository);
 		return this;
 	}
 
-	AuthorizationRequestRedirectFilterConfigurer<B> authorizationProcessingUri(String authorizationProcessingUri) {
-		Assert.notNull(authorizationProcessingUri, "authorizationProcessingUri cannot be null");
-		this.authorizationProcessingUri = authorizationProcessingUri;
-		return this;
-	}
-
-	AuthorizationRequestRedirectFilterConfigurer<B> authorizationRequestBuilder(AuthorizationRequestUriBuilder authorizationRequestBuilder) {
+	AuthorizationCodeRequestRedirectFilterConfigurer<B> authorizationRequestBuilder(AuthorizationRequestUriBuilder authorizationRequestBuilder) {
 		Assert.notNull(authorizationRequestBuilder, "authorizationRequestBuilder cannot be null");
 		this.authorizationRequestBuilder = authorizationRequestBuilder;
 		return this;
@@ -56,17 +49,11 @@ final class AuthorizationRequestRedirectFilterConfigurer<B extends HttpSecurityB
 
 	@Override
 	public void configure(B http) throws Exception {
-		AuthorizationRequestRedirectFilter filter = new AuthorizationRequestRedirectFilter(
-				this.getAuthorizationProcessingUri(),
+		AuthorizationCodeRequestRedirectFilter filter = new AuthorizationCodeRequestRedirectFilter(
 				this.getClientRegistrationRepository(),
 				this.getAuthorizationRequestBuilder());
 
 		http.addFilter(this.postProcess(filter));
-	}
-
-	String getAuthorizationProcessingUri() {
-		return (this.authorizationProcessingUri != null ?
-				this.authorizationProcessingUri : AuthorizationRequestRedirectFilter.DEFAULT_FILTER_PROCESSING_URI);
 	}
 
 	private ClientRegistrationRepository getClientRegistrationRepository() {
