@@ -137,17 +137,8 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		}
 	}
 
-	private boolean isAuthorizationCodeSuccessResponse(HttpServletRequest request) {
-		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.CODE)) &&
-			!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
-	}
-
 	private boolean isAuthorizationCodeErrorResponse(HttpServletRequest request) {
 		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.ERROR)) &&
 			!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
-	}
-
-	private boolean isAuthorizationCodeResponse(HttpServletRequest request) {
-		return this.isAuthorizationCodeSuccessResponse(request) || this.isAuthorizationCodeErrorResponse(request);
 	}
 }
