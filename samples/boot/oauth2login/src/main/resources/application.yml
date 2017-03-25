@@ -18,19 +18,19 @@ security:
       google:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        redirect-uri: http://localhost:8080/oauth2/client/google
+        redirect-uri: http://localhost:8080/oauth2/authorize/code/google
       github:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        redirect-uri: http://localhost:8080/oauth2/client/github
+        redirect-uri: http://localhost:8080/oauth2/authorize/code/github
       facebook:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        redirect-uri: http://localhost:8080/oauth2/client/facebook
+        redirect-uri: http://localhost:8080/oauth2/authorize/code/facebook
       okta:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        redirect-uri: http://localhost:8080/oauth2/client/okta
+        redirect-uri: http://localhost:8080/oauth2/authorize/code/okta
         authorization-uri: https://your-subdomain.oktapreview.com/oauth2/v1/authorize
         token-uri: https://your-subdomain.oktapreview.com/oauth2/v1/token
         user-info-uri: https://your-subdomain.oktapreview.com/oauth2/v1/userinfo

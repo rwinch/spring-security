@@ -37,10 +37,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter;
+import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
-import org.springframework.security.oauth2.client.authorization.AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -69,7 +69,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.oauth2Login;
 
 /**
- * Integration tests for the OAuth 2.0 client filters {@link AuthorizationRequestRedirectFilter}
+ * Integration tests for the OAuth 2.0 client filters {@link AuthorizationCodeRequestRedirectFilter}
  * and {@link AuthorizationCodeAuthenticationProcessingFilter}.
  * These filters work together to realize the Authorization Code Grant flow.
  *
@@ -339,7 +339,7 @@ public class OAuth2LoginApplicationTests {
 		List<HtmlAnchor> clientAnchorElements = page.getAnchors();
 		assertThat(clientAnchorElements.size()).isEqualTo(expectedClients);
 
-		String baseAuthorizeUri = AuthorizationRequestRedirectFilter.DEFAULT_FILTER_PROCESSING_URI + "/";
+		String baseAuthorizeUri = AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI + "/";
 		String googleClientAuthorizeUri = baseAuthorizeUri + this.googleClientRegistration.getClientAlias();
 		String githubClientAuthorizeUri = baseAuthorizeUri + this.githubClientRegistration.getClientAlias();
 		String facebookClientAuthorizeUri = baseAuthorizeUri + this.facebookClientRegistration.getClientAlias();

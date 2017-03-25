@@ -76,7 +76,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 
-		String requestURI = "/path";
+		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
 		request.setServletPath(requestURI);
 		String errorCode = OAuth2Error.ErrorCode.INVALID_GRANT.toString();
@@ -98,7 +98,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
 		when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authentication);
 
-		String requestURI = "/path";
+		String requestURI = "/oauth2/authorize/code/github";
 		ClientRegistration clientRegistration = githubClientRegistration(requestURI);	// requestUri must be same as client redirectUri to pass validation
 
 		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(authenticationManager, clientRegistration));
@@ -135,7 +135,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
 		filter.setAuthenticationFailureHandler(failureHandler);
 
-		String requestURI = "/path";
+		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
@@ -160,7 +160,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
 		filter.setAuthorizationRequestRepository(authorizationRequestRepository);
 
-		String requestURI = "/path";
+		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
@@ -178,8 +178,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 	@Test
 	public void doFilterWhenAuthorizationCodeSuccessResponseWithInvalidRedirectUriParamThenThrowOAuth2AuthenticationExceptionInvalidRedirectUriParameter() throws Exception {
-		String requestURI = "/path2";
-		ClientRegistration clientRegistration = githubClientRegistration("/path");
+		String requestURI = "/oauth2/authorize/code/github2";
+		ClientRegistration clientRegistration = githubClientRegistration("/oauth2/authorize/code/github");
 
 		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(clientRegistration));
 		AuthenticationFailureHandler failureHandler = mock(AuthenticationFailureHandler.class);
