@@ -73,7 +73,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 
 		if (this.requiresAuthorization(request, response)) {
 			try {
-				this.obtainAuthorization(request, response);
+				this.sendRedirectForAuthorization(request, response);
 			} catch (OAuth2Exception failed) {
 				this.unsuccessfulAuthorization(request, response, failed);
 			}
@@ -87,7 +87,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 		return this.authorizationRequestMatcher.matches(request);
 	}
 
-	protected void obtainAuthorization(HttpServletRequest request, HttpServletResponse response)
+	protected void sendRedirectForAuthorization(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
 		String clientAlias = this.authorizationRequestMatcher
