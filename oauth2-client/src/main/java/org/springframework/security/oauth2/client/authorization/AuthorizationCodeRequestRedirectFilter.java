@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 
 /**
@@ -106,14 +105,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 						this.stateGenerator.generateKey());
 		this.authorizationRequestRepository.saveAuthorizationRequest(authorizationRequestAttributes, request);
 
-		URI redirectUri = null;
-		try {
-			redirectUri = this.authorizationUriBuilder.build(authorizationRequestAttributes);
-		} catch (URISyntaxException ex) {
-			logger.error("An error occurred building the Authorization Request: " + ex.getMessage(), ex);
-		}
-		Assert.notNull(redirectUri, "Authorization redirectUri cannot be null");
-
+		URI redirectUri = this.authorizationUriBuilder.build(authorizationRequestAttributes);
 		this.authorizationRedirectStrategy.sendRedirect(request, response, redirectUri.toString());
 	}
 

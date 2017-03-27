@@ -21,7 +21,6 @@ import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAtt
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.stream.Collectors;
 
 /**
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 public class DefaultAuthorizationRequestUriBuilder implements AuthorizationRequestUriBuilder {
 
 	@Override
-	public URI build(AuthorizationRequestAttributes authorizationRequestAttributes) throws URISyntaxException {
+	public URI build(AuthorizationRequestAttributes authorizationRequestAttributes) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder
 				.fromUri(authorizationRequestAttributes.getAuthorizeUri())
 				.queryParam(OAuth2Attributes.RESPONSE_TYPE, ResponseType.CODE.value());

@@ -121,25 +121,6 @@ public class AuthorizationCodeRequestRedirectFilterTests {
 		assertThat(authorizationRequestAttributes.getState()).isNotNull();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void doFilterWhenAuthorizationRequestUriBuilderReturnsNullThenThrowIllegalArgumentException() throws Exception {
-		ClientRegistration clientRegistration = githubClientRegistration();
-
-		AuthorizationRequestUriBuilder authorizationUriBuilder = mock(AuthorizationRequestUriBuilder.class);
-		when(authorizationUriBuilder.build(any(AuthorizationRequestAttributes.class))).thenReturn(null);
-
-		AuthorizationCodeRequestRedirectFilter filter = setupFilter(authorizationUriBuilder, clientRegistration);
-
-		String requestUri = AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI +
-				"/" + clientRegistration.getClientAlias();
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestUri);
-		request.setServletPath(requestUri);
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		FilterChain filterChain = mock(FilterChain.class);
-
-		filter.doFilter(request, response, filterChain);
-	}
-
 	private AuthorizationCodeRequestRedirectFilter setupFilter(String authorizationUri,
 																ClientRegistration... clientRegistrations) throws Exception {
 
