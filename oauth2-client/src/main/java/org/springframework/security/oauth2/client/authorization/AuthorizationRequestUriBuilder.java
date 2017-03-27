@@ -19,12 +19,11 @@ package org.springframework.security.oauth2.client.authorization;
 import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * @author Joe Grandja
  */
 public interface AuthorizationRequestUriBuilder {
 
-	URI build(AuthorizationRequestAttributes authorizationRequestAttributes) throws URISyntaxException;
+	URI build(AuthorizationRequestAttributes authorizationRequestAttributes);
 }
