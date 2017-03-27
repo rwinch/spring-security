@@ -15,7 +15,6 @@
  */
 package org.springframework.security.oauth2.client.config.annotation.web.configurers;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter;
@@ -23,8 +22,6 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationCo
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.nimbus.NimbusAuthorizationCodeTokenExchanger;
-import org.springframework.security.oauth2.client.authentication.ui.DefaultOAuth2LoginPageGeneratingFilter;
-import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
 import org.springframework.security.oauth2.client.userdetails.nimbus.NimbusUserInfoUserDetailsService;
@@ -35,10 +32,6 @@ import org.springframework.util.Assert;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.springframework.security.oauth2.client.authentication.ui.AbstractLoginPageGeneratingFilter.ERROR_PARAMETER_NAME;
-import static org.springframework.security.oauth2.client.authentication.ui.AbstractLoginPageGeneratingFilter.LOGOUT_PARAMETER_NAME;
-import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.getDefaultClientRegistrationRepository;
 
 /**
  * @author Joe Grandja
@@ -82,6 +75,14 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		return this;
 	}
 
+	String getLoginUrl() {
+		return super.getLoginPage();
+	}
+
+	String getLoginFailureUrl() {
+		return super.getFailureUrl();
+	}
+
 	@Override
 	public void init(H http) throws Exception {
 		AuthorizationCodeAuthenticationProvider authenticationProvider = new AuthorizationCodeAuthenticationProvider(
@@ -94,23 +95,13 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 	@Override
 	public void configure(H http) throws Exception {
 		AuthorizationCodeAuthenticationProcessingFilter authFilter = this.getAuthenticationFilter();
-		authFilter.setClientRegistrationRepository(this.getClientRegistrationRepository());
+		authFilter.setClientRegistrationRepository(OAuth2LoginSecurityConfigurer.getClientRegistrationRepository(this.getBuilder()));
 		super.configure(http);
-		this.initDefaultLoginFilter(http);
 	}
 
 	@Override
 	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
 		return this.getAuthenticationFilter().getAuthorizeRequestMatcher();
-	}
-
-	private ClientRegistrationRepository getClientRegistrationRepository() {
-		ClientRegistrationRepository clientRegistrationRepository = this.getBuilder().getSharedObject(ClientRegistrationRepository.class);
-		if (clientRegistrationRepository == null) {
-			clientRegistrationRepository = getDefaultClientRegistrationRepository(this.getBuilder().getSharedObject(ApplicationContext.class));
-			this.getBuilder().setSharedObject(ClientRegistrationRepository.class, clientRegistrationRepository);
-		}
-		return clientRegistrationRepository;
 	}
 
 	private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> getAuthorizationCodeTokenExchanger() {
@@ -129,19 +120,5 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 					.forEach(e -> this.userInfoUserDetailsService.mapUserInfoType(e.getValue(), e.getKey()));
 		}
 		return this.userInfoUserDetailsService;
-	}
-
-	private void initDefaultLoginFilter(H http) {
-		if (this.isCustomLoginPage()) {
-			return;
-		}
-		DefaultOAuth2LoginPageGeneratingFilter loginPageGeneratingFilter = new DefaultOAuth2LoginPageGeneratingFilter(
-			this.getBuilder().getSharedObject(ClientRegistrationRepository.class));
-		loginPageGeneratingFilter.setLoginPageUrl(this.getLoginPage());
-		loginPageGeneratingFilter.setLogoutSuccessUrl(this.getLoginPage() + "?" + LOGOUT_PARAMETER_NAME);
-		loginPageGeneratingFilter.setFailureUrl(this.getLoginPage() + "?" + ERROR_PARAMETER_NAME);
-		loginPageGeneratingFilter.setAuthenticationUrl(AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI);
-		loginPageGeneratingFilter.setLoginEnabled(true);
-		http.addFilter(this.postProcess(loginPageGeneratingFilter));
 	}
 }

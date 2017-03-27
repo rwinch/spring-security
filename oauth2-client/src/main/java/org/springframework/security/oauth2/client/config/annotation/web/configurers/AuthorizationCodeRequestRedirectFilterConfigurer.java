@@ -15,7 +15,6 @@
  */
 package org.springframework.security.oauth2.client.config.annotation.web.configurers;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
@@ -23,8 +22,6 @@ import org.springframework.security.oauth2.client.authorization.AuthorizationReq
 import org.springframework.security.oauth2.client.authorization.DefaultAuthorizationRequestUriBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.util.Assert;
-
-import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.getDefaultClientRegistrationRepository;
 
 /**
  * @author Joe Grandja
@@ -50,19 +47,9 @@ final class AuthorizationCodeRequestRedirectFilterConfigurer<B extends HttpSecur
 	@Override
 	public void configure(B http) throws Exception {
 		AuthorizationCodeRequestRedirectFilter filter = new AuthorizationCodeRequestRedirectFilter(
-				this.getClientRegistrationRepository(),
+				OAuth2LoginSecurityConfigurer.getClientRegistrationRepository(this.getBuilder()),
 				this.getAuthorizationRequestBuilder());
-
 		http.addFilter(this.postProcess(filter));
-	}
-
-	private ClientRegistrationRepository getClientRegistrationRepository() {
-		ClientRegistrationRepository clientRegistrationRepository = this.getBuilder().getSharedObject(ClientRegistrationRepository.class);
-		if (clientRegistrationRepository == null) {
-			clientRegistrationRepository = getDefaultClientRegistrationRepository(this.getBuilder().getSharedObject(ApplicationContext.class));
-			this.getBuilder().setSharedObject(ClientRegistrationRepository.class, clientRegistrationRepository);
-		}
-		return clientRegistrationRepository;
 	}
 
 	private AuthorizationRequestUriBuilder getAuthorizationRequestBuilder() {
