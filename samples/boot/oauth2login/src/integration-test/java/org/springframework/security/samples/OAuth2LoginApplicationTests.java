@@ -105,15 +105,15 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestHomePageWhenNotAuthenticatedThenDisplayClientsPage() throws Exception {
+	public void requestRootPageWhenNotAuthenticatedThenDisplayLoginPage() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		this.assertClientsPage(page);
+		this.assertLoginPage(page);
 	}
 
 	@Test
-	public void requestOtherPageWhenNotAuthenticatedThenDisplayClientsPage() throws Exception {
+	public void requestOtherPageWhenNotAuthenticatedThenDisplayLoginPage() throws Exception {
 		HtmlPage page = this.webClient.getPage("/other-page");
-		this.assertClientsPage(page);
+		this.assertLoginPage(page);
 	}
 
 	@Test
@@ -192,10 +192,10 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenNoMatchingAuthorizationRequestThenDisplayClientsPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenNoMatchingAuthorizationRequestThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		URL clientsPageUrl = page.getBaseURL();
-		URL clientsErrorPageUrl = new URL(clientsPageUrl.toString() + "?error");
+		URL loginPageUrl = page.getBaseURL();
+		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
 		String code = "auth-code";
 		String state = "state";
@@ -212,7 +212,7 @@ public class OAuth2LoginApplicationTests {
 		this.webClient.getCookieManager().clearCookies();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(clientsErrorPageUrl);
+		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
@@ -220,10 +220,10 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenInvalidStateParamThenDisplayClientsPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenInvalidStateParamThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		URL clientsPageUrl = page.getBaseURL();
-		URL clientsErrorPageUrl = new URL(clientsPageUrl.toString() + "?error");
+		URL loginPageUrl = page.getBaseURL();
+		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
 		HtmlAnchor clientAnchorElement = this.getClientAnchorElement(page, this.googleClientRegistration);
 		assertThat(clientAnchorElement).isNotNull();
@@ -240,7 +240,7 @@ public class OAuth2LoginApplicationTests {
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(clientsErrorPageUrl);
+		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
@@ -248,10 +248,10 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenInvalidRedirectUriThenDisplayClientsPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenInvalidRedirectUriThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		URL clientsPageUrl = page.getBaseURL();
-		URL clientsErrorPageUrl = new URL(clientsPageUrl.toString() + "?error");
+		URL loginPageUrl = page.getBaseURL();
+		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
 		HtmlAnchor clientAnchorElement = this.getClientAnchorElement(page, this.googleClientRegistration);
 		assertThat(clientAnchorElement).isNotNull();
@@ -274,7 +274,7 @@ public class OAuth2LoginApplicationTests {
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(clientsErrorPageUrl);
+		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
@@ -282,10 +282,10 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenValidAuthorizationErrorResponseThenDisplayClientsPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenValidAuthorizationErrorResponseThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		URL clientsPageUrl = page.getBaseURL();
-		URL clientsErrorPageUrl = new URL(clientsPageUrl.toString() + "?error");
+		URL loginPageUrl = page.getBaseURL();
+		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
 		String error = OAuth2Error.ErrorCode.UNAUTHORIZED_CLIENT.toString();
 		String state = "state";
@@ -298,7 +298,7 @@ public class OAuth2LoginApplicationTests {
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(clientsErrorPageUrl);
+		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
@@ -306,10 +306,10 @@ public class OAuth2LoginApplicationTests {
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenInvalidErrorCodeThenDisplayClientsPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenInvalidErrorCodeThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
-		URL clientsPageUrl = page.getBaseURL();
-		URL clientsErrorPageUrl = new URL(clientsPageUrl.toString() + "?error");
+		URL loginPageUrl = page.getBaseURL();
+		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
 		String error = "invalid-error-code";
 		String state = "state";
@@ -322,19 +322,17 @@ public class OAuth2LoginApplicationTests {
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(clientsErrorPageUrl);
+		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
 		assertThat(errorElement.asText()).contains(OAuth2Error.ErrorCode.UNKNOWN_ERROR_CODE.toString());
 	}
 
-	private void assertClientsPage(HtmlPage page) throws Exception {
-		assertThat(page.getTitleText()).isEqualTo("OAuth2 Client Login Page");
+	private void assertLoginPage(HtmlPage page) throws Exception {
+		assertThat(page.getTitleText()).isEqualTo("Login Page");
 
 		int expectedClients = 4;
-
-		assertThat(page.getElementsByTagName("li").size()).isEqualTo(expectedClients);
 
 		List<HtmlAnchor> clientAnchorElements = page.getAnchors();
 		assertThat(clientAnchorElements.size()).isEqualTo(expectedClients);

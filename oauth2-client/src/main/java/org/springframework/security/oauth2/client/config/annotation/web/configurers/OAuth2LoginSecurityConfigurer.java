@@ -21,13 +21,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
+import org.springframework.security.oauth2.client.authorization.AuthorizationCodeRequestRedirectFilter;
 import org.springframework.security.oauth2.client.authorization.AuthorizationRequestUriBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
 import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -110,6 +113,7 @@ public final class OAuth2LoginSecurityConfigurer<B extends HttpSecurityBuilder<B
 
 		this.authorizationCodeRequestRedirectFilterConfigurer.init(http);
 		this.authorizationCodeAuthenticationFilterConfigurer.init(http);
+		this.initDefaultLoginFilter(http);
 	}
 
 	@Override
@@ -122,10 +126,36 @@ public final class OAuth2LoginSecurityConfigurer<B extends HttpSecurityBuilder<B
 		return new OAuth2LoginSecurityConfigurer<>();
 	}
 
-	protected static ClientRegistrationRepository getDefaultClientRegistrationRepository(ApplicationContext context) {
-		Map<String, ClientRegistration> clientRegistrations = context.getBeansOfType(ClientRegistration.class);
+	static <B extends HttpSecurityBuilder<B>> ClientRegistrationRepository getClientRegistrationRepository(B http) {
+		ClientRegistrationRepository clientRegistrationRepository = http.getSharedObject(ClientRegistrationRepository.class);
+		if (clientRegistrationRepository == null) {
+			clientRegistrationRepository = getDefaultClientRegistrationRepository(http);
+			http.setSharedObject(ClientRegistrationRepository.class, clientRegistrationRepository);
+		}
+		return clientRegistrationRepository;
+	}
+
+	private static <B extends HttpSecurityBuilder<B>> ClientRegistrationRepository getDefaultClientRegistrationRepository(B http) {
+		Map<String, ClientRegistration> clientRegistrations =
+				http.getSharedObject(ApplicationContext.class).getBeansOfType(ClientRegistration.class);
 		ClientRegistrationRepository clientRegistrationRepository = new InMemoryClientRegistrationRepository(
 				clientRegistrations.values().stream().collect(Collectors.toList()));
 		return clientRegistrationRepository;
+	}
+
+	private void initDefaultLoginFilter(B http) {
+		DefaultLoginPageGeneratingFilter loginPageGeneratingFilter = http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
+		if (loginPageGeneratingFilter != null && !this.authorizationCodeAuthenticationFilterConfigurer.isCustomLoginPage()) {
+			ClientRegistrationRepository clientRegistrationRepository = getClientRegistrationRepository(this.getBuilder());
+			if (!CollectionUtils.isEmpty(clientRegistrationRepository.getRegistrations())) {
+				Map<String, String> oauth2AuthenticationUrlToClientName = clientRegistrationRepository.getRegistrations().stream()
+					.collect(Collectors.toMap(e -> AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI + "/" + e.getClientAlias(),
+						e -> e.getClientName()));
+				loginPageGeneratingFilter.setOauth2LoginEnabled(true);
+				loginPageGeneratingFilter.setOauth2AuthenticationUrlToClientName(oauth2AuthenticationUrlToClientName);
+				loginPageGeneratingFilter.setLoginPageUrl(this.authorizationCodeAuthenticationFilterConfigurer.getLoginUrl());
+				loginPageGeneratingFilter.setFailureUrl(this.authorizationCodeAuthenticationFilterConfigurer.getLoginFailureUrl());
+			}
+		}
 	}
 }
