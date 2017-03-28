@@ -1,0 +1,24 @@
+apply plugin: 'io.spring.convention.spring-module'
+
+dependencies {
+	compile project(':spring-security-core')
+	compile "org.springframework:spring-core"
+	compile 'aopalliance:aopalliance'
+	compile "org.springframework:spring-beans"
+	compile "org.springframework:spring-context"
+	compile "org.springframework:spring-expression"
+	compile "org.springframework:spring-messaging"
+
+	optional project(':spring-security-web'),
+			"org.springframework:spring-websocket",
+			"javax.servlet:javax.servlet-api"
+
+	testCompile project(path: ':spring-security-core', configuration: 'tests'),
+				"commons-codec:commons-codec",
+				"org.slf4j:jcl-over-slf4j",
+				"org.codehaus.groovy:groovy-all",
+				powerMockDependencies,
+				spockDependencies
+
+	testRuntime "org.hsqldb:hsqldb"
+}

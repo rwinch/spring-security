@@ -1,0 +1,29 @@
+apply plugin: 'io.spring.convention.spring-sample-war'
+
+dependencies {
+	provided "javax.servlet:javax.servlet-api"
+
+	compile project(":spring-security-web"),
+			project(":spring-security-config"),
+			"org.hsqldb:hsqldb",
+			"javax.validation:validation-api",
+			"org.hibernate:hibernate-validator",
+			"org.springframework:spring-webmvc",
+			"org.springframework:spring-orm",
+			"org.springframework:spring-context",
+			"org.springframework:spring-aop",
+			"org.springframework:spring-tx",
+			"org.springframework:spring-beans",
+			"org.springframework:spring-instrument",
+			"org.springframework:spring-core",
+			"org.springframework:spring-aspects",
+			"org.thymeleaf:thymeleaf-spring5",
+			"nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.0.4",
+			"org.eclipse.persistence:javax.persistence"
+	compile("org.hibernate:hibernate-entitymanager") {
+			exclude group:'javassist', module: 'javassist'
+	}
+	compile("org.springframework.data:spring-data-jpa") {
+			exclude group:'org.aspectj', module:'aspectjrt'
+	}
+}

@@ -1,0 +1,19 @@
+apply plugin: 'io.spring.convention.spring-sample-war'
+
+dependencies {
+	providedCompile 'javax.servlet:javax.servlet-api'
+
+	compile project(':spring-security-core')
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-web'
+
+	runtime project(':spring-security-config')
+	runtime project(':spring-security-taglibs')
+	runtime project(':spring-security-web')
+	runtime jstlDependencies
+	runtime slf4jDependencies
+	runtime 'org.springframework:spring-context-support'
+
+	integrationTestCompile gebDependencies
+}

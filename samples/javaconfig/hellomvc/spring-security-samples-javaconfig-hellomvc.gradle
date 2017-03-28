@@ -1,0 +1,26 @@
+apply plugin: 'io.spring.convention.spring-sample-war'
+
+dependencies {
+
+	providedCompile "javax.servlet:javax.servlet-api",
+					'javax.servlet.jsp:javax.servlet.jsp-api'
+
+	compile project(":spring-security-config"),
+			project(":spring-security-samples-javaconfig-messages"),
+			project(":spring-security-core"),
+			project(":spring-security-web"),
+			"org.springframework:spring-webmvc",
+			"org.springframework:spring-jdbc",
+			"org.slf4j:slf4j-api",
+			"org.slf4j:log4j-over-slf4j",
+			"org.slf4j:jul-to-slf4j",
+			"org.slf4j:jcl-over-slf4j",
+			"javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api",
+			"javax.validation:validation-api",
+			"org.hibernate:hibernate-validator"
+
+	runtime "opensymphony:sitemesh",
+			'ch.qos.logback:logback-classic'
+
+	testCompile project(":spring-security-test")
+}
