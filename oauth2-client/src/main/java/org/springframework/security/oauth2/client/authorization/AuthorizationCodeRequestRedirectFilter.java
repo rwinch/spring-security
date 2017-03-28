@@ -19,7 +19,6 @@ import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.DefaultStateGenerator;
-import org.springframework.security.oauth2.core.OAuth2Exception;
 import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -73,7 +72,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 		if (this.requiresAuthorization(request, response)) {
 			try {
 				this.sendRedirectForAuthorization(request, response);
-			} catch (OAuth2Exception failed) {
+			} catch (Exception failed) {
 				this.unsuccessfulAuthorization(request, response, failed);
 			}
 			return;
@@ -93,7 +92,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 				.extractUriTemplateVariables(request).get(CLIENT_ALIAS_VARIABLE_NAME);
 		ClientRegistration clientRegistration = this.clientRegistrationRepository.getRegistrationByClientAlias(clientAlias);
 		if (clientRegistration == null) {
-			throw new InvalidClientIdentifierException(clientAlias);
+			throw new IllegalArgumentException("Invalid Client Identifier (Alias): " + clientAlias);
 		}
 
 		AuthorizationRequestAttributes authorizationRequestAttributes =
@@ -110,7 +109,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 	}
 
 	protected void unsuccessfulAuthorization(HttpServletRequest request, HttpServletResponse response,
-												OAuth2Exception failed) throws IOException, ServletException {
+												Exception failed) throws IOException, ServletException {
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Authorization Request failed: " + failed.toString(), failed);
