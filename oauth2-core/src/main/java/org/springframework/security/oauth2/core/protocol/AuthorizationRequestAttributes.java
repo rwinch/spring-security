@@ -18,46 +18,27 @@ package org.springframework.security.oauth2.core.protocol;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ResponseType;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
  * @author Joe Grandja
  */
 public final class AuthorizationRequestAttributes implements Serializable {
-	private final URI authorizeUri;
-	private final AuthorizationGrantType authorizationGrantType;
-	private final ResponseType responseType;
-	private final String clientId;
-	private final URI redirectUri;
-	private final Set<String> scopes;
-	private final String state;
+	private URI authorizeUri;
+	private AuthorizationGrantType authorizationGrantType;
+	private ResponseType responseType;
+	private String clientId;
+	private URI redirectUri;
+	private Set<String> scopes;
+	private String state;
 
-	public AuthorizationRequestAttributes(URI authorizeUri, AuthorizationGrantType authorizationGrantType,
-											ResponseType responseType, String clientId, URI redirectUri,
-											Set<String> scopes, String state) {
-
-		Assert.notNull(authorizeUri, "authorizeUri cannot be null");
-		Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
-		Assert.notNull(responseType, "responseType cannot be null");
-		Assert.notNull(clientId, "clientId cannot be null");
-		this.authorizeUri = authorizeUri;
-		this.authorizationGrantType = authorizationGrantType;
-		this.responseType = responseType;
-		this.clientId = clientId;
-		this.redirectUri = redirectUri;
-		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
-		this.state = state;
-	}
-
-	public static AuthorizationRequestAttributes authorizationCode(URI authorizeUri, String clientId,
-																	URI redirectUri, Set<String> scopes,
-																	String state) {
-		return new AuthorizationRequestAttributes(authorizeUri, AuthorizationGrantType.AUTHORIZATION_CODE,
-				ResponseType.CODE, clientId, redirectUri, scopes, state);
+	private AuthorizationRequestAttributes() {
 	}
 
 	public URI getAuthorizeUri() {
@@ -86,5 +67,67 @@ public final class AuthorizationRequestAttributes implements Serializable {
 
 	public String getState() {
 		return this.state;
+	}
+
+	public static Builder authorizationCode(String clientId, URI authorizeUri, URI redirectUri) {
+		return new Builder()
+			.clientId(clientId)
+			.authorizeUri(authorizeUri)
+			.redirectUri(redirectUri)
+			.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+			.responseType(ResponseType.CODE);
+	}
+
+	public static class Builder {
+		private final AuthorizationRequestAttributes authorizationRequest;
+
+		public Builder() {
+			this.authorizationRequest = new AuthorizationRequestAttributes();
+		}
+
+		public Builder authorizeUri(URI authorizeUri) {
+			Assert.notNull(authorizeUri, "authorizeUri cannot be null");
+			this.authorizationRequest.authorizeUri = authorizeUri;
+			return this;
+		}
+
+		public Builder authorizationGrantType(AuthorizationGrantType authorizationGrantType) {
+			Assert.notNull(authorizationGrantType, "authorizationGrantType cannot be null");
+			this.authorizationRequest.authorizationGrantType = authorizationGrantType;
+			return this;
+		}
+
+		public Builder responseType(ResponseType responseType) {
+			Assert.notNull(responseType, "responseType cannot be null");
+			this.authorizationRequest.responseType = responseType;
+			return this;
+		}
+
+		public Builder clientId(String clientId) {
+			Assert.hasText(clientId, "clientId cannot be empty");
+			this.authorizationRequest.clientId = clientId;
+			return this;
+		}
+
+		public Builder redirectUri(URI redirectUri) {
+			Assert.notNull(redirectUri, "redirectUri cannot be null");
+			this.authorizationRequest.redirectUri = redirectUri;
+			return this;
+		}
+
+		public Builder scopes(Set<String> scopes) {
+			this.authorizationRequest.scopes = Collections.unmodifiableSet(
+				CollectionUtils.isEmpty(scopes) ? Collections.emptySet() : new LinkedHashSet<>(scopes));
+			return this;
+		}
+
+		public Builder state(String state) {
+			this.authorizationRequest.state = state;
+			return this;
+		}
+
+		public AuthorizationRequestAttributes build() {
+			return this.authorizationRequest;
+		}
 	}
 }

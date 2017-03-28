@@ -243,12 +243,11 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 											String state) {
 
 		AuthorizationRequestAttributes authorizationRequestAttributes =
-				AuthorizationRequestAttributes.authorizationCode(
-						clientRegistration.getProviderDetails().getAuthorizationUri(),
-						clientRegistration.getClientId(),
-						clientRegistration.getRedirectUri(),
-						clientRegistration.getScopes(),
-						state);
+			AuthorizationRequestAttributes.authorizationCode(clientRegistration.getClientId(),
+				clientRegistration.getProviderDetails().getAuthorizationUri(), clientRegistration.getRedirectUri())
+			.scopes(clientRegistration.getScopes())
+			.state(state)
+			.build();
 
 		authorizationRequestRepository.saveAuthorizationRequest(authorizationRequestAttributes, request);
 	}
