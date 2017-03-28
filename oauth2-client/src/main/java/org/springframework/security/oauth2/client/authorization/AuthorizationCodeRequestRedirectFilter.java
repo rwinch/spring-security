@@ -97,12 +97,12 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 		}
 
 		AuthorizationRequestAttributes authorizationRequestAttributes =
-				AuthorizationRequestAttributes.authorizationCode(
-						clientRegistration.getProviderDetails().getAuthorizationUri(),
-						clientRegistration.getClientId(),
-						clientRegistration.getRedirectUri(),
-						clientRegistration.getScopes(),
-						this.stateGenerator.generateKey());
+			AuthorizationRequestAttributes.authorizationCode(clientRegistration.getClientId(),
+				clientRegistration.getProviderDetails().getAuthorizationUri(), clientRegistration.getRedirectUri())
+			.scopes(clientRegistration.getScopes())
+			.state(this.stateGenerator.generateKey())
+			.build();
+
 		this.authorizationRequestRepository.saveAuthorizationRequest(authorizationRequestAttributes, request);
 
 		URI redirectUri = this.authorizationUriBuilder.build(authorizationRequestAttributes);
