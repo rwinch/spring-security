@@ -20,8 +20,8 @@ import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeRequestRedirectFilter;
+import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.AuthorizationRequestUriBuilder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -136,11 +136,7 @@ public final class OAuth2LoginSecurityConfigurer<B extends HttpSecurityBuilder<B
 	}
 
 	private static <B extends HttpSecurityBuilder<B>> ClientRegistrationRepository getDefaultClientRegistrationRepository(B http) {
-		Map<String, ClientRegistration> clientRegistrations =
-				http.getSharedObject(ApplicationContext.class).getBeansOfType(ClientRegistration.class);
-		ClientRegistrationRepository clientRegistrationRepository = new InMemoryClientRegistrationRepository(
-				clientRegistrations.values().stream().collect(Collectors.toList()));
-		return clientRegistrationRepository;
+		return http.getSharedObject(ApplicationContext.class).getBean(ClientRegistrationRepository.class);
 	}
 
 	private void initDefaultLoginFilter(B http) {

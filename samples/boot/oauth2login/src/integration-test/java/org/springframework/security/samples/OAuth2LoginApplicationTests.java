@@ -26,12 +26,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,11 +37,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
-import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeRequestRedirectFilter;
+import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
@@ -84,24 +81,20 @@ public class OAuth2LoginApplicationTests {
 	private WebClient webClient;
 
 	@Autowired
-	@Qualifier("googleClientRegistration")
+	private ClientRegistrationRepository clientRegistrationRepository;
+
 	private ClientRegistration googleClientRegistration;
-
-	@Autowired
-	@Qualifier("githubClientRegistration")
 	private ClientRegistration githubClientRegistration;
-
-	@Autowired
-	@Qualifier("facebookClientRegistration")
 	private ClientRegistration facebookClientRegistration;
-
-	@Autowired
-	@Qualifier("oktaClientRegistration")
 	private ClientRegistration oktaClientRegistration;
 
 	@Before
 	public void setup() {
 		this.webClient.getCookieManager().clearCookies();
+		this.googleClientRegistration = this.clientRegistrationRepository.getRegistrationByClientAlias("google");
+		this.githubClientRegistration = this.clientRegistrationRepository.getRegistrationByClientAlias("github");
+		this.facebookClientRegistration = this.clientRegistrationRepository.getRegistrationByClientAlias("facebook");
+		this.oktaClientRegistration = this.clientRegistrationRepository.getRegistrationByClientAlias("okta");
 	}
 
 	@Test
@@ -428,10 +421,5 @@ public class OAuth2LoginApplicationTests {
 	@EnableAutoConfiguration
 	@ComponentScan(basePackages = "org.springframework.security.samples.web")
 	public static class SpringBootApplicationTestConfig {
-
-		@Bean
-		public ClientRegistrationRepository clientRegistrationRepository(List<ClientRegistration> clientRegistrations) {
-			return new InMemoryClientRegistrationRepository(clientRegistrations);
-		}
 	}
 }
