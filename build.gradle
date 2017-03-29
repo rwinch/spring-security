@@ -148,45 +148,45 @@ task coreInstall {
 }
 
 // Task for creating the distro zip
-
-task dist(type: Zip) {
-	dependsOn { subprojects*.tasks*.matching { task -> task.name.endsWith('generatePom') } }
-	classifier = 'dist'
-
-	evaluationDependsOn(':docs')
-	evaluationDependsOn(':docs:manual')
-
-	def zipRootDir = "${project.name}-$version"
-	into(zipRootDir) {
-		from(rootDir) {
-			include '*.adoc'
-			include '*.txt'
-		}
-		into('docs') {
-			with(project(':docs').apiSpec)
-			with(project(':docs:manual').spec)
-			with(project(':docs:guides').spec)
-		}
-		project.coreModuleProjects*.tasks*.withType(AbstractArchiveTask).flatten().each{ archiveTask ->
-			if(archiveTask!=dist){
-				into("$zipRootDir/dist") {
-					from archiveTask.outputs.files
-				}
-			}
-		}
-		sampleProjects.each { project->
-			into("$zipRootDir/samples/$project.name") {
-				from(project.projectDir) {
-					include "src/main/**"
-					include "pom.xml"
-				}
-			}
-		}
-	}
-}
-
-artifacts {
-	archives dist
-	archives project(':docs').docsZip
-	archives project(':docs').schemaZip
-}
+//
+//task dist(type: Zip) {
+//	dependsOn { subprojects*.tasks*.matching { task -> task.name.endsWith('generatePom') } }
+//	classifier = 'dist'
+//
+//	evaluationDependsOn(':spring-security-docs')
+//	evaluationDependsOn(':spring-security-manual')
+//
+//	def zipRootDir = "${project.name}-$version"
+//	into(zipRootDir) {
+//		from(rootDir) {
+//			include '*.adoc'
+//			include '*.txt'
+//		}
+//		into('docs') {
+//			with(project(':spring-security-docs').apiSpec)
+//			with(project(':spring-security-manual').spec)
+//			with(project('::spring-security-guides').spec)
+//		}
+//		project.coreModuleProjects*.tasks*.withType(AbstractArchiveTask).flatten().each{ archiveTask ->
+//			if(archiveTask!=dist){
+//				into("$zipRootDir/dist") {
+//					from archiveTask.outputs.files
+//				}
+//			}
+//		}
+//		sampleProjects.each { project->
+//			into("$zipRootDir/samples/$project.name") {
+//				from(project.projectDir) {
+//					include "src/main/**"
+//					include "pom.xml"
+//				}
+//			}
+//		}
+//	}
+//}
+//
+//artifacts {
+//	archives dist
+//	archives project(':spring-security-docs').docsZip
+//	archives project(':spring-security-docs').schemaZip
+//}
