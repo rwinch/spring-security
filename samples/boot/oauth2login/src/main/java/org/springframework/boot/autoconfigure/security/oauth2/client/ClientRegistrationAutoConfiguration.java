@@ -15,121 +15,100 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.client;
 
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.boot.bind.PropertySourcesBinder;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.util.StringUtils;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationProperties;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.util.CollectionUtils;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Joe Grandja
  */
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnClass(ClientRegistration.class)
+@ConditionalOnClass(ClientRegistrationRepository.class)
+@ConditionalOnMissingBean(ClientRegistrationRepository.class)
+@AutoConfigureBefore(SecurityAutoConfiguration.class)
 public class ClientRegistrationAutoConfiguration {
-	private static final String OAUTH2_CLIENT_PROPERTY_PREFIX_FORMAT = "security.oauth2.client.%1$s.";
+	private static final String CLIENT_PROPERTY_PREFIX = "security.oauth2.client.";
 	private static final String CLIENT_ID_PROPERTY = "client-id";
-	private static final String CLIENT_SECRET_PROPERTY = "client-secret";
+	private static final String CLIENTS_DEFAULTS_RESOURCE = "oauth2-clients-defaults.yml";
 
 	@Configuration
-	@Conditional(GoogleClientCondition.class)
-	@EnableConfigurationProperties(GoogleClientProperties.class)
-	protected static class GoogleClientRegistration {
-		private final GoogleClientProperties properties;
+	@Conditional(ClientPropertiesAvailableCondition.class)
+	protected static class ClientRegistrationConfiguration {
+		private final Environment environment;
 
-		protected GoogleClientRegistration(GoogleClientProperties properties) {
-			this.properties = properties;
+		protected ClientRegistrationConfiguration(Environment environment) {
+			this.environment = environment;
 		}
 
 		@Bean
-		protected ClientRegistration googleClientRegistration() {
-			return new ClientRegistration.Builder(this.properties).build();
+		public ClientRegistrationRepository clientRegistrationRepository() {
+			MutablePropertySources propertySources = ((ConfigurableEnvironment) this.environment).getPropertySources();
+			Properties clientsDefaultProperties = this.getClientsDefaultProperties();
+			if (clientsDefaultProperties != null) {
+				propertySources.addLast(new PropertiesPropertySource("oauth2ClientsDefaults", clientsDefaultProperties));
+			}
+			PropertySourcesBinder binder = new PropertySourcesBinder(propertySources);
+			RelaxedPropertyResolver resolver = new RelaxedPropertyResolver(this.environment, CLIENT_PROPERTY_PREFIX);
+
+			List<ClientRegistration> clientRegistrations = new ArrayList<>();
+
+			Set<String> clientPropertyKeys = resolveClientPropertyKeys(this.environment);
+			for (String clientPropertyKey : clientPropertyKeys) {
+				if (!resolver.containsProperty(clientPropertyKey + "." + CLIENT_ID_PROPERTY)) {
+					continue;
+				}
+				ClientRegistrationProperties clientRegistrationProperties = new ClientRegistrationProperties();
+				binder.bindTo(CLIENT_PROPERTY_PREFIX + clientPropertyKey, clientRegistrationProperties);
+				ClientRegistration clientRegistration = new ClientRegistration.Builder(clientRegistrationProperties).build();
+				clientRegistrations.add(clientRegistration);
+			}
+
+			return new InMemoryClientRegistrationRepository(clientRegistrations);
+		}
+
+		private Properties getClientsDefaultProperties() {
+			ClassPathResource clientsDefaultsResource = new ClassPathResource(CLIENTS_DEFAULTS_RESOURCE);
+			if (!clientsDefaultsResource.exists()) {
+				return null;
+			}
+			YamlPropertiesFactoryBean yamlPropertiesFactory = new YamlPropertiesFactoryBean();
+			yamlPropertiesFactory.setResources(clientsDefaultsResource);
+			return yamlPropertiesFactory.getObject();
 		}
 	}
 
-	@Configuration
-	@Conditional(GitHubClientCondition.class)
-	@EnableConfigurationProperties(GitHubClientProperties.class)
-	protected static class GitHubClientRegistration {
-		private final GitHubClientProperties properties;
-
-		protected GitHubClientRegistration(GitHubClientProperties properties) {
-			this.properties = properties;
-		}
-
-		@Bean
-		protected ClientRegistration githubClientRegistration() {
-			return new ClientRegistration.Builder(this.properties).build();
-		}
+	private static Set<String> resolveClientPropertyKeys(Environment environment) {
+		Set<String> clientPropertyKeys = new LinkedHashSet<>();
+		RelaxedPropertyResolver resolver = new RelaxedPropertyResolver(environment, CLIENT_PROPERTY_PREFIX);
+		resolver.getSubProperties("").keySet().forEach(key -> {
+			int endIndex = key.indexOf('.');
+			if (endIndex != -1) {
+				clientPropertyKeys.add(key.substring(0, endIndex));
+			}
+		});
+		return clientPropertyKeys;
 	}
 
-	@Configuration
-	@Conditional(FacebookClientCondition.class)
-	@EnableConfigurationProperties(FacebookClientProperties.class)
-	protected static class FacebookClientRegistration {
-		private final FacebookClientProperties properties;
-
-		protected FacebookClientRegistration(FacebookClientProperties properties) {
-			this.properties = properties;
-		}
-
-		@Bean
-		protected ClientRegistration facebookClientRegistration() {
-			return new ClientRegistration.Builder(this.properties).build();
-		}
-	}
-
-	@Configuration
-	@Conditional(OktaClientCondition.class)
-	@EnableConfigurationProperties(OktaClientProperties.class)
-	protected static class OktaClientRegistration {
-		private final OktaClientProperties properties;
-
-		protected OktaClientRegistration(OktaClientProperties properties) {
-			this.properties = properties;
-		}
-
-		@Bean
-		protected ClientRegistration oktaClientRegistration() {
-			return new ClientRegistration.Builder(this.properties).build();
-		}
-	}
-
-	private static class GoogleClientCondition extends OAuth2ClientCondition {
-		private GoogleClientCondition() {
-			super("Google", String.format(OAUTH2_CLIENT_PROPERTY_PREFIX_FORMAT, "google"));
-		}
-	}
-
-	private static class GitHubClientCondition extends OAuth2ClientCondition {
-		private GitHubClientCondition() {
-			super("GitHub", String.format(OAUTH2_CLIENT_PROPERTY_PREFIX_FORMAT, "github"));
-		}
-	}
-
-	private static class FacebookClientCondition extends OAuth2ClientCondition {
-		private FacebookClientCondition() {
-			super("Facebook", String.format(OAUTH2_CLIENT_PROPERTY_PREFIX_FORMAT, "facebook"));
-		}
-	}
-
-	private static class OktaClientCondition extends OAuth2ClientCondition {
-		private OktaClientCondition() {
-			super("Okta", String.format(OAUTH2_CLIENT_PROPERTY_PREFIX_FORMAT, "okta"));
-		}
-	}
-
-	private static class OAuth2ClientCondition extends SpringBootCondition implements ConfigurationCondition {
-		private final String clientName;
-		private final String propertyPrefix;
-
-		private OAuth2ClientCondition(String clientName, String propertyPrefix) {
-			this.clientName = clientName;
-			this.propertyPrefix = propertyPrefix;
-		}
+	private static class ClientPropertiesAvailableCondition extends SpringBootCondition implements ConfigurationCondition {
 
 		@Override
 		public ConfigurationCondition.ConfigurationPhase getConfigurationPhase() {
@@ -138,15 +117,13 @@ public class ClientRegistrationAutoConfiguration {
 
 		@Override
 		public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-			ConditionMessage.Builder messageBuilder = ConditionMessage.forCondition(this.clientName + " OAuth2 Client");
-			RelaxedPropertyResolver resolver = new RelaxedPropertyResolver(
-				context.getEnvironment(), this.propertyPrefix);
-			String clientId = resolver.getProperty(CLIENT_ID_PROPERTY);
-			String clientSecret = resolver.getProperty(CLIENT_SECRET_PROPERTY);
-			if (StringUtils.hasText(clientId) && StringUtils.hasText(clientSecret)) {
-				return ConditionOutcome.match(messageBuilder.foundExactly(this.clientName + " Client: " + clientId));
+			ConditionMessage.Builder message = ConditionMessage.forCondition("OAuth2 Client Properties");
+			Set<String> clientPropertyKeys = resolveClientPropertyKeys(context.getEnvironment());
+			if (!CollectionUtils.isEmpty(clientPropertyKeys)) {
+				return ConditionOutcome.match(message.foundExactly("OAuth2 Client(s) -> " +
+					clientPropertyKeys.stream().collect(Collectors.joining(", "))));
 			}
-			return ConditionOutcome.noMatch(messageBuilder.notAvailable(this.clientName + " Client"));
+			return ConditionOutcome.noMatch(message.notAvailable("OAuth2 Client(s)"));
 		}
 	}
 }
