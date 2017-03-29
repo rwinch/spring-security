@@ -2,63 +2,7 @@
 apply plugin: 'base'
 
 task docs {
-	dependsOn 'manual:reference', 'apidocs', 'guides:asciidoctor'
-}
-
-project('manual') {
-	apply plugin: 'base'
-	apply plugin: 'org.asciidoctor.gradle.asciidoctor'
-	apply plugin: 'docbook-reference'
-
-	ext.expandPlaceholders = ""
-
-	asciidoctorj {
-		version = '1.5.2'
-	}
-
-	asciidoctor {
-		backends = ['docbook5']
-		def ghTag = snapshotBuild ? 'master' : project.version
-		def ghUrl = "https://github.com/spring-projects/spring-security/tree/$ghTag"
-		options = [
-		  eruby: 'erubis',
-		  attributes: [
-			  copycss : '',
-			  icons : 'font',
-			  'source-highlighter': 'prettify',
-			  sectanchors : '',
-			  toc2: '',
-			  idprefix: '',
-			  idseparator: '-',
-			  doctype: 'book',
-			  numbered: '',
-			  'spring-security-version' : project.version,
-			  'spring-version' : springVersion,
-			  revnumber : project.version,
-			  'gh-url': ghUrl,
-			  'gh-samples-url': "$ghUrl/samples",
-			  docinfo : ""
-		  ]
-		]
-	}
-
-	reference {
-		sourceDir = new File(asciidoctor.outputDir , 'docbook5')
-		pdfFilename = "spring-security-reference.pdf"
-		epubFilename = "spring-security-reference.epub"
-		expandPlaceholders = ""
-	}
-
-	afterEvaluate {
-		tasks.findAll { it.name.startsWith("reference") }.each{ it.dependsOn.add("asciidoctor") }
-	}
-
-
-	ext.spec = copySpec {
-		from (reference) {
-			into 'reference'
-		}
-	}
+	dependsOn ':spring-security-docs-manual:reference', 'apidocs', ':spring-security-docs-guides:asciidoctor'
 }
 
 task apidocs(type: Javadoc) {
@@ -118,16 +62,16 @@ assemble.dependsOn = [apidocs, 'manual:asciidoctor']
 
 task docsZip(type: Zip) {
 	dependsOn docs
-	evaluationDependsOn('guides')
+	evaluationDependsOn(':spring-security-docs-guides')
 	group = 'Distribution'
 	baseName = rootProject.name
 	classifier = 'docs'
 	description = "Builds -${classifier} archive containing api and reference " +
 		"for deployment at static.springframework.org/spring-security/site/docs."
 
-	with(project(':docs').apiSpec)
-	with(project(':docs:manual').spec)
-	with(project(':docs:guides').spec)
+//	with(project(':spring-security-docs').apiSpec)
+//	with(project(':spring-security-docs-manual').spec)
+//	with(project(':spring-security-docs-guides').spec)
 }
 
 task schemaZip(type: Zip) {

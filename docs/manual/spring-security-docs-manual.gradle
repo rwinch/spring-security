@@ -1,0 +1,53 @@
+apply plugin: 'base'
+apply plugin: 'org.asciidoctor.gradle.asciidoctor'
+apply plugin: 'docbook-reference'
+
+ext.expandPlaceholders = ""
+
+asciidoctorj {
+	version = '1.5.2'
+}
+
+asciidoctor {
+	backends = ['docbook5']
+	def ghTag = snapshotBuild ? 'master' : project.version
+	def ghUrl = "https://github.com/spring-projects/spring-security/tree/$ghTag"
+	options = [
+		eruby: 'erubis',
+		attributes: [
+			copycss : '',
+			icons : 'font',
+			'source-highlighter': 'prettify',
+			sectanchors : '',
+			toc2: '',
+			idprefix: '',
+			idseparator: '-',
+			doctype: 'book',
+			numbered: '',
+			'spring-security-version' : project.version,
+			'spring-version' : springVersion,
+			revnumber : project.version,
+			'gh-url': ghUrl,
+			'gh-samples-url': "$ghUrl/samples",
+			docinfo : ""
+		]
+	]
+}
+
+reference {
+	sourceDir = new File(asciidoctor.outputDir , 'docbook5')
+	pdfFilename = "spring-security-reference.pdf"
+	epubFilename = "spring-security-reference.epub"
+	expandPlaceholders = ""
+}
+
+afterEvaluate {
+	tasks.findAll { it.name.startsWith("reference") }.each{ it.dependsOn.add("asciidoctor") }
+}
+
+
+ext.spec = copySpec {
+	from (reference) {
+		into 'reference'
+	}
+}
