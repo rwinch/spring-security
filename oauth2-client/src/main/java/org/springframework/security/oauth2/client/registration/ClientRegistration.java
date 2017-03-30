@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -35,7 +34,7 @@ public class ClientRegistration {
 	private String clientSecret;
 	private ClientAuthenticationMethod clientAuthenticationMethod = ClientAuthenticationMethod.HEADER;
 	private AuthorizationGrantType authorizedGrantType;
-	private URI redirectUri;
+	private String redirectUri;
 	private Set<String> scopes = Collections.emptySet();
 	private ProviderDetails providerDetails = new ProviderDetails();
 	private String clientName;
@@ -76,11 +75,11 @@ public class ClientRegistration {
 		this.authorizedGrantType = authorizedGrantType;
 	}
 
-	public URI getRedirectUri() {
+	public String getRedirectUri() {
 		return this.redirectUri;
 	}
 
-	protected void setRedirectUri(URI redirectUri) {
+	protected void setRedirectUri(String redirectUri) {
 		this.redirectUri = redirectUri;
 	}
 
@@ -117,35 +116,35 @@ public class ClientRegistration {
 	}
 
 	public class ProviderDetails {
-		private URI authorizationUri;
-		private URI tokenUri;
-		private URI userInfoUri;
+		private String authorizationUri;
+		private String tokenUri;
+		private String userInfoUri;
 		private boolean openIdProvider;
 
 		protected ProviderDetails() {
 		}
 
-		public URI getAuthorizationUri() {
+		public String getAuthorizationUri() {
 			return this.authorizationUri;
 		}
 
-		protected void setAuthorizationUri(URI authorizationUri) {
+		protected void setAuthorizationUri(String authorizationUri) {
 			this.authorizationUri = authorizationUri;
 		}
 
-		public URI getTokenUri() {
+		public String getTokenUri() {
 			return this.tokenUri;
 		}
 
-		protected void setTokenUri(URI tokenUri) {
+		protected void setTokenUri(String tokenUri) {
 			this.tokenUri = tokenUri;
 		}
 
-		public URI getUserInfoUri() {
+		public String getUserInfoUri() {
 			return this.userInfoUri;
 		}
 
-		protected void setUserInfoUri(URI userInfoUri) {
+		protected void setUserInfoUri(String userInfoUri) {
 			this.userInfoUri = userInfoUri;
 		}
 
@@ -163,11 +162,11 @@ public class ClientRegistration {
 		protected String clientSecret;
 		protected ClientAuthenticationMethod clientAuthenticationMethod = ClientAuthenticationMethod.HEADER;
 		protected AuthorizationGrantType authorizedGrantType;
-		protected URI redirectUri;
+		protected String redirectUri;
 		protected Set<String> scopes;
-		protected URI authorizationUri;
-		protected URI tokenUri;
-		protected URI userInfoUri;
+		protected String authorizationUri;
+		protected String tokenUri;
+		protected String userInfoUri;
 		protected boolean openIdProvider;
 		protected String clientName;
 		protected String clientAlias;
@@ -211,7 +210,7 @@ public class ClientRegistration {
 		}
 
 		public Builder redirectUri(String redirectUri) {
-			this.redirectUri = this.toURI(redirectUri);
+			this.redirectUri = redirectUri;
 			return this;
 		}
 
@@ -224,17 +223,17 @@ public class ClientRegistration {
 		}
 
 		public Builder authorizationUri(String authorizationUri) {
-			this.authorizationUri = this.toURI(authorizationUri);
+			this.authorizationUri = authorizationUri;
 			return this;
 		}
 
 		public Builder tokenUri(String tokenUri) {
-			this.tokenUri = this.toURI(tokenUri);
+			this.tokenUri = tokenUri;
 			return this;
 		}
 
 		public Builder userInfoUri(String userInfoUri) {
-			this.userInfoUri = this.toURI(userInfoUri);
+			this.userInfoUri = userInfoUri;
 			return this;
 		}
 
@@ -285,21 +284,13 @@ public class ClientRegistration {
 			Assert.hasText(this.clientId, "clientId cannot be empty");
 			Assert.hasText(this.clientSecret, "clientSecret cannot be empty");
 			Assert.notNull(this.clientAuthenticationMethod, "clientAuthenticationMethod cannot be null");
-			Assert.notNull(this.redirectUri, "redirectUri cannot be null");
+			Assert.hasText(this.redirectUri, "redirectUri cannot be empty");
 			Assert.notEmpty(this.scopes, "scopes cannot be empty");
-			Assert.notNull(this.authorizationUri, "authorizationUri cannot be null");
-			Assert.notNull(this.tokenUri, "tokenUri cannot be null");
-			Assert.notNull(this.userInfoUri, "userInfoUri cannot be null");
+			Assert.hasText(this.authorizationUri, "authorizationUri cannot be empty");
+			Assert.hasText(this.tokenUri, "tokenUri cannot be empty");
+			Assert.hasText(this.userInfoUri, "userInfoUri cannot be empty");
 			Assert.hasText(this.clientName, "clientName cannot be empty");
 			Assert.hasText(this.clientAlias, "clientAlias cannot be empty");
-		}
-
-		private URI toURI(String uriStr) {
-			try {
-				return new URI(uriStr);
-			} catch (Exception ex) {
-				throw new IllegalArgumentException("An error occurred parsing URI: " + uriStr, ex);
-			}
 		}
 	}
 }

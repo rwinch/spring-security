@@ -31,7 +31,7 @@ public class DefaultAuthorizationRequestUriBuilder implements AuthorizationReque
 	@Override
 	public URI build(AuthorizationRequestAttributes authorizationRequestAttributes) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder
-				.fromUri(authorizationRequestAttributes.getAuthorizeUri())
+				.fromUriString(authorizationRequestAttributes.getAuthorizeUri())
 				.queryParam(OAuth2Attributes.RESPONSE_TYPE, ResponseType.CODE.value());
 		if (authorizationRequestAttributes.getRedirectUri() != null) {
 			uriBuilder.queryParam(OAuth2Attributes.REDIRECT_URI, authorizationRequestAttributes.getRedirectUri());

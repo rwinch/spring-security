@@ -17,11 +17,8 @@ package org.springframework.security.oauth2.core.protocol;
 
 import org.springframework.security.oauth2.core.OAuth2Attributes;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * @author Joe Grandja
@@ -51,17 +48,7 @@ public final class ResponseAttributesExtractor {
 		Assert.hasText(error, OAuth2Attributes.ERROR + " attribute is required");
 
 		String errorDescription = request.getParameter(OAuth2Attributes.ERROR_DESCRIPTION);
-
-		URI errorUri = null;
-		String errorUriStr = request.getParameter(OAuth2Attributes.ERROR_URI);
-		if (!StringUtils.isEmpty(errorUriStr)) {
-			try {
-				errorUri = new URI(errorUriStr);
-			} catch (URISyntaxException ex) {
-				// Ignore as this is an optional attribute
-			}
-		}
-
+		String errorUri = request.getParameter(OAuth2Attributes.ERROR_URI);
 		String state = request.getParameter(OAuth2Attributes.STATE);
 
 		response = new ErrorResponseAttributes(error, errorDescription, errorUri, state);

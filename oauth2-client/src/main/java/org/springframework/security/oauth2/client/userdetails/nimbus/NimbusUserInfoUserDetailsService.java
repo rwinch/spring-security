@@ -58,7 +58,14 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 		try {
 			ClientRegistration clientRegistration = authenticationToken.getClientRegistration();
 
-			URI userInfoUri = clientRegistration.getProviderDetails().getUserInfoUri();
+			URI userInfoUri;
+			try {
+				userInfoUri = new URI(clientRegistration.getProviderDetails().getUserInfoUri());
+			} catch (Exception ex) {
+				throw new IllegalArgumentException("An error occurred parsing the userInfo URI: " +
+					clientRegistration.getProviderDetails().getUserInfoUri(), ex);
+			}
+
 			BearerAccessToken accessToken = new BearerAccessToken(authenticationToken.getAccessToken().getTokenValue());
 
 			// Request the User Info
@@ -71,7 +78,7 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 				UserInfoErrorResponse userInfoErrorResponse = UserInfoErrorResponse.parse(httpResponse);
 				ErrorObject errorObject = userInfoErrorResponse.getErrorObject();
 				OAuth2Error oauth2Error = OAuth2Error.valueOf(
-						errorObject.getCode(), errorObject.getDescription(), errorObject.getURI());
+						errorObject.getCode(), errorObject.getDescription(), errorObject.getURI().toString());
 				throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 			}
 

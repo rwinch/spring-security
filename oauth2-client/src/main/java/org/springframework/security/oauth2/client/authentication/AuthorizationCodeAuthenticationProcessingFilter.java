@@ -36,7 +36,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
 
 
 /**
@@ -128,8 +127,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 
-		URI redirectUri = authorizationRequest.getRedirectUri();
-		if (!request.getRequestURI().equals(redirectUri.getPath())) {
+		if (!request.getRequestURL().toString().equals(authorizationRequest.getRedirectUri())) {
 			OAuth2Error oauth2Error = OAuth2Error.invalidRedirectUriParameter();
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}

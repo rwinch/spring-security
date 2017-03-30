@@ -17,26 +17,24 @@ package org.springframework.security.oauth2.core.protocol;
 
 import org.springframework.util.Assert;
 
-import java.net.URI;
-
 /**
  * @author Joe Grandja
  */
 public final class ErrorResponseAttributes {
 	private final String errorCode;
 	private final String errorDescription;
-	private final URI errorUri;
+	private final String errorUri;
 	private final String state;
 
 	public ErrorResponseAttributes(String errorCode) {
 		this(errorCode, null, null);
 	}
 
-	public ErrorResponseAttributes(String errorCode, String errorDescription, URI errorUri) {
+	public ErrorResponseAttributes(String errorCode, String errorDescription, String errorUri) {
 		this(errorCode, errorDescription, errorUri, null);
 	}
 
-	public ErrorResponseAttributes(String errorCode, String errorDescription, URI errorUri, String state) {
+	public ErrorResponseAttributes(String errorCode, String errorDescription, String errorUri, String state) {
 		Assert.notNull(errorCode, "errorCode cannot be null");
 		this.errorCode = errorCode;
 		this.errorDescription = errorDescription;
@@ -52,7 +50,7 @@ public final class ErrorResponseAttributes {
 		return this.errorDescription;
 	}
 
-	public URI getErrorUri() {
+	public String getErrorUri() {
 		return this.errorUri;
 	}
 
