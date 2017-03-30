@@ -17,17 +17,15 @@ package org.springframework.security.oauth2.core.protocol;
 
 import org.springframework.util.Assert;
 
-import java.net.URI;
-
 /**
  * @author Joe Grandja
  */
 public final class AuthorizationCodeTokenRequestAttributes {
 	private final String code;
 	private final String clientId;
-	private final URI redirectUri;
+	private final String redirectUri;
 
-	public AuthorizationCodeTokenRequestAttributes(String code, String clientId, URI redirectUri) {
+	public AuthorizationCodeTokenRequestAttributes(String code, String clientId, String redirectUri) {
 		Assert.notNull(code, "code cannot be null");
 		Assert.notNull(clientId, "clientId cannot be null");
 		this.code = code;
@@ -43,7 +41,7 @@ public final class AuthorizationCodeTokenRequestAttributes {
 		return this.clientId;
 	}
 
-	public URI getRedirectUri() {
+	public String getRedirectUri() {
 		return this.redirectUri;
 	}
 }

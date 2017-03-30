@@ -47,6 +47,10 @@ import static org.springframework.security.oauth2.client.ClientRegistrationTestU
  * @author Joe Grandja
  */
 public class AuthorizationCodeAuthenticationProcessingFilterTests {
+	private static final String DEFAULT_SCHEME = "https";
+	private static final String DEFAULT_SERVER_NAME = "localhost";
+	private static final int DEFAULT_SERVER_PORT = 8080;
+	private static final String DEFAULT_SERVER_URL = DEFAULT_SCHEME + "://" + DEFAULT_SERVER_NAME + ":" + DEFAULT_SERVER_PORT;
 
 	@Test
 	public void doFilterWhenNotAuthorizationCodeResponseThenContinueChain() throws Exception {
@@ -76,6 +80,9 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
+		request.setScheme(DEFAULT_SCHEME);
+		request.setServerName(DEFAULT_SERVER_NAME);
+		request.setServerPort(DEFAULT_SERVER_PORT);
 		request.setServletPath(requestURI);
 		String errorCode = OAuth2Error.ErrorCode.INVALID_GRANT.toString();
 		request.addParameter(OAuth2Attributes.ERROR, errorCode);
@@ -97,7 +104,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authentication);
 
 		String requestURI = "/oauth2/authorize/code/github";
-		ClientRegistration clientRegistration = githubClientRegistration(requestURI);	// requestUri must be same as client redirectUri to pass validation
+		ClientRegistration clientRegistration = githubClientRegistration(DEFAULT_SERVER_URL + requestURI);
 
 		AuthorizationCodeAuthenticationProcessingFilter filter = spy(setupFilter(authenticationManager, clientRegistration));
 		AuthenticationSuccessHandler successHandler = mock(AuthenticationSuccessHandler.class);
@@ -106,6 +113,9 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		filter.setAuthorizationRequestRepository(authorizationRequestRepository);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
+		request.setScheme(DEFAULT_SCHEME);
+		request.setServerName(DEFAULT_SERVER_NAME);
+		request.setServerPort(DEFAULT_SERVER_PORT);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
 		String state = "some state";
@@ -135,6 +145,9 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
+		request.setScheme(DEFAULT_SCHEME);
+		request.setServerName(DEFAULT_SERVER_NAME);
+		request.setServerPort(DEFAULT_SERVER_PORT);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
 		String state = "some state";
@@ -160,6 +173,9 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		String requestURI = "/oauth2/authorize/code/github";
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
+		request.setScheme(DEFAULT_SCHEME);
+		request.setServerName(DEFAULT_SERVER_NAME);
+		request.setServerPort(DEFAULT_SERVER_PORT);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
 		String state = "some other state";
@@ -186,6 +202,9 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		filter.setAuthorizationRequestRepository(authorizationRequestRepository);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestURI);
+		request.setScheme(DEFAULT_SCHEME);
+		request.setServerName(DEFAULT_SERVER_NAME);
+		request.setServerPort(DEFAULT_SERVER_PORT);
 		request.setServletPath(requestURI);
 		String authCode = "some code";
 		String state = "some state";

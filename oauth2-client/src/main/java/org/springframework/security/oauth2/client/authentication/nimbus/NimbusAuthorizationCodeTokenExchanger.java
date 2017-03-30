@@ -56,9 +56,9 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 
 		// Build the authorization code grant request for the token endpoint
 		AuthorizationCode authorizationCode = new AuthorizationCode(authorizationCodeAuthenticationToken.getAuthorizationCode());
-		URI redirectUri = clientRegistration.getRedirectUri();
+		URI redirectUri = this.toURI(clientRegistration.getRedirectUri());
 		AuthorizationGrant authorizationCodeGrant = new AuthorizationCodeGrant(authorizationCode, redirectUri);
-		URI tokenUri = clientRegistration.getProviderDetails().getTokenUri();
+		URI tokenUri = this.toURI(clientRegistration.getProviderDetails().getTokenUri());
 
 		// Set the credentials to authenticate the client at the token endpoint
 		ClientID clientId = new ClientID(clientRegistration.getClientId());
@@ -91,7 +91,7 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 			TokenErrorResponse tokenErrorResponse = (TokenErrorResponse) tokenResponse;
 			ErrorObject errorObject = tokenErrorResponse.getErrorObject();
 			OAuth2Error oauth2Error = OAuth2Error.valueOf(
-					errorObject.getCode(), errorObject.getDescription(), errorObject.getURI());
+					errorObject.getCode(), errorObject.getDescription(), errorObject.getURI().toString());
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 
@@ -111,5 +111,13 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toString()));
 
 		return new TokenResponseAttributes(accessToken, accessTokenType, expiresIn, scopes, additionalParameters);
+	}
+
+	private URI toURI(String uriStr) {
+		try {
+			return new URI(uriStr);
+		} catch (Exception ex) {
+			throw new IllegalArgumentException("An error occurred parsing URI: " + uriStr, ex);
+		}
 	}
 }

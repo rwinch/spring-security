@@ -21,7 +21,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,18 +29,18 @@ import java.util.Set;
  * @author Joe Grandja
  */
 public final class AuthorizationRequestAttributes implements Serializable {
-	private URI authorizeUri;
+	private String authorizeUri;
 	private AuthorizationGrantType authorizationGrantType;
 	private ResponseType responseType;
 	private String clientId;
-	private URI redirectUri;
+	private String redirectUri;
 	private Set<String> scopes;
 	private String state;
 
 	private AuthorizationRequestAttributes() {
 	}
 
-	public URI getAuthorizeUri() {
+	public String getAuthorizeUri() {
 		return this.authorizeUri;
 	}
 
@@ -57,7 +56,7 @@ public final class AuthorizationRequestAttributes implements Serializable {
 		return this.clientId;
 	}
 
-	public URI getRedirectUri() {
+	public String getRedirectUri() {
 		return this.redirectUri;
 	}
 
@@ -69,7 +68,7 @@ public final class AuthorizationRequestAttributes implements Serializable {
 		return this.state;
 	}
 
-	public static Builder authorizationCode(String clientId, URI authorizeUri, URI redirectUri) {
+	public static Builder authorizationCode(String clientId, String authorizeUri, String redirectUri) {
 		return new Builder()
 			.clientId(clientId)
 			.authorizeUri(authorizeUri)
@@ -85,8 +84,8 @@ public final class AuthorizationRequestAttributes implements Serializable {
 			this.authorizationRequest = new AuthorizationRequestAttributes();
 		}
 
-		public Builder authorizeUri(URI authorizeUri) {
-			Assert.notNull(authorizeUri, "authorizeUri cannot be null");
+		public Builder authorizeUri(String authorizeUri) {
+			Assert.hasText(authorizeUri, "authorizeUri cannot be empty");
 			this.authorizationRequest.authorizeUri = authorizeUri;
 			return this;
 		}
@@ -109,8 +108,8 @@ public final class AuthorizationRequestAttributes implements Serializable {
 			return this;
 		}
 
-		public Builder redirectUri(URI redirectUri) {
-			Assert.notNull(redirectUri, "redirectUri cannot be null");
+		public Builder redirectUri(String redirectUri) {
+			Assert.hasText(redirectUri, "redirectUri cannot be empty");
 			this.authorizationRequest.redirectUri = redirectUri;
 			return this;
 		}

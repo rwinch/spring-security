@@ -17,7 +17,6 @@ package org.springframework.security.oauth2.core;
 
 import org.springframework.http.HttpStatus;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ import java.util.Optional;
 public final class OAuth2Error {
 	private final ErrorCode errorCode;
 	private final String description;
-	private final URI uri;
+	private final String uri;
 	private final HttpStatus statusCode;
 
 	public enum ErrorCode {
@@ -69,7 +68,7 @@ public final class OAuth2Error {
 		}
 	}
 
-	private OAuth2Error(ErrorCode errorCode, String description, URI uri, HttpStatus statusCode) {
+	private OAuth2Error(ErrorCode errorCode, String description, String uri, HttpStatus statusCode) {
 		this.errorCode = errorCode;
 		this.description = description;
 		this.uri = uri;
@@ -84,7 +83,7 @@ public final class OAuth2Error {
 		return this.description;
 	}
 
-	public URI getUri() {
+	public String getUri() {
 		return this.uri;
 	}
 
@@ -121,7 +120,7 @@ public final class OAuth2Error {
 		return valueOf(errorCode, null, null);
 	}
 
-	public static OAuth2Error valueOf(String errorCode, String description, URI uri) {
+	public static OAuth2Error valueOf(String errorCode, String description, String uri) {
 		ErrorCode errCode = ErrorCode.fromValue(errorCode);
 		if (errCode == null) {
 			errCode = ErrorCode.UNKNOWN_ERROR_CODE;

@@ -34,7 +34,7 @@ public class ClientRegistrationTestUtil {
 	}
 
 	public static ClientRegistration googleClientRegistration() {
-		return googleClientRegistration("http://localhost:8080/oauth2/authorize/code/google");
+		return googleClientRegistration("https://localhost:8080/oauth2/authorize/code/google");
 	}
 
 	public static ClientRegistration googleClientRegistration(String redirectUri) {
@@ -54,7 +54,7 @@ public class ClientRegistrationTestUtil {
 	}
 
 	public static ClientRegistration githubClientRegistration() {
-		return githubClientRegistration("http://localhost:8080/oauth2/authorize/code/github");
+		return githubClientRegistration("https://localhost:8080/oauth2/authorize/code/github");
 	}
 
 	public static ClientRegistration githubClientRegistration(String redirectUri) {
