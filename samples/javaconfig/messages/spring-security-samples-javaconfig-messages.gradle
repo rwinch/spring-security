@@ -1,29 +1,29 @@
-sonarqube.skipProject = true
+apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
-	provided "javax.servlet:javax.servlet-api:$servletApiVersion"
+	provided "javax.servlet:javax.servlet-api"
 
 	compile project(":spring-security-web"),
 			project(":spring-security-config"),
-			"org.hsqldb:hsqldb:$hsqlVersion",
-			"javax.validation:validation-api:$validationApiVersion",
-			"org.hibernate:hibernate-validator:$hibernateValidatorVersion",
-			"org.springframework:spring-webmvc:$springVersion",
-			"org.springframework:spring-orm:$springVersion",
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-aop:$springVersion",
-			"org.springframework:spring-tx:$springVersion",
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-instrument:$springVersion",
-			"org.springframework:spring-core:$springVersion",
-			"org.springframework:spring-aspects:$springVersion",
-			"org.thymeleaf:thymeleaf-spring4:$thymeleafVersion",
+			"org.hsqldb:hsqldb",
+			"javax.validation:validation-api",
+			"org.hibernate:hibernate-validator",
+			"org.springframework:spring-webmvc",
+			"org.springframework:spring-orm",
+			"org.springframework:spring-context",
+			"org.springframework:spring-aop",
+			"org.springframework:spring-tx",
+			"org.springframework:spring-beans",
+			"org.springframework:spring-instrument",
+			"org.springframework:spring-core",
+			"org.springframework:spring-aspects",
+			"org.thymeleaf:thymeleaf-spring5",
 			"nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.0.4",
-			"org.eclipse.persistence:javax.persistence:$javaPersistenceVersion"
-	compile("org.hibernate:hibernate-entitymanager:$hibernateVersion") {
+			"org.eclipse.persistence:javax.persistence"
+	compile("org.hibernate:hibernate-entitymanager") {
 			exclude group:'javassist', module: 'javassist'
 	}
-	compile("org.springframework.data:spring-data-jpa:$springDataJpaVersion") {
+	compile("org.springframework.data:spring-data-jpa") {
 			exclude group:'org.aspectj', module:'aspectjrt'
 	}
 }

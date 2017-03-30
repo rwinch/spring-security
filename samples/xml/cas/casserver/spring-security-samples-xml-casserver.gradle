@@ -1,6 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: 'jetty'
+apply plugin: 'io.spring.convention.spring-sample'
 
 def keystore = "$rootDir/samples/certificates/server.jks"
 def password = 'password'

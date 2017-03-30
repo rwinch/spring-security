@@ -1,19 +1,19 @@
-// Acl Module build file
+apply plugin: 'io.spring.convention.spring-module'
 
 dependencies {
-	compile project(':spring-security-core'),
-			springCoreDependency,
-			'aopalliance:aopalliance:1.0',
-			"org.springframework:spring-aop:$springVersion",
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-tx:$springVersion",
-			"org.springframework:spring-jdbc:$springVersion"
+	compile project(':spring-security-core')
+	compile	"org.springframework:spring-core"
+	compile 'aopalliance:aopalliance:1.0'
+	compile "org.springframework:spring-aop"
+	compile "org.springframework:spring-context"
+	compile "org.springframework:spring-tx"
+	compile "org.springframework:spring-jdbc"
 
-	optional "net.sf.ehcache:ehcache:$ehcacheVersion"
+	optional "net.sf.ehcache:ehcache"
 
-	testCompile "org.springframework:spring-beans:$springVersion",
-				"org.springframework:spring-context-support:$springVersion",
-				"org.springframework:spring-test:$springVersion"
+	testCompile "org.springframework:spring-beans"
+	testCompile "org.springframework:spring-context-support"
+	testCompile "org.springframework:spring-test"
 
-	testRuntime "org.hsqldb:hsqldb:$hsqlVersion"
+	testRuntime "org.hsqldb:hsqldb"
 }

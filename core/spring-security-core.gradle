@@ -1,53 +1,68 @@
-// Core build file
+apply plugin: 'io.spring.convention.spring-module'
 
-// We don't define a module dependency on crypto to avoid creating a transitive dependency
-def cryptoProject = project(':spring-security-crypto')
-def cryptoClasses = cryptoProject.sourceSets.main.output
+def includeProject = project(':spring-security-crypto')
 
 configurations {
+	tests
+	published.extendsFrom tests, archives
+
 	included
-
 	compile.extendsFrom included
-
-	testCompile.exclude group: 'org.mockito', module: 'mockito-all'
 }
 
 dependencies {
-	compile springCoreDependency,
-			'aopalliance:aopalliance:1.0',
-			"org.springframework:spring-aop:$springVersion",
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-expression:$springVersion"
+	compile "org.springframework:spring-core"
+	compile 'aopalliance:aopalliance'
+	compile "org.springframework:spring-aop"
+	compile "org.springframework:spring-beans"
+	compile "org.springframework:spring-context"
+	compile "org.springframework:spring-expression"
 
-	optional "net.sf.ehcache:ehcache:$ehcacheVersion",
-			 'javax.annotation:jsr250-api:1.0',
-			 "org.aspectj:aspectjrt:$aspectjVersion",
-			 "org.springframework:spring-jdbc:$springVersion",
-			 "org.springframework:spring-tx:$springVersion",
-			 "com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion"
+	included includeProject
 
-	included cryptoProject
+	optional "net.sf.ehcache:ehcache"
+	optional 'javax.annotation:jsr250-api'
+	optional "org.aspectj:aspectjrt"
+	optional "org.springframework:spring-jdbc"
+	optional "org.springframework:spring-tx"
+	optional "com.fasterxml.jackson.core:jackson-databind"
 
-	testCompile "commons-collections:commons-collections:$commonsCollectionsVersion",
-				"org.springframework:spring-test:$springVersion",
-				"org.slf4j:jcl-over-slf4j:$slf4jVersion",
-				powerMockDependencies,
-				"org.skyscreamer:jsonassert:$jsonassertVersion"
+	testCompile "commons-collections:commons-collections"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.slf4j:jcl-over-slf4j"
+	testCompile powerMockDependencies
+	testCompile "org.skyscreamer:jsonassert"
 
-	testRuntime "org.hsqldb:hsqldb:$hsqlVersion"
+	testRuntime "org.hsqldb:hsqldb"
 }
 
 classes.doLast {
 	copy {
-		from cryptoClasses
+		from includeProject.sourceSets.main.output
 		into sourceSets.main.output.classesDir
 	}
 }
 
-sourceJar.from cryptoProject.sourceSets.main.java
+tasks.sourcesJar.from {includeProject.sourceSets.main.java}
 
 configure(project.tasks.withType(Test)) {
 	systemProperties['springSecurityVersion'] = version
-	systemProperties['springVersion'] = springVersion
+	// FIXME systemProperties['springVersion'] = springVersion
+}
+
+task testJar(type: Jar) {
+	classifier = 'tests'
+	from sourceSets.test.output
+}
+
+artifacts {
+	tests testJar
+}
+
+uploadPublished {
+	// maven deployer configuration
+}
+
+install {
+	configuration = configurations.published
 }

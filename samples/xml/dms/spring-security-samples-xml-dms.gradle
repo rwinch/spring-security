@@ -1,16 +1,17 @@
+apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
 	compile project(':spring-security-core'),
 			project(':spring-security-acl'),
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-tx:$springVersion",
-			"org.springframework:spring-jdbc:$springVersion"
+			"org.springframework:spring-beans",
+			"org.springframework:spring-tx",
+			"org.springframework:spring-jdbc"
 
-	testCompile "org.springframework:spring-context:$springVersion"
+	testCompile "org.springframework:spring-context"
 
 	runtime project(':spring-security-config'),
-			"org.hsqldb:hsqldb:$hsqlVersion",
-			"org.springframework:spring-context-support:$springVersion"
+			"org.hsqldb:hsqldb",
+			"org.springframework:spring-context-support"
 
-	optional "net.sf.ehcache:ehcache:$ehcacheVersion"
+	optional "net.sf.ehcache:ehcache"
 }

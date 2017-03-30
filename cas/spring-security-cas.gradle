@@ -1,17 +1,18 @@
+apply plugin: 'io.spring.convention.spring-module'
 
 dependencies {
-	compile project(':spring-security-core'),
-			project(':spring-security-web'),
-			springCoreDependency,
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-web:$springVersion",
-			"org.jasig.cas.client:cas-client-core:$casClientVersion"
+	compile project(':spring-security-core')
+	compile project(':spring-security-web')
+	compile "org.springframework:spring-core"
+	compile "org.springframework:spring-context"
+	compile "org.springframework:spring-beans"
+	compile "org.springframework:spring-web"
+	compile "org.jasig.cas.client:cas-client-core"
 
-	optional "net.sf.ehcache:ehcache:$ehcacheVersion",
-			"com.fasterxml.jackson.core:jackson-databind:$jacksonDatabindVersion"
+	optional "net.sf.ehcache:ehcache"
+	optional "com.fasterxml.jackson.core:jackson-databind"
 
-	testCompile "org.skyscreamer:jsonassert:$jsonassertVersion"
+	testCompile "org.skyscreamer:jsonassert"
 
-	provided "javax.servlet:javax.servlet-api:$servletApiVersion"
+	provided "javax.servlet:javax.servlet-api"
 }

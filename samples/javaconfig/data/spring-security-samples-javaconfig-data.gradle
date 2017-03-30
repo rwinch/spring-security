@@ -1,10 +1,12 @@
+apply plugin: 'io.spring.convention.spring-sample'
+
 dependencies {
 	compile project(':spring-security-data'),
 			project(':spring-security-config'),
-			"org.springframework.data:spring-data-jpa:$springDataJpaVersion",
-			"org.eclipse.persistence:javax.persistence:$javaPersistenceVersion",
-			"org.hibernate:hibernate-entitymanager:$hibernateVersion",
-			"org.hsqldb:hsqldb:$hsqlVersion",
-			"javax.validation:validation-api:$validationApiVersion",
-			"org.hibernate:hibernate-validator:$hibernateValidatorVersion"
+			"org.springframework.data:spring-data-jpa",
+			"org.eclipse.persistence:javax.persistence",
+			"org.hibernate:hibernate-entitymanager",
+			"org.hsqldb:hsqldb",
+			"javax.validation:validation-api",
+			"org.hibernate:hibernate-validator"
 }
