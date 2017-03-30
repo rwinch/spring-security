@@ -39,7 +39,7 @@ dependencies {
 			"org.slf4j:jcl-over-slf4j",
 			"org.slf4j:slf4j-jdk14",
 			jstlDependencies
-	testCompile "com.google.appengine:appengine-testing"
+	testCompile "com.google.appengine:appengine-testing:$gaeVersion"
 
 	testRuntime "com.google.appengine:appengine-api-labs:$gaeVersion",
 				"com.google.appengine:appengine-api-stubs:$gaeVersion"

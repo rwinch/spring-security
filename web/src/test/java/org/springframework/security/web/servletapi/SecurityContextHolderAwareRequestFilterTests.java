@@ -34,7 +34,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.internal.WhiteboxImpl;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -48,6 +47,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -331,9 +331,9 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		DelegatingSecurityContextRunnable wrappedRunnable = (DelegatingSecurityContextRunnable) runnableCaptor
 				.getValue();
 		assertThat(
-				WhiteboxImpl.getInternalState(wrappedRunnable, "delegateSecurityContext"))
+				ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(WhiteboxImpl.getInternalState(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
 				.isEqualTo(runnable);
 	}
 
@@ -361,9 +361,9 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		DelegatingSecurityContextRunnable wrappedRunnable = (DelegatingSecurityContextRunnable) runnableCaptor
 				.getValue();
 		assertThat(
-				WhiteboxImpl.getInternalState(wrappedRunnable, "delegateSecurityContext"))
+			ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(WhiteboxImpl.getInternalState(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
 				.isEqualTo(runnable);
 	}
 
@@ -392,9 +392,9 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		DelegatingSecurityContextRunnable wrappedRunnable = (DelegatingSecurityContextRunnable) runnableCaptor
 				.getValue();
 		assertThat(
-				WhiteboxImpl.getInternalState(wrappedRunnable, "delegateSecurityContext"))
+			ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(WhiteboxImpl.getInternalState(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
 				.isEqualTo(runnable);
 	}
 
