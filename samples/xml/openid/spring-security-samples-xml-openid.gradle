@@ -1,20 +1,15 @@
-// OpenID sample build file
-
-apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
 	compile project(':spring-security-core'),
 			project(':spring-security-openid'),
-			"org.springframework:spring-webmvc:$springVersion"
+			"org.springframework:spring-webmvc"
 
-	providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
+	providedCompile "javax.servlet:javax.servlet-api"
 
 	runtime project(':spring-security-config'),
 			project(':spring-security-taglibs'),
 			jstlDependencies,
-			"org.slf4j:jcl-over-slf4j:$slf4jVersion",
-			"ch.qos.logback:logback-classic:$logbackVersion"
+			"org.slf4j:jcl-over-slf4j",
+			"ch.qos.logback:logback-classic"
 }
-
-[jettyRun, jettyRunWar]*.contextPath = "/openid"

@@ -25,7 +25,7 @@ asciidoctor {
 			doctype: 'book',
 			numbered: '',
 			'spring-security-version' : project.version,
-			'spring-version' : springVersion,
+//			'spring-version' : springVersion,
 			revnumber : project.version,
 			'gh-url': ghUrl,
 			'gh-samples-url': "$ghUrl/samples",

@@ -5,5 +5,5 @@ generatePom.enabled = false
 sonarqube.skipProject = true
 
 mavenBom {
-	projects = coreModuleProjects
+	projects = [] // FIXME
 }

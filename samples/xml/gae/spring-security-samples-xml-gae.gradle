@@ -1,15 +1,12 @@
-apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'io.spring.convention.spring-sample-war'
 apply plugin: 'appengine'
-
-def gaeVersion="1.9.23"
 
 buildscript {
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'com.google.appengine:gradle-appengine-plugin:1.9.23'
+		classpath "com.google.appengine:gradle-appengine-plugin:$gaeVersion"
 	}
 }
 
@@ -23,26 +20,26 @@ configurations.runtime.exclude(group: 'ch.qos.logback')
 dependencies {
 	appengineSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
 
-	providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
+	providedCompile "javax.servlet:javax.servlet-api"
 
 	compile project(':spring-security-core'),
 			project(':spring-security-web'),
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-web:$springVersion",
-			"org.springframework:spring-webmvc:$springVersion",
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-context-support:$springVersion",
+			"org.springframework:spring-beans",
+			"org.springframework:spring-web",
+			"org.springframework:spring-webmvc",
+			"org.springframework:spring-context",
+			"org.springframework:spring-context-support",
 			"com.google.appengine:appengine-api-1.0-sdk:$gaeVersion",
-			'javax.validation:validation-api:1.0.0.GA',
-			'org.hibernate:hibernate-validator:4.2.0.Final',
-			"org.slf4j:slf4j-api:$slf4jVersion"
+			'javax.validation:validation-api',
+			'org.hibernate:hibernate-validator',
+			"org.slf4j:slf4j-api"
 
 	runtime project(':spring-security-config'),
 			project(':spring-security-taglibs'),
-			"org.slf4j:jcl-over-slf4j:$slf4jVersion",
-			"org.slf4j:slf4j-jdk14:$slf4jVersion",
+			"org.slf4j:jcl-over-slf4j",
+			"org.slf4j:slf4j-jdk14",
 			jstlDependencies
-	testCompile "com.google.appengine:appengine-testing:$gaeVersion"
+	testCompile "com.google.appengine:appengine-testing"
 
 	testRuntime "com.google.appengine:appengine-api-labs:$gaeVersion",
 				"com.google.appengine:appengine-api-stubs:$gaeVersion"

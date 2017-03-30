@@ -1,3 +1,6 @@
+apply plugin: 'io.spring.convention.spring-module'
+
 dependencies {
-	optional 'org.bouncycastle:bcpkix-jdk15on:1.54'
+	optional 'commons-logging:commons-logging'
+	optional 'org.bouncycastle:bcpkix-jdk15on'
 }

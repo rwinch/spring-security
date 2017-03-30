@@ -71,7 +71,7 @@ ext.powerMockDependencies = [
 ]
 
 ext.springCoreDependency = [
-	dependencies.create("org.springframework:spring-core:$springVersion") {
+	dependencies.create("org.springframework:spring-core") {
 		exclude(group: 'commons-logging', module: 'commons-logging')
 	}
 ]
@@ -148,8 +148,8 @@ dependencies {
 
 	testCompile "junit:junit:$junitVersion",
 			'org.mockito:mockito-core:1.10.19',
-			"org.springframework:spring-test:$springVersion",
-			'org.assertj:assertj-core:3.6.2'
+			"org.springframework:spring-test",
+			'org.assertj:assertj-core'
 
 	// Use slf4j/logback for logging
 	testRuntime "org.slf4j:jcl-over-slf4j:$slf4jVersion",

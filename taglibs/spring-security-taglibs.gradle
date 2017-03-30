@@ -1,24 +1,23 @@
-// Taglibs build file
-apply plugin: 'groovy'
+apply plugin: 'io.spring.convention.spring-module'
 
 dependencies {
 	compile project(':spring-security-core'),
 			project(':spring-security-web'),
 			project(':spring-security-acl'),
-			springCoreDependency,
-			"org.springframework:spring-beans:$springVersion",
-			"org.springframework:spring-aop:$springVersion",
-			"org.springframework:spring-context:$springVersion",
-			"org.springframework:spring-expression:$springVersion",
-			"org.springframework:spring-web:$springVersion"
+			"org.springframework:spring-core",
+			"org.springframework:spring-beans",
+			"org.springframework:spring-aop",
+			"org.springframework:spring-context",
+			"org.springframework:spring-expression",
+			"org.springframework:spring-web"
 
-	provided 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1',
-			 "javax.servlet:javax.servlet-api:$servletApiVersion"
+	provided 'javax.servlet.jsp:javax.servlet.jsp-api',
+			 "javax.servlet:javax.servlet-api"
 
-	testCompile "org.codehaus.groovy:groovy-all:$groovyVersion",
+	testCompile "org.codehaus.groovy:groovy-all",
 				spockDependencies
 
-	testRuntime "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:$jstlVersion"
+	testRuntime "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api"
 }
 
 configure(project.tasks.withType(Test)) {
