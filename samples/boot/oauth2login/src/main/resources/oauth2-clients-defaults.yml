@@ -4,36 +4,40 @@ security:
       google:
         client-authentication-method: header
         authorized-grant-type: authorization_code
+        redirect-uri: "{scheme}://{serverName}:{serverPort}{baseAuthorizeUri}/{clientAlias}"
         scopes: openid, email, profile
-        authorization-uri: https://accounts.google.com/o/oauth2/auth
-        token-uri: https://accounts.google.com/o/oauth2/token
-        user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+        authorization-uri: "https://accounts.google.com/o/oauth2/auth"
+        token-uri: "https://accounts.google.com/o/oauth2/token"
+        user-info-uri: "https://www.googleapis.com/oauth2/v3/userinfo"
         open-id-provider: true
         client-name: Google
         client-alias: google
       github:
         client-authentication-method: header
         authorized-grant-type: authorization_code
+        redirect-uri: "{scheme}://{serverName}:{serverPort}{baseAuthorizeUri}/{clientAlias}"
         scopes: user
-        authorization-uri: https://github.com/login/oauth/authorize
-        token-uri: https://github.com/login/oauth/access_token
-        user-info-uri: https://api.github.com/user
+        authorization-uri: "https://github.com/login/oauth/authorize"
+        token-uri: "https://github.com/login/oauth/access_token"
+        user-info-uri: "https://api.github.com/user"
         open-id-provider: false
         client-name: GitHub
         client-alias: github
       facebook:
         client-authentication-method: form
         authorized-grant-type: authorization_code
+        redirect-uri: "{scheme}://{serverName}:{serverPort}{baseAuthorizeUri}/{clientAlias}"
         scopes: public_profile, email
-        authorization-uri: https://www.facebook.com/v2.8/dialog/oauth
-        token-uri: https://graph.facebook.com/v2.8/oauth/access_token
-        user-info-uri: https://graph.facebook.com/me
+        authorization-uri: "https://www.facebook.com/v2.8/dialog/oauth"
+        token-uri: "https://graph.facebook.com/v2.8/oauth/access_token"
+        user-info-uri: "https://graph.facebook.com/me"
         open-id-provider: false
         client-name: Facebook
         client-alias: facebook
       okta:
         client-authentication-method: header
         authorized-grant-type: authorization_code
+        redirect-uri: "{scheme}://{serverName}:{serverPort}{baseAuthorizeUri}/{clientAlias}"
         scopes: openid, email, profile
         open-id-provider: true
         client-name: Okta

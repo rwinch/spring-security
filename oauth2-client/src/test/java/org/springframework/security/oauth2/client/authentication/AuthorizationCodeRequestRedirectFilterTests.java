@@ -29,7 +29,7 @@ import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.oauth2.client.ClientRegistrationTestUtil.*;
+import static org.springframework.security.oauth2.client.authentication.TestUtil.*;
 
 /**
  * Tests {@link AuthorizationCodeRequestRedirectFilter}.
@@ -73,8 +73,7 @@ public class AuthorizationCodeRequestRedirectFilterTests {
 		AuthorizationCodeRequestRedirectFilter filter =
 				setupFilter(authorizationUri, clientRegistration);
 
-		String requestUri = AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI +
-				"/" + clientRegistration.getClientAlias();
+		String requestUri = AUTHORIZATION_BASE_URI + "/" + clientRegistration.getClientAlias();
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestUri);
 		request.setServletPath(requestUri);
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -96,8 +95,7 @@ public class AuthorizationCodeRequestRedirectFilterTests {
 		AuthorizationRequestRepository authorizationRequestRepository = new HttpSessionAuthorizationRequestRepository();
 		filter.setAuthorizationRequestRepository(authorizationRequestRepository);
 
-		String requestUri = AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI +
-				"/" + clientRegistration.getClientAlias();
+		String requestUri = AUTHORIZATION_BASE_URI + "/" + clientRegistration.getClientAlias();
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", requestUri);
 		request.setServletPath(requestUri);
 		MockHttpServletResponse response = new MockHttpServletResponse();

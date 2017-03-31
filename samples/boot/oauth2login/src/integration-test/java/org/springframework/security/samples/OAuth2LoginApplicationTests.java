@@ -76,6 +76,8 @@ import static org.springframework.security.oauth2.client.config.annotation.web.c
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OAuth2LoginApplicationTests {
+	private static final String AUTHORIZATION_BASE_URI = "/oauth2/authorization/code";
+	private static final String AUTHORIZE_BASE_URL = "http://localhost:8080/oauth2/authorize/code";
 
 	@Autowired
 	private WebClient webClient;
@@ -132,8 +134,8 @@ public class OAuth2LoginApplicationTests {
 
 		assertThat(params.get(OAuth2Attributes.RESPONSE_TYPE)).isEqualTo(ResponseType.CODE.value());
 		assertThat(params.get(OAuth2Attributes.CLIENT_ID)).isEqualTo(this.githubClientRegistration.getClientId());
-		assertThat(URLDecoder.decode(params.get(OAuth2Attributes.REDIRECT_URI), "UTF-8"))
-				.isEqualTo(this.githubClientRegistration.getRedirectUri().toString());
+		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.githubClientRegistration.getClientAlias();
+		assertThat(URLDecoder.decode(params.get(OAuth2Attributes.REDIRECT_URI), "UTF-8")).isEqualTo(redirectUri);
 		assertThat(URLDecoder.decode(params.get(OAuth2Attributes.SCOPE), "UTF-8"))
 				.isEqualTo(this.githubClientRegistration.getScopes().stream().collect(Collectors.joining(" ")));
 		assertThat(params.get(OAuth2Attributes.STATE)).isNotNull();
@@ -192,7 +194,7 @@ public class OAuth2LoginApplicationTests {
 
 		String code = "auth-code";
 		String state = "state";
-		String redirectUri = this.googleClientRegistration.getRedirectUri().toString();
+		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.googleClientRegistration.getClientAlias();
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
@@ -224,7 +226,7 @@ public class OAuth2LoginApplicationTests {
 
 		String code = "auth-code";
 		String state = "invalid-state";
-		String redirectUri = this.githubClientRegistration.getRedirectUri().toString();
+		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.githubClientRegistration.getClientAlias();
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
@@ -282,7 +284,7 @@ public class OAuth2LoginApplicationTests {
 
 		String error = OAuth2Error.ErrorCode.UNAUTHORIZED_CLIENT.toString();
 		String state = "state";
-		String redirectUri = this.githubClientRegistration.getRedirectUri().toString();
+		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.githubClientRegistration.getClientAlias();
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
@@ -306,7 +308,7 @@ public class OAuth2LoginApplicationTests {
 
 		String error = "invalid-error-code";
 		String state = "state";
-		String redirectUri = this.googleClientRegistration.getRedirectUri().toString();
+		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.googleClientRegistration.getClientAlias();
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
@@ -330,7 +332,7 @@ public class OAuth2LoginApplicationTests {
 		List<HtmlAnchor> clientAnchorElements = page.getAnchors();
 		assertThat(clientAnchorElements.size()).isEqualTo(expectedClients);
 
-		String baseAuthorizeUri = AuthorizationCodeRequestRedirectFilter.AUTHORIZATION_BASE_URI + "/";
+		String baseAuthorizeUri = AUTHORIZATION_BASE_URI + "/";
 		String googleClientAuthorizeUri = baseAuthorizeUri + this.googleClientRegistration.getClientAlias();
 		String githubClientAuthorizeUri = baseAuthorizeUri + this.githubClientRegistration.getClientAlias();
 		String facebookClientAuthorizeUri = baseAuthorizeUri + this.facebookClientRegistration.getClientAlias();

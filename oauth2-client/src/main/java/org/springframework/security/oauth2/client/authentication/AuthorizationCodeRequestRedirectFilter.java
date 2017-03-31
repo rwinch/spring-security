@@ -25,6 +25,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+
+import static org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter.AUTHORIZE_BASE_URI;
 
 
 /**
@@ -43,6 +46,7 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 	public static final String AUTHORIZATION_BASE_URI = "/oauth2/authorization/code";
 	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
 	private static final String AUTHORIZATION_URI = AUTHORIZATION_BASE_URI + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}";
+	private static final String DEFAULT_REDIRECT_URI_TEMPLATE = "{scheme}://{serverName}:{serverPort}{baseAuthorizeUri}/{clientAlias}";
 	private final AntPathRequestMatcher authorizationRequestMatcher;
 	private final ClientRegistrationRepository clientRegistrationRepository;
 	private final AuthorizationRequestUriBuilder authorizationUriBuilder;
@@ -95,9 +99,16 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 			throw new IllegalArgumentException("Invalid Client Identifier (Alias): " + clientAlias);
 		}
 
+		String redirectUriStr;
+		if (isDefaultRedirectUri(clientRegistration)) {
+			redirectUriStr = this.expandDefaultRedirectUri(request, clientRegistration);
+		} else {
+			redirectUriStr = clientRegistration.getRedirectUri();
+		}
+
 		AuthorizationRequestAttributes authorizationRequestAttributes =
 			AuthorizationRequestAttributes.authorizationCode(clientRegistration.getClientId(),
-				clientRegistration.getProviderDetails().getAuthorizationUri(), clientRegistration.getRedirectUri())
+				clientRegistration.getProviderDetails().getAuthorizationUri(), redirectUriStr)
 			.scopes(clientRegistration.getScopes())
 			.state(this.stateGenerator.generateKey())
 			.build();
@@ -115,5 +126,17 @@ public class AuthorizationCodeRequestRedirectFilter extends OncePerRequestFilter
 			logger.debug("Authorization Request failed: " + failed.toString(), failed);
 		}
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST, failed.getMessage());
+	}
+
+	static boolean isDefaultRedirectUri(ClientRegistration clientRegistration) {
+		return DEFAULT_REDIRECT_URI_TEMPLATE.equals(clientRegistration.getRedirectUri());
+	}
+
+	private String expandDefaultRedirectUri(HttpServletRequest request, ClientRegistration clientRegistration) {
+		return UriComponentsBuilder.fromUriString(DEFAULT_REDIRECT_URI_TEMPLATE)
+			.buildAndExpand(request.getScheme(), request.getServerName(), request.getServerPort(),
+				AUTHORIZE_BASE_URI, clientRegistration.getClientAlias())
+			.encode()
+			.toUriString();
 	}
 }

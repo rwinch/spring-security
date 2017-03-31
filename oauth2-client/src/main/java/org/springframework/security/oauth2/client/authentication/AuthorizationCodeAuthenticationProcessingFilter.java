@@ -30,12 +30,15 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static org.springframework.security.oauth2.client.authentication.AuthorizationCodeRequestRedirectFilter.isDefaultRedirectUri;
 
 
 /**
@@ -44,7 +47,7 @@ import java.io.IOException;
  * @author Joe Grandja
  */
 public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
-	private static final String AUTHORIZE_BASE_URI = "/oauth2/authorize/code";
+	public static final String AUTHORIZE_BASE_URI = "/oauth2/authorize/code";
 	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
 	private static final String AUTHORIZE_URI = AUTHORIZE_BASE_URI + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}";
 	private final RequestMatcher authorizeRequestMatcher = new AntPathRequestMatcher(AUTHORIZE_URI);
@@ -71,6 +74,13 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 
 		ClientRegistration clientRegistration = this.getClientRegistrationRepository().getRegistrationByClientId(
 				matchingAuthorizationRequest.getClientId());
+
+		// If clientRegistration.redirectUri is the default one (with Uri template variables)
+		// then use matchingAuthorizationRequest.redirectUri instead
+		if (isDefaultRedirectUri(clientRegistration)) {
+			clientRegistration = new ClientRegistrationBuilderWithUriOverrides(
+				clientRegistration, matchingAuthorizationRequest.getRedirectUri()).build();
+		}
 
 		AuthorizationCodeAuthorizationResponseAttributes authorizationCodeResponseAttributes =
 				ResponseAttributesExtractor.extractAuthorizationCodeResponse(request);
@@ -136,5 +146,27 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	private boolean isAuthorizationCodeErrorResponse(HttpServletRequest request) {
 		return !StringUtils.isEmpty(request.getParameter(OAuth2Attributes.ERROR)) &&
 			!StringUtils.isEmpty(request.getParameter(OAuth2Attributes.STATE));
+	}
+
+	private static class ClientRegistrationBuilderWithUriOverrides extends ClientRegistration.Builder {
+
+		private ClientRegistrationBuilderWithUriOverrides(ClientRegistration clientRegistration, String redirectUri) {
+			super(clientRegistration.getClientId());
+			this.clientSecret(clientRegistration.getClientSecret());
+			this.clientAuthenticationMethod(clientRegistration.getClientAuthenticationMethod());
+			this.authorizedGrantType(clientRegistration.getAuthorizedGrantType());
+			this.redirectUri(redirectUri);
+			if (!CollectionUtils.isEmpty(clientRegistration.getScopes())) {
+				this.scopes(clientRegistration.getScopes().stream().toArray(String[]::new));
+			}
+			this.authorizationUri(clientRegistration.getProviderDetails().getAuthorizationUri());
+			this.tokenUri(clientRegistration.getProviderDetails().getTokenUri());
+			this.userInfoUri(clientRegistration.getProviderDetails().getUserInfoUri());
+			if (clientRegistration.getProviderDetails().isOpenIdProvider()) {
+				this.openIdProvider();
+			}
+			this.clientName(clientRegistration.getClientName());
+			this.clientAlias(clientRegistration.getClientAlias());
+		}
 	}
 }
