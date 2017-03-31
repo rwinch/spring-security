@@ -47,7 +47,7 @@ tasks.sourcesJar.from {includeProject.sourceSets.main.java}
 
 configure(project.tasks.withType(Test)) {
 	systemProperties['springSecurityVersion'] = version
-	// FIXME systemProperties['springVersion'] = springVersion
+	systemProperties['springVersion'] = project.dependencyManagement.managedVersions['org.springframework:spring-core']
 }
 
 task testJar(type: Jar) {

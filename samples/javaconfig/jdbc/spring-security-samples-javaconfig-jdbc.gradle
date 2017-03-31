@@ -1,5 +1,7 @@
 apply plugin: 'io.spring.convention.spring-sample-war'
 
+configurations.all*.exclude module: 'bcprov-jdk15'
+
 dependencies {
 
 	providedCompile "javax.servlet:javax.servlet-api",

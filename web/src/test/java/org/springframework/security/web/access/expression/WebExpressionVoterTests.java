@@ -76,7 +76,7 @@ public class WebExpressionVoterTests {
 
 					public EvaluationContext answer(InvocationOnMock invocation)
 							throws Throwable {
-						return invocation.getArgument(0);
+						return invocation.getArgumentAt(0, EvaluationContext.class);
 					}
 				});
 		WebExpressionConfigAttribute weca = new WebExpressionConfigAttribute(ex,
