@@ -284,6 +284,7 @@ public class SampleWebSecurityConfigurerAdapterTests extends BaseSpringSpec {
 		@Order(1)
 		public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 			protected void configure(HttpSecurity http) throws Exception {
+				System.out.println(java.util.Collections.list(Thread.currentThread().getContextClassLoader().getResources("org/bouncycastle/asn1/ASN1EncodableVector.class")));
 				http
 					.antMatcher("/api/**")
 					.authorizeRequests()

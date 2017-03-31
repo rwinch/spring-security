@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class JavaVersionTests {
 
-	private static final int JDK6_CLASS_VERSION = 50;
+	private static final int JDK6_CLASS_VERSION = 52;
 
 	@Test
 	public void authenticationCorrectJdkCompatibility() throws Exception {

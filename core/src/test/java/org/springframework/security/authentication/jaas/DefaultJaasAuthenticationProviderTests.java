@@ -262,20 +262,19 @@ public class DefaultJaasAuthenticationProviderTests {
 	}
 
 	private void verifyFailedLogin() {
-//		verify(publisher).publishEvent(
-//				argThat(new BaseMatcher<JaasAuthenticationFailedEvent>() {
-//					public void describeTo(Description desc) {
-//						desc.appendText("isA(org.springframework.security.authentication.jaas.event.JaasAuthenticationFailedEvent)");
-//						desc.appendText(" && event.getException() != null");
-//					}
-//
-//					public boolean matches(Object arg) {
-//						JaasAuthenticationFailedEvent e = (JaasAuthenticationFailedEvent) arg;
-//						return e.getException() != null;
-//					}
-//
-//				}));
-//		verifyNoMoreInteractions(publisher);
-		throw new RuntimeException("Fix this");
+		verify(publisher).publishEvent(
+				argThat(new BaseMatcher<JaasAuthenticationFailedEvent>() {
+					public void describeTo(Description desc) {
+						desc.appendText("isA(org.springframework.security.authentication.jaas.event.JaasAuthenticationFailedEvent)");
+						desc.appendText(" && event.getException() != null");
+					}
+
+					public boolean matches(Object arg) {
+						JaasAuthenticationFailedEvent e = (JaasAuthenticationFailedEvent) arg;
+						return e.getException() != null;
+					}
+
+				}));
+		verifyNoMoreInteractions(publisher);
 	}
 }
