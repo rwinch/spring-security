@@ -23,12 +23,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.util.ClassUtils;
 
+import java.net.URI;
+import java.util.Set;
+
+import static org.springframework.boot.autoconfigure.security.oauth2.client.ClientRegistrationAutoConfiguration.CLIENT_PROPERTY_PREFIX;
+import static org.springframework.boot.autoconfigure.security.oauth2.client.ClientRegistrationAutoConfiguration.resolveClientPropertyKeys;
 import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.oauth2Login;
 
 /**
@@ -42,20 +51,44 @@ import static org.springframework.security.oauth2.client.config.annotation.web.c
 @AutoConfigureBefore(SecurityAutoConfiguration.class)
 @AutoConfigureAfter(ClientRegistrationAutoConfiguration.class)
 public class OAuth2LoginAutoConfiguration {
+	private static final String USER_INFO_URI_PROPERTY = "user-info-uri";
+	private static final String USER_INFO_CUSTOM_TYPE_PROPERTY = "user-info-custom-type";
 
 	@EnableWebSecurity
 	protected static class OAuth2LoginSecurityConfiguration extends WebSecurityConfigurerAdapter {
+		private final Environment environment;
+
+		protected OAuth2LoginSecurityConfiguration(Environment environment) {
+			this.environment = environment;
+		}
 
 		// @formatter:off
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
+			OAuth2LoginSecurityConfigurer<HttpSecurity> oauth2LoginConfigurer = oauth2Login();
+			this.registerCustomUserInfoTypes(oauth2LoginConfigurer);
+
 			http
 				.authorizeRequests()
 					.antMatchers("/favicon.ico").permitAll()
 					.anyRequest().authenticated()
 					.and()
-				.apply(oauth2Login());
+				.apply(oauth2LoginConfigurer);
 		}
 		// @formatter:on
+
+		private void registerCustomUserInfoTypes(OAuth2LoginSecurityConfigurer<HttpSecurity> oauth2LoginConfigurer) throws Exception {
+			Set<String> clientPropertyKeys = resolveClientPropertyKeys(this.environment);
+			for (String clientPropertyKey : clientPropertyKeys) {
+				String fullClientPropertyKey = CLIENT_PROPERTY_PREFIX + clientPropertyKey + ".";
+				String userInfoUriValue = this.environment.getProperty(fullClientPropertyKey + USER_INFO_URI_PROPERTY);
+				String userInfoCustomTypeValue = this.environment.getProperty(fullClientPropertyKey + USER_INFO_CUSTOM_TYPE_PROPERTY);
+				if (userInfoUriValue != null && userInfoCustomTypeValue != null) {
+					Class<? extends OAuth2UserDetails> userInfoCustomType = ClassUtils.resolveClassName(
+						userInfoCustomTypeValue, this.getClass().getClassLoader()).asSubclass(OAuth2UserDetails.class);
+					oauth2LoginConfigurer.userInfoEndpoint().userInfoTypeMapping(userInfoCustomType, new URI(userInfoUriValue));
+				}
+			}
+		}
 	}
 }
