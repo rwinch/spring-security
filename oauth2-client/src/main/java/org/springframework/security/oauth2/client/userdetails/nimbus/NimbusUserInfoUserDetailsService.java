@@ -49,7 +49,7 @@ import java.util.Map;
  */
 public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsService {
 	private final HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-	private final Map<URI, Class<? extends OAuth2UserDetails>> userInfoTypeMapping = new HashMap<>();
+	private final Map<URI, Class<? extends OAuth2UserDetails>> customUserInfoTypeMappings = new HashMap<>();
 
 	@Override
 	public UserDetails loadUserDetails(OAuth2AuthenticationToken authenticationToken) throws OAuth2AuthenticationException {
@@ -84,8 +84,8 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 
 			ClientHttpResponse clientHttpResponse = new NimbusClientHttpResponse(httpResponse);
 
-			if (this.isUserInfoTypeMapped(clientRegistration)) {
-				oauth2User = this.readCustomUserInfoType(clientHttpResponse, clientRegistration);
+			if (this.customUserInfoTypeMappings.get(userInfoUri) != null) {
+				oauth2User = this.readCustomUserInfoType(clientHttpResponse, userInfoUri);
 			}
 			if (oauth2User == null) {
 				oauth2User = this.readDefaultUserInfoType(clientHttpResponse, clientRegistration);
@@ -109,21 +109,13 @@ public class NimbusUserInfoUserDetailsService implements UserInfoUserDetailsServ
 	public final void mapUserInfoType(Class<? extends OAuth2UserDetails> userInfoType, URI userInfoUri) {
 		Assert.notNull(userInfoType, "userInfoType cannot be null");
 		Assert.notNull(userInfoUri, "userInfoUri cannot be null");
-		this.userInfoTypeMapping.put(userInfoUri, userInfoType);
+		this.customUserInfoTypeMappings.put(userInfoUri, userInfoType);
 	}
 
-	private Class<? extends OAuth2UserDetails> getUserInfoType(ClientRegistration clientRegistration) {
-		return this.userInfoTypeMapping.get(clientRegistration.getProviderDetails().getUserInfoUri());
-	}
-
-	private boolean isUserInfoTypeMapped(ClientRegistration clientRegistration) {
-		return this.getUserInfoType(clientRegistration) != null;
-	}
-
-	private OAuth2UserDetails readCustomUserInfoType(ClientHttpResponse clientHttpResponse, ClientRegistration clientRegistration) {
+	private OAuth2UserDetails readCustomUserInfoType(ClientHttpResponse clientHttpResponse, URI userInfoUri) {
 		OAuth2UserDetails oauth2User = null;
 
-		Class<? extends OAuth2UserDetails> userInfoType = this.getUserInfoType(clientRegistration);
+		Class<? extends OAuth2UserDetails> userInfoType = this.customUserInfoTypeMappings.get(userInfoUri);
 
 		if (this.jacksonHttpMessageConverter.canRead(userInfoType, null)) {
 			try {

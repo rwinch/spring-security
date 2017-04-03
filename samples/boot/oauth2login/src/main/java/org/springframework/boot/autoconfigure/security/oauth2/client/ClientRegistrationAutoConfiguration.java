@@ -46,9 +46,9 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(ClientRegistrationRepository.class)
 @AutoConfigureBefore(SecurityAutoConfiguration.class)
 public class ClientRegistrationAutoConfiguration {
-	private static final String CLIENT_PROPERTY_PREFIX = "security.oauth2.client.";
 	private static final String CLIENT_ID_PROPERTY = "client-id";
 	private static final String CLIENTS_DEFAULTS_RESOURCE = "oauth2-clients-defaults.yml";
+	static final String CLIENT_PROPERTY_PREFIX = "security.oauth2.client.";
 
 	@Configuration
 	@Conditional(ClientPropertiesAvailableCondition.class)
@@ -96,7 +96,7 @@ public class ClientRegistrationAutoConfiguration {
 		}
 	}
 
-	private static Set<String> resolveClientPropertyKeys(Environment environment) {
+	static Set<String> resolveClientPropertyKeys(Environment environment) {
 		Set<String> clientPropertyKeys = new LinkedHashSet<>();
 		RelaxedPropertyResolver resolver = new RelaxedPropertyResolver(environment, CLIENT_PROPERTY_PREFIX);
 		resolver.getSubProperties("").keySet().forEach(key -> {

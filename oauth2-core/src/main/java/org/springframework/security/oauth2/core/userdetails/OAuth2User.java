@@ -89,7 +89,10 @@ public class OAuth2User implements OAuth2UserDetails {
 
 	public String getAttributeString(String name) {
 		OAuth2UserAttribute userAttribute = this.getAttribute(name);
-		return (userAttribute != null ? userAttribute.getValue().toString() : null);
+		if (userAttribute == null) {
+			return null;
+		}
+		return (userAttribute.getValue() != null ? userAttribute.getValue().toString() : null);
 	}
 
 	public Long getAttributeLong(String name) {
