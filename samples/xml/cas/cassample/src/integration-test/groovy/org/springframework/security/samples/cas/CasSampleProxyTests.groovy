@@ -41,6 +41,7 @@ class CasSampleProxyTests extends AbstractCasTests {
 
 	def cleanupSpec() {
 		service.stop()
+		browser.clearCookies()
 	}
 
 	def 'access secure page succeeds with ROLE_USER'() {

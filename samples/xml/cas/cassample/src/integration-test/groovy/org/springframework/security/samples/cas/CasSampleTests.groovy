@@ -36,6 +36,8 @@ import spock.lang.Stepwise;
 class CasSampleTests extends AbstractCasTests {
 	@Shared String casServerLogoutUrl = LoginPage.url.replaceFirst('/login','/logout')
 
+
+
 	def 'access home page with unauthenticated user succeeds'() {
 		when: 'Unauthenticated user accesses the Home Page'
 		to HomePage
@@ -45,8 +47,10 @@ class CasSampleTests extends AbstractCasTests {
 
 	def 'access extremely secure page with unauthenitcated user requires login'() {
 		when: 'Unauthenticated user accesses the extremely secure page'
+		browser.
 		via ExtremelySecurePage
 		then: 'The login page is displayed'
+		println driver.pageSource
 		at LoginPage
 	}
 

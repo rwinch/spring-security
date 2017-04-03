@@ -3,7 +3,7 @@ apply plugin: 'io.spring.convention.spring-test'
 System.setProperty('python.cachedir.skip', 'true')
 
 dependencies {
-	compile	 project(':spring-security-core')
+	compile project(':spring-security-core')
 	compile 'aopalliance:aopalliance'
 	compile 'org.python:jython'
 	compile "org.springframework:spring-context"
