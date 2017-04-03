@@ -61,6 +61,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.PortMapper;
 import org.springframework.security.web.PortMapperImpl;
@@ -894,6 +895,10 @@ public final class HttpSecurity extends
 	 */
 	public FormLoginConfigurer<HttpSecurity> formLogin() throws Exception {
 		return getOrApply(new FormLoginConfigurer<HttpSecurity>());
+	}
+
+	public OAuth2LoginConfigurer<HttpSecurity> oauth2Login() throws Exception {
+		return getOrApply(new OAuth2LoginConfigurer<HttpSecurity>());
 	}
 
 	/**

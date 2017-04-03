@@ -28,7 +28,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
 import org.springframework.util.ClassUtils;
@@ -38,7 +38,6 @@ import java.util.Set;
 
 import static org.springframework.boot.autoconfigure.security.oauth2.client.ClientRegistrationAutoConfiguration.CLIENT_PROPERTY_PREFIX;
 import static org.springframework.boot.autoconfigure.security.oauth2.client.ClientRegistrationAutoConfiguration.resolveClientPropertyKeys;
-import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.oauth2Login;
 
 /**
  * @author Joe Grandja
@@ -65,19 +64,18 @@ public class OAuth2LoginAutoConfiguration {
 		// @formatter:off
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			OAuth2LoginSecurityConfigurer<HttpSecurity> oauth2LoginConfigurer = oauth2Login();
-			this.registerCustomUserInfoTypes(oauth2LoginConfigurer);
-
 			http
 				.authorizeRequests()
 					.antMatchers("/favicon.ico").permitAll()
 					.anyRequest().authenticated()
 					.and()
-				.apply(oauth2LoginConfigurer);
+				.oauth2Login();
+
+			this.registerCustomUserInfoTypes(http.oauth2Login());
 		}
 		// @formatter:on
 
-		private void registerCustomUserInfoTypes(OAuth2LoginSecurityConfigurer<HttpSecurity> oauth2LoginConfigurer) throws Exception {
+		private void registerCustomUserInfoTypes(OAuth2LoginConfigurer<HttpSecurity> oauth2LoginConfigurer) throws Exception {
 			Set<String> clientPropertyKeys = resolveClientPropertyKeys(this.environment);
 			for (String clientPropertyKey : clientPropertyKeys) {
 				String fullClientPropertyKey = CLIENT_PROPERTY_PREFIX + clientPropertyKey + ".";

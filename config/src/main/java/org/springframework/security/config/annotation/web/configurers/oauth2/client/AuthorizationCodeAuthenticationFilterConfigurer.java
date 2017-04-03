@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.client.config.annotation.web.configurers;
+package org.springframework.security.config.annotation.web.configurers.oauth2.client;
 
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -95,7 +95,7 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 	@Override
 	public void configure(H http) throws Exception {
 		AuthorizationCodeAuthenticationProcessingFilter authFilter = this.getAuthenticationFilter();
-		authFilter.setClientRegistrationRepository(OAuth2LoginSecurityConfigurer.getClientRegistrationRepository(this.getBuilder()));
+		authFilter.setClientRegistrationRepository(OAuth2LoginConfigurer.getClientRegistrationRepository(this.getBuilder()));
 		super.configure(http);
 	}
 

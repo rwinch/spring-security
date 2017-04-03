@@ -63,7 +63,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.oauth2.client.config.annotation.web.configurers.OAuth2LoginSecurityConfigurer.oauth2Login;
 
 /**
  * Integration tests for the OAuth 2.0 client filters {@link AuthorizationCodeRequestRedirectFilter}
@@ -389,10 +388,10 @@ public class OAuth2LoginApplicationTests {
 				.authorizeRequests()
 					.anyRequest().authenticated()
 					.and()
-				.apply(oauth2Login()
+				.oauth2Login()
 					.authorizationCodeTokenExchanger(this.mockAuthorizationCodeTokenExchanger())
 					.userInfoEndpoint()
-						.userInfoService(this.mockUserInfoEndpointService()));
+						.userInfoService(this.mockUserInfoEndpointService());
 		}
 		// @formatter:on
 
