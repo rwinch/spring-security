@@ -19,6 +19,7 @@ dependencies {
 	optional project(':spring-security-web'),
 			 project(':spring-security-ldap'),
 			 project(':spring-security-openid'),
+			 project(':spring-security-oauth2-client'),
 			 project(':spring-security-messaging'),
 			"org.springframework:spring-web:$springVersion",
 			"org.springframework:spring-websocket:$springVersion",

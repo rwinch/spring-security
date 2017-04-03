@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.client.config.annotation.web.configurers;
+package org.springframework.security.config.annotation.web.configurers.oauth2.client;
 
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -47,7 +47,7 @@ final class AuthorizationCodeRequestRedirectFilterConfigurer<B extends HttpSecur
 	@Override
 	public void configure(B http) throws Exception {
 		AuthorizationCodeRequestRedirectFilter filter = new AuthorizationCodeRequestRedirectFilter(
-				OAuth2LoginSecurityConfigurer.getClientRegistrationRepository(this.getBuilder()),
+				OAuth2LoginConfigurer.getClientRegistrationRepository(this.getBuilder()),
 				this.getAuthorizationRequestBuilder());
 		http.addFilter(this.postProcess(filter));
 	}
