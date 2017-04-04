@@ -1,5 +1,4 @@
 	// Docbook and Javadoc building and uploading tasks
-apply plugin: 'base'
 
 task docs {
 	dependsOn ':spring-security-docs-manual:reference', 'apidocs', ':spring-security-docs-guides:asciidoctor'
