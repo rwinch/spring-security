@@ -897,6 +897,143 @@ public final class HttpSecurity extends
 		return getOrApply(new FormLoginConfigurer<HttpSecurity>());
 	}
 
+	/**
+	 * Configures <b>OAuth 2.0</b> authentication against an external OAuth 2.0 or OpenID Connect 1.0 Provider.
+	 * <br>
+	 * <br>
+	 *
+	 * The <i>"authentication flow"</i> is realized using the <b>Authorization Code Grant</b>,
+	 * as specified in the <a target="_blank" href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Framework</a>.
+	 * <br>
+	 * <br>
+	 *
+	 * As a prerequisite to using this feature, the developer must register a <i>Client</i> with an <i>Authorization Server</i>.
+	 * The output of the <i>Client Registration</i> process results in a number of properties that are then used for configuring
+	 * an instance of a {@link org.springframework.security.oauth2.client.registration.ClientRegistration}.
+	 * Properties specific to a <i>Client</i> include: <i>client_id</i>, <i>client_secret</i>, <i>scope</i>, <i>redirect_uri</i>, etc.
+	 * There are also properties specific to the <i>Provider</i>, for example,
+	 * <i>Authorization Endpoint URI</i>, <i>Token Endpoint URI</i>, <i>UserInfo Endpoint URI</i>, etc.
+	 * <br>
+	 * <br>
+	 *
+	 * Multiple client support is provided for use cases where the application provides the user the option
+	 * for <i>"Logging in"</i> against one or more Providers, for example, <i>Google</i>, <i>GitHub</i>, <i>Facebook</i>, etc.
+	 * <br>
+	 * <br>
+	 *
+	 * {@link org.springframework.security.oauth2.client.registration.ClientRegistration}(s) are composed within a
+	 * {@link org.springframework.security.oauth2.client.registration.ClientRegistrationRepository}.
+	 * An instance of {@link org.springframework.security.oauth2.client.registration.ClientRegistrationRepository} is <b>required</b>
+	 * and may be supplied via the {@link ApplicationContext} or configured using
+	 * {@link OAuth2LoginConfigurer#clients(org.springframework.security.oauth2.client.registration.ClientRegistrationRepository)}.
+	 * <br>
+	 * <br>
+	 *
+	 * The default configuration provides an auto-generated login page at <code>"/login"</code> and
+	 * redirects to <code>"/login?error"</code> when an authentication failure occurs.
+	 * The login page will display each of the clients (composed within the
+	 * {@link org.springframework.security.oauth2.client.registration.ClientRegistrationRepository})
+	 * with an anchor link to <code>"/oauth2/authorization/code/{clientAlias}"</code>.
+	 * Clicking through the link will initiate the <i>"Authorization Request"</i> flow re-directing the user's
+	 * user-agent to the <i>Authorization Endpoint</i> of the <i>Provider</i>.
+	 * Assuming the <i>Resource Owner</i> grants the <i>Client</i> access, the <i>Authorization Server</i> will
+	 * redirect the user's user-agent to the <i>Redirection Endpoint</i> containing the <i>Authorization Code</i>
+	 * (Note that the <i>Redirection Endpoint</i> is automatically configured for the application and
+	 * defaults to <code>"/oauth2/authorize/code/{clientAlias}"</code>).
+	 * At this point in the <i>"authentication flow"</i>, the configured
+	 * {@link org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger}
+	 * will exchange the <i>Authorization Code</i> for an <i>Access Token</i> and then use it to access the protected resource
+	 * of the <i>UserInfo Endpoint</i>, via {@link org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService},
+	 * in order to retrieve the details of the <i>Resource Owner</i> and ultimately establish the <i>authenticated session</i>.
+	 *
+	 * <h2>Example Configurations</h2>
+	 *
+	 * The minimal configuration defaults to automatically generating a login page at <code>"/login"</code> and
+	 * redirecting to <code>"/login?error"</code> on an authentication failure or redirecting to <code>"/"</code>
+	 * when an authenticated session is established.
+	 *
+	 * <pre>
+	 * &#064;EnableWebSecurity
+	 * public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
+	 *
+	 * 	&#064;Override
+	 * 	protected void configure(HttpSecurity http) throws Exception {
+	 *		http
+	 * 			.authorizeRequests()
+	 * 				.anyRequest().authenticated()
+	 * 				.and()
+	 * 			.oauth2Login();
+	 * 	}
+	 *
+	 *	&#064;Bean
+	 *	public ClientRegistrationRepository clientRegistrationRepository() {
+	 *		// ClientRegistrationRepositoryImpl must be composed of at least one ClientRegistration instance
+	 *		return new ClientRegistrationRepositoryImpl();
+	 *	}
+	 * }
+	 * </pre>
+	 *
+	 * The following shows the configuration options available for customizing the defaults.
+	 *
+	 * <pre>
+	 * &#064;EnableWebSecurity
+	 * public class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
+	 *
+	 * 	&#064;Override
+	 * 	protected void configure(HttpSecurity http) throws Exception {
+	 *		http
+	 * 			.authorizeRequests()
+	 * 				.anyRequest().authenticated()
+	 * 				.and()
+	 * 			.oauth2Login()
+	 * 				.clients(this.clientRegistrationRepository())
+	 * 				.authorizationRequestBuilder(this.authorizationRequestBuilder())
+	 * 				.authorizationCodeTokenExchanger(this.authorizationCodeTokenExchanger())
+	 * 				.userInfoEndpoint()
+	 * 					.userInfoService(this.userInfoService())
+	 * 				.userInfoEndpoint()
+	 * 					// Provide a mapping between a custom OAuth2UserDetails implementation and the User Info URI
+	 * 					.userInfoTypeMapping(GoogleOAuth2UserDetails.class,
+	 * 									new URI("https://www.googleapis.com/oauth2/v3/userinfo"));
+	 * 	}
+	 *
+	 *	&#064;Bean
+	 *	public ClientRegistrationRepository clientRegistrationRepository() {
+	 *		// ClientRegistrationRepositoryImpl must be composed of at least one ClientRegistration instance
+	 *		return new ClientRegistrationRepositoryImpl();
+	 *	}
+	 *
+	 * 	&#064;Bean
+	 * 	public AuthorizationRequestUriBuilder authorizationRequestBuilder() {
+	 * 		// Custom URI builder for the "Authorization Request"
+	 * 		return new AuthorizationRequestUriBuilderImpl();
+	 * 	}
+	 *
+	 * 	&#064;Bean
+	 * 	public AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger() {
+	 * 		// Custom implementation that exchanges an "Authorization Code Grant" for an "Access Token"
+	 * 		return new AuthorizationCodeTokenExchangerImpl();
+	 * 	}
+	 *
+	 * 	&#064;Bean
+	 * 	public UserInfoUserDetailsService userInfoService() {
+	 * 		// Custom implementation that retrieves the details of the authenticated user at the UserInfo endpoint
+	 * 		return new UserInfoUserDetailsServiceImpl();
+	 * 	}
+	 * }
+	 * </pre>
+	 *
+	 * @since 5.0
+	 * @see <a target="_blank" href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 Authorization Framework</a>
+	 * @see org.springframework.security.oauth2.client.registration.ClientRegistration
+	 * @see org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
+	 * @see org.springframework.security.oauth2.client.authentication.AuthorizationRequestUriBuilder
+	 * @see org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger
+	 * @see org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService
+	 *
+	 * @return the {@link OAuth2LoginConfigurer} for further customizations
+	 * @throws Exception
+	 */
 	public OAuth2LoginConfigurer<HttpSecurity> oauth2Login() throws Exception {
 		return getOrApply(new OAuth2LoginConfigurer<HttpSecurity>());
 	}
