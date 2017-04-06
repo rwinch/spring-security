@@ -23,9 +23,9 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationCo
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.authentication.nimbus.NimbusAuthorizationCodeTokenExchanger;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
-import org.springframework.security.oauth2.client.userdetails.nimbus.NimbusUserInfoUserDetailsService;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.security.oauth2.client.user.OAuth2UserService;
+import org.springframework.security.oauth2.client.user.nimbus.NimbusOAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 
@@ -40,8 +40,8 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		AbstractAuthenticationFilterConfigurer<H, AuthorizationCodeAuthenticationFilterConfigurer<H>, AuthorizationCodeAuthenticationProcessingFilter> {
 
 	private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
-	private UserInfoUserDetailsService userInfoUserDetailsService;
-	private Map<URI, Class<? extends OAuth2UserDetails>> userInfoTypeMapping = new HashMap<>();
+	private OAuth2UserService userInfoService;
+	private Map<URI, Class<? extends OAuth2User>> userInfoTypeMapping = new HashMap<>();
 
 	AuthorizationCodeAuthenticationFilterConfigurer() {
 		super(new AuthorizationCodeAuthenticationProcessingFilter(), null);
@@ -62,13 +62,13 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		return this;
 	}
 
-	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoUserDetailsService(UserInfoUserDetailsService userInfoUserDetailsService) {
-		Assert.notNull(userInfoUserDetailsService, "userInfoUserDetailsService cannot be null");
-		this.userInfoUserDetailsService = userInfoUserDetailsService;
+	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoService(OAuth2UserService userInfoService) {
+		Assert.notNull(userInfoService, "userInfoService cannot be null");
+		this.userInfoService = userInfoService;
 		return this;
 	}
 
-	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoTypeMapping(Class<? extends OAuth2UserDetails> userInfoType, URI userInfoUri) {
+	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoTypeMapping(Class<? extends OAuth2User> userInfoType, URI userInfoUri) {
 		Assert.notNull(userInfoType, "userInfoType cannot be null");
 		Assert.notNull(userInfoUri, "userInfoUri cannot be null");
 		this.userInfoTypeMapping.put(userInfoUri, userInfoType);
@@ -86,7 +86,7 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 	@Override
 	public void init(H http) throws Exception {
 		AuthorizationCodeAuthenticationProvider authenticationProvider = new AuthorizationCodeAuthenticationProvider(
-				this.getAuthorizationCodeTokenExchanger(), this.getUserInfoUserDetailsService());
+				this.getAuthorizationCodeTokenExchanger(), this.getUserInfoService());
 		authenticationProvider = this.postProcess(authenticationProvider);
 		http.authenticationProvider(authenticationProvider);
 		super.init(http);
@@ -111,14 +111,13 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		return this.authorizationCodeTokenExchanger;
 	}
 
-	private UserInfoUserDetailsService getUserInfoUserDetailsService() {
-		if (this.userInfoUserDetailsService == null) {
-			this.userInfoUserDetailsService = new NimbusUserInfoUserDetailsService();
+	private OAuth2UserService getUserInfoService() {
+		if (this.userInfoService == null) {
+			this.userInfoService = new NimbusOAuth2UserService();
+			if (!this.userInfoTypeMapping.isEmpty()) {
+				((NimbusOAuth2UserService)this.userInfoService).setUserInfoTypeMappings(this.userInfoTypeMapping);
+			}
 		}
-		if (!this.userInfoTypeMapping.isEmpty()) {
-			this.userInfoTypeMapping.entrySet().stream()
-					.forEach(e -> this.userInfoUserDetailsService.mapUserInfoType(e.getValue(), e.getKey()));
-		}
-		return this.userInfoUserDetailsService;
+		return this.userInfoService;
 	}
 }

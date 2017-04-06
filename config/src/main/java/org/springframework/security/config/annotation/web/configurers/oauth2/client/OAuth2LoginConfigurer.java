@@ -25,8 +25,8 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationRe
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.security.oauth2.client.user.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -87,13 +87,13 @@ public final class OAuth2LoginConfigurer<B extends HttpSecurityBuilder<B>> exten
 		private UserInfoEndpointConfig() {
 		}
 
-		public OAuth2LoginConfigurer<B> userInfoService(UserInfoUserDetailsService userInfoService) {
+		public OAuth2LoginConfigurer<B> userInfoService(OAuth2UserService userInfoService) {
 			Assert.notNull(userInfoService, "userInfoService cannot be null");
-			OAuth2LoginConfigurer.this.authorizationCodeAuthenticationFilterConfigurer.userInfoUserDetailsService(userInfoService);
+			OAuth2LoginConfigurer.this.authorizationCodeAuthenticationFilterConfigurer.userInfoService(userInfoService);
 			return this.and();
 		}
 
-		public OAuth2LoginConfigurer<B> userInfoTypeMapping(Class<? extends OAuth2UserDetails> userInfoType, URI userInfoUri) {
+		public OAuth2LoginConfigurer<B> userInfoTypeMapping(Class<? extends OAuth2User> userInfoType, URI userInfoUri) {
 			Assert.notNull(userInfoType, "userInfoType cannot be null");
 			Assert.notNull(userInfoUri, "userInfoUri cannot be null");
 			OAuth2LoginConfigurer.this.authorizationCodeAuthenticationFilterConfigurer.userInfoTypeMapping(userInfoType, userInfoUri);

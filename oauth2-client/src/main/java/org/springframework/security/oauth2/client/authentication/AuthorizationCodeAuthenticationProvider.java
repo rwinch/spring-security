@@ -21,10 +21,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
+import org.springframework.security.oauth2.client.user.OAuth2UserService;
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.protocol.TokenResponseAttributes;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -34,17 +34,17 @@ import java.util.Collection;
  */
 public class AuthorizationCodeAuthenticationProvider implements AuthenticationProvider {
 	private final AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
-	private final UserInfoUserDetailsService userInfoUserDetailsService;
+	private final OAuth2UserService userInfoService;
 	private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
 	public AuthorizationCodeAuthenticationProvider(
 			AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger,
-			UserInfoUserDetailsService userInfoUserDetailsService) {
+			OAuth2UserService userInfoService) {
 
 		Assert.notNull(authorizationCodeTokenExchanger, "authorizationCodeTokenExchanger cannot be null");
-		Assert.notNull(userInfoUserDetailsService, "userInfoUserDetailsService cannot be null");
+		Assert.notNull(userInfoService, "userInfoService cannot be null");
 		this.authorizationCodeTokenExchanger = authorizationCodeTokenExchanger;
-		this.userInfoUserDetailsService = userInfoUserDetailsService;
+		this.userInfoService = userInfoService;
 	}
 
 	@Override
@@ -62,12 +62,12 @@ public class AuthorizationCodeAuthenticationProvider implements AuthenticationPr
 				authorizationCodeAuthentication.getClientRegistration(), accessToken);
 		accessTokenAuthentication.setDetails(authorizationCodeAuthentication.getDetails());
 
-		UserDetails userDetails = this.userInfoUserDetailsService.loadUserDetails(accessTokenAuthentication);
+		OAuth2User user = this.userInfoService.loadUser(accessTokenAuthentication);
 
 		Collection<? extends GrantedAuthority> authorities =
-				this.authoritiesMapper.mapAuthorities(userDetails.getAuthorities());
+				this.authoritiesMapper.mapAuthorities(user.getAuthorities());
 
-		OAuth2AuthenticationToken authenticationResult = new OAuth2AuthenticationToken(userDetails, authorities,
+		OAuth2AuthenticationToken authenticationResult = new OAuth2AuthenticationToken(user, authorities,
 				accessTokenAuthentication.getClientRegistration(), accessTokenAuthentication.getAccessToken());
 		authenticationResult.setDetails(accessTokenAuthentication.getDetails());
 

@@ -18,14 +18,14 @@
 </div>
 <h1>OAuth2 User Info</h1>
 <div>
-	<span style="font-weight:bold">Identifier: </span><span th:text="${userIdentifier.value}"></span>
+	<span style="font-weight:bold">Name: </span><span th:text="${userName}"></span>
 </div>
 <div>&nbsp;</div>
 <div>
 	<span style="font-weight:bold">Attributes:</span>
 	<ul>
 		<li th:each="userAttribute : ${userAttributes}">
-			<span style="font-weight:bold" th:text="${userAttribute.name}"></span>: <span th:text="${userAttribute.value}"></span>
+			<span style="font-weight:bold" th:text="${userAttribute.key}"></span>: <span th:text="${userAttribute.value}"></span>
 		</li>
 	</ul>
 </div>

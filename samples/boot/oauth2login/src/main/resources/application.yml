@@ -21,7 +21,7 @@ security:
       github:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        user-info-custom-type: "org.springframework.security.samples.userdetails.GitHubOAuth2UserDetails"
+        user-info-custom-type: "org.springframework.security.samples.user.GitHubOAuth2User"
       facebook:
         client-id: your-app-client-id
         client-secret: your-app-client-secret

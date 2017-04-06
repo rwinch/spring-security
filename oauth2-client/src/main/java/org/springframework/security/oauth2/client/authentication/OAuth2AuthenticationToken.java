@@ -19,9 +19,9 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AccessToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ import java.util.Collection;
  */
 public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-	private final UserDetails principal;
+	private final OAuth2User principal;
 	private final ClientRegistration clientRegistration;
 	private final AccessToken accessToken;
 
@@ -39,7 +39,7 @@ public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 		this(null, AuthorityUtils.NO_AUTHORITIES, clientRegistration, accessToken);
 	}
 
-	public OAuth2AuthenticationToken(UserDetails principal, Collection<? extends GrantedAuthority> authorities,
+	public OAuth2AuthenticationToken(OAuth2User principal, Collection<? extends GrantedAuthority> authorities,
 										ClientRegistration clientRegistration, AccessToken accessToken) {
 
 		super(authorities);
@@ -58,7 +58,13 @@ public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getCredentials() {
-		return (this.principal != null ? this.principal.getPassword() : null);
+		// Credentials are never exposed (by the Provider) for an OAuth2 User
+		return "";
+	}
+
+	@Override
+	public String getName() {
+		return this.principal != null ? this.principal.getIdentifier() : "";
 	}
 
 	public ClientRegistration getClientRegistration() {

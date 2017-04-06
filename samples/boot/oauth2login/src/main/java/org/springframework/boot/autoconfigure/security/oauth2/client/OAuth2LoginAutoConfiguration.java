@@ -30,7 +30,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.ClassUtils;
 
 import java.net.URI;
@@ -82,8 +82,8 @@ public class OAuth2LoginAutoConfiguration {
 				String userInfoUriValue = this.environment.getProperty(fullClientPropertyKey + USER_INFO_URI_PROPERTY);
 				String userInfoCustomTypeValue = this.environment.getProperty(fullClientPropertyKey + USER_INFO_CUSTOM_TYPE_PROPERTY);
 				if (userInfoUriValue != null && userInfoCustomTypeValue != null) {
-					Class<? extends OAuth2UserDetails> userInfoCustomType = ClassUtils.resolveClassName(
-						userInfoCustomTypeValue, this.getClass().getClassLoader()).asSubclass(OAuth2UserDetails.class);
+					Class<? extends OAuth2User> userInfoCustomType = ClassUtils.resolveClassName(
+						userInfoCustomTypeValue, this.getClass().getClassLoader()).asSubclass(OAuth2User.class);
 					oauth2LoginConfigurer.userInfoEndpoint().userInfoTypeMapping(userInfoCustomType, new URI(userInfoUriValue));
 				}
 			}

@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.client.userdetails;
+package org.springframework.security.oauth2.client.user;
 
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
-
-import java.net.URI;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 /**
  * @author Joe Grandja
  */
-public interface MappableUserInfoType {
+public interface OAuth2UserService {
 
-	void mapUserInfoType(Class<? extends OAuth2UserDetails> userInfoType, URI userInfoUri);
+	OAuth2User loadUser(OAuth2AuthenticationToken token) throws OAuth2AuthenticationException;
 
 }
