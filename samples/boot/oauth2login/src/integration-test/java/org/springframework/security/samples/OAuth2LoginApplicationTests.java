@@ -41,14 +41,13 @@ import org.springframework.security.oauth2.client.authentication.AuthorizationCo
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService;
+import org.springframework.security.oauth2.client.user.OAuth2UserService;
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.ResponseType;
 import org.springframework.security.oauth2.core.protocol.TokenResponseAttributes;
-import org.springframework.security.oauth2.core.userdetails.OAuth2User;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserAttribute;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -354,7 +353,7 @@ public class OAuth2LoginApplicationTests {
 
 		DomNodeList<HtmlElement> divElements = page.getBody().getElementsByTagName("div");
 		assertThat(divElements.get(1).asText()).contains("User: joeg@springsecurity.io");
-		assertThat(divElements.get(4).asText()).contains("Identifier: joeg");
+		assertThat(divElements.get(4).asText()).contains("Name: joeg@springsecurity.io");
 	}
 
 	private HtmlAnchor getClientAnchorElement(HtmlPage page, ClientRegistration clientRegistration) {
@@ -391,7 +390,7 @@ public class OAuth2LoginApplicationTests {
 				.oauth2Login()
 					.authorizationCodeTokenExchanger(this.mockAuthorizationCodeTokenExchanger())
 					.userInfoEndpoint()
-						.userInfoService(this.mockUserInfoEndpointService());
+						.userInfoService(this.mockUserInfoService());
 		}
 		// @formatter:on
 
@@ -404,16 +403,18 @@ public class OAuth2LoginApplicationTests {
 			return mock;
 		}
 
-		private UserInfoUserDetailsService mockUserInfoEndpointService() {
-			OAuth2UserAttribute identifierAttribute = new OAuth2UserAttribute("id", "joeg");
-			OAuth2UserAttribute firstNameAttribute = new OAuth2UserAttribute("first-name", "Joe");
-			OAuth2UserAttribute lastNameAttribute = new OAuth2UserAttribute("last-name", "Grandja");
-			OAuth2UserAttribute emailAttribute = new OAuth2UserAttribute("email", "joeg@springsecurity.io");
-			OAuth2User userDetails = new OAuth2User(identifierAttribute, Arrays.asList(firstNameAttribute, lastNameAttribute, emailAttribute));
-			userDetails.setUserNameAttributeName("email");
+		private OAuth2UserService mockUserInfoService() {
+			Map<String, Object> attributes = new HashMap<>();
+			attributes.put("id", "joeg");
+			attributes.put("first-name", "Joe");
+			attributes.put("last-name", "Grandja");
+			attributes.put("email", "joeg@springsecurity.io");
 
-			UserInfoUserDetailsService mock = mock(UserInfoUserDetailsService.class);
-			when(mock.loadUserDetails(any())).thenReturn(userDetails);
+			DefaultOAuth2User user = new DefaultOAuth2User(attributes);
+			user.setIdentifierAttributeKey("email");
+
+			OAuth2UserService mock = mock(OAuth2UserService.class);
+			when(mock.loadUser(any())).thenReturn(user);
 			return mock;
 		}
 	}

@@ -13,43 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.userdetails;
+package org.springframework.security.samples.user;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserAttribute;
-import org.springframework.security.oauth2.core.userdetails.OAuth2UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Joe Grandja
  */
-public class GitHubOAuth2UserDetails implements OAuth2UserDetails {
+public class GitHubOAuth2User implements OAuth2User {
 	private String id;
 	private String name;
 	private String login;
 	private String email;
 
-	public GitHubOAuth2UserDetails() {
+	public GitHubOAuth2User() {
 	}
 
 	@Override
-	public OAuth2UserAttribute getIdentifier() {
-		OAuth2UserAttribute identifier = new OAuth2UserAttribute("id", this.getId());
-		return identifier;
-	}
-
-	@Override
-	public List<OAuth2UserAttribute> getAttributes() {
-		List<OAuth2UserAttribute> attributes = new ArrayList<>();
-		attributes.add(new OAuth2UserAttribute("id", this.getId()));
-		attributes.add(new OAuth2UserAttribute("name", this.getName()));
-		attributes.add(new OAuth2UserAttribute("login", this.getLogin()));
-		attributes.add(new OAuth2UserAttribute("email", this.getEmail()));
-		return attributes;
+	public String getIdentifier() {
+		return this.getId();
 	}
 
 	@Override
@@ -58,33 +46,13 @@ public class GitHubOAuth2UserDetails implements OAuth2UserDetails {
 	}
 
 	@Override
-	public String getPassword() {
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.getLogin();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
+	public Map<String, Object> getAttributes() {
+		Map<String, Object> attributes = new HashMap<>();
+		attributes.put("id", this.getId());
+		attributes.put("name", this.getName());
+		attributes.put("login", this.getLogin());
+		attributes.put("email", this.getEmail());
+		return attributes;
 	}
 
 	public String getId() {

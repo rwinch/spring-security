@@ -943,7 +943,7 @@ public final class HttpSecurity extends
 	 * At this point in the <i>"authentication flow"</i>, the configured
 	 * {@link org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger}
 	 * will exchange the <i>Authorization Code</i> for an <i>Access Token</i> and then use it to access the protected resource
-	 * of the <i>UserInfo Endpoint</i>, via {@link org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService},
+	 * of the <i>UserInfo Endpoint</i>, via {@link org.springframework.security.oauth2.client.user.OAuth2UserService},
 	 * in order to retrieve the details of the <i>Resource Owner</i> and ultimately establish the <i>authenticated session</i>.
 	 *
 	 * <h2>Example Configurations</h2>
@@ -1016,9 +1016,9 @@ public final class HttpSecurity extends
 	 * 	}
 	 *
 	 * 	&#064;Bean
-	 * 	public UserInfoUserDetailsService userInfoService() {
+	 * 	public OAuth2UserService userInfoService() {
 	 * 		// Custom implementation that retrieves the details of the authenticated user at the UserInfo endpoint
-	 * 		return new UserInfoUserDetailsServiceImpl();
+	 * 		return new OAuth2UserServiceImpl();
 	 * 	}
 	 * }
 	 * </pre>
@@ -1029,7 +1029,7 @@ public final class HttpSecurity extends
 	 * @see org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
 	 * @see org.springframework.security.oauth2.client.authentication.AuthorizationRequestUriBuilder
 	 * @see org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger
-	 * @see org.springframework.security.oauth2.client.userdetails.UserInfoUserDetailsService
+	 * @see org.springframework.security.oauth2.client.user.OAuth2UserService
 	 *
 	 * @return the {@link OAuth2LoginConfigurer} for further customizations
 	 * @throws Exception

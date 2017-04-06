@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.core.userdetails;
+package org.springframework.security.oauth2.core.user;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Joe Grandja
  */
-public class OAuth2UserBuilder extends AbstractOAuth2UserDetailsBuilder<OAuth2User> {
+public interface OAuth2User extends Serializable {
 
-	@Override
-	public OAuth2User build() {
-		List<OAuth2UserAttribute> userAttributes = this.getUserAttributes();
-		OAuth2UserAttribute identifierAttribute = this.findIdentifier(userAttributes);
-		Set<GrantedAuthority> authorities = this.loadAuthorities(identifierAttribute);
-		return new OAuth2User(identifierAttribute, userAttributes, authorities);
-	}
+	String getIdentifier();
+
+	Collection<? extends GrantedAuthority> getAuthorities();
+
+	Map<String, Object> getAttributes();
 }
