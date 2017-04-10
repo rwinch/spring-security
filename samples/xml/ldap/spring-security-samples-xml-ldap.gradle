@@ -1,17 +1,16 @@
 apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
-	compile project(':spring-security-taglibs'),
-			jstlDependencies
+	compile project(':spring-security-taglibs')
+	compile jstlDependencies
 
-	runtime project(':spring-security-web'),
-			project(':spring-security-config'),
-			project(':spring-security-ldap'),
-			"org.slf4j:jcl-over-slf4j",
-			"ch.qos.logback:logback-classic",
-			apachedsDependencies
+	runtime project(':spring-security-web')
+	runtime project(':spring-security-config')
+	runtime project(':spring-security-ldap')
+	runtime apachedsDependencies
+	runtime slf4jDependencies
 
-	providedCompile "javax.servlet:javax.servlet-api"
+	providedCompile 'javax.servlet:javax.servlet-api'
 
 	integrationTestCompile gebDependencies
 }

@@ -1,28 +1,28 @@
 apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
-	providedCompile "javax.servlet:javax.servlet-api"
+	compile project(':spring-security-acl')
+	compile project(':spring-security-core')
+	compile slf4jDependencies
+	compile 'org.springframework:spring-aop'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-jdbc'
+	compile 'org.springframework:spring-tx'
+	compile 'org.springframework:spring-web'
+	compile 'org.springframework:spring-webmvc'
 
-	compile project(':spring-security-core'),
-			project(':spring-security-acl'),
-			"org.springframework:spring-aop",
-			"org.springframework:spring-beans",
-			"org.springframework:spring-context",
-			"org.springframework:spring-jdbc",
-			"org.springframework:spring-tx",
-			"org.springframework:spring-web",
-			"org.springframework:spring-webmvc",
-			slf4jDependencies
+	providedCompile 'javax.servlet:javax.servlet-api'
 
-	runtime project(':spring-security-web'),
-			project(':spring-security-config'),
-			project(':spring-security-taglibs'),
-			"org.springframework:spring-context-support",
-			jstlDependencies,
-			"org.hsqldb:hsqldb",
-			"org.slf4j:jcl-over-slf4j",
-			"ch.qos.logback:logback-classic",
-			"net.sf.ehcache:ehcache"
+	runtime project(':spring-security-config')
+	runtime project(':spring-security-taglibs')
+	runtime project(':spring-security-web')
+	runtime jstlDependencies
+	runtime 'ch.qos.logback:logback-classic'
+	runtime 'net.sf.ehcache:ehcache'
+	runtime 'org.hsqldb:hsqldb'
+	runtime 'org.slf4j:jcl-over-slf4j'
+	runtime 'org.springframework:spring-context-support'
 
 	integrationTestCompile gebDependencies
 }

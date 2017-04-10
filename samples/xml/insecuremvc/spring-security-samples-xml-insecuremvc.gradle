@@ -2,20 +2,16 @@ apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
 
-	providedCompile "javax.servlet:javax.servlet-api",
-					'javax.servlet.jsp:javax.servlet.jsp-api'
+	providedCompile 'javax.servlet:javax.servlet-api'
+	compile 		'javax.servlet.jsp:javax.servlet.jsp-api'
 
-	compile project(":spring-security-samples-javaconfig-messages"),
-			"org.springframework:spring-webmvc",
-			"org.springframework:spring-jdbc",
-			"org.slf4j:slf4j-api",
-			"org.slf4j:log4j-over-slf4j",
-			"org.slf4j:jul-to-slf4j",
-			"org.slf4j:jcl-over-slf4j",
-			"javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api",
-			"javax.validation:validation-api",
-			"org.hibernate:hibernate-validator"
+	compile project(':spring-security-samples-javaconfig-messages')
+	compile slf4jDependencies
+	compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
+	compile 'javax.validation:validation-api'
+	compile 'org.hibernate:hibernate-validator'
+	compile 'org.springframework:spring-jdbc'
+	compile 'org.springframework:spring-webmvc'
 
-	runtime "opensymphony:sitemesh",
-			'ch.qos.logback:logback-classic'
+	runtime 'opensymphony:sitemesh'
 }
