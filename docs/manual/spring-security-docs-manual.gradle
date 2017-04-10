@@ -1,12 +1,10 @@
 apply plugin: 'io.spring.convention.docs'
 
-ext.expandPlaceholders = ""
-
 asciidoctor {
 	def ghTag = snapshotBuild ? 'master' : project.version
 	def ghUrl = "https://github.com/spring-projects/spring-security/tree/$ghTag"
 	attributes 'spring-security-version' : project.version,
-//			'spring-version' : springVersion,
+		'spring-version' : project(':spring-security-core').dependencyManagement.managedVersions['org.springframework:spring-core'],
 		revnumber : project.version,
 		'gh-url': ghUrl,
 		'gh-samples-url': "$ghUrl/samples"

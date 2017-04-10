@@ -1,28 +1,28 @@
 apply plugin: 'io.spring.convention.spring-module'
 
 dependencies {
-	compile project(':spring-security-core'),
-			springCoreDependency,
-			'aopalliance:aopalliance',
-			"org.springframework:spring-beans",
-			"org.springframework:spring-context",
-			"org.springframework:spring-expression",
-			"org.springframework:spring-web"
+	compile project(':spring-security-core')
+	compile springCoreDependency
+	compile 'aopalliance:aopalliance'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-expression'
+	compile 'org.springframework:spring-web'
 
-	optional "org.springframework:spring-webmvc",
-			"org.springframework:spring-jdbc",
-			"org.springframework:spring-tx",
-			"com.fasterxml.jackson.core:jackson-databind"
+	optional 'com.fasterxml.jackson.core:jackson-databind'
+	optional 'org.springframework:spring-jdbc'
+	optional 'org.springframework:spring-tx'
+	optional 'org.springframework:spring-webmvc'
 
-	provided "javax.servlet:javax.servlet-api"
+	provided 'javax.servlet:javax.servlet-api'
 
-	testCompile project(':spring-security-core').sourceSets.test.output,
-				'commons-codec:commons-codec',
-				"org.slf4j:jcl-over-slf4j",
-				"org.codehaus.groovy:groovy-all",
-				powerMockDependencies,
-				spockDependencies,
-				"org.skyscreamer:jsonassert"
+	testCompile project(path: ':spring-security-core', configuration: 'tests')
+	testCompile 'commons-codec:commons-codec'
+	testCompile 'org.codehaus.groovy:groovy-all'
+	testCompile 'org.skyscreamer:jsonassert'
+	testCompile powerMockDependencies
+	testCompile spockDependencies
+	testCompile slf4jDependencies
 
-	testRuntime "org.hsqldb:hsqldb"
+	testRuntime 'org.hsqldb:hsqldb'
 }

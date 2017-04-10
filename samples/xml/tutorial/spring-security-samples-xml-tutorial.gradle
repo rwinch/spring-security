@@ -1,21 +1,18 @@
 apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
-	providedCompile "javax.servlet:javax.servlet-api"
+	compile project(':spring-security-core')
+	compile slf4jDependencies
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-web'
+	compile 'org.springframework:spring-webmvc'
 
-	compile project(':spring-security-core'),
-			"org.springframework:spring-beans",
-			"org.springframework:spring-web",
-			"org.springframework:spring-webmvc",
-			"org.slf4j:slf4j-api"
+	providedCompile 'javax.servlet:javax.servlet-api'
 
-	runtime project(':spring-security-web'),
-			project(':spring-security-config'),
-			project(':spring-security-taglibs'),
-			jstlDependencies,
-			"org.slf4j:jcl-over-slf4j",
-			"ch.qos.logback:logback-core",
-			"ch.qos.logback:logback-classic"
+	runtime project(':spring-security-config')
+	runtime project(':spring-security-taglibs')
+	runtime project(':spring-security-web')
+	runtime jstlDependencies
 }
 
 //jettyRun {
@@ -24,8 +21,8 @@ dependencies {
 //	httpConnector.confidentialPort = 8443
 //	def httpsConnector = jettyRunWar.class.classLoader.loadClass('org.mortbay.jetty.security.SslSocketConnector').newInstance()
 //	httpsConnector.port = 8443
-//	httpsConnector.keystore = "$rootDir/samples/certificates/server.jks"
+//	httpsConnector.keystore = '$rootDir/samples/certificates/server.jks'
 //	httpsConnector.keyPassword = 'password'
 //
-//	connectors = [httpConnector, httpsConnector]
+//	connectors = [httpConnector httpsConnector]
 //}

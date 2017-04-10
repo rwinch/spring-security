@@ -20,30 +20,28 @@ configurations.runtime.exclude(group: 'ch.qos.logback')
 dependencies {
 	appengineSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
 
-	providedCompile "javax.servlet:javax.servlet-api"
+	compile project(':spring-security-core')
+	compile project(':spring-security-taglibs')
+	compile project(':spring-security-web')
+	compile jstlDependencies
+	compile slf4jDependencies
+	compile "com.google.appengine:appengine-api-1.0-sdk:$gaeVersion"
+	compile "com.google.appengine:appengine-api-stubs:$gaeVersion"
+	compile 'javax.validation:validation-api'
+	compile 'org.hibernate:hibernate-validator'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-context-support'
+	compile 'org.springframework:spring-web'
+	compile 'org.springframework:spring-webmvc'
 
-	compile project(':spring-security-core'),
-			project(':spring-security-web'),
-			"org.springframework:spring-beans",
-			"org.springframework:spring-web",
-			"org.springframework:spring-webmvc",
-			"org.springframework:spring-context",
-			"org.springframework:spring-context-support",
-			"com.google.appengine:appengine-api-1.0-sdk:$gaeVersion",
-			'javax.validation:validation-api',
-			'org.hibernate:hibernate-validator',
-			"org.slf4j:slf4j-api"
+	providedCompile 'javax.servlet:javax.servlet-api'
 
-	runtime project(':spring-security-config'),
-			project(':spring-security-taglibs'),
-			"org.slf4j:jcl-over-slf4j",
-			"org.slf4j:slf4j-jdk14",
-			jstlDependencies
+	runtime project(':spring-security-config')
+
 	testCompile "com.google.appengine:appengine-testing:$gaeVersion"
 
-	testRuntime "com.google.appengine:appengine-api-labs:$gaeVersion",
-				"com.google.appengine:appengine-api-stubs:$gaeVersion"
-
+	testRuntime "com.google.appengine:appengine-api-labs:$gaeVersion"
 }
 
 appengineRun.onlyIf { !gradle.taskGraph.hasTask(appengineFunctionalTest) }

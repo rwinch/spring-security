@@ -1,22 +1,21 @@
 apply plugin: 'io.spring.convention.spring-sample-war'
 
 dependencies {
-	providedCompile "javax.servlet:javax.servlet-api"
+	compile project(':spring-security-core')
+	compile project(':spring-security-web')
+	compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-web'
+	compile 'org.springframework:spring-webmvc'
 
-	compile project(':spring-security-core'),
-			project(':spring-security-web'),
-			"javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api",
-			"org.springframework:spring-beans",
-			"org.springframework:spring-context",
-			"org.springframework:spring-web",
-			"org.springframework:spring-webmvc"
+	providedCompile 'javax.servlet:javax.servlet-api'
 
-	runtime project(':spring-security-config'),
-			project(':spring-security-taglibs'),
-			"org.springframework:spring-context-support",
-			jstlDependencies,
-			"org.slf4j:jcl-over-slf4j",
-			"ch.qos.logback:logback-classic"
+	runtime project(':spring-security-config')
+	runtime project(':spring-security-taglibs')
+	runtime jstlDependencies
+	runtime slf4jDependencies
+	runtime 'org.springframework:spring-context-support'
 }
 
-eclipse.wtp.component.contextPath = "servletapi"
+eclipse.wtp.component.contextPath = 'servletapi'
