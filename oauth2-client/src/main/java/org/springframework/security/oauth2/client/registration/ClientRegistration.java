@@ -187,9 +187,7 @@ public class ClientRegistration {
 			this.authorizationUri(clientRegistrationProperties.getAuthorizationUri());
 			this.tokenUri(clientRegistrationProperties.getTokenUri());
 			this.userInfoUri(clientRegistrationProperties.getUserInfoUri());
-			if (clientRegistrationProperties.isOpenIdProvider()) {
-				this.openIdProvider();
-			}
+			this.openIdProvider(clientRegistrationProperties.isOpenIdProvider());
 			this.clientName(clientRegistrationProperties.getClientName());
 			this.clientAlias(clientRegistrationProperties.getClientAlias());
 		}
@@ -237,8 +235,8 @@ public class ClientRegistration {
 			return this;
 		}
 
-		public Builder openIdProvider() {
-			this.openIdProvider = true;
+		public Builder openIdProvider(boolean openIdProvider) {
+			this.openIdProvider = openIdProvider;
 			return this;
 		}
 
