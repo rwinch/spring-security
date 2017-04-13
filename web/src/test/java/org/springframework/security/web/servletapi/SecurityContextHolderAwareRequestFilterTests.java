@@ -67,7 +67,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  *
  * @author Ben Alex
  * @author Rob Winch
- * @author Edd� Mel�ndez
+ * @author Edd? Mel?ndez
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ClassUtils.class)
@@ -333,7 +333,7 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		assertThat(
 				ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"));
 	}
 
 	@Test
@@ -362,7 +362,7 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		assertThat(
 			ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"));
 	}
 
 	@Test
@@ -392,7 +392,7 @@ public class SecurityContextHolderAwareRequestFilterTests {
 		assertThat(
 			ReflectionTestUtils.getField(wrappedRunnable, "delegateSecurityContext"))
 						.isEqualTo(context);
-		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"))
+		assertThat(ReflectionTestUtils.getField(wrappedRunnable, "delegate"));
 	}
 
 	// SEC-3047
