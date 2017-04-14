@@ -10,9 +10,9 @@ parallel check: {
 		node {
 			checkout scm
 			try {
-				sh "./gradlew :spring-security-samples-xml-cassample:iTest --no-daemon"
+				sh "./gradlew :spring-security-samples-xml-cassample:clean :spring-security-samples-xml-cassample:iTest --no-daemon"
 			} finally {
-				junit '**/build/*-results/*/*.xml'
+				junit '**/build/*-results/*.xml'
 			}
 		}
 	}
