@@ -60,6 +60,8 @@ dependencies {
 	doFirst() {
 		System.setProperty('cas.server.host', casServer().httpsHost)
 		System.setProperty('cas.service.host', jettyRunWar.httpsHost)
+		System.setProperty('javax.net.ssl.trustStore', keystore)
+		System.setProperty('javax.net.ssl.trustStorePassword', password)
 	}
 }
 
