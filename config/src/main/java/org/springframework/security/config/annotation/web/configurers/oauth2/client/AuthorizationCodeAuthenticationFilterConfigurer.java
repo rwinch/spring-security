@@ -15,6 +15,8 @@
  */
 package org.springframework.security.config.annotation.web.configurers.oauth2.client;
 
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationProcessingFilter;
@@ -41,7 +43,8 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 
 	private AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> authorizationCodeTokenExchanger;
 	private OAuth2UserService userInfoService;
-	private Map<URI, Class<? extends OAuth2User>> userInfoTypeMapping = new HashMap<>();
+	private Map<URI, Converter<ClientHttpResponse, ? extends OAuth2User>> userInfoTypeConverters = new HashMap<>();
+
 
 	AuthorizationCodeAuthenticationFilterConfigurer() {
 		super(new AuthorizationCodeAuthenticationProcessingFilter(), null);
@@ -68,10 +71,10 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 		return this;
 	}
 
-	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoTypeMapping(Class<? extends OAuth2User> userInfoType, URI userInfoUri) {
-		Assert.notNull(userInfoType, "userInfoType cannot be null");
+	AuthorizationCodeAuthenticationFilterConfigurer<H> userInfoTypeConverter(Converter<ClientHttpResponse, ? extends OAuth2User> userInfoConverter, URI userInfoUri) {
+		Assert.notNull(userInfoConverter, "userInfoConverter cannot be null");
 		Assert.notNull(userInfoUri, "userInfoUri cannot be null");
-		this.userInfoTypeMapping.put(userInfoUri, userInfoType);
+		this.userInfoTypeConverters.put(userInfoUri, userInfoConverter);
 		return this;
 	}
 
@@ -113,10 +116,7 @@ final class AuthorizationCodeAuthenticationFilterConfigurer<H extends HttpSecuri
 
 	private OAuth2UserService getUserInfoService() {
 		if (this.userInfoService == null) {
-			this.userInfoService = new NimbusOAuth2UserService();
-			if (!this.userInfoTypeMapping.isEmpty()) {
-				((NimbusOAuth2UserService)this.userInfoService).setUserInfoTypeMappings(this.userInfoTypeMapping);
-			}
+			this.userInfoService = new NimbusOAuth2UserService(this.userInfoTypeConverters);
 		}
 		return this.userInfoService;
 	}

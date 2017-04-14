@@ -50,7 +50,6 @@ class TestUtil {
 		clientRegistrationProperties.setClientId("google-client-id");
 		clientRegistrationProperties.setClientSecret("secret");
 		clientRegistrationProperties.setAuthorizedGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-		clientRegistrationProperties.setOpenIdProvider(true);
 		clientRegistrationProperties.setClientName("Google Client");
 		clientRegistrationProperties.setClientAlias(GOOGLE_CLIENT_ALIAS);
 		clientRegistrationProperties.setAuthorizationUri("https://accounts.google.com/o/oauth2/auth");
@@ -70,7 +69,6 @@ class TestUtil {
 		clientRegistrationProperties.setClientId("github-client-id");
 		clientRegistrationProperties.setClientSecret("secret");
 		clientRegistrationProperties.setAuthorizedGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
-		clientRegistrationProperties.setOpenIdProvider(false);
 		clientRegistrationProperties.setClientName("GitHub Client");
 		clientRegistrationProperties.setClientAlias(GITHUB_CLIENT_ALIAS);
 		clientRegistrationProperties.setAuthorizationUri("https://github.com/login/oauth/authorize");

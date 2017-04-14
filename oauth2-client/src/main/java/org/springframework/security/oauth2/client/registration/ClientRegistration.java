@@ -119,7 +119,6 @@ public class ClientRegistration {
 		private String authorizationUri;
 		private String tokenUri;
 		private String userInfoUri;
-		private boolean openIdProvider;
 
 		protected ProviderDetails() {
 		}
@@ -147,14 +146,6 @@ public class ClientRegistration {
 		protected void setUserInfoUri(String userInfoUri) {
 			this.userInfoUri = userInfoUri;
 		}
-
-		public boolean isOpenIdProvider() {
-			return this.openIdProvider;
-		}
-
-		protected void setOpenIdProvider(boolean openIdProvider) {
-			this.openIdProvider = openIdProvider;
-		}
 	}
 
 	public static class Builder {
@@ -167,7 +158,6 @@ public class ClientRegistration {
 		protected String authorizationUri;
 		protected String tokenUri;
 		protected String userInfoUri;
-		protected boolean openIdProvider;
 		protected String clientName;
 		protected String clientAlias;
 
@@ -187,7 +177,6 @@ public class ClientRegistration {
 			this.authorizationUri(clientRegistrationProperties.getAuthorizationUri());
 			this.tokenUri(clientRegistrationProperties.getTokenUri());
 			this.userInfoUri(clientRegistrationProperties.getUserInfoUri());
-			this.openIdProvider(clientRegistrationProperties.isOpenIdProvider());
 			this.clientName(clientRegistrationProperties.getClientName());
 			this.clientAlias(clientRegistrationProperties.getClientAlias());
 		}
@@ -235,11 +224,6 @@ public class ClientRegistration {
 			return this;
 		}
 
-		public Builder openIdProvider(boolean openIdProvider) {
-			this.openIdProvider = openIdProvider;
-			return this;
-		}
-
 		public Builder clientName(String clientName) {
 			this.clientName = clientName;
 			return this;
@@ -269,7 +253,6 @@ public class ClientRegistration {
 			providerDetails.setAuthorizationUri(this.authorizationUri);
 			providerDetails.setTokenUri(this.tokenUri);
 			providerDetails.setUserInfoUri(this.userInfoUri);
-			providerDetails.setOpenIdProvider(this.openIdProvider);
 			clientRegistration.setProviderDetails(providerDetails);
 
 			clientRegistration.setClientName(this.clientName);

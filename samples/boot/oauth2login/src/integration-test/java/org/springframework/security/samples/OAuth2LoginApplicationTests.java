@@ -410,8 +410,7 @@ public class OAuth2LoginApplicationTests {
 			attributes.put("last-name", "Grandja");
 			attributes.put("email", "joeg@springsecurity.io");
 
-			DefaultOAuth2User user = new DefaultOAuth2User(attributes);
-			user.setIdentifierAttributeKey("email");
+			DefaultOAuth2User user = new DefaultOAuth2User(attributes, "email");
 
 			OAuth2UserService mock = mock(OAuth2UserService.class);
 			when(mock.loadUser(any())).thenReturn(user);

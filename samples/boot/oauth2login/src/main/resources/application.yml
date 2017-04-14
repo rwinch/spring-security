@@ -21,10 +21,11 @@ security:
       github:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
-        user-info-custom-type: "org.springframework.security.samples.user.GitHubOAuth2User"
+        user-info-name-attribute-key: "name"
       facebook:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
+        user-info-name-attribute-key: "name"
       okta:
         client-id: your-app-client-id
         client-secret: your-app-client-secret
