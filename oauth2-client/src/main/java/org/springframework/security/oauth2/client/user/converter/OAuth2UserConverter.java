@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.web;
+package org.springframework.security.oauth2.client.user.converter;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.util.Assert;
+
+import java.util.Map;
 
 /**
  * @author Joe Grandja
  */
-@Controller
-public class MainController {
+public final class OAuth2UserConverter extends AbstractOAuth2UserConverter<OAuth2User> {
+	private final String nameAttributeKey;
 
-	@RequestMapping("/")
-	public String index(Model model, @AuthenticationPrincipal OAuth2User user) {
-		model.addAttribute("userName", user.getName());
-		model.addAttribute("userAttributes", user.getAttributes());
-		return "index";
+	public OAuth2UserConverter(String nameAttributeKey) {
+		Assert.hasText(nameAttributeKey, "nameAttributeKey cannot be empty");
+		this.nameAttributeKey = nameAttributeKey;
+	}
+
+	@Override
+	protected OAuth2User convert(Map<String, Object> userAttributes) {
+		return new DefaultOAuth2User(userAttributes, this.nameAttributeKey);
 	}
 }

@@ -62,11 +62,6 @@ public class OAuth2AuthenticationToken extends AbstractAuthenticationToken {
 		return "";
 	}
 
-	@Override
-	public String getName() {
-		return this.principal != null ? this.principal.getIdentifier() : "";
-	}
-
 	public ClientRegistration getClientRegistration() {
 		return this.clientRegistration;
 	}

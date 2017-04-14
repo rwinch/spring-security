@@ -36,11 +36,6 @@ public class GitHubOAuth2User implements OAuth2User {
 	}
 
 	@Override
-	public String getIdentifier() {
-		return this.getId();
-	}
-
-	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.emptyList();
 	}
@@ -63,6 +58,7 @@ public class GitHubOAuth2User implements OAuth2User {
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}

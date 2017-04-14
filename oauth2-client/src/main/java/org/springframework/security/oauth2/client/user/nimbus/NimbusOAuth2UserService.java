@@ -22,20 +22,16 @@ import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import com.nimbusds.oauth2.sdk.token.BearerAccessToken;
 import com.nimbusds.openid.connect.sdk.UserInfoErrorResponse;
 import com.nimbusds.openid.connect.sdk.UserInfoRequest;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.user.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.oauth2.oidc.core.user.DefaultUserInfo;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
@@ -47,12 +43,16 @@ import java.util.Map;
  * @author Joe Grandja
  */
 public class NimbusOAuth2UserService implements OAuth2UserService {
-	private final HttpMessageConverter jacksonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-	private Map<URI, Class<? extends OAuth2User>> userInfoTypeMappings = new HashMap<>();
+	private final Map<URI, Converter<ClientHttpResponse, ? extends OAuth2User>> userInfoTypeConverters;
+
+	public NimbusOAuth2UserService(Map<URI, Converter<ClientHttpResponse, ? extends OAuth2User>> userInfoTypeConverters) {
+		Assert.notEmpty(userInfoTypeConverters, "userInfoTypeConverters cannot be empty");
+		this.userInfoTypeConverters = new HashMap<>(userInfoTypeConverters);
+	}
 
 	@Override
 	public OAuth2User loadUser(OAuth2AuthenticationToken token) throws OAuth2AuthenticationException {
-		OAuth2User user = null;
+		OAuth2User user;
 
 		try {
 			ClientRegistration clientRegistration = token.getClientRegistration();
@@ -63,6 +63,11 @@ public class NimbusOAuth2UserService implements OAuth2UserService {
 			} catch (Exception ex) {
 				throw new IllegalArgumentException("An error occurred parsing the userInfo URI: " +
 					clientRegistration.getProviderDetails().getUserInfoUri(), ex);
+			}
+
+			Converter<ClientHttpResponse, ? extends OAuth2User> userInfoConverter = this.userInfoTypeConverters.get(userInfoUri);
+			if (userInfoConverter == null) {
+				throw new IllegalArgumentException("There is no available User Info converter for " + userInfoUri.toString());
 			}
 
 			BearerAccessToken accessToken = new BearerAccessToken(token.getAccessToken().getTokenValue());
@@ -81,64 +86,15 @@ public class NimbusOAuth2UserService implements OAuth2UserService {
 				throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 			}
 
-			ClientHttpResponse clientHttpResponse = new NimbusClientHttpResponse(httpResponse);
+			user = userInfoConverter.convert(new NimbusClientHttpResponse(httpResponse));
 
-			if (this.userInfoTypeMappings.get(userInfoUri) != null) {
-				user = this.readCustomUserInfoType(clientHttpResponse, userInfoUri);
-			}
-			if (user == null) {
-				user = this.readDefaultUserInfoType(clientHttpResponse, clientRegistration);
-			}
-
-		} catch (ParseException | HttpMessageNotReadableException ex) {
-			// This error occurs if the User Info Response is not well-formed or
-			// invalid or if the supplied custom type for the userInfo object
-			// failed to deserialize for some reason
+		} catch (ParseException ex) {
+			// This error occurs if the User Info Response is not well-formed or invalid
 			throw new OAuth2AuthenticationException(OAuth2Error.invalidUserInfoResponse(), ex);
 		} catch (IOException ex) {
 			// This error occurs when there is a network-related issue
 			throw new AuthenticationServiceException("An error occurred while sending the User Info Request: " +
 				ex.getMessage(), ex);
-		}
-
-		return user;
-	}
-
-	public final void setUserInfoTypeMappings(Map<URI, Class<? extends OAuth2User>> userInfoTypeMappings) {
-		Assert.notEmpty(userInfoTypeMappings, "userInfoTypeMappings cannot be null");
-		this.userInfoTypeMappings = new HashMap<>(userInfoTypeMappings);
-	}
-
-	private OAuth2User readCustomUserInfoType(ClientHttpResponse clientHttpResponse, URI userInfoUri) {
-		OAuth2User user = null;
-
-		Class<? extends OAuth2User> userInfoType = this.userInfoTypeMappings.get(userInfoUri);
-
-		if (this.jacksonHttpMessageConverter.canRead(userInfoType, null)) {
-			try {
-				user = (OAuth2User) this.jacksonHttpMessageConverter.read(userInfoType, clientHttpResponse);
-			} catch (IOException ex) {
-				// IOException will never occur here as the response has been fully read
-				// by HTTPResponse (Nimbus). Default the return to null.
-			}
-		}
-
-		return user;
-	}
-
-	private OAuth2User readDefaultUserInfoType(ClientHttpResponse clientHttpResponse, ClientRegistration clientRegistration) {
-		OAuth2User user = null;
-
-		try {
-			Map<String, Object> userAttributes = (Map<String, Object>) this.jacksonHttpMessageConverter.read(Map.class, clientHttpResponse);
-			if (clientRegistration.getProviderDetails().isOpenIdProvider()) {
-				user = new DefaultUserInfo(userAttributes);
-			} else {
-				user = new DefaultOAuth2User(userAttributes);
-			}
-		} catch (IOException ex) {
-			// IOException will never occur here as the response has been fully read
-			// by HTTPResponse (Nimbus). Default the return to null.
 		}
 
 		return user;

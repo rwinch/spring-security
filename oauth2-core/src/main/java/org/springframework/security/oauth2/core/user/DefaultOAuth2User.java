@@ -29,30 +29,29 @@ import java.util.stream.Collectors;
  */
 public class DefaultOAuth2User implements OAuth2User {
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
-	private static final String ID_ATTRIBUTE = "id";
-	private static final String DEFAULT_IDENTIFIER_ATTRIBUTE_VALUE = "unknown-identifier";
 	private final Set<GrantedAuthority> authorities;
 	private final Map<String, Object> attributes;
-	private String identifierAttributeKey;
+	private final String nameAttributeKey;
 
-	public DefaultOAuth2User(Map<String, Object> attributes) {
-		this(Collections.emptySet(), attributes);
+	public DefaultOAuth2User(Map<String, Object> attributes, String nameAttributeKey) {
+		this(Collections.emptySet(), attributes, nameAttributeKey);
 	}
 
-	public DefaultOAuth2User(Set<GrantedAuthority> authorities, Map<String, Object> attributes) {
+	public DefaultOAuth2User(Set<GrantedAuthority> authorities, Map<String, Object> attributes, String nameAttributeKey) {
 		Assert.notNull(authorities, "authorities cannot be null");
 		Assert.notEmpty(attributes, "attributes cannot be empty");
+		Assert.hasText(nameAttributeKey, "nameAttributeKey cannot be empty");
+		if (!attributes.containsKey(nameAttributeKey)) {
+			throw new IllegalArgumentException("Invalid nameAttributeKey: " + nameAttributeKey);
+		}
 		this.authorities = Collections.unmodifiableSet(this.sortAuthorities(authorities));
 		this.attributes = Collections.unmodifiableMap(new LinkedHashMap<>(attributes));
-		this.identifierAttributeKey = ID_ATTRIBUTE;
+		this.nameAttributeKey = nameAttributeKey;
 	}
 
 	@Override
-	public String getIdentifier() {
-		if (!this.getAttributes().containsKey(this.identifierAttributeKey)) {
-			return DEFAULT_IDENTIFIER_ATTRIBUTE_VALUE;
-		}
-		return this.getAttributes().get(this.identifierAttributeKey).toString();
+	public String getName() {
+		return this.getAttributes().get(this.nameAttributeKey).toString();
 	}
 
 	@Override
@@ -63,11 +62,6 @@ public class DefaultOAuth2User implements OAuth2User {
 	@Override
 	public Map<String, Object> getAttributes() {
 		return this.attributes;
-	}
-
-	public final void setIdentifierAttributeKey(String identifierAttributeKey) {
-		Assert.hasText(identifierAttributeKey, "identifierAttributeKey cannot be empty");
-		this.identifierAttributeKey = identifierAttributeKey;
 	}
 
 	protected String getAttributeAsString(String key) {
@@ -115,6 +109,9 @@ public class DefaultOAuth2User implements OAuth2User {
 
 		DefaultOAuth2User that = (DefaultOAuth2User) obj;
 
+		if (!this.getName().equals(that.getName())) {
+			return false;
+		}
 		if (!this.getAuthorities().equals(that.getAuthorities())) {
 			return false;
 		}
@@ -123,7 +120,8 @@ public class DefaultOAuth2User implements OAuth2User {
 
 	@Override
 	public int hashCode() {
-		int result = this.getAuthorities().hashCode();
+		int result = this.getName().hashCode();
+		result = 31 * result + this.getAuthorities().hashCode();
 		result = 31 * result + this.getAttributes().hashCode();
 		return result;
 	}
@@ -131,7 +129,9 @@ public class DefaultOAuth2User implements OAuth2User {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Granted Authorities: [");
+		sb.append("Name: [");
+		sb.append(this.getName());
+		sb.append("], Granted Authorities: [");
 		sb.append(this.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(", ")));
 		sb.append("], User Attributes: [");
 		sb.append(this.getAttributes().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()).collect(Collectors.joining(", ")));

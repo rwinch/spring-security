@@ -16,6 +16,8 @@
 package org.springframework.security.config.annotation.web.configurers.oauth2.client;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
@@ -93,10 +95,10 @@ public final class OAuth2LoginConfigurer<B extends HttpSecurityBuilder<B>> exten
 			return this.and();
 		}
 
-		public OAuth2LoginConfigurer<B> userInfoTypeMapping(Class<? extends OAuth2User> userInfoType, URI userInfoUri) {
-			Assert.notNull(userInfoType, "userInfoType cannot be null");
+		public OAuth2LoginConfigurer<B> userInfoTypeConverter(Converter<ClientHttpResponse, ? extends OAuth2User> userInfoConverter, URI userInfoUri) {
+			Assert.notNull(userInfoConverter, "userInfoConverter cannot be null");
 			Assert.notNull(userInfoUri, "userInfoUri cannot be null");
-			OAuth2LoginConfigurer.this.authorizationCodeAuthenticationFilterConfigurer.userInfoTypeMapping(userInfoType, userInfoUri);
+			OAuth2LoginConfigurer.this.authorizationCodeAuthenticationFilterConfigurer.userInfoTypeConverter(userInfoConverter, userInfoUri);
 			return this.and();
 		}
 

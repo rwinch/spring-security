@@ -33,7 +33,6 @@ public class ClientRegistrationProperties {
 	private String authorizationUri;
 	private String tokenUri;
 	private String userInfoUri;
-	private boolean openIdProvider;
 	private String clientName;
 	private String clientAlias;
 
@@ -108,14 +107,6 @@ public class ClientRegistrationProperties {
 
 	public void setUserInfoUri(String userInfoUri) {
 		this.userInfoUri = userInfoUri;
-	}
-
-	public boolean isOpenIdProvider() {
-		return this.openIdProvider;
-	}
-
-	public void setOpenIdProvider(boolean openIdProvider) {
-		this.openIdProvider = openIdProvider;
 	}
 
 	public String getClientName() {

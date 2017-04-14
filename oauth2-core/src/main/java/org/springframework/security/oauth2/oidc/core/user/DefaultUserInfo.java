@@ -35,8 +35,7 @@ public class DefaultUserInfo extends DefaultOAuth2User implements UserInfo {
 	}
 
 	public DefaultUserInfo(Set<GrantedAuthority> authorities, Map<String, Object> attributes) {
-		super(authorities, attributes);
-		this.setIdentifierAttributeKey(SUB);
+		super(authorities, attributes, SUB);
 	}
 
 	@Override
@@ -45,8 +44,9 @@ public class DefaultUserInfo extends DefaultOAuth2User implements UserInfo {
 	}
 
 	@Override
-	public String getIdentifier() {
-		return this.getSubject();
+	public String getName() {
+		String name = this.getAttributeAsString(NAME);
+		return (name != null ? name : super.getName());
 	}
 
 	@Override

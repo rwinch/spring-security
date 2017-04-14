@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.core.user;
+package org.springframework.security.oauth2.client.user.converter;
 
-import org.springframework.security.core.AuthenticatedPrincipal;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.oidc.core.user.DefaultUserInfo;
+import org.springframework.security.oauth2.oidc.core.user.UserInfo;
 
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Map;
 
 /**
  * @author Joe Grandja
  */
-public interface OAuth2User extends AuthenticatedPrincipal, Serializable {
+public final class UserInfoConverter extends AbstractOAuth2UserConverter<UserInfo> {
 
-	Collection<? extends GrantedAuthority> getAuthorities();
-
-	Map<String, Object> getAttributes();
+	@Override
+	protected UserInfo convert(Map<String, Object> userAttributes) {
+		return new DefaultUserInfo(userAttributes);
+	}
 }
