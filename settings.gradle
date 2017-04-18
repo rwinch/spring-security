@@ -15,8 +15,6 @@ def String[] modules = [
 	'config',
 	'cas',
 	'openid',
-	'oauth2-core',
-	'oauth2-client',
 	'taglibs',
 	'aspects',
 	'crypto',
@@ -30,6 +28,20 @@ modules.each {name ->
 	def p = findProject(":${name}")
 	p.name = "spring-security-${name}"
 	p.buildFileName = "${name}.gradle"
+}
+
+def String[] oauth2 = [
+	'oauth2-core',
+	'oauth2-client'
+]
+
+include oauth2
+
+oauth2.each { name ->
+	def p = findProject(":${name}")
+	p.name = "spring-security-${name}"
+	p.buildFileName = "${name}.gradle"
+	p.projectDir = new File(settingsDir, "oauth2/${name}");
 }
 
 def String[] itest = [
