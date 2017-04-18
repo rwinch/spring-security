@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.core.protocol;
+package org.springframework.security.oauth2.client.web.converter;
 
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Joe Grandja
  */
-public final class ResponseAttributesExtractor {
+public final class AuthorizationCodeAuthorizationResponseAttributesConverter implements Converter<HttpServletRequest, AuthorizationCodeAuthorizationResponseAttributes> {
 
-	private ResponseAttributesExtractor() {
-	}
-
-	public static AuthorizationCodeAuthorizationResponseAttributes extractAuthorizationCodeResponse(HttpServletRequest request) {
+	@Override
+	public AuthorizationCodeAuthorizationResponseAttributes convert(HttpServletRequest request) {
 		AuthorizationCodeAuthorizationResponseAttributes response;
 
 		String code = request.getParameter(OAuth2Attributes.CODE);
@@ -37,21 +37,6 @@ public final class ResponseAttributesExtractor {
 		String state = request.getParameter(OAuth2Attributes.STATE);
 
 		response = new AuthorizationCodeAuthorizationResponseAttributes(code, state);
-
-		return response;
-	}
-
-	public static ErrorResponseAttributes extractErrorResponse(HttpServletRequest request) {
-		ErrorResponseAttributes response;
-
-		String error = request.getParameter(OAuth2Attributes.ERROR);
-		Assert.hasText(error, OAuth2Attributes.ERROR + " attribute is required");
-
-		String errorDescription = request.getParameter(OAuth2Attributes.ERROR_DESCRIPTION);
-		String errorUri = request.getParameter(OAuth2Attributes.ERROR_URI);
-		String state = request.getParameter(OAuth2Attributes.STATE);
-
-		response = new ErrorResponseAttributes(error, errorDescription, errorUri, state);
 
 		return response;
 	}
