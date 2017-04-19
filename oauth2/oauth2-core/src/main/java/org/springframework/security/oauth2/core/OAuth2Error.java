@@ -15,67 +15,28 @@
  */
 package org.springframework.security.oauth2.core;
 
-import org.springframework.http.HttpStatus;
-
-import java.util.Arrays;
-import java.util.Optional;
+import org.springframework.util.Assert;
 
 /**
  * @author Joe Grandja
  */
 public final class OAuth2Error {
-	private final ErrorCode errorCode;
+	private final String errorCode;
 	private final String description;
 	private final String uri;
-	private final HttpStatus statusCode;
 
-	public enum ErrorCode {
-
-		// Standard Errors
-		INVALID_REQUEST("invalid_request", HttpStatus.BAD_REQUEST),
-		INVALID_CLIENT("invalid_client", HttpStatus.UNAUTHORIZED),
-		INVALID_GRANT("invalid_grant", HttpStatus.BAD_REQUEST),
-		UNAUTHORIZED_CLIENT("unauthorized_client", HttpStatus.BAD_REQUEST),
-		UNSUPPORTED_GRANT_TYPE("unsupported_grant_type", HttpStatus.BAD_REQUEST),
-		INVALID_SCOPE("invalid_scope", HttpStatus.BAD_REQUEST),
-
-		// Non-standard Errors
-		ACCESS_DENIED("access_denied", HttpStatus.FORBIDDEN),
-		INVALID_TOKEN_RESPONSE("invalid_token_response", HttpStatus.UNPROCESSABLE_ENTITY),
-		INVALID_USER_INFO_RESPONSE("invalid_user_info_response", HttpStatus.UNPROCESSABLE_ENTITY),
-		AUTHORIZATION_REQUEST_NOT_FOUND("authorization_request_not_found", HttpStatus.UNAUTHORIZED),
-		INVALID_STATE_PARAMETER("invalid_state_parameter", HttpStatus.UNAUTHORIZED),
-		INVALID_REDIRECT_URI_PARAMETER("invalid_redirect_uri_parameter", HttpStatus.UNAUTHORIZED),
-		UNKNOWN_ERROR_CODE("unknown_error_code", HttpStatus.BAD_REQUEST);
-
-		private final String errorCode;
-		private final HttpStatus mappedStatusCode;
-
-		ErrorCode(String errorCode, HttpStatus mappedStatusCode) {
-			this.errorCode = errorCode;
-			this.mappedStatusCode = mappedStatusCode;
-		}
-
-		public static ErrorCode fromValue(String value) {
-			Optional<ErrorCode> errorCode = Arrays.asList(values()).stream()
-					.filter(e -> e.errorCode.equalsIgnoreCase(value)).findFirst();
-			return errorCode.isPresent() ? errorCode.get() : null;
-		}
-
-		@Override
-		public String toString() {
-			return this.errorCode;
-		}
+	public OAuth2Error(String errorCode) {
+		this(errorCode, null, null);
 	}
 
-	private OAuth2Error(ErrorCode errorCode, String description, String uri, HttpStatus statusCode) {
+	public OAuth2Error(String errorCode, String description, String uri) {
+		Assert.hasText(errorCode, "errorCode cannot be empty");
 		this.errorCode = errorCode;
 		this.description = description;
 		this.uri = uri;
-		this.statusCode = statusCode;
 	}
 
-	public ErrorCode getErrorCode() {
+	public String getErrorCode() {
 		return this.errorCode;
 	}
 
@@ -87,44 +48,8 @@ public final class OAuth2Error {
 		return this.uri;
 	}
 
-	public HttpStatus getStatusCode() {
-		return this.statusCode;
-	}
-
 	public String getErrorMessage() {
-		return "[" + this.getErrorCode().toString() + "] " +
+		return "[" + this.getErrorCode() + "] " +
 				(this.getDescription() != null ? this.getDescription() : "");
-	}
-
-	public static OAuth2Error invalidTokenResponse() {
-		return valueOf(ErrorCode.INVALID_TOKEN_RESPONSE.errorCode);
-	}
-
-	public static OAuth2Error invalidUserInfoResponse() {
-		return valueOf(ErrorCode.INVALID_USER_INFO_RESPONSE.errorCode);
-	}
-
-	public static OAuth2Error authorizationRequestNotFound() {
-		return valueOf(ErrorCode.AUTHORIZATION_REQUEST_NOT_FOUND.errorCode);
-	}
-
-	public static OAuth2Error invalidStateParameter() {
-		return valueOf(ErrorCode.INVALID_STATE_PARAMETER.errorCode);
-	}
-
-	public static OAuth2Error invalidRedirectUriParameter() {
-		return valueOf(ErrorCode.INVALID_REDIRECT_URI_PARAMETER.errorCode);
-	}
-
-	public static OAuth2Error valueOf(String errorCode) {
-		return valueOf(errorCode, null, null);
-	}
-
-	public static OAuth2Error valueOf(String errorCode, String description, String uri) {
-		ErrorCode errCode = ErrorCode.fromValue(errorCode);
-		if (errCode == null) {
-			errCode = ErrorCode.UNKNOWN_ERROR_CODE;
-		}
-		return new OAuth2Error(errCode, description, uri, errCode.mappedStatusCode);
 	}
 }

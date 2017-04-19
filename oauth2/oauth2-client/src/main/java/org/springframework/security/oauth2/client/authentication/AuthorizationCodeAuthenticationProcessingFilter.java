@@ -21,11 +21,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.converter.AuthorizationCodeAuthorizationResponseAttributesConverter;
 import org.springframework.security.oauth2.client.web.converter.ErrorResponseAttributesConverter;
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
 import org.springframework.security.oauth2.core.protocol.message.ErrorResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -49,6 +49,9 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	public static final String AUTHORIZE_BASE_URI = "/oauth2/authorize/code";
 	private static final String CLIENT_ALIAS_VARIABLE_NAME = "clientAlias";
 	private static final String AUTHORIZE_URI = AUTHORIZE_BASE_URI + "/{" + CLIENT_ALIAS_VARIABLE_NAME + "}";
+	private static final String AUTHORIZATION_REQUEST_NOT_FOUND_ERROR_CODE = "authorization_request_not_found";
+	private static final String INVALID_STATE_PARAMETER_ERROR_CODE = "invalid_state_parameter";
+	private static final String INVALID_REDIRECT_URI_PARAMETER_ERROR_CODE = "invalid_redirect_uri_parameter";
 	private final ErrorResponseAttributesConverter errorResponseConverter = new ErrorResponseAttributesConverter();
 	private final AuthorizationCodeAuthorizationResponseAttributesConverter authorizationCodeResponseConverter =
 		new AuthorizationCodeAuthorizationResponseAttributesConverter();
@@ -66,7 +69,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 
 		ErrorResponseAttributes authorizationError = this.errorResponseConverter.convert(request);
 		if (authorizationError != null) {
-			OAuth2Error oauth2Error = OAuth2Error.valueOf(authorizationError.getErrorCode(),
+			OAuth2Error oauth2Error = new OAuth2Error(authorizationError.getErrorCode(),
 					authorizationError.getErrorDescription(), authorizationError.getErrorUri());
 			this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
@@ -124,7 +127,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		AuthorizationRequestAttributes authorizationRequest =
 				this.getAuthorizationRequestRepository().loadAuthorizationRequest(request);
 		if (authorizationRequest == null) {
-			OAuth2Error oauth2Error = OAuth2Error.authorizationRequestNotFound();
+			OAuth2Error oauth2Error = new OAuth2Error(AUTHORIZATION_REQUEST_NOT_FOUND_ERROR_CODE);
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 		this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
@@ -135,12 +138,12 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	private void assertMatchingAuthorizationRequest(HttpServletRequest request, AuthorizationRequestAttributes authorizationRequest) {
 		String state = request.getParameter(OAuth2Parameter.STATE);
 		if (!authorizationRequest.getState().equals(state)) {
-			OAuth2Error oauth2Error = OAuth2Error.invalidStateParameter();
+			OAuth2Error oauth2Error = new OAuth2Error(INVALID_STATE_PARAMETER_ERROR_CODE);
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 
 		if (!request.getRequestURL().toString().equals(authorizationRequest.getRedirectUri())) {
-			OAuth2Error oauth2Error = OAuth2Error.invalidRedirectUriParameter();
+			OAuth2Error oauth2Error = new OAuth2Error(INVALID_REDIRECT_URI_PARAMETER_ERROR_CODE);
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 	}

@@ -43,9 +43,9 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.user.OAuth2UserService;
 import org.springframework.security.oauth2.core.AccessToken;
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
-import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCode;
 import org.springframework.security.oauth2.core.ResponseType;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -209,7 +209,7 @@ public class OAuth2LoginApplicationTests {
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
-		assertThat(errorElement.asText()).contains(OAuth2Error.ErrorCode.AUTHORIZATION_REQUEST_NOT_FOUND.toString());
+		assertThat(errorElement.asText()).contains("authorization_request_not_found");
 	}
 
 	@Test
@@ -237,7 +237,7 @@ public class OAuth2LoginApplicationTests {
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
-		assertThat(errorElement.asText()).contains(OAuth2Error.ErrorCode.INVALID_STATE_PARAMETER.toString());
+		assertThat(errorElement.asText()).contains("invalid_state_parameter");
 	}
 
 	@Test
@@ -271,16 +271,16 @@ public class OAuth2LoginApplicationTests {
 
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
-		assertThat(errorElement.asText()).contains(OAuth2Error.ErrorCode.INVALID_REDIRECT_URI_PARAMETER.toString());
+		assertThat(errorElement.asText()).contains("invalid_redirect_uri_parameter");
 	}
 
 	@Test
-	public void requestAuthorizationCodeGrantWhenValidAuthorizationErrorResponseThenDisplayLoginPageWithError() throws Exception {
+	public void requestAuthorizationCodeGrantWhenStandardErrorCodeResponseThenDisplayLoginPageWithError() throws Exception {
 		HtmlPage page = this.webClient.getPage("/");
 		URL loginPageUrl = page.getBaseURL();
 		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
 
-		String error = OAuth2Error.ErrorCode.UNAUTHORIZED_CLIENT.toString();
+		String error = OAuth2ErrorCode.INVALID_CLIENT;
 		String state = "state";
 		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.githubClientRegistration.getClientAlias();
 
@@ -296,30 +296,6 @@ public class OAuth2LoginApplicationTests {
 		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
 		assertThat(errorElement).isNotNull();
 		assertThat(errorElement.asText()).contains(error);
-	}
-
-	@Test
-	public void requestAuthorizationCodeGrantWhenInvalidErrorCodeThenDisplayLoginPageWithError() throws Exception {
-		HtmlPage page = this.webClient.getPage("/");
-		URL loginPageUrl = page.getBaseURL();
-		URL loginErrorPageUrl = new URL(loginPageUrl.toString() + "?error");
-
-		String error = "invalid-error-code";
-		String state = "state";
-		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.googleClientRegistration.getClientAlias();
-
-		String authorizationResponseUri =
-				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Parameter.ERROR, error)
-						.queryParam(OAuth2Parameter.STATE, state)
-						.build().encode().toUriString();
-
-		page = this.webClient.getPage(new URL(authorizationResponseUri));
-		assertThat(page.getBaseURL()).isEqualTo(loginErrorPageUrl);
-
-		HtmlElement errorElement = page.getBody().getFirstByXPath("p");
-		assertThat(errorElement).isNotNull();
-		assertThat(errorElement.asText()).contains(OAuth2Error.ErrorCode.UNKNOWN_ERROR_CODE.toString());
 	}
 
 	private void assertLoginPage(HtmlPage page) throws Exception {
