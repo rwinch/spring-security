@@ -43,7 +43,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.user.OAuth2UserService;
 import org.springframework.security.oauth2.core.AccessToken;
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.ResponseType;
 import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
@@ -130,13 +130,13 @@ public class OAuth2LoginApplicationTests {
 
 		Map<String, String> params = uriComponents.getQueryParams().toSingleValueMap();
 
-		assertThat(params.get(OAuth2Attributes.RESPONSE_TYPE)).isEqualTo(ResponseType.CODE.value());
-		assertThat(params.get(OAuth2Attributes.CLIENT_ID)).isEqualTo(this.githubClientRegistration.getClientId());
+		assertThat(params.get(OAuth2Parameter.RESPONSE_TYPE)).isEqualTo(ResponseType.CODE.value());
+		assertThat(params.get(OAuth2Parameter.CLIENT_ID)).isEqualTo(this.githubClientRegistration.getClientId());
 		String redirectUri = AUTHORIZE_BASE_URL + "/" + this.githubClientRegistration.getClientAlias();
-		assertThat(URLDecoder.decode(params.get(OAuth2Attributes.REDIRECT_URI), "UTF-8")).isEqualTo(redirectUri);
-		assertThat(URLDecoder.decode(params.get(OAuth2Attributes.SCOPE), "UTF-8"))
+		assertThat(URLDecoder.decode(params.get(OAuth2Parameter.REDIRECT_URI), "UTF-8")).isEqualTo(redirectUri);
+		assertThat(URLDecoder.decode(params.get(OAuth2Parameter.SCOPE), "UTF-8"))
 				.isEqualTo(this.githubClientRegistration.getScopes().stream().collect(Collectors.joining(" ")));
-		assertThat(params.get(OAuth2Attributes.STATE)).isNotNull();
+		assertThat(params.get(OAuth2Parameter.STATE)).isNotNull();
 	}
 
 	@Test
@@ -171,13 +171,13 @@ public class OAuth2LoginApplicationTests {
 
 		Map<String, String> params = authorizeRequestUriComponents.getQueryParams().toSingleValueMap();
 		String code = "auth-code";
-		String state = URLDecoder.decode(params.get(OAuth2Attributes.STATE), "UTF-8");
-		String redirectUri = URLDecoder.decode(params.get(OAuth2Attributes.REDIRECT_URI), "UTF-8");
+		String state = URLDecoder.decode(params.get(OAuth2Parameter.STATE), "UTF-8");
+		String redirectUri = URLDecoder.decode(params.get(OAuth2Parameter.REDIRECT_URI), "UTF-8");
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.CODE, code)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.CODE, code)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
@@ -196,8 +196,8 @@ public class OAuth2LoginApplicationTests {
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.CODE, code)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.CODE, code)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		// Clear session cookie will ensure the 'session-saved'
@@ -228,8 +228,8 @@ public class OAuth2LoginApplicationTests {
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.CODE, code)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.CODE, code)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
@@ -256,14 +256,14 @@ public class OAuth2LoginApplicationTests {
 
 		Map<String, String> params = authorizeRequestUriComponents.getQueryParams().toSingleValueMap();
 		String code = "auth-code";
-		String state = URLDecoder.decode(params.get(OAuth2Attributes.STATE), "UTF-8");
-		String redirectUri = URLDecoder.decode(params.get(OAuth2Attributes.REDIRECT_URI), "UTF-8");
+		String state = URLDecoder.decode(params.get(OAuth2Parameter.STATE), "UTF-8");
+		String redirectUri = URLDecoder.decode(params.get(OAuth2Parameter.REDIRECT_URI), "UTF-8");
 		redirectUri += "-invalid";
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.CODE, code)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.CODE, code)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
@@ -286,8 +286,8 @@ public class OAuth2LoginApplicationTests {
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.ERROR, error)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.ERROR, error)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));
@@ -310,8 +310,8 @@ public class OAuth2LoginApplicationTests {
 
 		String authorizationResponseUri =
 				UriComponentsBuilder.fromHttpUrl(redirectUri)
-						.queryParam(OAuth2Attributes.ERROR, error)
-						.queryParam(OAuth2Attributes.STATE, state)
+						.queryParam(OAuth2Parameter.ERROR, error)
+						.queryParam(OAuth2Parameter.STATE, state)
 						.build().encode().toUriString();
 
 		page = this.webClient.getPage(new URL(authorizationResponseUri));

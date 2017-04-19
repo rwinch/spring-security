@@ -15,7 +15,7 @@
  */
 package org.springframework.security.oauth2.client.authentication;
 
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.ResponseType;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,15 +32,15 @@ public class DefaultAuthorizationRequestUriBuilder implements AuthorizationReque
 	public URI build(AuthorizationRequestAttributes authorizationRequestAttributes) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder
 				.fromUriString(authorizationRequestAttributes.getAuthorizeUri())
-				.queryParam(OAuth2Attributes.RESPONSE_TYPE, ResponseType.CODE.value());
+				.queryParam(OAuth2Parameter.RESPONSE_TYPE, ResponseType.CODE.value());
 		if (authorizationRequestAttributes.getRedirectUri() != null) {
-			uriBuilder.queryParam(OAuth2Attributes.REDIRECT_URI, authorizationRequestAttributes.getRedirectUri());
+			uriBuilder.queryParam(OAuth2Parameter.REDIRECT_URI, authorizationRequestAttributes.getRedirectUri());
 		}
 		uriBuilder
-				.queryParam(OAuth2Attributes.CLIENT_ID, authorizationRequestAttributes.getClientId())
-				.queryParam(OAuth2Attributes.SCOPE,
+				.queryParam(OAuth2Parameter.CLIENT_ID, authorizationRequestAttributes.getClientId())
+				.queryParam(OAuth2Parameter.SCOPE,
 						authorizationRequestAttributes.getScopes().stream().collect(Collectors.joining(" ")))
-				.queryParam(OAuth2Attributes.STATE, authorizationRequestAttributes.getState());
+				.queryParam(OAuth2Parameter.STATE, authorizationRequestAttributes.getState());
 
 		return uriBuilder.build().encode().toUri();
 	}

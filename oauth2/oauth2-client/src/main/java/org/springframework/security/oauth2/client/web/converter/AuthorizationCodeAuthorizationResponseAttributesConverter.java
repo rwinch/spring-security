@@ -16,7 +16,7 @@
 package org.springframework.security.oauth2.client.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.util.Assert;
 
@@ -31,10 +31,10 @@ public final class AuthorizationCodeAuthorizationResponseAttributesConverter imp
 	public AuthorizationCodeAuthorizationResponseAttributes convert(HttpServletRequest request) {
 		AuthorizationCodeAuthorizationResponseAttributes response;
 
-		String code = request.getParameter(OAuth2Attributes.CODE);
-		Assert.hasText(code, OAuth2Attributes.CODE + " attribute is required");
+		String code = request.getParameter(OAuth2Parameter.CODE);
+		Assert.hasText(code, OAuth2Parameter.CODE + " attribute is required");
 
-		String state = request.getParameter(OAuth2Attributes.STATE);
+		String state = request.getParameter(OAuth2Parameter.STATE);
 
 		response = new AuthorizationCodeAuthorizationResponseAttributes(code, state);
 

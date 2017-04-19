@@ -21,7 +21,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.converter.AuthorizationCodeAuthorizationResponseAttributesConverter;
 import org.springframework.security.oauth2.client.web.converter.ErrorResponseAttributesConverter;
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
@@ -133,7 +133,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 	}
 
 	private void assertMatchingAuthorizationRequest(HttpServletRequest request, AuthorizationRequestAttributes authorizationRequest) {
-		String state = request.getParameter(OAuth2Attributes.STATE);
+		String state = request.getParameter(OAuth2Parameter.STATE);
 		if (!authorizationRequest.getState().equals(state)) {
 			OAuth2Error oauth2Error = OAuth2Error.invalidStateParameter();
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());

@@ -16,7 +16,7 @@
 package org.springframework.security.oauth2.client.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.protocol.message.ErrorResponseAttributes;
 import org.springframework.util.StringUtils;
 
@@ -31,14 +31,14 @@ public final class ErrorResponseAttributesConverter implements Converter<HttpSer
 	public ErrorResponseAttributes convert(HttpServletRequest request) {
 		ErrorResponseAttributes response;
 
-		String error = request.getParameter(OAuth2Attributes.ERROR);
+		String error = request.getParameter(OAuth2Parameter.ERROR);
 		if (!StringUtils.hasText(error)) {
 			return null;
 		}
 
-		String errorDescription = request.getParameter(OAuth2Attributes.ERROR_DESCRIPTION);
-		String errorUri = request.getParameter(OAuth2Attributes.ERROR_URI);
-		String state = request.getParameter(OAuth2Attributes.STATE);
+		String errorDescription = request.getParameter(OAuth2Parameter.ERROR_DESCRIPTION);
+		String errorUri = request.getParameter(OAuth2Parameter.ERROR_URI);
+		String state = request.getParameter(OAuth2Parameter.STATE);
 
 		response = new ErrorResponseAttributes(error, errorDescription, errorUri, state);
 

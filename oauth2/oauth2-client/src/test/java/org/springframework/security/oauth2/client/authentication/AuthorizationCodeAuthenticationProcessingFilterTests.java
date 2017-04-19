@@ -25,7 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.OAuth2Attributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -75,8 +75,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		MockHttpServletRequest request = this.setupRequest(clientRegistration);
 		String errorCode = OAuth2Error.ErrorCode.INVALID_GRANT.toString();
-		request.addParameter(OAuth2Attributes.ERROR, errorCode);
-		request.addParameter(OAuth2Attributes.STATE, "some state");
+		request.addParameter(OAuth2Parameter.ERROR, errorCode);
+		request.addParameter(OAuth2Parameter.STATE, "some state");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		FilterChain filterChain = mock(FilterChain.class);
 
@@ -104,8 +104,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		MockHttpServletRequest request = this.setupRequest(clientRegistration);
 		String authCode = "some code";
 		String state = "some state";
-		request.addParameter(OAuth2Attributes.CODE, authCode);
-		request.addParameter(OAuth2Attributes.STATE, state);
+		request.addParameter(OAuth2Parameter.CODE, authCode);
+		request.addParameter(OAuth2Parameter.STATE, state);
 		setupAuthorizationRequest(authorizationRequestRepository, request, clientRegistration, state);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		FilterChain filterChain = mock(FilterChain.class);
@@ -131,8 +131,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		MockHttpServletRequest request = this.setupRequest(clientRegistration);
 		String authCode = "some code";
 		String state = "some state";
-		request.addParameter(OAuth2Attributes.CODE, authCode);
-		request.addParameter(OAuth2Attributes.STATE, state);
+		request.addParameter(OAuth2Parameter.CODE, authCode);
+		request.addParameter(OAuth2Parameter.STATE, state);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		FilterChain filterChain = mock(FilterChain.class);
 
@@ -154,8 +154,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		MockHttpServletRequest request = this.setupRequest(clientRegistration);
 		String authCode = "some code";
 		String state = "some other state";
-		request.addParameter(OAuth2Attributes.CODE, authCode);
-		request.addParameter(OAuth2Attributes.STATE, state);
+		request.addParameter(OAuth2Parameter.CODE, authCode);
+		request.addParameter(OAuth2Parameter.STATE, state);
 		setupAuthorizationRequest(authorizationRequestRepository, request, clientRegistration, "some state");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		FilterChain filterChain = mock(FilterChain.class);
@@ -179,8 +179,8 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		request.setRequestURI(request.getRequestURI() + "-other");
 		String authCode = "some code";
 		String state = "some state";
-		request.addParameter(OAuth2Attributes.CODE, authCode);
-		request.addParameter(OAuth2Attributes.STATE, state);
+		request.addParameter(OAuth2Parameter.CODE, authCode);
+		request.addParameter(OAuth2Parameter.STATE, state);
 		setupAuthorizationRequest(authorizationRequestRepository, request, clientRegistration, state);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		FilterChain filterChain = mock(FilterChain.class);
