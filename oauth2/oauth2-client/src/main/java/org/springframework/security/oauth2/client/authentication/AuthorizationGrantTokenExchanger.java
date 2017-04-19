@@ -16,7 +16,6 @@
 package org.springframework.security.oauth2.client.authentication;
 
 
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.protocol.TokenResponseAttributes;
 
 /**
