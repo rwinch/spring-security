@@ -17,7 +17,7 @@ package org.springframework.security.oauth2.client.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
-import org.springframework.security.oauth2.core.protocol.ErrorResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.message.ErrorResponseAttributes;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

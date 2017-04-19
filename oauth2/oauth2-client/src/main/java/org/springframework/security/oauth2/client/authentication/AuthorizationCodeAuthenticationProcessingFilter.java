@@ -23,9 +23,9 @@ import org.springframework.security.oauth2.client.web.converter.AuthorizationCod
 import org.springframework.security.oauth2.client.web.converter.ErrorResponseAttributesConverter;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.protocol.AuthorizationCodeAuthorizationResponseAttributes;
-import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
-import org.springframework.security.oauth2.core.protocol.ErrorResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.message.AuthorizationCodeAuthorizationResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.protocol.message.ErrorResponseAttributes;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;

@@ -19,7 +19,7 @@ import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.DefaultStateGenerator;
-import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;

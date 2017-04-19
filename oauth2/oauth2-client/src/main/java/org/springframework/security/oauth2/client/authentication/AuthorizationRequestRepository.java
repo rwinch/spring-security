@@ -15,7 +15,7 @@
  */
 package org.springframework.security.oauth2.client.authentication;
 
-import org.springframework.security.oauth2.core.protocol.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 

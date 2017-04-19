@@ -46,7 +46,7 @@ import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.OAuth2Attributes;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.ResponseType;
-import org.springframework.security.oauth2.core.protocol.TokenResponseAttributes;
+import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.util.UriComponents;
