@@ -27,10 +27,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.oauth2.client.authentication.AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.AuthorizationGrantTokenExchanger;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
 import org.springframework.util.CollectionUtils;
@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
  * @author Joe Grandja
  */
 public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrantTokenExchanger<AuthorizationCodeAuthenticationToken> {
+	private static final String INVALID_TOKEN_RESPONSE_ERROR_CODE = "invalid_token_response";
 
 	@Override
 	public TokenResponseAttributes exchange(AuthorizationCodeAuthenticationToken authorizationCodeAuthenticationToken)
@@ -80,7 +81,7 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 		} catch (ParseException pe) {
 			// This error occurs if the Access Token Response is not well-formed,
 			// for example, a required attribute is missing
-			throw new OAuth2AuthenticationException(OAuth2Error.invalidTokenResponse(), pe);
+			throw new OAuth2AuthenticationException(new OAuth2Error(INVALID_TOKEN_RESPONSE_ERROR_CODE), pe);
 		} catch (IOException ioe) {
 			// This error occurs when there is a network-related issue
 			throw new AuthenticationServiceException("An error occurred while sending the Access Token Request: " +
@@ -90,8 +91,8 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 		if (!tokenResponse.indicatesSuccess()) {
 			TokenErrorResponse tokenErrorResponse = (TokenErrorResponse) tokenResponse;
 			ErrorObject errorObject = tokenErrorResponse.getErrorObject();
-			OAuth2Error oauth2Error = OAuth2Error.valueOf(
-					errorObject.getCode(), errorObject.getDescription(), (errorObject.getURI() != null ? errorObject.getURI().toString() : null));
+			OAuth2Error oauth2Error = new OAuth2Error(errorObject.getCode(), errorObject.getDescription(),
+				(errorObject.getURI() != null ? errorObject.getURI().toString() : null));
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 		}
 

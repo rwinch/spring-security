@@ -25,9 +25,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
-import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCode;
 import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -74,7 +74,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 		filter.setAuthenticationFailureHandler(failureHandler);
 
 		MockHttpServletRequest request = this.setupRequest(clientRegistration);
-		String errorCode = OAuth2Error.ErrorCode.INVALID_GRANT.toString();
+		String errorCode = OAuth2ErrorCode.INVALID_GRANT;
 		request.addParameter(OAuth2Parameter.ERROR, errorCode);
 		request.addParameter(OAuth2Parameter.STATE, "some state");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -138,7 +138,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, OAuth2Error.ErrorCode.AUTHORIZATION_REQUEST_NOT_FOUND);
+		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, "authorization_request_not_found");
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, OAuth2Error.ErrorCode.INVALID_STATE_PARAMETER);
+		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, "invalid_state_parameter");
 	}
 
 	@Test
@@ -187,12 +187,12 @@ public class AuthorizationCodeAuthenticationProcessingFilterTests {
 
 		filter.doFilter(request, response, filterChain);
 
-		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, OAuth2Error.ErrorCode.INVALID_REDIRECT_URI_PARAMETER);
+		verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(filter, failureHandler, "invalid_redirect_uri_parameter");
 	}
 
 	private void verifyThrowsOAuth2AuthenticationExceptionWithErrorCode(AuthorizationCodeAuthenticationProcessingFilter filter,
 																		AuthenticationFailureHandler failureHandler,
-																		OAuth2Error.ErrorCode errorCode) throws Exception {
+																		String errorCode) throws Exception {
 
 		verify(filter).attemptAuthentication(any(HttpServletRequest.class), any(HttpServletResponse.class));
 

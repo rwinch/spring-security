@@ -26,10 +26,10 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.user.OAuth2UserService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
@@ -43,6 +43,7 @@ import java.util.Map;
  * @author Joe Grandja
  */
 public class NimbusOAuth2UserService implements OAuth2UserService {
+	private static final String INVALID_USER_INFO_RESPONSE_ERROR_CODE = "invalid_user_info_response";
 	private final Map<URI, Converter<ClientHttpResponse, ? extends OAuth2User>> userInfoTypeConverters;
 
 	public NimbusOAuth2UserService(Map<URI, Converter<ClientHttpResponse, ? extends OAuth2User>> userInfoTypeConverters) {
@@ -81,8 +82,8 @@ public class NimbusOAuth2UserService implements OAuth2UserService {
 			if (httpResponse.getStatusCode() != HTTPResponse.SC_OK) {
 				UserInfoErrorResponse userInfoErrorResponse = UserInfoErrorResponse.parse(httpResponse);
 				ErrorObject errorObject = userInfoErrorResponse.getErrorObject();
-				OAuth2Error oauth2Error = OAuth2Error.valueOf(
-					errorObject.getCode(), errorObject.getDescription(), errorObject.getURI().toString());
+				OAuth2Error oauth2Error = new OAuth2Error(errorObject.getCode(), errorObject.getDescription(),
+					(errorObject.getURI() != null ? errorObject.getURI().toString() : null));
 				throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
 			}
 
@@ -90,7 +91,7 @@ public class NimbusOAuth2UserService implements OAuth2UserService {
 
 		} catch (ParseException ex) {
 			// This error occurs if the User Info Response is not well-formed or invalid
-			throw new OAuth2AuthenticationException(OAuth2Error.invalidUserInfoResponse(), ex);
+			throw new OAuth2AuthenticationException(new OAuth2Error(INVALID_USER_INFO_RESPONSE_ERROR_CODE), ex);
 		} catch (IOException ex) {
 			// This error occurs when there is a network-related issue
 			throw new AuthenticationServiceException("An error occurred while sending the User Info Request: " +
