@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static org.springframework.security.oauth2.oidc.core.OidcAttributes.Claim.*;
+import static org.springframework.security.oauth2.oidc.core.StandardClaimName.*;
 
 /**
  * @author Joe Grandja
