@@ -70,9 +70,9 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		ErrorResponseAttributes authorizationError = this.errorResponseConverter.convert(request);
 		if (authorizationError != null) {
 			OAuth2Error oauth2Error = new OAuth2Error(authorizationError.getErrorCode(),
-					authorizationError.getErrorDescription(), authorizationError.getErrorUri());
+					authorizationError.getDescription(), authorizationError.getUri());
 			this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
-			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 
 		AuthorizationRequestAttributes matchingAuthorizationRequest = this.resolveAuthorizationRequest(request);
@@ -128,7 +128,7 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 				this.getAuthorizationRequestRepository().loadAuthorizationRequest(request);
 		if (authorizationRequest == null) {
 			OAuth2Error oauth2Error = new OAuth2Error(AUTHORIZATION_REQUEST_NOT_FOUND_ERROR_CODE);
-			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 		this.getAuthorizationRequestRepository().removeAuthorizationRequest(request);
 		this.assertMatchingAuthorizationRequest(request, authorizationRequest);
@@ -139,12 +139,12 @@ public class AuthorizationCodeAuthenticationProcessingFilter extends AbstractAut
 		String state = request.getParameter(OAuth2Parameter.STATE);
 		if (!authorizationRequest.getState().equals(state)) {
 			OAuth2Error oauth2Error = new OAuth2Error(INVALID_STATE_PARAMETER_ERROR_CODE);
-			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 
 		if (!request.getRequestURL().toString().equals(authorizationRequest.getRedirectUri())) {
 			OAuth2Error oauth2Error = new OAuth2Error(INVALID_REDIRECT_URI_PARAMETER_ERROR_CODE);
-			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 	}
 

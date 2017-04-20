@@ -31,16 +31,16 @@ public final class ErrorResponseAttributesConverter implements Converter<HttpSer
 	public ErrorResponseAttributes convert(HttpServletRequest request) {
 		ErrorResponseAttributes response;
 
-		String error = request.getParameter(OAuth2Parameter.ERROR);
-		if (!StringUtils.hasText(error)) {
+		String errorCode = request.getParameter(OAuth2Parameter.ERROR);
+		if (!StringUtils.hasText(errorCode)) {
 			return null;
 		}
 
-		String errorDescription = request.getParameter(OAuth2Parameter.ERROR_DESCRIPTION);
-		String errorUri = request.getParameter(OAuth2Parameter.ERROR_URI);
+		String description = request.getParameter(OAuth2Parameter.ERROR_DESCRIPTION);
+		String uri = request.getParameter(OAuth2Parameter.ERROR_URI);
 		String state = request.getParameter(OAuth2Parameter.STATE);
 
-		response = new ErrorResponseAttributes(error, errorDescription, errorUri, state);
+		response = new ErrorResponseAttributes(errorCode, description, uri, state);
 
 		return response;
 	}

@@ -84,7 +84,7 @@ public class NimbusOAuth2UserService implements OAuth2UserService {
 				ErrorObject errorObject = userInfoErrorResponse.getErrorObject();
 				OAuth2Error oauth2Error = new OAuth2Error(errorObject.getCode(), errorObject.getDescription(),
 					(errorObject.getURI() != null ? errorObject.getURI().toString() : null));
-				throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+				throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 			}
 
 			user = userInfoConverter.convert(new NimbusClientHttpResponse(httpResponse));
