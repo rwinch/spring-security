@@ -27,57 +27,46 @@ import java.util.Set;
  * @author Joe Grandja
  */
 public final class TokenResponseAttributes {
-	private final String accessToken;
-	private final AccessToken.TokenType accessTokenType;
-	private final Instant issuedAt;
-	private final Instant expiresAt;
-	private final Set<String> scopes;
-	private final Map<String,String> additionalParameters;
+	private final AccessToken accessToken;
 
-	public TokenResponseAttributes(String accessToken, AccessToken.TokenType accessTokenType, long expiresIn) {
-		this(accessToken, accessTokenType, expiresIn, Collections.emptySet());
+	public TokenResponseAttributes(String tokenValue, AccessToken.TokenType tokenType, long expiresIn) {
+		this(tokenValue, tokenType, expiresIn, Collections.emptySet());
 	}
 
-	public TokenResponseAttributes(String accessToken, AccessToken.TokenType accessTokenType, long expiresIn, Set<String> scopes) {
-		this(accessToken, accessTokenType, expiresIn, scopes, Collections.emptyMap());
+	public TokenResponseAttributes(String tokenValue, AccessToken.TokenType tokenType, long expiresIn, Set<String> scopes) {
+		this(tokenValue, tokenType, expiresIn, scopes, Collections.emptyMap());
 	}
 
-	public TokenResponseAttributes(String accessToken, AccessToken.TokenType accessTokenType, long expiresIn,
-									Set<String> scopes, Map<String,String> additionalParameters) {
+	public TokenResponseAttributes(String tokenValue, AccessToken.TokenType tokenType, long expiresIn,
+									Set<String> scopes, Map<String,Object> additionalParameters) {
 
-		Assert.notNull(accessToken, "accessToken cannot be null");
-		Assert.notNull(accessTokenType, "accessTokenType cannot be null");
 		Assert.isTrue(expiresIn >= 0, "expiresIn must be a positive number");
-		this.accessToken = accessToken;
-		this.accessTokenType = accessTokenType;
-		this.issuedAt = Instant.now();
-		this.expiresAt = this.issuedAt.plusSeconds(expiresIn);
-		this.scopes = Collections.unmodifiableSet(scopes != null ? scopes : Collections.emptySet());
-		this.additionalParameters = Collections.unmodifiableMap(additionalParameters != null ?
-				additionalParameters : Collections.emptyMap());
+		Instant issuedAt = Instant.now();
+		this.accessToken = new AccessToken(tokenType, tokenValue, issuedAt,
+			issuedAt.plusSeconds(expiresIn), scopes, additionalParameters);
 	}
 
-	public String getAccessToken() {
-		return this.accessToken;
+	public String getTokenValue() {
+		return this.accessToken.getTokenValue();
 	}
 
-	public AccessToken.TokenType getAccessTokenType() {
-		return this.accessTokenType;
+	public AccessToken.TokenType getTokenType() {
+		return this.accessToken.getTokenType();
 	}
 
 	public Instant getIssuedAt() {
-		return this.issuedAt;
+		return this.accessToken.getIssuedAt();
 	}
 
 	public Instant getExpiresAt() {
-		return this.expiresAt;
+		return this.accessToken.getExpiresAt();
 	}
 
 	public Set<String> getScopes() {
-		return this.scopes;
+		return this.accessToken.getScopes();
 	}
 
-	public Map<String, String> getAdditionalParameters() {
-		return this.additionalParameters;
+	public Map<String, Object> getAdditionalParameters() {
+		return this.accessToken.getAdditionalParameters();
 	}
 }

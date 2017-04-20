@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,6 +28,7 @@ import java.util.Set;
 public class AccessToken extends AbstractToken {
 	private final TokenType tokenType;
 	private final Set<String> scopes;
+	private final Map<String,Object> additionalParameters;
 
 	public enum TokenType {
 		BEARER("Bearer");
@@ -47,10 +49,19 @@ public class AccessToken extends AbstractToken {
 	}
 
 	public AccessToken(TokenType tokenType, String tokenValue, Instant issuedAt, Instant expiresAt, Set<String> scopes) {
+		this(tokenType, tokenValue, issuedAt, expiresAt, scopes, Collections.emptyMap());
+	}
+
+	public AccessToken(TokenType tokenType, String tokenValue, Instant issuedAt, Instant expiresAt,
+						Set<String> scopes, Map<String,Object> additionalParameters) {
+
 		super(tokenValue, issuedAt, expiresAt);
 		Assert.notNull(tokenType, "tokenType cannot be null");
 		this.tokenType = tokenType;
-		this.scopes = Collections.unmodifiableSet((scopes != null ? scopes : Collections.emptySet()));
+		this.scopes = Collections.unmodifiableSet(
+			scopes != null ? scopes : Collections.emptySet());
+		this.additionalParameters = Collections.unmodifiableMap(
+			additionalParameters != null ? additionalParameters : Collections.emptyMap());
 	}
 
 	public TokenType getTokenType() {
@@ -59,5 +70,9 @@ public class AccessToken extends AbstractToken {
 
 	public Set<String> getScopes() {
 		return this.scopes;
+	}
+
+	public Map<String, Object> getAdditionalParameters() {
+		return additionalParameters;
 	}
 }
