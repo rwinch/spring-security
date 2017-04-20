@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.core.protocol.message;
+package org.springframework.security.oauth2.core.endpoint;
 
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.util.Assert;

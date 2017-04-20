@@ -13,29 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.core.protocol.message;
+package org.springframework.security.oauth2.core.endpoint;
+
+import org.springframework.util.Assert;
 
 /**
  * @author Joe Grandja
  */
-public interface OAuth2Parameter {
+public final class AuthorizationCodeAuthorizationResponseAttributes {
+	private final String code;
+	private final String state;
 
-	String RESPONSE_TYPE = "response_type";
+	public AuthorizationCodeAuthorizationResponseAttributes(String code, String state) {
+		Assert.notNull(code, "code cannot be null");
+		this.code = code;
+		this.state = state;
+	}
 
-	String CLIENT_ID = "client_id";
+	public String getCode() {
+		return this.code;
+	}
 
-	String REDIRECT_URI = "redirect_uri";
-
-	String SCOPE = "scope";
-
-	String STATE = "state";
-
-	String CODE = "code";
-
-	String ERROR = "error";
-
-	String ERROR_DESCRIPTION = "error_description";
-
-	String ERROR_URI = "error_uri";
-
+	public String getState() {
+		return this.state;
+	}
 }

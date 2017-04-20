@@ -26,8 +26,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.OAuth2ErrorCode;
-import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
+import org.springframework.security.oauth2.core.endpoint.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.endpoint.OAuth2Parameter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 

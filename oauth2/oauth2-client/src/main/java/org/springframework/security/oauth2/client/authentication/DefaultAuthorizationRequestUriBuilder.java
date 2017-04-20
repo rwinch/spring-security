@@ -15,9 +15,9 @@
  */
 package org.springframework.security.oauth2.client.authentication;
 
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
+import org.springframework.security.oauth2.core.endpoint.OAuth2Parameter;
 import org.springframework.security.oauth2.core.ResponseType;
-import org.springframework.security.oauth2.core.protocol.message.AuthorizationRequestAttributes;
+import org.springframework.security.oauth2.core.endpoint.AuthorizationRequestAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;

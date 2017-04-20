@@ -32,7 +32,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.AccessToken;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
+import org.springframework.security.oauth2.core.endpoint.TokenResponseAttributes;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;

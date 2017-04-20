@@ -16,8 +16,8 @@
 package org.springframework.security.oauth2.client.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.oauth2.core.protocol.message.OAuth2Parameter;
-import org.springframework.security.oauth2.core.protocol.message.AuthorizationCodeAuthorizationResponseAttributes;
+import org.springframework.security.oauth2.core.endpoint.OAuth2Parameter;
+import org.springframework.security.oauth2.core.endpoint.AuthorizationCodeAuthorizationResponseAttributes;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
