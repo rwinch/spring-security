@@ -108,8 +108,8 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 		if (!CollectionUtils.isEmpty(accessTokenResponse.getTokens().getAccessToken().getScope())) {
 			scopes = new HashSet<>(accessTokenResponse.getTokens().getAccessToken().getScope().toStringList());
 		}
-		Map<String, String> additionalParameters = accessTokenResponse.getCustomParameters().entrySet().stream()
-				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().toString()));
+		Map<String, Object> additionalParameters = accessTokenResponse.getCustomParameters().entrySet().stream()
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		return new TokenResponseAttributes(accessToken, accessTokenType, expiresIn, scopes, additionalParameters);
 	}

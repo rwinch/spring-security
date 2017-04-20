@@ -55,8 +55,8 @@ public class AuthorizationCodeAuthenticationProvider implements AuthenticationPr
 		TokenResponseAttributes tokenResponse =
 				this.authorizationCodeTokenExchanger.exchange(authorizationCodeAuthentication);
 
-		AccessToken accessToken = new AccessToken(tokenResponse.getAccessTokenType(),
-				tokenResponse.getAccessToken(), tokenResponse.getIssuedAt(),
+		AccessToken accessToken = new AccessToken(tokenResponse.getTokenType(),
+				tokenResponse.getTokenValue(), tokenResponse.getIssuedAt(),
 				tokenResponse.getExpiresAt(), tokenResponse.getScopes());
 		OAuth2AuthenticationToken accessTokenAuthentication = new OAuth2AuthenticationToken(
 				authorizationCodeAuthentication.getClientRegistration(), accessToken);
