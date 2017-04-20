@@ -16,7 +16,7 @@
 package org.springframework.security.oauth2.client.authentication;
 
 
-import org.springframework.security.oauth2.core.protocol.message.TokenResponseAttributes;
+import org.springframework.security.oauth2.core.endpoint.TokenResponseAttributes;
 
 /**
  * @author Joe Grandja
