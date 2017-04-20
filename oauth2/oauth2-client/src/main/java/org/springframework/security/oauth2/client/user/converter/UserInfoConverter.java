@@ -15,8 +15,8 @@
  */
 package org.springframework.security.oauth2.client.user.converter;
 
-import org.springframework.security.oauth2.oidc.core.user.DefaultUserInfo;
-import org.springframework.security.oauth2.oidc.core.user.UserInfo;
+import org.springframework.security.oauth2.oidc.user.DefaultUserInfo;
+import org.springframework.security.oauth2.oidc.user.UserInfo;
 
 import java.util.Map;
 

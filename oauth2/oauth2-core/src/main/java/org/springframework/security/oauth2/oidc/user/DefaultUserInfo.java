@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.oauth2.oidc.core.user;
+package org.springframework.security.oauth2.oidc.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import static org.springframework.security.oauth2.oidc.core.StandardClaimName.*;
+import static org.springframework.security.oauth2.oidc.StandardClaimName.*;
 
 /**
  * @author Joe Grandja
