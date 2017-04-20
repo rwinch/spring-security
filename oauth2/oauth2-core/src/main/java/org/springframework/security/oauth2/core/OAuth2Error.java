@@ -20,7 +20,7 @@ import org.springframework.util.Assert;
 /**
  * @author Joe Grandja
  */
-public final class OAuth2Error {
+public class OAuth2Error {
 	private final String errorCode;
 	private final String description;
 	private final String uri;
@@ -48,7 +48,8 @@ public final class OAuth2Error {
 		return this.uri;
 	}
 
-	public String getErrorMessage() {
+	@Override
+	public String toString() {
 		return "[" + this.getErrorCode() + "] " +
 				(this.getDescription() != null ? this.getDescription() : "");
 	}

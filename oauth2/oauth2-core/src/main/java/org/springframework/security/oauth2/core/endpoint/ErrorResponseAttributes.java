@@ -15,43 +15,25 @@
  */
 package org.springframework.security.oauth2.core.endpoint;
 
-import org.springframework.util.Assert;
+import org.springframework.security.oauth2.core.OAuth2Error;
 
 /**
  * @author Joe Grandja
  */
-public final class ErrorResponseAttributes {
-	private final String errorCode;
-	private final String errorDescription;
-	private final String errorUri;
+public final class ErrorResponseAttributes extends OAuth2Error {
 	private final String state;
 
 	public ErrorResponseAttributes(String errorCode) {
 		this(errorCode, null, null);
 	}
 
-	public ErrorResponseAttributes(String errorCode, String errorDescription, String errorUri) {
-		this(errorCode, errorDescription, errorUri, null);
+	public ErrorResponseAttributes(String errorCode, String description, String uri) {
+		this(errorCode, description, uri, null);
 	}
 
-	public ErrorResponseAttributes(String errorCode, String errorDescription, String errorUri, String state) {
-		Assert.notNull(errorCode, "errorCode cannot be null");
-		this.errorCode = errorCode;
-		this.errorDescription = errorDescription;
-		this.errorUri = errorUri;
+	public ErrorResponseAttributes(String errorCode, String description, String uri, String state) {
+		super(errorCode, description, uri);
 		this.state = state;
-	}
-
-	public String getErrorCode() {
-		return this.errorCode;
-	}
-
-	public String getErrorDescription() {
-		return this.errorDescription;
-	}
-
-	public String getErrorUri() {
-		return this.errorUri;
 	}
 
 	public String getState() {

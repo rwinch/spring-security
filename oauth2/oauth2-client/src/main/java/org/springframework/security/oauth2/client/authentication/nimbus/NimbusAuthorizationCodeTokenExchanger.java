@@ -93,7 +93,7 @@ public class NimbusAuthorizationCodeTokenExchanger implements AuthorizationGrant
 			ErrorObject errorObject = tokenErrorResponse.getErrorObject();
 			OAuth2Error oauth2Error = new OAuth2Error(errorObject.getCode(), errorObject.getDescription(),
 				(errorObject.getURI() != null ? errorObject.getURI().toString() : null));
-			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.getErrorMessage());
+			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 
 		AccessTokenResponse accessTokenResponse = (AccessTokenResponse) tokenResponse;
