@@ -6,8 +6,8 @@ repositories {
 }
 
 dependencies {
-	compile project(':spring-security-core'),
-			project(':spring-security-config')
+	compile project(':spring-security-config')
+	compile project(':spring-security-core')
 
 	aspectpath project(':spring-security-aspects')
 

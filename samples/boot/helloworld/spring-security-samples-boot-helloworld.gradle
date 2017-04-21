@@ -1,12 +1,12 @@
 apply plugin: 'io.spring.convention.spring-sample-boot'
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web",
-            "org.springframework.boot:spring-boot-starter-thymeleaf",
-            "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE",
-            project(":spring-security-config"),
-            project(":spring-security-web")
+	compile project(':spring-security-config')
+	compile project(':spring-security-web')
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4'
 
-    testCompile "org.springframework.boot:spring-boot-starter-test",
-            project(":spring-security-test")
+	testCompile project(':spring-security-test')
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
