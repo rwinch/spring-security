@@ -25,29 +25,29 @@ eclipse.classpath.plusConfigurations += [configurations.integrationTestRuntime]
 dependencies {
 	compile project(':spring-security-cas')
 	compile project(':spring-security-core')
-	compile "org.jasig.cas.client:cas-client-core"
+	compile 'org.jasig.cas.client:cas-client-core'
 
-	providedCompile "javax.servlet:javax.servlet-api"
+	providedCompile 'javax.servlet:javax.servlet-api'
 
 	runtime project(':spring-security-config')
 	runtime project(':spring-security-web')
-	runtime "ch.qos.logback:logback-classic"
-	runtime "net.sf.ehcache:ehcache"
-	runtime "org.slf4j:jcl-over-slf4j"
-	runtime "org.springframework:spring-context-support"
+	runtime 'ch.qos.logback:logback-classic'
+	runtime 'net.sf.ehcache:ehcache'
+	runtime 'org.slf4j:jcl-over-slf4j'
+	runtime 'org.springframework:spring-context-support'
 
 	integrationTestCompile project(':spring-security-cas')
-	integrationTest gebDependencies
-	integrationTest seleniumDependencies
-	integrationTest spockDependencies
-	integrationTest "org.codehaus.groovy:groovy"
-	integrationTest "org.eclipse.jetty:jetty-server"
-	integrationTest "org.eclipse.jetty:jetty-servlet"
-	integrationTest "org.slf4j:jcl-over-slf4j"
+	integrationTestCompile gebDependencies
+	integrationTestCompile seleniumDependencies
+	integrationTestCompile spockDependencies
+	integrationTestCompile 'org.codehaus.groovy:groovy'
+	integrationTestCompile 'org.eclipse.jetty:jetty-server'
+	integrationTestCompile 'org.eclipse.jetty:jetty-servlet'
+	integrationTestCompile 'org.slf4j:jcl-over-slf4j'
 }
 
 [project.tasks.jettyRun, project.tasks.jettyRunWar]*.configure {
-	contextPath = "/cas-sample"
+	contextPath = '/cas-sample'
 	def httpConnector = jettyRunWar.class.classLoader.loadClass('org.mortbay.jetty.nio.SelectChannelConnector').newInstance()
 	httpConnector.port = 8080
 	httpConnector.confidentialPort = 8443
@@ -102,7 +102,7 @@ gradle.taskGraph.whenReady {graph ->
 	if(graph.hasTask(integrationTest)) {
 		tasks.getByPath(':spring-security-samples-xml-casserver:casServerOverlay').logLevel = 'ERROR'
 		jettyRunWar {
-			additionalRuntimeJars += file("src/integration-test/resources")
+			additionalRuntimeJars += file('src/integration-test/resources')
 			daemon = true
 		}
 
