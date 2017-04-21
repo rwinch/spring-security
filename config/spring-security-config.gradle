@@ -4,52 +4,52 @@ apply plugin: 'trang'
 dependencies {
 	// NB: Don't add other compile time dependencies to the config module as this breaks tooling
 	compile project(':spring-security-core')
-	compile "org.springframework:spring-core"
 	compile 'aopalliance:aopalliance:1.0'
-	compile "org.springframework:spring-aop"
-	compile "org.springframework:spring-context"
-	compile "org.springframework:spring-beans"
+	compile 'org.springframework:spring-aop'
+	compile 'org.springframework:spring-beans'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-core'
 
-	optional project(':spring-security-web')
 	optional project(':spring-security-ldap')
-	optional project(':spring-security-openid')
 	optional project(':spring-security-messaging')
-	optional"org.springframework:spring-web"
-	optional"org.springframework:spring-websocket"
-	optional "org.springframework:spring-webmvc"
-	optional "org.aspectj:aspectjweaver"
-	optional "org.springframework:spring-jdbc"
-	optional "org.springframework:spring-tx"
+	optional project(':spring-security-openid')
+	optional project(':spring-security-web')
+	optional 'org.aspectj:aspectjweaver'
+	optional 'org.springframework:spring-jdbc'
+	optional 'org.springframework:spring-tx'
+	optional 'org.springframework:spring-webmvc'
+	optional'org.springframework:spring-web'
+	optional'org.springframework:spring-websocket'
 
-	provided "javax.servlet:javax.servlet-api"
+	provided 'javax.servlet:javax.servlet-api'
 
+	testCompile project(':spring-security-aspects')
 	testCompile project(':spring-security-cas')
 	testCompile project(path : ':spring-security-core', configuration : 'tests')
-	testCompile project(':spring-security-aspects')
-	testCompile 'javax.annotation:jsr250-api:1.0'
-	testCompile "org.springframework.ldap:spring-ldap-core"
-	testCompile "org.springframework:spring-expression"
-	testCompile "org.springframework:spring-jdbc"
-	testCompile "org.springframework:spring-orm"
-	testCompile "org.springframework:spring-tx"
-	testCompile "org.slf4j:jcl-over-slf4j"
-	testCompile "org.eclipse.persistence:javax.persistence"
-	testCompile "org.hibernate:hibernate-entitymanager"
-	testCompile "org.codehaus.groovy:groovy-all"
 	testCompile apachedsDependencies
-	testCompile 'ldapsdk:ldapsdk:4.1'
 	testCompile powerMockDependencies
-	testCompile "org.hsqldb:hsqldb"
 	testCompile spockDependencies
-	testCompile('org.openid4java:openid4java-nodeps:0.9.6') {
+	testCompile 'javax.annotation:jsr250-api:1.0'
+	testCompile 'ldapsdk:ldapsdk:4.1'
+	testCompile 'org.codehaus.groovy:groovy-all'
+	testCompile 'org.eclipse.persistence:javax.persistence'
+	testCompile 'org.hibernate:hibernate-entitymanager'
+	testCompile 'org.hsqldb:hsqldb'
+	testCompile ('org.openid4java:openid4java-nodeps') {
 		exclude group: 'com.google.code.guice', module: 'guice'
 	}
-	testCompile("org.springframework.data:spring-data-jpa") {
+	testCompile 'org.slf4j:jcl-over-slf4j'
+	testCompile 'org.springframework.ldap:spring-ldap-core'
+	testCompile 'org.springframework:spring-expression'
+	testCompile 'org.springframework:spring-jdbc'
+	testCompile 'org.springframework:spring-orm'
+	testCompile 'org.springframework:spring-tx'
+	testCompile ('org.springframework.data:spring-data-jpa') {
 		exclude group: 'org.aspectj', module: 'aspectjrt'
 	}
 
-	testRuntime "org.hsqldb:hsqldb"
-	testRuntime "cglib:cglib-nodep"
+	testRuntime 'cglib:cglib-nodep'
+	testRuntime 'org.hsqldb:hsqldb'
 }
 
 test {
