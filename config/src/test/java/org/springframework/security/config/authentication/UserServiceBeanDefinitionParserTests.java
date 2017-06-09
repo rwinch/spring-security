@@ -42,7 +42,7 @@ public class UserServiceBeanDefinitionParserTests {
 	@Test
 	public void userServiceWithValidPropertiesFileWorksSuccessfully() {
 		setContext("<user-service id='service' "
-				+ "properties='classpath:org/springframework/security/config/users.properties'/>");
+				+ "properties='classpath:org/springframework/security/config/userResource.properties'/>");
 		UserDetailsService userService = (UserDetailsService) appContext
 				.getBean("service");
 		userService.loadUserByUsername("bob");
@@ -131,8 +131,8 @@ public class UserServiceBeanDefinitionParserTests {
 
 	@Test(expected = FatalBeanException.class)
 	public void multipleTopLevelUseWithoutIdThrowsException() {
-		setContext("<user-service properties='classpath:org/springframework/security/config/users.properties'/>"
-				+ "<user-service properties='classpath:org/springframework/security/config/users.properties'/>");
+		setContext("<user-service properties='classpath:org/springframework/security/config/userResource.properties'/>"
+				+ "<user-service properties='classpath:org/springframework/security/config/userResource.properties'/>");
 
 	}
 

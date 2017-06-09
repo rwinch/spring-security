@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 /**
  * @author Ben Alex
  * @author Luke Taylor
- * @author Eddú Meléndez
+ * @author Edd� Mel�ndez
  */
 public class JdbcUserServiceBeanDefinitionParserTests {
 	private static String USER_CACHE_XML = "<b:bean id='userCache' class='org.springframework.security.authentication.dao.MockUserCache'/>";
@@ -83,10 +83,10 @@ public class JdbcUserServiceBeanDefinitionParserTests {
 
 	@Test
 	public void usernameAndAuthorityQueriesAreParsedCorrectly() throws Exception {
-		String userQuery = "select username, password, true from users where username = ?";
+		String userQuery = "select username, password, true from userResource where username = ?";
 		String authoritiesQuery = "select username, authority from authorities where username = ? and 1 = 1";
 		setContext("<jdbc-user-service id='myUserService' "
-				+ "data-source-ref='dataSource' " + "users-by-username-query='"
+				+ "data-source-ref='dataSource' " + "userResource-by-username-query='"
 				+ userQuery + "' " + "authorities-by-username-query='" + authoritiesQuery
 				+ "'/>" + DATA_SOURCE);
 		JdbcUserDetailsManager mgr = (JdbcUserDetailsManager) appContext
