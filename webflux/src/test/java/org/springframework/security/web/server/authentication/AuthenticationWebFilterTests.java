@@ -29,6 +29,7 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.test.web.reactive.server.WebTestClientBuilder;
 import org.springframework.security.web.server.AuthenticationEntryPoint;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -195,6 +196,29 @@ public class AuthenticationWebFilterTests {
 	}
 
 	@Test
+	public void filterWhenNotMatchAndConvertAndAuthenticationSuccessThenContinues() {
+		this.filter.setRequiresAuthenticationMatcher(e -> ServerWebExchangeMatcher.MatchResult.notMatch());
+
+		WebTestClient client = WebTestClientBuilder
+			.bindToWebFilters(this.filter)
+			.build();
+
+		EntityExchangeResult<String> result = client
+			.mutate()
+			.filter(basicAuthentication("test","this"))
+			.build()
+			.get()
+			.uri("/")
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody(String.class).consumeWith(b -> assertThat(b.getResponseBody()).isEqualTo("ok"))
+			.returnResult();
+
+		assertThat(result.getResponseCookies()).isEmpty();
+		verifyZeroInteractions(this.authenticationConverter, this.authenticationManager, this.successHandler);
+	}
+
+	@Test
 	public void filterWhenConvertAndAuthenticationFailThenEntryPoint() {
 		Mono<Authentication> authentication = Mono.just(new TestingAuthenticationToken("test", "this", "ROLE_USER"));
 		when(authenticationConverter.apply(any())).thenReturn(authentication);
@@ -235,5 +259,10 @@ public class AuthenticationWebFilterTests {
 			.expectBody().isEmpty();
 
 		verifyZeroInteractions(successHandler, entryPoint);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void setRequiresAuthenticationMatcherWhenNullThenException() {
+		this.filter.setRequiresAuthenticationMatcher(null);
 	}
 }

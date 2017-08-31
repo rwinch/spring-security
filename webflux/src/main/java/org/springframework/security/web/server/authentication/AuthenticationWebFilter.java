@@ -23,6 +23,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.AuthenticationEntryPoint;
 import org.springframework.security.web.server.HttpBasicAuthenticationConverter;
 import org.springframework.security.web.server.authentication.www.HttpBasicAuthenticationEntryPoint;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -46,6 +48,8 @@ public class AuthenticationWebFilter implements WebFilter {
 
 	private AuthenticationEntryPoint entryPoint = new HttpBasicAuthenticationEntryPoint();
 
+	private ServerWebExchangeMatcher requiresAuthenticationMatcher = ServerWebExchangeMatchers.anyExchange();
+
 	public AuthenticationWebFilter(ReactiveAuthenticationManager authenticationManager) {
 		Assert.notNull(authenticationManager, "authenticationManager cannot be null");
 		this.authenticationManager = authenticationManager;
@@ -53,8 +57,10 @@ public class AuthenticationWebFilter implements WebFilter {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		return authenticationConverter.apply(exchange)
-			.switchIfEmpty(Mono.defer(() -> chain.filter(exchange).cast(Authentication.class)))
+		return this.requiresAuthenticationMatcher.matches(exchange)
+			.filter( matchResult -> matchResult.isMatch())
+			.flatMap( matchResult -> authenticationConverter.apply(exchange))
+			.switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
 			.flatMap( token -> authenticationManager.authenticate(token)
 				.flatMap(authentication -> authenticationSuccessHandler.success(authentication, exchange, chain))
 				.onErrorResume( AuthenticationException.class, t -> entryPoint.commence(exchange, t))
@@ -71,5 +77,11 @@ public class AuthenticationWebFilter implements WebFilter {
 
 	public void setEntryPoint(AuthenticationEntryPoint entryPoint) {
 		this.entryPoint = entryPoint;
+	}
+
+	public void setRequiresAuthenticationMatcher(
+		ServerWebExchangeMatcher requiresAuthenticationMatcher) {
+		Assert.notNull(requiresAuthenticationMatcher, "requiresAuthenticationMatcher cannot be null");
+		this.requiresAuthenticationMatcher = requiresAuthenticationMatcher;
 	}
 }
