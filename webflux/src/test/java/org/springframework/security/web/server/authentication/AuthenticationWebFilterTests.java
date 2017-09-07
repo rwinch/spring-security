@@ -178,7 +178,7 @@ public class AuthenticationWebFilterTests {
 		Mono<Authentication> authentication = Mono.just(new TestingAuthenticationToken("test", "this", "ROLE_USER"));
 		when(authenticationConverter.apply(any())).thenReturn(authentication);
 		when(authenticationManager.authenticate(any())).thenReturn(authentication);
-		when(successHandler.success(any(),any(),any())).thenReturn(Mono.empty());
+		when(successHandler.success(any(),any())).thenReturn(Mono.empty());
 
 		WebTestClient client = WebTestClientBuilder
 			.bindToWebFilters(filter)
@@ -191,7 +191,7 @@ public class AuthenticationWebFilterTests {
 			.expectStatus().isOk()
 			.expectBody().isEmpty();
 
-		verify(successHandler).success(eq(authentication.block()), any(), any());
+		verify(successHandler).success(eq(authentication.block()), any());
 		verifyZeroInteractions(entryPoint);
 	}
 

@@ -19,19 +19,21 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.web.server.AuthenticationEntryPoint;
+import org.springframework.security.web.server.FormLoginAuthenticationConverter;
 import org.springframework.security.web.server.HttpBasicAuthenticationConverter;
 import org.springframework.security.web.server.MatcherSecurityWebFilterChain;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.security.web.server.authentication.DefaultAuthenticationSuccessHandler;
+import org.springframework.security.web.server.authentication.RedirectAuthenticationEntryPoint;
 import org.springframework.security.web.server.authentication.www.HttpBasicAuthenticationEntryPoint;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
@@ -40,6 +42,7 @@ import org.springframework.security.web.server.context.AuthenticationReactorCont
 import org.springframework.security.web.server.context.SecurityContextRepositoryWebFilter;
 import org.springframework.security.web.server.authorization.ExceptionTranslationWebFilter;
 import org.springframework.security.web.server.context.SecurityContextRepository;
+import org.springframework.security.web.server.context.WebSessionSecurityContextRepository;
 import org.springframework.security.web.server.header.CacheControlHttpHeadersWriter;
 import org.springframework.security.web.server.header.CompositeHttpHeadersWriter;
 import org.springframework.security.web.server.header.ContentTypeOptionsHttpHeadersWriter;
@@ -48,6 +51,7 @@ import org.springframework.security.web.server.header.HttpHeadersWriter;
 import org.springframework.security.web.server.header.StrictTransportSecurityHttpHeadersWriter;
 import org.springframework.security.web.server.header.XFrameOptionsHttpHeadersWriter;
 import org.springframework.security.web.server.header.XXssProtectionHttpHeadersWriter;
+import org.springframework.security.web.server.ui.LoginPageGeneratingWebFilter;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcherEntry;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
@@ -66,9 +70,13 @@ public class HttpSecurity {
 
 	private HeaderBuilder headers = new HeaderBuilder();
 	private HttpBasicBuilder httpBasic;
+	private FormLoginBuilder formLogin;
+
 	private ReactiveAuthenticationManager authenticationManager;
 
 	private SecurityContextRepository securityContextRepository;
+
+	private AuthenticationEntryPoint authenticationEntryPoint;
 
 	/**
 	 * The ServerExchangeMatcher that determines which requests apply to this HttpSecurity instance.
@@ -103,6 +111,13 @@ public class HttpSecurity {
 		return this.httpBasic;
 	}
 
+	public FormLoginBuilder formLogin() {
+		if(this.formLogin == null) {
+			this.formLogin = new FormLoginBuilder();
+		}
+		return this.formLogin;
+	}
+
 	public HeaderBuilder headers() {
 		return this.headers;
 	}
@@ -135,9 +150,21 @@ public class HttpSecurity {
 			}
 			filters.add(this.httpBasic.build());
 		}
+		if(this.formLogin != null) {
+			filters.add(new LoginPageGeneratingWebFilter());
+			this.formLogin.authenticationManager(this.authenticationManager);
+			if(this.securityContextRepository != null) {
+				this.formLogin.securityContextRepository(this.securityContextRepository);
+			}
+			filters.add(this.formLogin.build());
+		}
 		filters.add(new AuthenticationReactorContextFilter());
 		if(this.authorizeExchangeBuilder != null) {
-			filters.add(new ExceptionTranslationWebFilter());
+			ExceptionTranslationWebFilter exceptionTranslationWebFilter = new ExceptionTranslationWebFilter();
+			if(this.authenticationEntryPoint != null) {
+				exceptionTranslationWebFilter.setAuthenticationEntryPoint(this.authenticationEntryPoint);
+			}
+			filters.add(exceptionTranslationWebFilter);
 			filters.add(this.authorizeExchangeBuilder.build());
 		}
 		return new MatcherSecurityWebFilterChain(getSecurityMatcher(), filters);
@@ -269,6 +296,54 @@ public class HttpSecurity {
 		}
 
 		private HttpBasicBuilder() {}
+	}
+
+	/**
+	 * @author Rob Winch
+	 * @since 5.0
+	 */
+	public class FormLoginBuilder {
+		private ReactiveAuthenticationManager authenticationManager;
+
+		private SecurityContextRepository securityContextRepository = new WebSessionSecurityContextRepository();
+
+		public FormLoginBuilder authenticationManager(ReactiveAuthenticationManager authenticationManager) {
+			this.authenticationManager = authenticationManager;
+			return this;
+		}
+
+		public FormLoginBuilder securityContextRepository(SecurityContextRepository securityContextRepository) {
+			this.securityContextRepository = securityContextRepository;
+			return this;
+		}
+
+		public HttpSecurity and() {
+			return HttpSecurity.this;
+		}
+
+		public HttpSecurity disable() {
+			HttpSecurity.this.formLogin = null;
+			return HttpSecurity.this;
+		}
+
+		protected AuthenticationWebFilter build() {
+			AuthenticationWebFilter authenticationFilter = new AuthenticationWebFilter(
+				this.authenticationManager);
+			authenticationFilter.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers(
+				HttpMethod.POST, "/login"));
+			authenticationFilter.setEntryPoint(HttpSecurity.this.authenticationEntryPoint);
+			authenticationFilter.setAuthenticationConverter(new FormLoginAuthenticationConverter());
+			if(this.securityContextRepository != null) {
+				DefaultAuthenticationSuccessHandler handler = new DefaultAuthenticationSuccessHandler();
+				handler.setSecurityContextRepository(this.securityContextRepository);
+				authenticationFilter.setAuthenticationSuccessHandler(handler);
+			}
+			return authenticationFilter;
+		}
+
+		private FormLoginBuilder() {
+			HttpSecurity.this.authenticationEntryPoint =  new RedirectAuthenticationEntryPoint("/login");
+		}
 	}
 
 	/**

@@ -20,6 +20,7 @@ package org.springframework.security.web.server.authentication;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.context.SecurityContextRepository;
 import org.springframework.security.web.server.context.ServerWebExchangeAttributeSecurityContextRepository;
 import org.springframework.util.Assert;
@@ -37,11 +38,11 @@ public class DefaultAuthenticationSuccessHandler implements AuthenticationSucces
 	private AuthenticationSuccessHandler delegate = new WebFilterChainAuthenticationSuccessHandler();
 
 	@Override
-	public Mono<Void> success(Authentication authentication, ServerWebExchange exchange, WebFilterChain chain) {
+	public Mono<Void> success(Authentication authentication, WebFilterExchange webFilterExchange) {
 		SecurityContextImpl securityContext = new SecurityContextImpl();
 		securityContext.setAuthentication(authentication);
-		return securityContextRepository.save(exchange, securityContext)
-			.flatMap( wrappedExchange -> delegate.success(authentication, wrappedExchange, chain));
+		return securityContextRepository.save(webFilterExchange.getExchange(), securityContext)
+			.flatMap( wrappedExchange -> delegate.success(authentication, new WebFilterExchange(wrappedExchange, webFilterExchange.getChain())));
 	}
 
 	public void setDelegate(AuthenticationSuccessHandler delegate) {

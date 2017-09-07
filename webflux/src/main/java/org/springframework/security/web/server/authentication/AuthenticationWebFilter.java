@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.server.AuthenticationEntryPoint;
 import org.springframework.security.web.server.HttpBasicAuthenticationConverter;
+import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.www.HttpBasicAuthenticationEntryPoint;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
@@ -62,7 +63,7 @@ public class AuthenticationWebFilter implements WebFilter {
 			.flatMap( matchResult -> authenticationConverter.apply(exchange))
 			.switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
 			.flatMap( token -> authenticationManager.authenticate(token)
-				.flatMap(authentication -> authenticationSuccessHandler.success(authentication, exchange, chain))
+				.flatMap(authentication -> authenticationSuccessHandler.success(authentication, new WebFilterExchange(exchange, chain)))
 				.onErrorResume( AuthenticationException.class, t -> entryPoint.commence(exchange, t))
 			);
 	}
