@@ -64,9 +64,6 @@ public class OAuth2LoginReactiveAuthenticationManagerTests {
 	@Mock
 	private ReactiveOAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient;
 
-	@Mock
-	private ReactiveOAuth2AuthorizedClientService authorizedClientService;
-
 	private ClientRegistration.Builder registration = ClientRegistration.withRegistrationId("github")
 			.redirectUriTemplate("{baseUrl}/{action}/oauth2/code/{registrationId}")
 			.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
@@ -89,32 +86,20 @@ public class OAuth2LoginReactiveAuthenticationManagerTests {
 
 	@Before
 	public void setup() {
-		this.manager = new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService,
-				this.authorizedClientService);
-		when(this.authorizedClientService.saveAuthorizedClient(any(), any())).thenReturn(Mono.empty());
+		this.manager = new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService);
 	}
 
 	@Test
 	public void constructorWhenNullAccessTokenResponseClientThenIllegalArgumentException() {
 		this.accessTokenResponseClient = null;
-		assertThatThrownBy(() -> new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService,
-				this.authorizedClientService))
+		assertThatThrownBy(() -> new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService))
 				.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	public void constructorWhenNullUserServiceThenIllegalArgumentException() {
 		this.userService = null;
-		assertThatThrownBy(() -> new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService,
-				this.authorizedClientService))
-				.isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test
-	public void constructorWhenNullAuthorizedClientServiceThenIllegalArgumentException() {
-		this.authorizedClientService = null;
-		assertThatThrownBy(() -> new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService,
-				this.authorizedClientService))
+		assertThatThrownBy(() -> new OAuth2LoginReactiveAuthenticationManager(this.accessTokenResponseClient, this.userService))
 				.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -172,7 +157,7 @@ public class OAuth2LoginReactiveAuthenticationManagerTests {
 		DefaultOAuth2User user = new DefaultOAuth2User(AuthorityUtils.createAuthorityList("ROLE_USER"), Collections.singletonMap("user", "rob"), "user");
 		when(this.userService.loadUser(any())).thenReturn(Mono.just(user));
 
-		OAuth2AuthenticationToken result = (OAuth2AuthenticationToken) this.manager.authenticate(loginToken()).block();
+		OAuth2LoginAuthenticationToken result = (OAuth2LoginAuthenticationToken) this.manager.authenticate(loginToken()).block();
 
 		assertThat(result.getPrincipal()).isEqualTo(user);
 		assertThat(result.getAuthorities()).containsOnlyElementsOf(user.getAuthorities());

@@ -65,20 +65,15 @@ public class OAuth2LoginReactiveAuthenticationManager implements
 
 	private final ReactiveOAuth2UserService<OAuth2UserRequest, OAuth2User> userService;
 
-	private final ReactiveOAuth2AuthorizedClientService authorizedClientService;
-
 	private GrantedAuthoritiesMapper authoritiesMapper = (authorities -> authorities);
 
 	public OAuth2LoginReactiveAuthenticationManager(
 			ReactiveOAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient,
-			ReactiveOAuth2UserService<OAuth2UserRequest, OAuth2User> userService,
-			ReactiveOAuth2AuthorizedClientService authorizedClientService) {
+			ReactiveOAuth2UserService<OAuth2UserRequest, OAuth2User> userService) {
 		Assert.notNull(accessTokenResponseClient, "accessTokenResponseClient cannot be null");
 		Assert.notNull(userService, "userService cannot be null");
-		Assert.notNull(authorizedClientService, "authorizedClientService");
 		this.accessTokenResponseClient = accessTokenResponseClient;
 		this.userService = userService;
-		this.authorizedClientService = authorizedClientService;
 	}
 
 	@Override
@@ -107,11 +102,11 @@ public class OAuth2LoginReactiveAuthenticationManager implements
 		});
 	}
 
-	private Mono<OAuth2AuthenticationToken> authenticationResult(OAuth2LoginAuthenticationToken authorizationCodeAuthentication, OAuth2AccessTokenResponse accessTokenResponse) {
+	private Mono<OAuth2LoginAuthenticationToken> authenticationResult(OAuth2LoginAuthenticationToken authorizationCodeAuthentication, OAuth2AccessTokenResponse accessTokenResponse) {
 		OAuth2AccessToken accessToken = accessTokenResponse.getAccessToken();
 		OAuth2UserRequest userRequest = new OAuth2UserRequest(authorizationCodeAuthentication.getClientRegistration(), accessToken);
 		return this.userService.loadUser(userRequest)
-				.flatMap(oauth2User -> {
+				.map(oauth2User -> {
 					Collection<? extends GrantedAuthority> mappedAuthorities =
 							this.authoritiesMapper.mapAuthorities(oauth2User.getAuthorities());
 
@@ -122,17 +117,7 @@ public class OAuth2LoginReactiveAuthenticationManager implements
 							mappedAuthorities,
 							accessToken,
 							accessTokenResponse.getRefreshToken());
-					OAuth2AuthorizedClient authorizedClient = new OAuth2AuthorizedClient(
-							authenticationResult.getClientRegistration(),
-							authenticationResult.getName(),
-							authenticationResult.getAccessToken(),
-							authenticationResult.getRefreshToken());
-					OAuth2AuthenticationToken result =  new OAuth2AuthenticationToken(
-							authenticationResult.getPrincipal(),
-							authenticationResult.getAuthorities(),
-							authenticationResult.getClientRegistration().getRegistrationId());
-					return this.authorizedClientService.saveAuthorizedClient(authorizedClient, authenticationResult)
-							.thenReturn(result);
+					return authenticationResult;
 				});
 	}
 }

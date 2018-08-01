@@ -55,6 +55,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultReactiveOAuth2
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectWebFilter;
 import org.springframework.security.oauth2.client.web.ServerOAuth2LoginAuthenticationTokenConverter;
+import org.springframework.security.oauth2.client.web.server.authentication.OAuth2LoginAuthenticationWebFilter;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtReactiveAuthenticationManager;
@@ -473,8 +474,7 @@ public class ServerHttpSecurity {
 
 			WebClientReactiveAuthorizationCodeTokenResponseClient client = new WebClientReactiveAuthorizationCodeTokenResponseClient();
 			ReactiveOAuth2UserService userService = new DefaultReactiveOAuth2UserService();
-			ReactiveAuthenticationManager manager = new OAuth2LoginReactiveAuthenticationManager(client, userService,
-					authorizedClientService);
+			ReactiveAuthenticationManager manager = new OAuth2LoginReactiveAuthenticationManager(client, userService);
 
 			boolean oidcAuthenticationProviderEnabled = ClassUtils.isPresent(
 					"org.springframework.security.oauth2.jwt.JwtDecoder", this.getClass().getClassLoader());
@@ -483,7 +483,7 @@ public class ServerHttpSecurity {
 				manager = new DelegatingReactiveAuthenticationManager(oidc, manager);
 			}
 
-			AuthenticationWebFilter authenticationFilter = new AuthenticationWebFilter(manager);
+			AuthenticationWebFilter authenticationFilter = new OAuth2LoginAuthenticationWebFilter(manager, authorizedClientService);
 			authenticationFilter.setRequiresAuthenticationMatcher(new PathPatternParserServerWebExchangeMatcher("/login/oauth2/code/{registrationId}"));
 			authenticationFilter.setAuthenticationConverter(new ServerOAuth2LoginAuthenticationTokenConverter(clientRegistrationRepository));
 
