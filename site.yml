@@ -1,7 +1,7 @@
 site:
   title: Spring Security
   url: https://spring.io/spring-security
-  start_page: component-a::index
+  start_page: spring-security::index
 content:
   sources:
   - url: ./
