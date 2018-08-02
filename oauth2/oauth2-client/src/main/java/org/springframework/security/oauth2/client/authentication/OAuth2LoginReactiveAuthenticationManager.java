@@ -15,24 +15,20 @@
  */
 package org.springframework.security.oauth2.client.authentication;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.ReactiveOAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
-
 import reactor.core.publisher.Mono;
+
+import java.util.Collection;
 
 
 /**
@@ -61,7 +57,7 @@ import reactor.core.publisher.Mono;
  */
 public class OAuth2LoginReactiveAuthenticationManager implements
 		ReactiveAuthenticationManager {
-	private final ReactiveOAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient;
+	private final ReactiveAuthenticationManager authorizationCodeManager;
 
 	private final ReactiveOAuth2UserService<OAuth2UserRequest, OAuth2User> userService;
 
@@ -72,18 +68,18 @@ public class OAuth2LoginReactiveAuthenticationManager implements
 			ReactiveOAuth2UserService<OAuth2UserRequest, OAuth2User> userService) {
 		Assert.notNull(accessTokenResponseClient, "accessTokenResponseClient cannot be null");
 		Assert.notNull(userService, "userService cannot be null");
-		this.accessTokenResponseClient = accessTokenResponseClient;
+		this.authorizationCodeManager = new OAuth2AuthorizationCodeReactiveAuthenticationManager(accessTokenResponseClient);
 		this.userService = userService;
 	}
 
 	@Override
 	public Mono<Authentication> authenticate(Authentication authentication) {
 		return Mono.defer(() -> {
-			OAuth2LoginAuthenticationToken authorizationCodeAuthentication = (OAuth2LoginAuthenticationToken) authentication;
+			OAuth2AuthorizationCodeAuthenticationToken token = (OAuth2AuthorizationCodeAuthenticationToken) authentication;
 
 			// Section 3.1.2.1 Authentication Request - http://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
 			// scope REQUIRED. OpenID Connect requests MUST contain the "openid" scope value.
-			if (authorizationCodeAuthentication.getAuthorizationExchange()
+			if (token.getAuthorizationExchange()
 					.getAuthorizationRequest().getScopes().contains("openid")) {
 				// This is an OpenID Connect Authentication Request so return null
 				// and let OidcAuthorizationCodeReactiveAuthenticationManager handle it instead once one is created
@@ -91,32 +87,27 @@ public class OAuth2LoginReactiveAuthenticationManager implements
 //				return Mono.empty();
 			}
 
-			OAuth2AuthorizationExchangeValidator.validate(authorizationCodeAuthentication.getAuthorizationExchange());
-
-			OAuth2AuthorizationCodeGrantRequest authzRequest = new OAuth2AuthorizationCodeGrantRequest(
-					authorizationCodeAuthentication.getClientRegistration(),
-					authorizationCodeAuthentication.getAuthorizationExchange());
-
-			return this.accessTokenResponseClient.getTokenResponse(authzRequest)
-					.flatMap(accessTokenResponse -> authenticationResult(authorizationCodeAuthentication, accessTokenResponse));
+			return this.authorizationCodeManager.authenticate(token)
+					.cast(OAuth2AuthorizationCodeAuthenticationToken.class)
+					.flatMap(this::onSuccess);
 		});
 	}
 
-	private Mono<OAuth2LoginAuthenticationToken> authenticationResult(OAuth2LoginAuthenticationToken authorizationCodeAuthentication, OAuth2AccessTokenResponse accessTokenResponse) {
-		OAuth2AccessToken accessToken = accessTokenResponse.getAccessToken();
-		OAuth2UserRequest userRequest = new OAuth2UserRequest(authorizationCodeAuthentication.getClientRegistration(), accessToken);
+	private Mono<OAuth2LoginAuthenticationToken> onSuccess(OAuth2AuthorizationCodeAuthenticationToken authentication) {
+		OAuth2AccessToken accessToken = authentication.getAccessToken();
+		OAuth2UserRequest userRequest = new OAuth2UserRequest(authentication.getClientRegistration(), accessToken);
 		return this.userService.loadUser(userRequest)
 				.map(oauth2User -> {
 					Collection<? extends GrantedAuthority> mappedAuthorities =
 							this.authoritiesMapper.mapAuthorities(oauth2User.getAuthorities());
 
 					OAuth2LoginAuthenticationToken authenticationResult = new OAuth2LoginAuthenticationToken(
-							authorizationCodeAuthentication.getClientRegistration(),
-							authorizationCodeAuthentication.getAuthorizationExchange(),
+							authentication.getClientRegistration(),
+							authentication.getAuthorizationExchange(),
 							oauth2User,
 							mappedAuthorities,
 							accessToken,
-							accessTokenResponse.getRefreshToken());
+							authentication.getRefreshToken());
 					return authenticationResult;
 				});
 	}

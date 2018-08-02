@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2LoginAuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.ServerOAuth2LoginAuthenticationTokenConverter;
+import org.springframework.security.oauth2.client.web.ServerOAuth2AuthorizationCodeAuthenticationTokenConverter;
 import org.springframework.security.oauth2.client.web.reactive.ReactiveOAuth2AuthorizedClientRepository;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
@@ -69,7 +69,7 @@ public class OAuth2AuthorizationCodeGrantWebFilter implements WebFilter {
 		this.authenticationManager = authenticationManager;
 		this.authorizedClientRepository = authorizedClientRepository;
 		this.requiresAuthenticationMatcher = new PathPatternParserServerWebExchangeMatcher("/authorize/oauth2/code/{registrationId}");
-		this.authenticationConverter = new ServerOAuth2LoginAuthenticationTokenConverter(clientRegistrationRepository);
+		this.authenticationConverter = new ServerOAuth2AuthorizationCodeAuthenticationTokenConverter(clientRegistrationRepository);
 		this.authenticationSuccessHandler = new RedirectServerAuthenticationSuccessHandler();
 
 		this.authenticationFailureHandler = (webFilterExchange, exception) -> Mono.error(exception);
