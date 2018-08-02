@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nimbusds.oauth2.sdk.AuthorizationCodeGrant;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
@@ -45,7 +46,9 @@ import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.InMemoryReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeReactiveAuthenticationManager;
 import org.springframework.security.oauth2.client.authentication.OAuth2LoginReactiveAuthenticationManager;
+import org.springframework.security.oauth2.client.endpoint.ReactiveOAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.WebClientReactiveAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeReactiveAuthenticationManager;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
@@ -55,6 +58,8 @@ import org.springframework.security.oauth2.client.userinfo.DefaultReactiveOAuth2
 import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectWebFilter;
 import org.springframework.security.oauth2.client.web.ServerOAuth2LoginAuthenticationTokenConverter;
+import org.springframework.security.oauth2.client.web.reactive.ReactiveOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.server.OAuth2AuthorizationCodeGrantWebFilter;
 import org.springframework.security.oauth2.client.web.server.authentication.OAuth2LoginAuthenticationWebFilter;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
@@ -578,6 +583,36 @@ public class ServerHttpSecurity {
 	public class OAuth2Spec {
 		private ResourceServerSpec resourceServer;
 
+		private ClientSpec client;
+
+		public ClientSpec client() {
+			if (this.client == null) {
+				this.client = new ClientSpec();
+			}
+			return this.client;
+		}
+
+		public class ClientSpec {
+			protected void configure(ServerHttpSecurity http) {
+				ReactiveClientRegistrationRepository clientRegistrationRepository = getClientRegistrationRepository();
+				ReactiveAuthenticationManager authenticationManager = new OAuth2AuthorizationCodeReactiveAuthenticationManager(new WebClientReactiveAuthorizationCodeTokenResponseClient());
+				OAuth2AuthorizationCodeGrantWebFilter codeGrantWebFilter = new OAuth2AuthorizationCodeGrantWebFilter(authenticationManager,
+						clientRegistrationRepository,
+						getBeanOrNull(ReactiveOAuth2AuthorizedClientRepository.class));
+
+				OAuth2AuthorizationRequestRedirectWebFilter oauthRedirectFilter = new OAuth2AuthorizationRequestRedirectWebFilter(
+						clientRegistrationRepository);
+				http.addFilterAt(codeGrantWebFilter, SecurityWebFiltersOrder.AUTHENTICATION);
+				http.addFilterAt(oauthRedirectFilter, SecurityWebFiltersOrder.HTTP_BASIC);
+			}
+
+			private ReactiveClientRegistrationRepository getClientRegistrationRepository() {
+				return getBeanOrNull(ReactiveClientRegistrationRepository.class);
+			}
+
+			private ClientSpec() {}
+		}
+
 		public ResourceServerSpec resourceServer() {
 			if (this.resourceServer == null) {
 				this.resourceServer = new ResourceServerSpec();
@@ -673,6 +708,9 @@ public class ServerHttpSecurity {
 		protected void configure(ServerHttpSecurity http) {
 			if (this.resourceServer != null) {
 				this.resourceServer.configure(http);
+			}
+			if (this.client != null) {
+				this.client.configure(http);
 			}
 		}
 
