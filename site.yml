@@ -1,11 +1,11 @@
 site:
-  title: Hello Antora
-  url: https://hello.antora.org
+  title: Spring Security
+  url: https://spring.io/spring-security
   start_page: component-a::index
 content:
   sources:
   - url: ./
-    start_path: component
+    start_path: docs/
     branches: antora
 ui:
   bundle:

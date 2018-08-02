@@ -1,1 +1,23 @@
-= Hi
+= Spring Security Reference
+
+
+Spring Security is a powerful and highly customizable authentication and access-control framework.
+It is the de-facto standard for securing Spring-based applications.
+
+include::{partialsdir}/preface/index.adoc[]
+
+include::{include-dir}/architecture/index.adoc[]
+
+include::{include-dir}/test/index.adoc[]
+
+include::{include-dir}/web/index.adoc[]
+
+include::{include-dir}/authorization/index.adoc[]
+
+include::{include-dir}/additional-topics/index.adoc[]
+
+include::{include-dir}/data/index.adoc[]
+
+include::{include-dir}/appendix/index.adoc[]
+
+
