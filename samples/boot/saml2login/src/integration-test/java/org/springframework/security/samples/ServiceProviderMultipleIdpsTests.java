@@ -25,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,11 +49,6 @@ class ServiceProviderMultipleIdpsTests {
 	@EnableAutoConfiguration
 	@ComponentScan(basePackages = "sample")
 	public static class SpringBootApplicationTestConfig {
-	}
-
-	@BeforeAll
-	public static void initializeBouncyCastle() {
-		java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 	}
 
 	@Test

@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,11 +93,6 @@ class ServiceProviderSampleTests {
 	@EnableAutoConfiguration
 	@ComponentScan(basePackages = "sample")
 	public static class SpringBootApplicationTestConfig {
-	}
-
-	@BeforeAll
-	public static void initializeBouncyCastle() {
-		java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 	}
 
 	@Test

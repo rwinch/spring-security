@@ -46,6 +46,10 @@ import static org.springframework.security.saml2.credentials.Saml2X509Credential
 @Configuration
 class OpenSamlKeyConverters {
 
+	static {
+		java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+	}
+
 	@Component
 	@ConfigurationPropertiesBinding
 	static class X509CertificateConverter implements Converter<String, X509Certificate> {
