@@ -27,6 +27,7 @@ import org.springframework.security.saml2.serviceprovider.authentication.Saml2Au
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
@@ -38,12 +39,12 @@ import static org.springframework.util.Assert.notNull;
 
 public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter {
 
-	private final Saml2RequestMatcher matcher;
+	private final RequestMatcher matcher;
 	private final Saml2RelyingPartyRepository relyingPartyRepository;
 	private final String webSsoUriTemplate;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
-	public Saml2WebSsoAuthenticationRequestFilter(Saml2RequestMatcher matcher, String webSsoUriTemplate, Saml2RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
+	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, Saml2RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
 		notNull(matcher, "Saml2RequestMatcher is required");
 		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
@@ -64,7 +65,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String relayState = request.getParameter("RelayState");
-		String alias = matcher.getRelyingPartyAlias(request);
+		String alias = matcher.matcher(request).getVariables().get("alias");
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + alias + "]");
 		}

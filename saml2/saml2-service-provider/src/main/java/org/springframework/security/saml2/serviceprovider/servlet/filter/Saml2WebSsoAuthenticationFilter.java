@@ -28,6 +28,7 @@ import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingP
 import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.decode;
@@ -36,10 +37,10 @@ import static org.springframework.util.StringUtils.hasText;
 
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private final Saml2RequestMatcher aliasMatcher;
+	private final RequestMatcher aliasMatcher;
 	private final Saml2RelyingPartyRepository relyingPartyRepository;
 
-	public Saml2WebSsoAuthenticationFilter(Saml2RequestMatcher matcher, Saml2RelyingPartyRepository relyingPartyRepository) {
+	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, Saml2RelyingPartyRepository relyingPartyRepository) {
 		super(matcher);
 		this.aliasMatcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
@@ -63,7 +64,7 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 
 		String responseXml = inflateIfRequired(request, b);
 		Saml2RelyingPartyRegistration rp =
-				relyingPartyRepository.findByAlias(aliasMatcher.getRelyingPartyAlias(request));
+				relyingPartyRepository.findByAlias(aliasMatcher.matcher(request).getVariables().get("alias"));
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		final Saml2AuthenticationToken authentication = new Saml2AuthenticationToken(
 				responseXml,

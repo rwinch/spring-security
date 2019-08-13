@@ -35,7 +35,6 @@ import org.springframework.security.saml2.serviceprovider.authentication.Saml2Au
 import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2LoginPageGeneratingFilter;
-import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2RequestMatcher;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationRequestFilter;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -44,6 +43,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static java.util.Optional.ofNullable;
 
@@ -68,7 +68,7 @@ public class Saml2ServiceProviderConfigurer
 		return new Saml2ServiceProviderConfigurer(filterPrefix);
 	}
 
-	private static class RelyingPartyAliasUrlRequestMatcher implements Saml2RequestMatcher {
+	private static class RelyingPartyAliasUrlRequestMatcher implements RequestMatcher {
 
 		private final AntPathRequestMatcher filterProcessesMatcher;
 		private final AntPathRequestMatcher aliasExtractor;
@@ -81,11 +81,8 @@ public class Saml2ServiceProviderConfigurer
 		}
 
 		@Override
-		public String getRelyingPartyAlias(HttpServletRequest request) {
-			if (aliasExtractor.matches(request)) {
-				return aliasExtractor.extractUriTemplateVariables(request).get(aliasParameter);
-			}
-			return null;
+		public MatchResult matcher(HttpServletRequest request) {
+			return aliasExtractor.matcher(request);
 		}
 
 		@Override
@@ -182,7 +179,7 @@ public class Saml2ServiceProviderConfigurer
 		builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
 	}
 
-	protected void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, Saml2RequestMatcher matcher) {
+	protected void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
 		Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 				matcher,
 				"{baseUrl}" + filterPrefix + "/SSO/{alias}",
@@ -193,7 +190,7 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	protected void configureSaml2WebSsoAuthenticationFilter(HttpSecurity builder,
-															Saml2RequestMatcher matcher) {
+															RequestMatcher matcher) {
 		AuthenticationFailureHandler failureHandler =
 				new SimpleUrlAuthenticationFailureHandler("/login?error=saml2-error");
 		Saml2WebSsoAuthenticationFilter webSsoFilter =
