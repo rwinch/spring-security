@@ -29,6 +29,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.security.saml2.Saml2Exception;
 
+import com.sun.org.apache.xml.internal.security.encryption.XMLCipherParameters;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -112,8 +113,8 @@ final class Saml2TestUtils {
 
 	static Encrypter getEncrypter(X509Certificate certificate) {
 		Credential credential = CredentialSupport.getSimpleCredential(certificate, null);
-		final String dataAlgorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
-		final String keyAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-1_5";
+		final String dataAlgorithm = XMLCipherParameters.AES_256;
+		final String keyAlgorithm = XMLCipherParameters.RSA_1_5;
 		SecretKey secretKey = generateKeyFromURI(dataAlgorithm);
 		BasicCredential dataCredential = new BasicCredential(secretKey);
 		DataEncryptionParameters dataEncryptionParameters = new DataEncryptionParameters();
