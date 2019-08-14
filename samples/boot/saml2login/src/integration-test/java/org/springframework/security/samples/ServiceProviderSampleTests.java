@@ -104,7 +104,7 @@ public class ServiceProviderSampleTests {
 	public void testAuthNRequest() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp").contextPath("/sample-sp"))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(header().string("Location", startsWith("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")));
+				.andExpect(header().string("Location", startsWith("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")));
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class ServiceProviderSampleTests {
 						.param("RelayState", "relay state value with spaces")
 		)
 				.andExpect(status().is3xxRedirection())
-				.andExpect(header().string("Location", startsWith("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")))
+				.andExpect(header().string("Location", startsWith("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")))
 				.andExpect(header().string("Location", containsString("RelayState=relay%20state%20value%20with%20spaces")));
 	}
 
@@ -229,14 +229,14 @@ public class ServiceProviderSampleTests {
 		Response response = SAML2ActionTestingSupport.buildResponse();
 		response.setID("_" + UUID.randomUUID().toString());
 		response.setDestination("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp");
-		response.setIssuer(buildIssuer("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
+		response.setIssuer(buildIssuer("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
 		return response;
 	}
 
 	private Assertion buildAssertion(String username) {
 		Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
 		assertion.setIssueInstant(DateTime.now());
-		assertion.setIssuer(buildIssuer("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
+		assertion.setIssuer(buildIssuer("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
 		assertion.setSubject(buildSubject(username));
 		assertion.setConditions(buildConditions());
 
@@ -258,7 +258,7 @@ public class ServiceProviderSampleTests {
 		final PrivateKey privateKey = KeySupport.decodePrivateKey(key.getBytes(UTF_8), new char[0]);
 		BasicCredential cred = CredentialSupport.getSimpleCredential(publicKey, privateKey);
 		cred.setUsageType(usageType);
-		cred.setEntityId("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php");
+		cred.setEntityId("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php");
 		return cred;
 	}
 
