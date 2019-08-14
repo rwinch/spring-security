@@ -22,12 +22,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,12 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("multipleidps")
 @AutoConfigureMockMvc
-@DisplayName("SAML 2 Login Tests")
-class ServiceProviderMultipleIdpsTests {
+@ActiveProfiles("multipleidps")
+public class ServiceProviderMultipleIdpsTests {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -52,16 +50,14 @@ class ServiceProviderMultipleIdpsTests {
 	}
 
 	@Test
-	@DisplayName("redirect to login page when having multiple identity providers")
-	void redirectToLoginPage() throws Exception {
+	public void redirectToLoginPage() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/some/url").contextPath("/sample-sp"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("http://localhost:8080/sample-sp/login"));
 	}
 
 	@Test
-	@DisplayName("displays multiple providers on the login page")
-	void loginPage() throws Exception {
+	public void loginPage() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/login").contextPath("/sample-sp"))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString(">simplesamlphp<")))

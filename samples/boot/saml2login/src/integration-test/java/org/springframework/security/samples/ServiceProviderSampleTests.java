@@ -28,15 +28,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallerFactory;
@@ -78,11 +77,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@DisplayName("SAML 2 Login Tests")
-class ServiceProviderSampleTests {
+public class ServiceProviderSampleTests {
 
 	static final String LOCAL_SP_ENTITY_ID = "http://localhost:8080/sample-sp";
 
@@ -96,24 +94,21 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("redirect to login page when having a single identity provider")
-	void redirectToLoginPageSingleProvider() throws Exception {
+	public void redirectToLoginPageSingleProvider() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/some/url").contextPath("/sample-sp"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp"));
 	}
 
 	@Test
-	@DisplayName("receive AuthNRequest")
-	void testAuthNRequest() throws Exception {
+	public void testAuthNRequest() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp").contextPath("/sample-sp"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", startsWith("http://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")));
 	}
 
 	@Test
-	@DisplayName("receive AuthNRequest with RelayState parameter")
-	void testRelayState() throws Exception {
+	public void testRelayState() throws Exception {
 		mockMvc.perform(
 				get("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp")
 						.contextPath("/sample-sp")
@@ -125,8 +120,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("test signed response")
-	void signedResponse() throws Exception {
+	public void signedResponse() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
 		Response response = buildResponse(assertion);
@@ -140,8 +134,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("test signed assertion")
-	void signedAssertion() throws Exception {
+	public void signedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
 		Response response = buildResponse(assertion);
@@ -156,8 +149,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("unsigned response")
-	void unsigned() throws Exception {
+	public void unsigned() throws Exception {
 		Assertion assertion = buildAssertion("testuser@spring.security.saml");
 		Response response = buildResponse(assertion);
 		String xml = toXml(response);
@@ -170,8 +162,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("signed response encrypted assertion")
-	void signedResponseEncryptedAssertion() throws Exception {
+	public void signedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
 		EncryptedAssertion encryptedAssertion = Saml2TestUtils.encryptAssertion(assertion,
@@ -188,8 +179,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("unsigned response encrypted assertion")
-	void unsignedResponseEncryptedAssertion() throws Exception {
+	public void unsignedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
 		EncryptedAssertion encryptedAssertion = Saml2TestUtils.encryptAssertion(assertion,
@@ -205,8 +195,7 @@ class ServiceProviderSampleTests {
 	}
 
 	@Test
-	@DisplayName("signed response encrypted nameID")
-	void signedResponseEncryptedNameId() throws Exception {
+	public void signedResponseEncryptedNameId() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
 		final EncryptedID nameId = encryptNameId(assertion.getSubject().getNameID(),

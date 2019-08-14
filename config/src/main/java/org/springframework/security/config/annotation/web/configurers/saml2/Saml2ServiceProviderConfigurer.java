@@ -101,7 +101,7 @@ public class Saml2ServiceProviderConfigurer
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer identityProviderRepository(Saml2RelyingPartyRepository repo) {
+	public Saml2ServiceProviderConfigurer relyingPartyRepository(Saml2RelyingPartyRepository repo) {
 		this.providerDetailsRepository = repo;
 		return this;
 	}

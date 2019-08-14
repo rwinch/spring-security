@@ -55,13 +55,13 @@ import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 public class SAML2ActionTestingSupport {
 
 	/** ID used for all generated {@link Response} objects. */
-	public final static String REQUEST_ID = "request";
+	final static String REQUEST_ID = "request";
 
 	/** ID used for all generated {@link Response} objects. */
-	public final static String RESPONSE_ID = "response";
+	final static String RESPONSE_ID = "response";
 
 	/** ID used for all generated {@link Assertion} objects. */
-	public final static String ASSERTION_ID = "assertion";
+	final static String ASSERTION_ID = "assertion";
 
 	/**
 	 * Builds an empty response. The ID of the message is {@link #OUTBOUND_MSG_ID}, the
@@ -70,7 +70,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed response
 	 */
 	@Nonnull
-	public static Response buildResponse() {
+	static Response buildResponse() {
 		final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Response>getBuilderOrThrow(Response.DEFAULT_ELEMENT_NAME);
 
@@ -89,7 +89,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed response
 	 */
 	@Nonnull
-	public static ArtifactResponse buildArtifactResponse() {
+	static ArtifactResponse buildArtifactResponse() {
 		final SAMLObjectBuilder<ArtifactResponse> responseBuilder = (SAMLObjectBuilder<ArtifactResponse>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<ArtifactResponse>getBuilderOrThrow(ArtifactResponse.DEFAULT_ELEMENT_NAME);
 
@@ -108,7 +108,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built request
 	 */
 	@Nonnull
-	public static LogoutRequest buildLogoutRequest(final @Nullable NameID name) {
+	static LogoutRequest buildLogoutRequest(final @Nullable NameID name) {
 		final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
 
@@ -138,7 +138,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed response
 	 */
 	@Nonnull
-	public static LogoutResponse buildLogoutResponse() {
+	static LogoutResponse buildLogoutResponse() {
 		final SAMLObjectBuilder<LogoutResponse> responseBuilder = (SAMLObjectBuilder<LogoutResponse>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<LogoutResponse>getBuilderOrThrow(LogoutResponse.DEFAULT_ELEMENT_NAME);
 
@@ -157,7 +157,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed assertion
 	 */
 	@Nonnull
-	public static Assertion buildAssertion() {
+	static Assertion buildAssertion() {
 		final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Assertion>getBuilderOrThrow(Assertion.DEFAULT_ELEMENT_NAME);
 
@@ -170,7 +170,7 @@ public class SAML2ActionTestingSupport {
 	}
 
 	@Nonnull
-	public static SubjectConfirmation buildSubjectConfirmation() {
+	static SubjectConfirmation buildSubjectConfirmation() {
 		final SAMLObjectBuilder<SubjectConfirmation> subjectConfirmation = (SAMLObjectBuilder<SubjectConfirmation>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<SubjectConfirmation>getBuilderOrThrow(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
 
@@ -183,7 +183,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed statement
 	 */
 	@Nonnull
-	public static AuthnStatement buildAuthnStatement() {
+	static AuthnStatement buildAuthnStatement() {
 		final SAMLObjectBuilder<AuthnStatement> statementBuilder = (SAMLObjectBuilder<AuthnStatement>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<AuthnStatement>getBuilderOrThrow(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
@@ -198,7 +198,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the constructed statement
 	 */
 	@Nonnull
-	public static AttributeStatement buildAttributeStatement() {
+	static AttributeStatement buildAttributeStatement() {
 		final SAMLObjectBuilder<AttributeStatement> statementBuilder = (SAMLObjectBuilder<AttributeStatement>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<AttributeStatement>getBuilderOrThrow(AttributeStatement.DEFAULT_ELEMENT_NAME);
 
@@ -215,7 +215,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built subject
 	 */
 	@Nonnull
-	public static Subject buildSubject(final @Nullable String principalName) {
+	static Subject buildSubject(final @Nullable String principalName) {
 		final SAMLObjectBuilder<Subject> subjectBuilder = (SAMLObjectBuilder<Subject>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Subject>getBuilderOrThrow(Subject.DEFAULT_ELEMENT_NAME);
 		final Subject subject = subjectBuilder.buildObject();
@@ -228,7 +228,7 @@ public class SAML2ActionTestingSupport {
 	}
 
 	@Nonnull
-	public static SubjectConfirmationData buildSubjectConfirmationData(String localSpEntityId) {
+	static SubjectConfirmationData buildSubjectConfirmationData(String localSpEntityId) {
 		final SAMLObjectBuilder<SubjectConfirmationData> subjectBuilder = (SAMLObjectBuilder<SubjectConfirmationData>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory()
 				.<SubjectConfirmationData>getBuilderOrThrow(SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
@@ -240,7 +240,7 @@ public class SAML2ActionTestingSupport {
 	}
 
 	@Nonnull
-	public static Conditions buildConditions() {
+	static Conditions buildConditions() {
 		final SAMLObjectBuilder<Conditions> subjectBuilder = (SAMLObjectBuilder<Conditions>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Conditions>getBuilderOrThrow(Conditions.DEFAULT_ELEMENT_NAME);
 		final Conditions conditions = subjectBuilder.buildObject();
@@ -255,7 +255,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built NameID
 	 */
 	@Nonnull
-	public static NameID buildNameID(final @Nonnull @NotEmpty String principalName) {
+	static NameID buildNameID(final @Nonnull @NotEmpty String principalName) {
 		final SAMLObjectBuilder<NameID> nameIdBuilder = (SAMLObjectBuilder<NameID>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<NameID>getBuilderOrThrow(NameID.DEFAULT_ELEMENT_NAME);
 		final NameID nameId = nameIdBuilder.buildObject();
@@ -269,7 +269,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built Issuer
 	 */
 	@Nonnull
-	public static Issuer buildIssuer(final @Nonnull @NotEmpty String entityID) {
+	static Issuer buildIssuer(final @Nonnull @NotEmpty String entityID) {
 		final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
 		final Issuer issuer = issuerBuilder.buildObject();
@@ -284,7 +284,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built query
 	 */
 	@Nonnull
-	public static AttributeQuery buildAttributeQueryRequest(final @Nullable Subject subject) {
+	static AttributeQuery buildAttributeQueryRequest(final @Nullable Subject subject) {
 		final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
 
@@ -312,7 +312,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built request
 	 */
 	@Nonnull
-	public static AuthnRequest buildAuthnRequest() {
+	static AuthnRequest buildAuthnRequest() {
 		final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
 
@@ -337,7 +337,7 @@ public class SAML2ActionTestingSupport {
 	 * @return the built request
 	 */
 	@Nonnull
-	public static ArtifactResolve buildArtifactResolve(final @Nullable String artifact) {
+	static ArtifactResolve buildArtifactResolve(final @Nullable String artifact) {
 		final SAMLObjectBuilder<ArtifactResolve> requestBuilder = (SAMLObjectBuilder<ArtifactResolve>) XMLObjectProviderRegistrySupport
 				.getBuilderFactory().<ArtifactResolve>getBuilderOrThrow(ArtifactResolve.DEFAULT_ELEMENT_NAME);
 		final ArtifactResolve request = requestBuilder.buildObject();
@@ -374,7 +374,7 @@ public class SAML2ActionTestingSupport {
 	 * @param profileRequestContext the context to check
 	 * @param event event to check
 	 */
-	public static void assertEvent(@Nonnull final ProfileRequestContext profileRequestContext,
+	static void assertEvent(@Nonnull final ProfileRequestContext profileRequestContext,
 			@Nonnull final Object event) {
 		EventContext ctx = profileRequestContext.getSubcontext(EventContext.class);
 		Assert.assertNotNull(ctx);
@@ -386,7 +386,7 @@ public class SAML2ActionTestingSupport {
 	 * signaling a "proceed" event).
 	 * @param profileRequestContext the context to check
 	 */
-	public static void assertProceedEvent(@Nonnull final ProfileRequestContext profileRequestContext) {
+	static void assertProceedEvent(@Nonnull final ProfileRequestContext profileRequestContext) {
 		EventContext<String> ctx = profileRequestContext.getSubcontext(EventContext.class);
 		Assert.assertTrue(ctx == null || ctx.getEvent().equals(EventIds.PROCEED_EVENT_ID));
 	}
