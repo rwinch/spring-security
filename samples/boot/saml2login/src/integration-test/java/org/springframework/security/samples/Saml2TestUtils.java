@@ -29,7 +29,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.security.saml2.Saml2Exception;
 
-import com.sun.org.apache.xml.internal.security.encryption.XMLCipherParameters;
+import org.apache.xml.security.encryption.XMLCipherParameters;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.opensaml.saml.saml2.core.Assertion;
