@@ -84,9 +84,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	private static Log logger = LogFactory.getLog(OpenSamlAuthenticationProvider.class);
 
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
-
 	private GrantedAuthoritiesMapper authoritiesMapper = (a -> a);
-
 	private int responseTimeValidationSkewMillis = 1000 * 60 * 5; // 5 minutes
 
 	private String getUsername(Saml2AuthenticationToken idp, Assertion assertion) {
@@ -161,7 +159,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		validationParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
 		validationParams.put(
 				SAML2AssertionValidationParameters.CLOCK_SKEW,
-				Duration.ofMillis(responseTimeValidationSkewMillis)
+				Duration.ofMillis(this.responseTimeValidationSkewMillis)
 		);
 		validationParams.put(
 				SAML2AssertionValidationParameters.COND_VALID_AUDIENCES,
@@ -203,7 +201,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	private Response getSaml2Response(String xml) throws Saml2Exception, AuthenticationException {
-		final Object result = saml.resolve(xml);
+		final Object result = this.saml.resolve(xml);
 		if (result == null) {
 			throw new AuthenticationCredentialsNotFoundException("SAMLResponse returned null object");
 		}
@@ -248,7 +246,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	private Decrypter getDecrypter(Saml2X509Credential key) {
 		Credential credential = CredentialSupport.getSimpleCredential(key.getCertificate(), key.getPrivateKey());
 		KeyInfoCredentialResolver resolver = new StaticKeyInfoCredentialResolver(credential);
-		Decrypter decrypter = new Decrypter(null, resolver, saml.getEncryptedKeyResolver());
+		Decrypter decrypter = new Decrypter(null, resolver, this.saml.getEncryptedKeyResolver());
 		decrypter.setRootInNewDocument(true);
 		return decrypter;
 	}
@@ -321,7 +319,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 			throw new UsernameNotFoundException("Assertion [" + assertion.getID() + "] is missing a user identifier");
 		}
 		return new Saml2Authentication(token.getSaml2Response(), () -> username,
-				authoritiesMapper.mapAuthorities(getAssertionAuthorities(assertion))
+				this.authoritiesMapper.mapAuthorities(getAssertionAuthorities(assertion))
 		);
 	}
 

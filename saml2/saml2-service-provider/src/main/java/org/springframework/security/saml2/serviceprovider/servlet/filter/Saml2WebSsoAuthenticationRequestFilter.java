@@ -45,7 +45,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
 	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, Saml2RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
-		notNull(matcher, "Saml2RequestMatcher is required");
+		notNull(matcher, "matcher  is required");
 		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;
@@ -55,7 +55,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (matcher.matches(request)) {
+		if (this.matcher.matches(request)) {
 			sendAuthenticationRequest(request, response);
 		}
 		else {
@@ -65,26 +65,26 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String relayState = request.getParameter("RelayState");
-		String alias = matcher.matcher(request).getVariables().get("alias");
+		String alias = this.matcher.matcher(request).getVariables().get("alias");
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + alias + "]");
 		}
-		Saml2RelyingPartyRegistration idp = relyingPartyRepository.findByAlias(alias);
-		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(idp, request);
+		Saml2RelyingPartyRegistration rp = relyingPartyRepository.findByAlias(alias);
+		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
 				localSpEntityId,
 				Saml2Utils.resolveUrlTemplate(
 						webSsoUriTemplate,
 						Saml2Utils.getApplicationUri(request),
-						idp.getRemoteIdpEntityId(),
-						idp.getAlias()
+						rp.getRemoteIdpEntityId(),
+						rp.getAlias()
 				),
-				idp.getCredentialsForUsage(SIGNING)
+				rp.getCredentialsForUsage(SIGNING)
 		);
 		String xml = authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
 		String encoded = encode(deflate(xml));
 		String redirect = UriComponentsBuilder
-				.fromUri(idp.getIdpWebSsoUrl())
+				.fromUri(rp.getIdpWebSsoUrl())
 				.queryParam("SAMLRequest", UriUtils.encode(encoded, StandardCharsets.ISO_8859_1))
 				.queryParam("RelayState", UriUtils.encode(relayState, StandardCharsets.ISO_8859_1))
 				.build(true)

@@ -72,12 +72,10 @@ public class Saml2ServiceProviderConfigurer
 
 		private final AntPathRequestMatcher filterProcessesMatcher;
 		private final AntPathRequestMatcher aliasExtractor;
-		private final String aliasParameter;
 
-		RelyingPartyAliasUrlRequestMatcher(String filterProcessesUrl, String aliasExtractorUrl, String aliasParameter) {
+		RelyingPartyAliasUrlRequestMatcher(String filterProcessesUrl, String aliasExtractorUrl) {
 			this.filterProcessesMatcher = new AntPathRequestMatcher(filterProcessesUrl);
 			this.aliasExtractor = new AntPathRequestMatcher(aliasExtractorUrl);
-			this.aliasParameter = aliasParameter;
 		}
 
 		@Override
@@ -114,27 +112,27 @@ public class Saml2ServiceProviderConfigurer
 	@Override
 	public void init(HttpSecurity builder) throws Exception {
 		super.init(builder);
-		builder.authorizeRequests().mvcMatchers(filterPrefix + "/**").permitAll().anyRequest().authenticated();
-		builder.csrf().ignoringAntMatchers(filterPrefix + "/**");
+		builder.authorizeRequests().mvcMatchers(this.filterPrefix + "/**").permitAll().anyRequest().authenticated();
+		builder.csrf().ignoringAntMatchers(this.filterPrefix + "/**");
 
-		providerDetailsRepository = getSharedObject(
+		this.providerDetailsRepository = getSharedObject(
 				builder,
 				Saml2RelyingPartyRepository.class,
-				() -> providerDetailsRepository,
-				providerDetailsRepository
+				() -> this.providerDetailsRepository,
+				this.providerDetailsRepository
 		);
 
-		if (authenticationProvider == null) {
-			authenticationProvider = new OpenSamlAuthenticationProvider();
+		if (this.authenticationProvider == null) {
+			this.authenticationProvider = new OpenSamlAuthenticationProvider();
 		}
-		builder.authenticationProvider(postProcess(authenticationProvider));
+		builder.authenticationProvider(postProcess(this.authenticationProvider));
 
-		if (entryPoint != null) {
-			registerDefaultAuthenticationEntryPoint(builder, entryPoint);
+		if (this.entryPoint != null) {
+			registerDefaultAuthenticationEntryPoint(builder, this.entryPoint);
 		}
 		else {
 			final Map<String, String> providerUrlMap =
-					getIdentityProviderUrlMap(filterPrefix + "/authenticate/", providerDetailsRepository);
+					getIdentityProviderUrlMap(this.filterPrefix + "/authenticate/", this.providerDetailsRepository);
 
 			String loginUrl = (providerUrlMap.size() != 1) ?
 					"/login" :
@@ -142,38 +140,38 @@ public class Saml2ServiceProviderConfigurer
 			registerDefaultAuthenticationEntryPoint(builder, new LoginUrlAuthenticationEntryPoint(loginUrl));
 		}
 
-		authenticationRequestResolver = getSharedObject(
+		this.authenticationRequestResolver = getSharedObject(
 				builder,
 				Saml2AuthenticationRequestResolver.class,
 				() -> new OpenSamlAuthenticationRequestResolver(),
-				authenticationRequestResolver
+				this.authenticationRequestResolver
 		);
 	}
 
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
-		String authNRequestUrlPrefix = filterPrefix + "/authenticate/";
+		String authNRequestUrlPrefix = this.filterPrefix + "/authenticate/";
 		configureSaml2LoginPageFilter(builder, authNRequestUrlPrefix, "/login");
 
 		String authNRequestUriMatcher = authNRequestUrlPrefix + "**";
 		String authNAliasExtractor = authNRequestUrlPrefix + "{alias}/**";
 		configureSaml2AuthenticationRequestFilter(
 				builder,
-				new RelyingPartyAliasUrlRequestMatcher(authNRequestUriMatcher, authNAliasExtractor, "alias")
+				new RelyingPartyAliasUrlRequestMatcher(authNRequestUriMatcher, authNAliasExtractor)
 		);
 
-		String ssoUriPrefix = filterPrefix + "/SSO/";
+		String ssoUriPrefix = this.filterPrefix + "/SSO/";
 		String ssoUriMatcher = ssoUriPrefix + "**";
 		String ssoAliasExtractor = ssoUriPrefix + "{alias}/**";
 		configureSaml2WebSsoAuthenticationFilter(
 				builder,
-				new RelyingPartyAliasUrlRequestMatcher(ssoUriMatcher, ssoAliasExtractor, "alias")
+				new RelyingPartyAliasUrlRequestMatcher(ssoUriMatcher, ssoAliasExtractor)
 		);
 
 	}
 
 	protected void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
-		Saml2RelyingPartyRepository idpRepo = providerDetailsRepository;
+		Saml2RelyingPartyRepository idpRepo = this.providerDetailsRepository;
 		Map<String, String> idps = getIdentityProviderUrlMap(authRequestPrefixUrl, idpRepo);
 		Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
 		builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
@@ -182,9 +180,9 @@ public class Saml2ServiceProviderConfigurer
 	protected void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
 		Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 				matcher,
-				"{baseUrl}" + filterPrefix + "/SSO/{alias}",
-				providerDetailsRepository,
-				authenticationRequestResolver
+				"{baseUrl}" + this.filterPrefix + "/SSO/{alias}",
+				this.providerDetailsRepository,
+				this.authenticationRequestResolver
 		);
 		builder.addFilterAfter(authenticationRequestFilter, HeaderWriterFilter.class);
 	}
@@ -194,7 +192,7 @@ public class Saml2ServiceProviderConfigurer
 		AuthenticationFailureHandler failureHandler =
 				new SimpleUrlAuthenticationFailureHandler("/login?error=saml2-error");
 		Saml2WebSsoAuthenticationFilter webSsoFilter =
-				new Saml2WebSsoAuthenticationFilter(matcher, providerDetailsRepository);
+				new Saml2WebSsoAuthenticationFilter(matcher, this.providerDetailsRepository);
 		webSsoFilter.setAuthenticationFailureHandler(failureHandler);
 		webSsoFilter.setAuthenticationManager(builder.getSharedObject(AuthenticationManager.class));
 		builder.addFilterAfter(webSsoFilter, HeaderWriterFilter.class);

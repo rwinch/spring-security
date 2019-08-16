@@ -57,27 +57,27 @@ public class Saml2RelyingPartyRegistration {
 	}
 
 	public String getRemoteIdpEntityId() {
-		return remoteIdpEntityId;
+		return this.remoteIdpEntityId;
 	}
 
 	public String getAlias() {
-		return alias;
+		return this.alias;
 	}
 
 	public URI getIdpWebSsoUrl() {
-		return idpWebSsoUrl;
+		return this.idpWebSsoUrl;
 	}
 
 	public String getLocalEntityIdTemplate() {
-		return localEntityIdTemplate;
+		return this.localEntityIdTemplate;
 	}
 
 	public List<Saml2X509Credential> getCredentialsForUsage(Saml2X509CredentialUsage... types) {
 		if (types == null || types.length == 0) {
-			return credentials;
+			return this.credentials;
 		}
 		Set<Saml2X509CredentialUsage> typeset = new HashSet<>(asList(types));
-		return credentials
+		return this.credentials
 				.stream()
 				.filter(c -> containsCredentialForTypes(c.getSaml2X509CredentialUsages(), typeset))
 				.collect(Collectors.toList());

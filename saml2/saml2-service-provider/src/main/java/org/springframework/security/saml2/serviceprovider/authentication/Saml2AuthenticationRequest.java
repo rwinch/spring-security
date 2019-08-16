@@ -40,14 +40,14 @@ public class Saml2AuthenticationRequest {
 
 
 	public String getLocalSpEntityId() {
-		return localSpEntityId;
+		return this.localSpEntityId;
 	}
 
 	public String getWebSsoUri() {
-		return webSsoUri;
+		return this.webSsoUri;
 	}
 
 	public List<Saml2X509Credential> getCredentials() {
-		return credentials;
+		return this.credentials;
 	}
 }

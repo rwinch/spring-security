@@ -49,7 +49,7 @@ public class Saml2X509Credential {
 		this.certificate = certificate;
 		this.saml2X509CredentialUsage = new LinkedHashSet<>(asList(usages));
 		if (isSigningCredential() || isDecryptionCredential()) {
-			notNull(privateKey, "private key is required for signing and decryption credentials");
+			notNull(this.privateKey, "private key is required for signing and decryption credentials");
 		}
 	}
 
@@ -62,15 +62,15 @@ public class Saml2X509Credential {
 	}
 
 	public Set<Saml2X509CredentialUsage> getSaml2X509CredentialUsages() {
-		return saml2X509CredentialUsage;
+		return this.saml2X509CredentialUsage;
 	}
 
 	public PrivateKey getPrivateKey() {
-		return privateKey;
+		return this.privateKey;
 	}
 
 	public X509Certificate getCertificate() {
-		return certificate;
+		return this.certificate;
 	}
 
 	public boolean isSignatureVerficationCredential() {

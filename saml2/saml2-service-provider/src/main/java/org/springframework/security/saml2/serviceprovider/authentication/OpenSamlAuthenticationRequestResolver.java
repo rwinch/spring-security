@@ -32,18 +32,18 @@ public class OpenSamlAuthenticationRequestResolver implements Saml2Authenticatio
 
 	@Override
 	public String resolveAuthenticationRequest(Saml2AuthenticationRequest request) {
-		AuthnRequest auth = saml.buildSAMLObject(AuthnRequest.class);
+		AuthnRequest auth = this.saml.buildSAMLObject(AuthnRequest.class);
 		auth.setID("ARQ" + UUID.randomUUID().toString().substring(1));
-		auth.setIssueInstant(new DateTime(clock.millis()));
+		auth.setIssueInstant(new DateTime(this.clock.millis()));
 		auth.setForceAuthn(Boolean.FALSE);
 		auth.setIsPassive(Boolean.FALSE);
 		auth.setProtocolBinding("urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect");
-		Issuer issuer = saml.buildSAMLObject(Issuer.class);
+		Issuer issuer = this.saml.buildSAMLObject(Issuer.class);
 		issuer.setValue(request.getLocalSpEntityId());
 		auth.setIssuer(issuer);
 		auth.setDestination(request.getWebSsoUri());
 		try {
-			return saml.toXml(
+			return this.saml.toXml(
 					auth,
 					request.getCredentials(),
 					request.getLocalSpEntityId()

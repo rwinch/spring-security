@@ -37,12 +37,12 @@ import static org.springframework.util.StringUtils.hasText;
 
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private final RequestMatcher aliasMatcher;
+	private final RequestMatcher matcher;
 	private final Saml2RelyingPartyRepository relyingPartyRepository;
 
 	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, Saml2RelyingPartyRepository relyingPartyRepository) {
 		super(matcher);
-		this.aliasMatcher = matcher;
+		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
 		setAllowSessionCreation(true);
 		setSessionAuthenticationStrategy(new ChangeSessionIdAuthenticationStrategy());
@@ -64,7 +64,7 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 
 		String responseXml = inflateIfRequired(request, b);
 		Saml2RelyingPartyRegistration rp =
-				relyingPartyRepository.findByAlias(aliasMatcher.matcher(request).getVariables().get("alias"));
+				this.relyingPartyRepository.findByAlias(this.matcher.matcher(request).getVariables().get("alias"));
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		final Saml2AuthenticationToken authentication = new Saml2AuthenticationToken(
 				responseXml,

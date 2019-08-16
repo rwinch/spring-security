@@ -17,6 +17,7 @@
 package org.springframework.security.saml2.serviceprovider.provider;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -43,9 +44,9 @@ public class InMemorySaml2RelyingPartyRepository
 
 	public InMemorySaml2RelyingPartyRepository(Collection<Saml2RelyingPartyRegistration> registrations) {
 		notEmpty(registrations, "registrations cannot be empty");
-		byId = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getRemoteIdpEntityId);
-		byAlias = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getAlias);
-		defaultRegistration = registrations.iterator().next();
+		this.byId = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getRemoteIdpEntityId);
+		this.byAlias = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getAlias);
+		this.defaultRegistration = registrations.iterator().next();
 	}
 
 	private static Map<String, Saml2RelyingPartyRegistration> createMappingToIdentityProvider(
@@ -61,28 +62,28 @@ public class InMemorySaml2RelyingPartyRepository
 			Assert.isNull(result.get(key), () -> "relying party duplicate key:" + key);
 			result.put(key, idp);
 		}
-		return result;
+		return Collections.unmodifiableMap(result);
 	}
 
 	@Override
 	public Saml2RelyingPartyRegistration findByEntityId(String entityId) {
 		Assert.notNull(entityId, "entityId must not be null");
-		return byId.get(entityId);
+		return this.byId.get(entityId);
 	}
 
 	@Override
 	public Saml2RelyingPartyRegistration findByAlias(String alias) {
 		if (StringUtils.hasText(alias)) {
-			return byAlias.get(alias);
+			return this.byAlias.get(alias);
 		}
 		else {
-			return defaultRegistration;
+			return this.defaultRegistration;
 		}
 	}
 
 	@Override
 	public Iterator<Saml2RelyingPartyRegistration> iterator() {
-		return byId.values().iterator();
+		return this.byId.values().iterator();
 	}
 
 }

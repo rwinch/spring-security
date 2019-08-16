@@ -68,7 +68,6 @@ final class OpenSamlImplementation {
 	private static OpenSamlImplementation instance = new OpenSamlImplementation();
 
 	private final BasicParserPool parserPool = new BasicParserPool();
-
 	private final EncryptedKeyResolver encryptedKeyResolver = new ChainingEncryptedKeyResolver(
 			asList(
 					new InlineEncryptedKeyResolver(),
@@ -89,26 +88,26 @@ final class OpenSamlImplementation {
 	private void bootstrap() {
 		// configure default values
 		// maxPoolSize = 5;
-		parserPool.setMaxPoolSize(50);
+		this.parserPool.setMaxPoolSize(50);
 		// coalescing = true;
-		parserPool.setCoalescing(true);
+		this.parserPool.setCoalescing(true);
 		// expandEntityReferences = false;
-		parserPool.setExpandEntityReferences(false);
+		this.parserPool.setExpandEntityReferences(false);
 		// ignoreComments = true;
-		parserPool.setIgnoreComments(true);
+		this.parserPool.setIgnoreComments(true);
 		// ignoreElementContentWhitespace = true;
-		parserPool.setIgnoreElementContentWhitespace(true);
+		this.parserPool.setIgnoreElementContentWhitespace(true);
 		// namespaceAware = true;
-		parserPool.setNamespaceAware(true);
+		this.parserPool.setNamespaceAware(true);
 		// schema = null;
-		parserPool.setSchema(null);
+		this.parserPool.setSchema(null);
 		// dtdValidating = false;
-		parserPool.setDTDValidating(false);
+		this.parserPool.setDTDValidating(false);
 		// xincludeAware = false;
-		parserPool.setXincludeAware(false);
+		this.parserPool.setXincludeAware(false);
 
 		Map<String, Object> builderAttributes = new HashMap<>();
-		parserPool.setBuilderAttributes(builderAttributes);
+		this.parserPool.setBuilderAttributes(builderAttributes);
 
 		Map<String, Boolean> parserBuilderFeatures = new HashMap<>();
 		parserBuilderFeatures.put("http://apache.org/xml/features/disallow-doctype-decl", TRUE);
@@ -117,10 +116,10 @@ final class OpenSamlImplementation {
 		parserBuilderFeatures.put("http://apache.org/xml/features/validation/schema/normalized-value", FALSE);
 		parserBuilderFeatures.put("http://xml.org/sax/features/external-parameter-entities", FALSE);
 		parserBuilderFeatures.put("http://apache.org/xml/features/dom/defer-node-expansion", FALSE);
-		parserPool.setBuilderFeatures(parserBuilderFeatures);
+		this.parserPool.setBuilderFeatures(parserBuilderFeatures);
 
 		try {
-			parserPool.initialize();
+			this.parserPool.initialize();
 		}
 		catch (ComponentInitializationException x) {
 			throw new Saml2Exception("Unable to initialize OpenSaml v3 ParserPool", x);
@@ -142,7 +141,7 @@ final class OpenSamlImplementation {
 			}
 		}
 
-		registry.setParserPool(parserPool);
+		registry.setParserPool(this.parserPool);
 	}
 
 	/*
@@ -155,7 +154,7 @@ final class OpenSamlImplementation {
 	}
 
 	EncryptedKeyResolver getEncryptedKeyResolver() {
-		return encryptedKeyResolver;
+		return this.encryptedKeyResolver;
 	}
 
 	<T> T buildSAMLObject(final Class<T> clazz) {
@@ -185,7 +184,7 @@ final class OpenSamlImplementation {
 
 	private XMLObject parse(byte[] xml) {
 		try {
-			Document document = parserPool.parse(new ByteArrayInputStream(xml));
+			Document document = this.parserPool.parse(new ByteArrayInputStream(xml));
 			Element element = document.getDocumentElement();
 			return getUnmarshallerFactory().getUnmarshaller(element).unmarshall(element);
 		}

@@ -53,19 +53,19 @@ public class Saml2AuthenticationToken extends AbstractAuthenticationToken {
 	}
 
 	public String getSaml2Response() {
-		return saml2Response;
+		return this.saml2Response;
 	}
 
 	public String getRecipientUri() {
-		return recipientUri;
+		return this.recipientUri;
 	}
 
 	public String getLocalSpEntityId() {
-		return localSpEntityId;
+		return this.localSpEntityId;
 	}
 
 	public List<Saml2X509Credential> getX509Credentials() {
-		return credentials;
+		return this.credentials;
 	}
 
 	@Override
@@ -79,6 +79,6 @@ public class Saml2AuthenticationToken extends AbstractAuthenticationToken {
 	}
 
 	public String getIdpEntityId() {
-		return idpEntityId;
+		return this.idpEntityId;
 	}
 }

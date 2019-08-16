@@ -53,10 +53,10 @@ public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (matcher.matches(request)) {
+		if (this.matcher.matches(request)) {
 			response.setContentType(TEXT_HTML_VALUE);
 			response.setCharacterEncoding(UTF_8.name());
-			response.getWriter().write(getSaml2LoginPageHtml(providerUrls, request.getContextPath()));
+			response.getWriter().write(getSaml2LoginPageHtml(this.providerUrls, request.getContextPath()));
 		}
 		else {
 			filterChain.doFilter(request, response);
