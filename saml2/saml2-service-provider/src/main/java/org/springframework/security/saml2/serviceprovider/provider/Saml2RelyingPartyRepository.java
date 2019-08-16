@@ -25,7 +25,7 @@ public interface Saml2RelyingPartyRepository {
 	 * Resolves an entity provider by entityId, cannot be null
 	 *
 	 * @param idpEntityId - unique entityId for the remote identity provider, not null
-	 * @return a configured remote identity provider, or null if none found
+	 * @return {@link Saml2RelyingPartyRegistration} if found, otherwise {@code null}
 	 */
 	Saml2RelyingPartyRegistration findByEntityId(String idpEntityId);
 
@@ -34,7 +34,8 @@ public interface Saml2RelyingPartyRepository {
 	 * if no alias is provided
 	 *
 	 * @param alias - unique alias, can be null
-	 * @return a configured remote identity provider, or null if none found
+	 * @return {@link Saml2RelyingPartyRegistration} if found by alias, {@code null} if an alias is provided and
+	 * no provider is found, and the default {@link Saml2RelyingPartyRegistration} if no alias is provided
 	 */
 	Saml2RelyingPartyRegistration findByAlias(String alias);
 
