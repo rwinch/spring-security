@@ -30,6 +30,9 @@ import static org.springframework.util.Assert.hasText;
 import static org.springframework.util.Assert.notEmpty;
 import static org.springframework.util.Assert.notNull;
 
+/**
+ * Represents a configured service provider and a remote identity provider pair.
+ */
 public class Saml2RelyingPartyRegistration {
 
 	private final String alias;

@@ -22,7 +22,7 @@ package org.springframework.security.saml2.serviceprovider.provider;
 public interface Saml2RelyingPartyRepository {
 
 	/**
-	 * Resolves an entity provider by entityId
+	 * Resolves an entity provider by entityId, may not be null
 	 *
 	 * @param idpEntityId - unique entityId for the remote identity provider, not null
 	 * @return a configured remote identity provider, or null if none found
@@ -30,9 +30,10 @@ public interface Saml2RelyingPartyRepository {
 	Saml2RelyingPartyRegistration findByEntityId(String idpEntityId);
 
 	/**
-	 * Resolves an entity provider by entityId
+	 * Resolves an entity provider by alias, or returns the default provider
+	 * if no alias is provided
 	 *
-	 * @param alias - unique alias, not null
+	 * @param alias - unique alias, can be null
 	 * @return a configured remote identity provider, or null if none found
 	 */
 	Saml2RelyingPartyRegistration findByAlias(String alias);
