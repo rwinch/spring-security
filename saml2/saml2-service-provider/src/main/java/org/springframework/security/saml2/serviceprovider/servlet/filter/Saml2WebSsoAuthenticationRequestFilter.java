@@ -45,7 +45,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
 	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, Saml2RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
-		notNull(matcher, "matcher  is required");
+		notNull(matcher, "matcher is required");
 		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;

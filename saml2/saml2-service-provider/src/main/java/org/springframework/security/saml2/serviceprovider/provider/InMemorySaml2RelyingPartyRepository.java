@@ -58,7 +58,7 @@ public class InMemorySaml2RelyingPartyRepository
 		for (Saml2RelyingPartyRegistration idp : idps) {
 			notNull(idp, "relying party collection cannot contain null values");
 			String key = mapper.apply(idp);
-			notNull(idp, "relying party key may not be null");
+			notNull(idp, "relying party key cannot be null");
 			Assert.isNull(result.get(key), () -> "relying party duplicate key:" + key);
 			result.put(key, idp);
 		}
@@ -67,7 +67,7 @@ public class InMemorySaml2RelyingPartyRepository
 
 	@Override
 	public Saml2RelyingPartyRegistration findByEntityId(String entityId) {
-		Assert.notNull(entityId, "entityId must not be null");
+		Assert.notNull(entityId, "entityId cannot be null");
 		return this.byId.get(entityId);
 	}
 

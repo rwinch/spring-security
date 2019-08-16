@@ -295,7 +295,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	public void setAuthoritiesMapper(GrantedAuthoritiesMapper authoritiesMapper) {
-		notNull(authoritiesMapper, "authoritiesMapper must not be null");
+		notNull(authoritiesMapper, "authoritiesMapper cannot be null");
 		this.authoritiesMapper = authoritiesMapper;
 	}
 
