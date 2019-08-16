@@ -23,6 +23,9 @@ import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
+/**
+ * @since 5.2
+ */
 public class Saml2Authentication extends AbstractAuthenticationToken {
 
 	private final String saml2Response;

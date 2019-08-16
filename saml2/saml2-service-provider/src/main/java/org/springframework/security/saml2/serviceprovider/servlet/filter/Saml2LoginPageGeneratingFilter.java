@@ -37,6 +37,7 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 /**
  * Filter that generates a static SAML SP login page.
  * It displays a list of identity providers whether they are online or not.
+ * @since 5.2
  */
 public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 

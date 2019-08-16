@@ -32,6 +32,7 @@ import static org.springframework.util.Assert.notNull;
 
 /**
  * Represents a configured service provider and a remote identity provider pair.
+ * @since 5.2
  */
 public class Saml2RelyingPartyRegistration {
 

@@ -21,6 +21,9 @@ import java.util.List;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 
+/**
+ * @since 5.2
+ */
 public class Saml2AuthenticationToken extends AbstractAuthenticationToken {
 
 	private final String saml2Response;

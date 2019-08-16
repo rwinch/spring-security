@@ -17,7 +17,8 @@
 package org.springframework.security.saml2.serviceprovider.provider;
 
 /**
- * Resolves a configured remote provider by entityId or alias
+ * Resolves a configured service provider and remote identity provider pair by entityId or alias
+ * @since 5.2
  */
 public interface Saml2RelyingPartyRepository {
 

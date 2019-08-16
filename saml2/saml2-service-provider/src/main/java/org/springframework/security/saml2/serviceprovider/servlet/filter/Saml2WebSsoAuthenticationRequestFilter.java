@@ -37,6 +37,9 @@ import static org.springframework.security.saml2.serviceprovider.servlet.filter.
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.encode;
 import static org.springframework.util.Assert.notNull;
 
+/**
+ * @since 5.2
+ */
 public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter {
 
 	private final RequestMatcher matcher;

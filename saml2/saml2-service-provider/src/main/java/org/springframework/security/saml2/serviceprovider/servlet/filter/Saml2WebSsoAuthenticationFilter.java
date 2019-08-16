@@ -35,6 +35,9 @@ import static org.springframework.security.saml2.serviceprovider.servlet.filter.
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.inflate;
 import static org.springframework.util.StringUtils.hasText;
 
+/**
+ * @since 5.2
+ */
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private final RequestMatcher matcher;

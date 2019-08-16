@@ -30,6 +30,9 @@ import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.notEmpty;
 import static org.springframework.util.Assert.notNull;
 
+/**
+ * @since 5.2
+ */
 public class InMemorySaml2RelyingPartyRepository
 		implements Saml2RelyingPartyRepository, Iterable<Saml2RelyingPartyRegistration> {
 

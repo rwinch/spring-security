@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.util.Assert;
 
+/**
+ * @since 5.2
+ */
 public class Saml2AuthenticationRequest {
 	private final String localSpEntityId;
 	private final List<Saml2X509Credential> credentials;

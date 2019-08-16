@@ -39,6 +39,9 @@ import static java.util.zip.Deflater.DEFLATED;
 import static org.springframework.security.web.util.UrlUtils.buildFullRequestUrl;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
+/**
+ * @since 5.2
+ */
 final class Saml2Utils {
 
 	private static final char PATH_DELIMITER = '/';

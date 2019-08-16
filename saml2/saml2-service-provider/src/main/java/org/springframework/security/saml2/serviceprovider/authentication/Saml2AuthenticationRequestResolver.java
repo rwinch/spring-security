@@ -20,6 +20,8 @@ package org.springframework.security.saml2.serviceprovider.authentication;
  * Component that generates an AuthenticationRequest, <code>samlp:AuthnRequestType</code> as defined by
  * https://www.oasis-open.org/committees/download.php/35711/sstc-saml-core-errata-2.0-wd-06-diff.pdf
  * Page 50, Line 2147
+ *
+ * @since 5.2
  */
 public interface Saml2AuthenticationRequestResolver {
 	/**

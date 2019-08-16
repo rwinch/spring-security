@@ -26,6 +26,9 @@ import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 
+/**
+ * @since 5.2
+ */
 public class OpenSamlAuthenticationRequestResolver implements Saml2AuthenticationRequestResolver {
 	private final Clock clock = Clock.systemUTC();
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();

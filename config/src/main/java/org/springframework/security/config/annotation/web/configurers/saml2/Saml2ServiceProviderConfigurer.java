@@ -47,6 +47,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import static java.util.Optional.ofNullable;
 
+/**
+ * @since 5.2
+ */
 public class Saml2ServiceProviderConfigurer
 		extends AbstractHttpConfigurer<Saml2ServiceProviderConfigurer, HttpSecurity> {
 

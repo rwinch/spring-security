@@ -64,6 +64,9 @@ import static java.lang.Boolean.TRUE;
 import static java.util.Arrays.asList;
 import static org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport.getBuilderFactory;
 
+/**
+ * @since 5.2
+ */
 final class OpenSamlImplementation {
 	private static OpenSamlImplementation instance = new OpenSamlImplementation();
 

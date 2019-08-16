@@ -29,6 +29,8 @@ import static org.springframework.util.Assert.notNull;
  * private key. Per:
  * https://www.oasis-open.org/committees/download.php/8958/sstc-saml-implementation-guidelines-draft-01.pdf
  * Line: 584, Section 4.3 Credentials Used for both signing and encryption/decryption
+ *
+ * @since 5.2
  */
 public class Saml2X509Credential {
 	public enum Saml2X509CredentialUsage {
