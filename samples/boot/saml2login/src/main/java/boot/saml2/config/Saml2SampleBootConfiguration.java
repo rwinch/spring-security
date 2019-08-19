@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,6 +48,7 @@ public class Saml2SampleBootConfiguration {
 	private List<IdentityProvider> providers;
 
 	@Bean
+	@ConditionalOnMissingBean
 	public RelyingPartyRepository saml2IdentityProviderDetailsRepository() {
 		return new InMemoryRelyingPartyRepository(getIdentityProviders(providers));
 	}
