@@ -18,9 +18,9 @@ package org.springframework.security.saml2.serviceprovider.provider;
 
 import java.net.URI;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage;
@@ -52,7 +52,9 @@ public class RelyingPartyRegistration {
 		hasText(localEntityIdTemplate, "localEntityIdTemplate is required");
 		notEmpty(credentials, "credentials are required");
 		notNull(idpWebSsoUri, "idpWebSsoUri is required");
-		credentials.stream().forEach(c -> notNull(c, "credentials cannot contain null elements"));
+		for (Saml2X509Credential c : credentials) {
+			notNull(c, "credentials cannot contain null elements");
+		}
 		this.remoteIdpEntityId = idpEntityId;
 		this.registrationId = registrationId;
 		this.credentials = credentials;
@@ -81,10 +83,13 @@ public class RelyingPartyRegistration {
 			return this.credentials;
 		}
 		Set<Saml2X509CredentialUsage> typeset = new HashSet<>(asList(types));
-		return this.credentials
-				.stream()
-				.filter(c -> containsCredentialForTypes(c.getSaml2X509CredentialUsages(), typeset))
-				.collect(Collectors.toList());
+		List<Saml2X509Credential> result = new LinkedList<>();
+		for (Saml2X509Credential c : this.credentials) {
+			if (containsCredentialForTypes(c.getSaml2X509CredentialUsages(), typeset)) {
+				result.add(c);
+			}
+		}
+		return result;
 	}
 
 	private boolean containsCredentialForTypes(Set<Saml2X509CredentialUsage> existing, Set<Saml2X509CredentialUsage> requested) {

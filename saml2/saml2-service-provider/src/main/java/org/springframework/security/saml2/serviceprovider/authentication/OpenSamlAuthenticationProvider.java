@@ -20,10 +20,10 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -283,18 +283,23 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	private List<Saml2X509Credential> getDecryptionCredentials(Saml2AuthenticationToken token) {
-		return token.getX509Credentials()
-				.stream()
-				.filter(Saml2X509Credential::isDecryptionCredential)
-				.collect(Collectors.toList());
+		List<Saml2X509Credential> result = new LinkedList<>();
+		for (Saml2X509Credential c : token.getX509Credentials()) {
+			if (c.isDecryptionCredential()) {
+				result.add(c);
+			}
+		}
+		return result;
 	}
 
 	private List<X509Certificate> getVerificationKeys(Saml2AuthenticationToken token) {
-		return token.getX509Credentials()
-				.stream()
-				.filter(Saml2X509Credential::isSignatureVerficationCredential)
-				.map(c -> c.getCertificate())
-				.collect(Collectors.toList());
+		List<X509Certificate> result = new LinkedList<>();
+		for (Saml2X509Credential c : token.getX509Credentials()) {
+			if (c.isSignatureVerficationCredential()) {
+				result.add(c.getCertificate());
+			}
+		}
+		return result;
 	}
 
 	public void setAuthoritiesMapper(GrantedAuthoritiesMapper authoritiesMapper) {

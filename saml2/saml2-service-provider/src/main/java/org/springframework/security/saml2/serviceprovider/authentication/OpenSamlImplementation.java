@@ -202,7 +202,7 @@ final class OpenSamlImplementation {
 
 	String toXml(XMLObject object, List<Saml2X509Credential> signingCredentials, String localSpEntityId)
 			throws MarshallingException, SignatureException, SecurityException {
-		if (object instanceof SignableSAMLObject && hasSigningCredential(signingCredentials)) {
+		if (object instanceof SignableSAMLObject && null != hasSigningCredential(signingCredentials)) {
 			signXmlObject(
 					(SignableSAMLObject) object,
 					getSigningCredential(signingCredentials, localSpEntityId)
@@ -213,10 +213,13 @@ final class OpenSamlImplementation {
 		return SerializeSupport.nodeToString(element);
 	}
 
-	private boolean hasSigningCredential(List<Saml2X509Credential> credentials) {
-		return !credentials.isEmpty() && credentials
-				.stream()
-				.anyMatch(Saml2X509Credential::isSigningCredential);
+	private Saml2X509Credential hasSigningCredential(List<Saml2X509Credential> credentials) {
+		for (Saml2X509Credential c : credentials) {
+			if (c.isSigningCredential()) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	private void signXmlObject(SignableSAMLObject object, Credential credential)
@@ -232,11 +235,10 @@ final class OpenSamlImplementation {
 	private Credential getSigningCredential(List<Saml2X509Credential> signingCredential,
 											String localSpEntityId
 	) {
-		Saml2X509Credential credential = signingCredential
-				.stream()
-				.filter(Saml2X509Credential::isSigningCredential)
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("no signing credential configured"));
+		Saml2X509Credential credential = hasSigningCredential(signingCredential);
+		if (credential == null) {
+			throw new IllegalArgumentException("no signing credential configured");
+		}
 		BasicCredential cred = getBasicCredential(credential);
 		cred.setEntityId(localSpEntityId);
 		cred.setUsageType(UsageType.SIGNING);

@@ -19,7 +19,6 @@ package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -74,23 +73,27 @@ public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 						"<h1>Select an Identity Provider</h1>\n" +
 						"<div>\n" +
 						"    <ul>\n" +
-						providers.entrySet().stream()
-								.map(
-										entry ->
-												"        <li>\n" +
-														"            <a href=\"" +
-														contextPath +
-														entry.getValue() +
-														"\"><span style=\"font-weight:bold\">" +
-														HtmlUtils.htmlEscape(entry.getKey()) +
-														"</span></a>\n" +
-														"        </li>\n"
-								)
-								.collect(Collectors.joining()) +
+						getProviderUrlList(providers, contextPath) +
 						"    </ul>\n" +
 						"</div>\n" +
 						"</body>\n" +
 						"</html>"
 				;
+	}
+
+	private String getProviderUrlList(Map<String, String> providers, String contextPath) {
+		StringBuffer result = new StringBuffer();
+		for (Map.Entry<String, String> entry : providers.entrySet()) {
+			result
+					.append("        <li>\n")
+					.append("            <a href=\"")
+					.append(contextPath)
+					.append(entry.getValue())
+					.append("\"><span style=\"font-weight:bold\">")
+					.append(HtmlUtils.htmlEscape(entry.getKey()))
+					.append("</span></a>\n")
+					.append("        </li>\n");
+		}
+		return result.toString();
 	}
 }

@@ -16,8 +16,8 @@
 
 package org.springframework.security.saml2.serviceprovider.authentication;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.util.Assert;
@@ -35,10 +35,13 @@ public class Saml2AuthenticationRequest {
 		Assert.hasText(localSpEntityId, "webSsoUri is required");
 		this.localSpEntityId = localSpEntityId;
 		this.webSsoUri = webSsoUri;
-		this.credentials = credentials.stream()
-				.filter(Saml2X509Credential::isSigningCredential)
-				.collect(Collectors.toList());
-		Assert.notEmpty(credentials, "at least one SIGNING credential must be present");
+		this.credentials = new LinkedList<>();
+		for (Saml2X509Credential c : credentials) {
+			if (c.isSigningCredential()) {
+				this.credentials.add(c);
+			}
+		}
+		Assert.notEmpty(this.credentials, "at least one SIGNING credential must be present");
 	}
 
 
