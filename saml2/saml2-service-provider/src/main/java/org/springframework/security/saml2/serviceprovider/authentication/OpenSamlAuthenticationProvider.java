@@ -88,7 +88,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
 	private GrantedAuthoritiesMapper authoritiesMapper = (a -> a);
-	private int responseTimeValidationSkewMillis = 1000 * 60 * 5; // 5 minutes
+	private int responseTimeValidationDurationMillis = 1000 * 60 * 5; // 5 minutes
 
 	private String getUsername(Saml2AuthenticationToken idp, Assertion assertion) {
 		final Subject subject = assertion.getSubject();
@@ -162,7 +162,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		validationParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
 		validationParams.put(
 				SAML2AssertionValidationParameters.CLOCK_SKEW,
-				Duration.ofMillis(this.responseTimeValidationSkewMillis)
+				Duration.ofMillis(this.responseTimeValidationDurationMillis)
 		);
 		validationParams.put(
 				SAML2AssertionValidationParameters.COND_VALID_AUDIENCES,
@@ -307,8 +307,8 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		this.authoritiesMapper = authoritiesMapper;
 	}
 
-	public void setResponseTimeValidationSkewMillis(int responseTimeValidationSkewMillis) {
-		this.responseTimeValidationSkewMillis = responseTimeValidationSkewMillis;
+	public void setResponseTimeValidationDurationMillis(int responseTimeValidationDurationMillis) {
+		this.responseTimeValidationDurationMillis = responseTimeValidationDurationMillis;
 	}
 
 	protected List<? extends GrantedAuthority> getAssertionAuthorities(Assertion assertion) {
