@@ -97,12 +97,12 @@ public class ServiceProviderSampleTests {
 	public void redirectToLoginPageSingleProvider() throws Exception {
 		mockMvc.perform(get("http://localhost:8080/sample-sp/some/url").contextPath("/sample-sp"))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp"));
+				.andExpect(redirectedUrl("http://localhost:8080/sample-sp/saml2/authenticate/simplesamlphp"));
 	}
 
 	@Test
 	public void testAuthNRequest() throws Exception {
-		mockMvc.perform(get("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp").contextPath("/sample-sp"))
+		mockMvc.perform(get("http://localhost:8080/sample-sp/saml2/authenticate/simplesamlphp").contextPath("/sample-sp"))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(header().string("Location", startsWith("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php?SAMLRequest=")));
 	}
@@ -110,7 +110,7 @@ public class ServiceProviderSampleTests {
 	@Test
 	public void testRelayState() throws Exception {
 		mockMvc.perform(
-				get("http://localhost:8080/sample-sp/saml/sp/authenticate/simplesamlphp")
+				get("http://localhost:8080/sample-sp/saml2/authenticate/simplesamlphp")
 						.contextPath("/sample-sp")
 						.param("RelayState", "relay state value with spaces")
 		)
@@ -126,7 +126,7 @@ public class ServiceProviderSampleTests {
 		Response response = buildResponse(assertion);
 		signXmlObject(response, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
 		String xml = toXml(response);
-		mockMvc.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+		mockMvc.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
@@ -141,7 +141,7 @@ public class ServiceProviderSampleTests {
 		signXmlObject(assertion, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
-				.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
@@ -153,7 +153,7 @@ public class ServiceProviderSampleTests {
 		Assertion assertion = buildAssertion("testuser@spring.security.saml");
 		Response response = buildResponse(assertion);
 		String xml = toXml(response);
-		mockMvc.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+		mockMvc.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection())
@@ -171,7 +171,7 @@ public class ServiceProviderSampleTests {
 		signXmlObject(assertion, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
-				.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
@@ -187,7 +187,7 @@ public class ServiceProviderSampleTests {
 		Response response = buildResponse(encryptedAssertion);
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
-				.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
@@ -206,7 +206,7 @@ public class ServiceProviderSampleTests {
 		signXmlObject(assertion, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
-				.perform(post("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp").contextPath("/sample-sp")
+				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
@@ -228,7 +228,7 @@ public class ServiceProviderSampleTests {
 	private Response buildResponse() {
 		Response response = SAML2ActionTestingSupport.buildResponse();
 		response.setID("_" + UUID.randomUUID().toString());
-		response.setDestination("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp");
+		response.setDestination("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp");
 		response.setIssuer(buildIssuer("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
 		return response;
 	}
@@ -246,7 +246,7 @@ public class ServiceProviderSampleTests {
 		// as appropriate
 		subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
 		final SubjectConfirmationData confirmationData = buildSubjectConfirmationData(LOCAL_SP_ENTITY_ID);
-		confirmationData.setRecipient("http://localhost:8080/sample-sp/saml/sp/SSO/simplesamlphp");
+		confirmationData.setRecipient("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp");
 		subjectConfirmation.setSubjectConfirmationData(confirmationData);
 		assertion.getSubject().getSubjectConfirmations().add(subjectConfirmation);
 		return assertion;

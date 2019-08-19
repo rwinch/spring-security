@@ -43,7 +43,7 @@ public class Saml2RelyingPartyRegistration {
 	private final String localEntityIdTemplate;
 
 	public Saml2RelyingPartyRegistration(String idpEntityId, String alias, URI idpWebSsoUri, List<Saml2X509Credential> credentials) {
-		this(idpEntityId, alias, idpWebSsoUri, credentials, "{baseUrl}/saml/sp/metadata/{alias}");
+		this(idpEntityId, alias, idpWebSsoUri, credentials, "{baseUrl}/saml2/service-provider-metadata/{alias}");
 	}
 
 	public Saml2RelyingPartyRegistration(String idpEntityId, String alias, URI idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {

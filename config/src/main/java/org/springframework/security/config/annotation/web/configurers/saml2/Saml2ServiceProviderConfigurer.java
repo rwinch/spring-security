@@ -53,7 +53,7 @@ import static java.util.Optional.ofNullable;
 public class Saml2ServiceProviderConfigurer
 		extends AbstractHttpConfigurer<Saml2ServiceProviderConfigurer, HttpSecurity> {
 
-	private static final String PREFIX = "/saml/sp";
+	private static final String PREFIX = "/saml2";
 	private final String filterPrefix;
 	private AuthenticationProvider authenticationProvider;
 	private Saml2RelyingPartyRepository providerDetailsRepository;
