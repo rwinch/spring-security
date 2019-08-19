@@ -173,14 +173,14 @@ public class Saml2ServiceProviderConfigurer
 
 	}
 
-	protected void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
+	private void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
 		Saml2RelyingPartyRepository idpRepo = this.providerDetailsRepository;
 		Map<String, String> idps = getIdentityProviderUrlMap(authRequestPrefixUrl, idpRepo);
 		Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
 		builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
 	}
 
-	protected void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
+	private void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
 		Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 				matcher,
 				"{baseUrl}" + this.filterPrefix + "/SSO/{alias}",
@@ -190,8 +190,8 @@ public class Saml2ServiceProviderConfigurer
 		builder.addFilterAfter(authenticationRequestFilter, HeaderWriterFilter.class);
 	}
 
-	protected void configureSaml2WebSsoAuthenticationFilter(HttpSecurity builder,
-															RequestMatcher matcher) {
+	private void configureSaml2WebSsoAuthenticationFilter(HttpSecurity builder,
+														  RequestMatcher matcher) {
 		AuthenticationFailureHandler failureHandler =
 				new SimpleUrlAuthenticationFailureHandler("/login?error=saml2-error");
 		Saml2WebSsoAuthenticationFilter webSsoFilter =
