@@ -996,9 +996,9 @@
     <xs:attribute name="max-sessions" type="xs:positiveInteger"/>
     <xs:attribute name="expired-url" type="xs:string"/>
     <xs:attribute name="exception-if-maximum-exceeded" type="security:boolean"/>
-    <xs:attribute name="session-registry-alias" type="xs:string">
+    <xs:attribute name="session-registry-registrationId" type="xs:string">
       <xs:annotation>
-        <xs:documentation>Allows you to define an alias for the SessionRegistry bean in order to
+        <xs:documentation>Allows you to define an registrationId for the SessionRegistry bean in order to
           access it in your own configuration</xs:documentation>
       </xs:annotation>
     </xs:attribute>
@@ -1068,7 +1068,7 @@
     <xs:annotation>
       <xs:documentation>If you are using namespace configuration with Spring Security, an
         AuthenticationManager will automatically be registered. This element simple allows you to
-        define an alias to allow you to reference the authentication-manager in your own beans.
+        define an registrationId to allow you to reference the authentication-manager in your own beans.
       </xs:documentation>
     </xs:annotation>
     <xs:complexType>
@@ -1077,10 +1077,10 @@
   </xs:element>
   <xs:attributeGroup name="authman.attlist">
     <xs:annotation>
-      <xs:documentation>The alias you wish to use for the AuthenticationManager
+      <xs:documentation>The registrationId you wish to use for the AuthenticationManager
       bean</xs:documentation>
     </xs:annotation>
-    <xs:attribute name="alias" use="required" type="xs:ID"/>
+    <xs:attribute name="registrationId" use="required" type="xs:ID"/>
   </xs:attributeGroup>
   <xs:element name="authentication-provider">
     <xs:annotation>

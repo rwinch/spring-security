@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util-3.0.xsd
 	http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
 
-	<security:authentication-manager alias="authenticationManager">
+	<security:authentication-manager registrationId="authenticationManager">
 		<security:authentication-provider>
 			<security:user-service>
 				<security:user name="bob" password="{noop}bobspassword" authorities="ROLE_A,ROLE_B"/>

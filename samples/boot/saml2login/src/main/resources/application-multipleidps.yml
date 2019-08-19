@@ -21,7 +21,7 @@ spring:
       login:
         identity-providers:
           - entity-id: https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php
-            alias: simplesamlphp
+            registration-id: simplesamlphp
             web-sso-url: https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/SSOService.php
             signing-credentials:
               - private-key: |
@@ -85,7 +85,7 @@ spring:
                 lx13Y1YlQ4/tlpgTgfIJxKV6nyPiLoK0nywbMd+vpAirDt2Oc+hk
 
           - entity-id: https://simplesaml-for-spring-saml2.cfapps.io/saml2/idp/metadata.php
-            alias: simplesamlphp2
+            registration-id: simplesamlphp2
             web-sso-url: https://simplesaml-for-spring-saml2.cfapps.io/saml2/idp/SSOService.php
             signing-credentials:
               - private-key: |

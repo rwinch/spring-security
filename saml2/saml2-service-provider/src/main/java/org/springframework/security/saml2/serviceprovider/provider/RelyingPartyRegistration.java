@@ -34,27 +34,27 @@ import static org.springframework.util.Assert.notNull;
  * Represents a configured service provider and a remote identity provider pair.
  * @since 5.2
  */
-public class Saml2RelyingPartyRegistration {
+public class RelyingPartyRegistration {
 
-	private final String alias;
+	private final String registrationId;
 	private final String remoteIdpEntityId;
 	private final URI idpWebSsoUrl;
 	private final List<Saml2X509Credential> credentials;
 	private final String localEntityIdTemplate;
 
-	public Saml2RelyingPartyRegistration(String idpEntityId, String alias, URI idpWebSsoUri, List<Saml2X509Credential> credentials) {
-		this(idpEntityId, alias, idpWebSsoUri, credentials, "{baseUrl}/saml2/service-provider-metadata/{alias}");
+	public RelyingPartyRegistration(String idpEntityId, String registrationId, URI idpWebSsoUri, List<Saml2X509Credential> credentials) {
+		this(idpEntityId, registrationId, idpWebSsoUri, credentials, "{baseUrl}/saml2/service-provider-metadata/{registrationId}");
 	}
 
-	public Saml2RelyingPartyRegistration(String idpEntityId, String alias, URI idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
+	public RelyingPartyRegistration(String idpEntityId, String registrationId, URI idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
 		hasText(idpEntityId, "idpEntityId is required");
-		hasText(alias, "alias is required");
+		hasText(registrationId, "registrationId is required");
 		hasText(localEntityIdTemplate, "localEntityIdTemplate is required");
 		notEmpty(credentials, "credentials are required");
 		notNull(idpWebSsoUri, "idpWebSsoUri is required");
 		credentials.stream().forEach(c -> notNull(c, "credentials cannot contain null elements"));
 		this.remoteIdpEntityId = idpEntityId;
-		this.alias = alias;
+		this.registrationId = registrationId;
 		this.credentials = credentials;
 		this.idpWebSsoUrl = idpWebSsoUri;
 		this.localEntityIdTemplate = localEntityIdTemplate;
@@ -64,8 +64,8 @@ public class Saml2RelyingPartyRegistration {
 		return this.remoteIdpEntityId;
 	}
 
-	public String getAlias() {
-		return this.alias;
+	public String getRegistrationId() {
+		return this.registrationId;
 	}
 
 	public URI getIdpWebSsoUrl() {

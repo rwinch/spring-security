@@ -27,7 +27,7 @@ import java.util.zip.InflaterOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.saml2.Saml2Exception;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -81,16 +81,16 @@ final class Saml2Utils {
 		}
 	}
 
-	static String getServiceProviderEntityId(Saml2RelyingPartyRegistration idp, HttpServletRequest request) {
+	static String getServiceProviderEntityId(RelyingPartyRegistration idp, HttpServletRequest request) {
 		return resolveUrlTemplate(
 				idp.getLocalEntityIdTemplate(),
 				getApplicationUri(request),
 				idp.getRemoteIdpEntityId(),
-				idp.getAlias()
+				idp.getRegistrationId()
 		);
 	}
 
-	static String resolveUrlTemplate(String template, String baseUrl, String entityId, String alias) {
+	static String resolveUrlTemplate(String template, String baseUrl, String entityId, String registrationId) {
 		if (!StringUtils.hasText(template)) {
 			return baseUrl;
 		}
@@ -116,7 +116,7 @@ final class Saml2Utils {
 		uriVariables.put("basePath", path == null ? "" : path);
 		uriVariables.put("baseUrl", uriComponents.toUriString());
 		uriVariables.put("entityId", StringUtils.hasText(entityId) ? entityId : "");
-		uriVariables.put("alias", StringUtils.hasText(alias) ? alias : "");
+		uriVariables.put("registrationId", StringUtils.hasText(registrationId) ? registrationId : "");
 
 		return UriComponentsBuilder.fromUriString(template)
 				.buildAndExpand(uriVariables)

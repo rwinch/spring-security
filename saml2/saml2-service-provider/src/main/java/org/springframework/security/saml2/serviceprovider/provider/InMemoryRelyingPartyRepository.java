@@ -33,32 +33,32 @@ import static org.springframework.util.Assert.notNull;
 /**
  * @since 5.2
  */
-public class InMemorySaml2RelyingPartyRepository
-		implements Saml2RelyingPartyRepository, Iterable<Saml2RelyingPartyRegistration> {
+public class InMemoryRelyingPartyRepository
+		implements RelyingPartyRepository, Iterable<RelyingPartyRegistration> {
 
-	private final Map<String, Saml2RelyingPartyRegistration> byId;
-	private final Map<String, Saml2RelyingPartyRegistration> byAlias;
-	private final Saml2RelyingPartyRegistration defaultRegistration;
+	private final Map<String, RelyingPartyRegistration> byEntityId;
+	private final Map<String, RelyingPartyRegistration> byRegistrationId;
+	private final RelyingPartyRegistration defaultRegistration;
 
 
-	public InMemorySaml2RelyingPartyRepository(Saml2RelyingPartyRegistration... registrations) {
+	public InMemoryRelyingPartyRepository(RelyingPartyRegistration... registrations) {
 		this(asList(registrations));
 	}
 
-	public InMemorySaml2RelyingPartyRepository(Collection<Saml2RelyingPartyRegistration> registrations) {
+	public InMemoryRelyingPartyRepository(Collection<RelyingPartyRegistration> registrations) {
 		notEmpty(registrations, "registrations cannot be empty");
-		this.byId = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getRemoteIdpEntityId);
-		this.byAlias = createMappingToIdentityProvider(registrations, Saml2RelyingPartyRegistration::getAlias);
+		this.byEntityId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRemoteIdpEntityId);
+		this.byRegistrationId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRegistrationId);
 		this.defaultRegistration = registrations.iterator().next();
 	}
 
-	private static Map<String, Saml2RelyingPartyRegistration> createMappingToIdentityProvider(
-			Collection<Saml2RelyingPartyRegistration> idps,
-			Function<Saml2RelyingPartyRegistration,
+	private static Map<String, RelyingPartyRegistration> createMappingToIdentityProvider(
+			Collection<RelyingPartyRegistration> idps,
+			Function<RelyingPartyRegistration,
 					String> mapper
 	) {
-		LinkedHashMap<String, Saml2RelyingPartyRegistration> result = new LinkedHashMap<>();
-		for (Saml2RelyingPartyRegistration idp : idps) {
+		LinkedHashMap<String, RelyingPartyRegistration> result = new LinkedHashMap<>();
+		for (RelyingPartyRegistration idp : idps) {
 			notNull(idp, "relying party collection cannot contain null values");
 			String key = mapper.apply(idp);
 			notNull(idp, "relying party key cannot be null");
@@ -69,15 +69,15 @@ public class InMemorySaml2RelyingPartyRepository
 	}
 
 	@Override
-	public Saml2RelyingPartyRegistration findByEntityId(String entityId) {
+	public RelyingPartyRegistration findByEntityId(String entityId) {
 		Assert.notNull(entityId, "entityId cannot be null");
-		return this.byId.get(entityId);
+		return this.byEntityId.get(entityId);
 	}
 
 	@Override
-	public Saml2RelyingPartyRegistration findByAlias(String alias) {
-		if (StringUtils.hasText(alias)) {
-			return this.byAlias.get(alias);
+	public RelyingPartyRegistration findByRegistrationId(String id) {
+		if (StringUtils.hasText(id)) {
+			return this.byRegistrationId.get(id);
 		}
 		else {
 			return this.defaultRegistration;
@@ -85,8 +85,8 @@ public class InMemorySaml2RelyingPartyRepository
 	}
 
 	@Override
-	public Iterator<Saml2RelyingPartyRegistration> iterator() {
-		return this.byId.values().iterator();
+	public Iterator<RelyingPartyRegistration> iterator() {
+		return this.byEntityId.values().iterator();
 	}
 
 }

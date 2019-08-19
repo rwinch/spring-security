@@ -39,7 +39,7 @@
 		<property name="allowIfAllAbstainDecisions" value="false"/>
 	</bean>
 
-	<sec:authentication-manager alias="authenticationManager">
+	<sec:authentication-manager registrationId="authenticationManager">
 		<sec:authentication-provider>
 			<sec:user-service id="userService">
 				<sec:user name="notused" password="notused" authorities="ROLE_0,ROLE_1"/>

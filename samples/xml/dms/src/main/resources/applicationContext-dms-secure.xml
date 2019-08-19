@@ -51,7 +51,7 @@
 
    <!-- ======================== AUTHENTICATION (note there is no UI and this is for integration tests only) ======================= -->
 
-	<s:authentication-manager alias="authenticationManager">
+	<s:authentication-manager registrationId="authenticationManager">
 		<s:authentication-provider ref="daoAuthenticationProvider"/>
 	</s:authentication-manager>
 

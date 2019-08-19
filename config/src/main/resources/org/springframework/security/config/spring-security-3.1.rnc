@@ -542,8 +542,8 @@ concurrency-control.attlist &=
     ## Specifies that an unauthorized error should be reported when a user attempts to login when they already have the maximum configured sessions open. The default behaviour is to expire the original session. If the session-authentication-error-url attribute is set on the session-management URL, the user will be redirected to this URL.
     attribute error-if-maximum-exceeded {xsd:boolean}?
 concurrency-control.attlist &=
-    ## Allows you to define an alias for the SessionRegistry bean in order to access it in your own configuration.
-    attribute session-registry-alias {xsd:token}?
+    ## Allows you to define an registrationId for the SessionRegistry bean in order to access it in your own configuration.
+    attribute session-registry-registrationId {xsd:token}?
 concurrency-control.attlist &=
     ## Allows you to define an external SessionRegistry bean to be used by the concurrency control setup.
     attribute session-registry-ref {xsd:token}?
@@ -563,8 +563,8 @@ remember-me.attlist &=
     user-service-ref?
 
 remember-me.attlist &=
-    ## Exports the internally defined RememberMeServices as a bean alias, allowing it to be used by other beans in the application context.
-    attribute services-alias {xsd:token}?
+    ## Exports the internally defined RememberMeServices as a bean registrationId, allowing it to be used by other beans in the application context.
+    attribute services-registrationId {xsd:token}?
 
 remember-me.attlist &=
     ## Determines whether the "secure" flag will be set on the remember-me cookie. If set to true, the cookie will only be submitted over HTTPS (recommended). By default, secure cookies will be used if the request is made on a secure connection.
@@ -649,13 +649,13 @@ jee.attlist &=
     user-service-ref?
 
 authentication-manager =
-    ## Registers the AuthenticationManager instance and allows its list of AuthenticationProviders to be defined. Also allows you to define an alias to allow you to reference the AuthenticationManager in your own beans.
+    ## Registers the AuthenticationManager instance and allows its list of AuthenticationProviders to be defined. Also allows you to define an registrationId to allow you to reference the AuthenticationManager in your own beans.
     element authentication-manager {authman.attlist & authentication-provider* & ldap-authentication-provider*}
 authman.attlist &=
     id?
 authman.attlist &=
-    ## An alias you wish to use for the AuthenticationManager bean (not required it you are using a specific id)
-    attribute alias {xsd:token}?
+    ## An registrationId you wish to use for the AuthenticationManager bean (not required it you are using a specific id)
+    attribute registrationId {xsd:token}?
 authman.attlist &=
     ## If set to true, the AuthenticationManager will attempt to clear any credentials data in the returned Authentication object, once the user has been authenticated.
     attribute erase-credentials {xsd:boolean}?

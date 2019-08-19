@@ -24,8 +24,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRepository;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -41,9 +41,9 @@ import static org.springframework.util.StringUtils.hasText;
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private final RequestMatcher matcher;
-	private final Saml2RelyingPartyRepository relyingPartyRepository;
+	private final RelyingPartyRepository relyingPartyRepository;
 
-	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, Saml2RelyingPartyRepository relyingPartyRepository) {
+	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, RelyingPartyRepository relyingPartyRepository) {
 		super(matcher);
 		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
@@ -66,8 +66,8 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 		byte[] b = decode(saml2Response);
 
 		String responseXml = inflateIfRequired(request, b);
-		Saml2RelyingPartyRegistration rp =
-				this.relyingPartyRepository.findByAlias(this.matcher.matcher(request).getVariables().get("alias"));
+		RelyingPartyRegistration rp =
+				this.relyingPartyRepository.findByRegistrationId(this.matcher.matcher(request).getVariables().get("registrationId"));
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		final Saml2AuthenticationToken authentication = new Saml2AuthenticationToken(
 				responseXml,

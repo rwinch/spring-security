@@ -32,8 +32,8 @@ import org.springframework.security.config.annotation.web.configurers.ExceptionH
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationProvider;
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2LoginPageGeneratingFilter;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationRequestFilter;
@@ -56,7 +56,7 @@ public class Saml2ServiceProviderConfigurer
 	private static final String PREFIX = "/saml2";
 	private final String filterPrefix;
 	private AuthenticationProvider authenticationProvider;
-	private Saml2RelyingPartyRepository providerDetailsRepository;
+	private RelyingPartyRepository providerDetailsRepository;
 	private AuthenticationEntryPoint entryPoint = null;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 	protected Saml2ServiceProviderConfigurer(String filterPrefix) {
@@ -102,7 +102,7 @@ public class Saml2ServiceProviderConfigurer
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer relyingPartyRepository(Saml2RelyingPartyRepository repo) {
+	public Saml2ServiceProviderConfigurer relyingPartyRepository(RelyingPartyRepository repo) {
 		this.providerDetailsRepository = repo;
 		return this;
 	}
@@ -120,7 +120,7 @@ public class Saml2ServiceProviderConfigurer
 
 		this.providerDetailsRepository = getSharedObject(
 				builder,
-				Saml2RelyingPartyRepository.class,
+				RelyingPartyRepository.class,
 				() -> this.providerDetailsRepository,
 				this.providerDetailsRepository
 		);
@@ -157,7 +157,7 @@ public class Saml2ServiceProviderConfigurer
 		configureSaml2LoginPageFilter(builder, authNRequestUrlPrefix, "/login");
 
 		String authNRequestUriMatcher = authNRequestUrlPrefix + "**";
-		String authNAliasExtractor = authNRequestUrlPrefix + "{alias}/**";
+		String authNAliasExtractor = authNRequestUrlPrefix + "{registrationId}/**";
 		configureSaml2AuthenticationRequestFilter(
 				builder,
 				new RelyingPartyAliasUrlRequestMatcher(authNRequestUriMatcher, authNAliasExtractor)
@@ -165,7 +165,7 @@ public class Saml2ServiceProviderConfigurer
 
 		String ssoUriPrefix = this.filterPrefix + "/SSO/";
 		String ssoUriMatcher = ssoUriPrefix + "**";
-		String ssoAliasExtractor = ssoUriPrefix + "{alias}/**";
+		String ssoAliasExtractor = ssoUriPrefix + "{registrationId}/**";
 		configureSaml2WebSsoAuthenticationFilter(
 				builder,
 				new RelyingPartyAliasUrlRequestMatcher(ssoUriMatcher, ssoAliasExtractor)
@@ -174,7 +174,7 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	private void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
-		Saml2RelyingPartyRepository idpRepo = this.providerDetailsRepository;
+		RelyingPartyRepository idpRepo = this.providerDetailsRepository;
 		Map<String, String> idps = getIdentityProviderUrlMap(authRequestPrefixUrl, idpRepo);
 		Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
 		builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
@@ -183,15 +183,14 @@ public class Saml2ServiceProviderConfigurer
 	private void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
 		Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 				matcher,
-				"{baseUrl}" + this.filterPrefix + "/SSO/{alias}",
+				"{baseUrl}" + this.filterPrefix + "/SSO/{registrationId}",
 				this.providerDetailsRepository,
 				this.authenticationRequestResolver
 		);
 		builder.addFilterAfter(authenticationRequestFilter, HeaderWriterFilter.class);
 	}
 
-	private void configureSaml2WebSsoAuthenticationFilter(HttpSecurity builder,
-														  RequestMatcher matcher) {
+	private void configureSaml2WebSsoAuthenticationFilter(HttpSecurity builder, RequestMatcher matcher) {
 		AuthenticationFailureHandler failureHandler =
 				new SimpleUrlAuthenticationFailureHandler("/login?error=saml2-error");
 		Saml2WebSsoAuthenticationFilter webSsoFilter =
@@ -234,12 +233,12 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	@SuppressWarnings("unchecked")
-	private Map<String, String> getIdentityProviderUrlMap(String authRequestPrefixUrl, Saml2RelyingPartyRepository idpRepo) {
+	private Map<String, String> getIdentityProviderUrlMap(String authRequestPrefixUrl, RelyingPartyRepository idpRepo) {
 		Map<String, String> idps = new LinkedHashMap<>();
 		if (idpRepo instanceof Iterable) {
-			Iterable<Saml2RelyingPartyRegistration> repo = (Iterable<Saml2RelyingPartyRegistration>) idpRepo;
+			Iterable<RelyingPartyRegistration> repo = (Iterable<RelyingPartyRegistration>) idpRepo;
 			repo.forEach(
-					p -> idps.put(p.getAlias(), authRequestPrefixUrl + p.getAlias())
+					p -> idps.put(p.getRegistrationId(), authRequestPrefixUrl + p.getRegistrationId())
 			);
 		}
 		return idps;

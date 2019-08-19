@@ -17,27 +17,27 @@
 package org.springframework.security.saml2.serviceprovider.provider;
 
 /**
- * Resolves a configured service provider and remote identity provider pair by entityId or alias
+ * Resolves a configured service provider and remote identity provider pair by entityId or registrationId
  * @since 5.2
  */
-public interface Saml2RelyingPartyRepository {
+public interface RelyingPartyRepository {
 
 	/**
 	 * Resolves an entity provider by entityId, cannot be null
 	 *
 	 * @param idpEntityId - unique entityId for the remote identity provider, not null
-	 * @return {@link Saml2RelyingPartyRegistration} if found, otherwise {@code null}
+	 * @return {@link RelyingPartyRegistration} if found, otherwise {@code null}
 	 */
-	Saml2RelyingPartyRegistration findByEntityId(String idpEntityId);
+	RelyingPartyRegistration findByEntityId(String idpEntityId);
 
 	/**
-	 * Resolves an entity provider by alias, or returns the default provider
-	 * if no alias is provided
+	 * Resolves an entity provider by registrationId, or returns the default provider
+	 * if no registrationId is provided
 	 *
-	 * @param alias - unique alias, can be null
-	 * @return {@link Saml2RelyingPartyRegistration} if found by alias, {@code null} if an alias is provided and
-	 * no provider is found, and the default {@link Saml2RelyingPartyRegistration} if no alias is provided
+	 * @param registrationId - unique registrationId, can be null
+	 * @return {@link RelyingPartyRegistration} if found, {@code null} if an registrationId is provided and
+	 * no provider is found, and the default {@link RelyingPartyRegistration} if no registrationId is provided
 	 */
-	Saml2RelyingPartyRegistration findByAlias(String alias);
+	RelyingPartyRegistration findByRegistrationId(String registrationId);
 
 }

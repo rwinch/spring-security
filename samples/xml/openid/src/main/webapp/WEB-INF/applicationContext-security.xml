@@ -39,7 +39,7 @@
 	<b:bean id="tokenRepo"
 			class="org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl" />
 
-	<authentication-manager alias="authenticationManager"/>
+	<authentication-manager registrationId="authenticationManager"/>
 
 <!--
 	A custom UserDetailsService which will allow any user to authenticate and "register" their IDs in an internal map

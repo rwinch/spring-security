@@ -35,7 +35,7 @@
 		</b:property>
 	</b:bean>
 
-	<authentication-manager alias="authenticationManager">
+	<authentication-manager registrationId="authenticationManager">
 		<authentication-provider ref="gaeAuthenticationProvider"/>
 	</authentication-manager>
 

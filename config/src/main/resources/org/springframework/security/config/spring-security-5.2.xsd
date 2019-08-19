@@ -124,7 +124,7 @@
       </xs:annotation>
       <xs:complexType/>
    </xs:element>
-  
+
   <xs:attributeGroup name="password-encoder.attlist">
       <xs:attribute name="ref" type="xs:token">
          <xs:annotation>
@@ -395,7 +395,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="ldap-ap.attlist">
       <xs:attribute name="server-ref" type="xs:token">
          <xs:annotation>
@@ -475,7 +475,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="password-compare.attlist">
       <xs:attribute name="password-attribute" type="xs:token">
          <xs:annotation>
@@ -528,7 +528,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="protect.attlist">
       <xs:attribute name="method" use="required" type="xs:token">
          <xs:annotation>
@@ -772,13 +772,13 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
   <xs:attributeGroup name="protect-pointcut.attlist">
       <xs:attribute name="expression" use="required" type="xs:string">
          <xs:annotation>
@@ -1220,7 +1220,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="access-denied-handler.attlist">
       <xs:attribute name="ref" type="xs:token">
          <xs:annotation>
@@ -1245,7 +1245,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="intercept-url.attlist">
       <xs:attribute name="pattern" type="xs:token">
          <xs:annotation>
@@ -1302,7 +1302,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="logout.attlist">
       <xs:attribute name="logout-url" type="xs:token">
          <xs:annotation>
@@ -1349,7 +1349,7 @@
          <xs:attributeGroup ref="security:ref"/>
       </xs:complexType>
    </xs:element>
-  
+
   <xs:attributeGroup name="form-login.attlist">
       <xs:attribute name="login-processing-url" type="xs:token">
          <xs:annotation>
@@ -1437,7 +1437,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:element name="attribute-exchange">
       <xs:annotation>
          <xs:documentation>Sets up an attribute exchange configuration to request specified attributes from the
@@ -1636,7 +1636,7 @@
          </xs:simpleType>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="http-basic.attlist">
       <xs:attribute name="entry-point-ref" type="xs:token">
          <xs:annotation>
@@ -1652,7 +1652,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="session-management.attlist">
       <xs:attribute name="session-fixation-protection">
          <xs:annotation>
@@ -1708,7 +1708,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="concurrency-control.attlist">
       <xs:attribute name="max-sessions" type="xs:integer">
          <xs:annotation>
@@ -1740,9 +1740,9 @@
                 </xs:documentation>
          </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="session-registry-alias" type="xs:token">
+      <xs:attribute name="session-registry-registrationId" type="xs:token">
          <xs:annotation>
-            <xs:documentation>Allows you to define an alias for the SessionRegistry bean in order to access it in your
+            <xs:documentation>Allows you to define an registrationId for the SessionRegistry bean in order to access it in your
                 own configuration.
                 </xs:documentation>
          </xs:annotation>
@@ -1755,7 +1755,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="remember-me.attlist">
       <xs:attribute name="key" type="xs:token">
          <xs:annotation>
@@ -1785,9 +1785,9 @@
                 </xs:documentation>
          </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="services-alias" type="xs:token">
+      <xs:attribute name="services-registrationId" type="xs:token">
          <xs:annotation>
-            <xs:documentation>Exports the internally defined RememberMeServices as a bean alias, allowing it to be used
+            <xs:documentation>Exports the internally defined RememberMeServices as a bean registrationId, allowing it to be used
                 by other beans in the application context.
                 </xs:documentation>
          </xs:annotation>
@@ -1853,7 +1853,7 @@
   <xs:attributeGroup name="remember-me-data-source-ref">
       <xs:attributeGroup ref="security:data-source-ref"/>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="anonymous.attlist">
       <xs:attribute name="key" type="xs:token">
          <xs:annotation>
@@ -1886,8 +1886,8 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
-  
+
+
   <xs:attributeGroup name="http-port">
       <xs:attribute name="http" use="required" type="xs:token">
          <xs:annotation>
@@ -1904,7 +1904,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="x509.attlist">
       <xs:attribute name="subject-principal-regex" type="xs:token">
          <xs:annotation>
@@ -1954,7 +1954,7 @@
   <xs:element name="authentication-manager">
       <xs:annotation>
          <xs:documentation>Registers the AuthenticationManager instance and allows its list of
-                AuthenticationProviders to be defined. Also allows you to define an alias to allow you to
+                AuthenticationProviders to be defined. Also allows you to define an registrationId to allow you to
                 reference the AuthenticationManager in your own beans.
                 </xs:documentation>
       </xs:annotation>
@@ -2026,9 +2026,9 @@
                 </xs:documentation>
          </xs:annotation>
       </xs:attribute>
-      <xs:attribute name="alias" type="xs:token">
+      <xs:attribute name="registrationId" type="xs:token">
          <xs:annotation>
-            <xs:documentation>An alias you wish to use for the AuthenticationManager bean (not required it you are using
+            <xs:documentation>An registrationId you wish to use for the AuthenticationManager bean (not required it you are using
                 a specific id)
                 </xs:documentation>
          </xs:annotation>
@@ -2041,7 +2041,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="ap.attlist">
       <xs:attribute name="ref" type="xs:token">
          <xs:annotation>
@@ -2093,7 +2093,7 @@
          </xs:annotation>
       </xs:attribute>
   </xs:attributeGroup>
-  
+
   <xs:attributeGroup name="user.attlist">
       <xs:attribute name="name" use="required" type="xs:token">
          <xs:annotation>

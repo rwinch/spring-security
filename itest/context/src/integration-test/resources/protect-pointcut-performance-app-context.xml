@@ -15,7 +15,7 @@
 
 	<bean id="sessionRegistryPrototype" class="org.springframework.security.core.session.SessionRegistryImpl" scope="prototype"/>
 
-	<sec:authentication-manager alias="authenticationManager">
+	<sec:authentication-manager registrationId="authenticationManager">
 		<sec:authentication-provider>
 			<sec:user-service id="userService">
 				<sec:user name="notused" password="notused" authorities="ROLE_0,ROLE_1"/>

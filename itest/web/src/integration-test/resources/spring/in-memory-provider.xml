@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
 
-	<authentication-manager alias="authenticationManager">
+	<authentication-manager registrationId="authenticationManager">
 		<authentication-provider>
 			<user-service>
 			  <user name="miles" password="{noop}milespassword" authorities="ROLE_USER,ROLE_JAZZ,ROLE_TRUMPETER"/>

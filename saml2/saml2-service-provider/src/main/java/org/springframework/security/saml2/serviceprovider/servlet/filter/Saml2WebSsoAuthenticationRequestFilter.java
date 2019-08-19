@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.Saml2RelyingPartyRepository;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,11 +43,11 @@ import static org.springframework.util.Assert.notNull;
 public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter {
 
 	private final RequestMatcher matcher;
-	private final Saml2RelyingPartyRepository relyingPartyRepository;
+	private final RelyingPartyRepository relyingPartyRepository;
 	private final String webSsoUriTemplate;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
-	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, Saml2RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
+	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
 		notNull(matcher, "matcher is required");
 		this.matcher = matcher;
 		this.relyingPartyRepository = relyingPartyRepository;
@@ -68,11 +68,11 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String relayState = request.getParameter("RelayState");
-		String alias = this.matcher.matcher(request).getVariables().get("alias");
+		String registrationId = this.matcher.matcher(request).getVariables().get("registrationId");
 		if (logger.isDebugEnabled()) {
-			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + alias + "]");
+			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + registrationId + "]");
 		}
-		Saml2RelyingPartyRegistration rp = relyingPartyRepository.findByAlias(alias);
+		RelyingPartyRegistration rp = relyingPartyRepository.findByRegistrationId(registrationId);
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
 				localSpEntityId,
@@ -80,7 +80,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 						webSsoUriTemplate,
 						Saml2Utils.getApplicationUri(request),
 						rp.getRemoteIdpEntityId(),
-						rp.getAlias()
+						rp.getRegistrationId()
 				),
 				rp.getCredentialsForUsage(SIGNING)
 		);
