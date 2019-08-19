@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRepository;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,14 +43,14 @@ import static org.springframework.util.Assert.notNull;
 public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter {
 
 	private final RequestMatcher matcher;
-	private final RelyingPartyRepository relyingPartyRepository;
+	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 	private final String webSsoUriTemplate;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
-	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRepository relyingPartyRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
+	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
 		notNull(matcher, "matcher is required");
 		this.matcher = matcher;
-		this.relyingPartyRepository = relyingPartyRepository;
+		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;
 		this.webSsoUriTemplate = webSsoUriTemplate;
 	}
@@ -72,7 +72,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + registrationId + "]");
 		}
-		RelyingPartyRegistration rp = relyingPartyRepository.findByRegistrationId(registrationId);
+		RelyingPartyRegistration rp = relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
 				localSpEntityId,

@@ -33,19 +33,19 @@ import static org.springframework.util.Assert.notNull;
 /**
  * @since 5.2
  */
-public class InMemoryRelyingPartyRepository
-		implements RelyingPartyRepository, Iterable<RelyingPartyRegistration> {
+public class InMemoryRelyingPartyRegistrationRepository
+		implements RelyingPartyRegistrationRepository, Iterable<RelyingPartyRegistration> {
 
 	private final Map<String, RelyingPartyRegistration> byEntityId;
 	private final Map<String, RelyingPartyRegistration> byRegistrationId;
 	private final RelyingPartyRegistration defaultRegistration;
 
 
-	public InMemoryRelyingPartyRepository(RelyingPartyRegistration... registrations) {
+	public InMemoryRelyingPartyRegistrationRepository(RelyingPartyRegistration... registrations) {
 		this(asList(registrations));
 	}
 
-	public InMemoryRelyingPartyRepository(Collection<RelyingPartyRegistration> registrations) {
+	public InMemoryRelyingPartyRegistrationRepository(Collection<RelyingPartyRegistration> registrations) {
 		notEmpty(registrations, "registrations cannot be empty");
 		this.byEntityId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRemoteIdpEntityId);
 		this.byRegistrationId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRegistrationId);

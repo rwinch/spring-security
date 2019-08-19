@@ -25,7 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRepository;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -41,12 +41,12 @@ import static org.springframework.util.StringUtils.hasText;
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 	private final RequestMatcher matcher;
-	private final RelyingPartyRepository relyingPartyRepository;
+	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, RelyingPartyRepository relyingPartyRepository) {
+	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
 		super(matcher);
 		this.matcher = matcher;
-		this.relyingPartyRepository = relyingPartyRepository;
+		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		setAllowSessionCreation(true);
 		setSessionAuthenticationStrategy(new ChangeSessionIdAuthenticationStrategy());
 	}
@@ -67,7 +67,7 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 
 		String responseXml = inflateIfRequired(request, b);
 		RelyingPartyRegistration rp =
-				this.relyingPartyRepository.findByRegistrationId(this.matcher.matcher(request).getVariables().get("registrationId"));
+				this.relyingPartyRegistrationRepository.findByRegistrationId(this.matcher.matcher(request).getVariables().get("registrationId"));
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		final Saml2AuthenticationToken authentication = new Saml2AuthenticationToken(
 				responseXml,

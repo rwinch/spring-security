@@ -20,7 +20,7 @@ package org.springframework.security.saml2.serviceprovider.provider;
  * Resolves a configured service provider and remote identity provider pair by entityId or registrationId
  * @since 5.2
  */
-public interface RelyingPartyRepository {
+public interface RelyingPartyRegistrationRepository {
 
 	/**
 	 * Resolves an entity provider by entityId, cannot be null
