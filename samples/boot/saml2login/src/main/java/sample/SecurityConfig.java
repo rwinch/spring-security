@@ -19,7 +19,6 @@ package sample;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.saml2.Saml2ServiceProviderConfigurer;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -29,12 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//@formatter:off
 		http
 			//saml security
-			.apply(
-				Saml2ServiceProviderConfigurer.saml2Login()
-			)
+			.saml2Login()
 				.and()
 			.authorizeRequests()
 				.mvcMatchers("/login", "/logged-out").permitAll()
+				.anyRequest().fullyAuthenticated()
 				.and()
 			.logout()
 				.logoutSuccessUrl("/logged-out")
