@@ -1,0 +1,26 @@
+apply plugin: 'io.spring.convention.spring-sample-war'
+
+dependencies {
+	compile project(':spring-security-config')
+	compile project(':spring-security-core')
+	compile project(':spring-security-samples-javaconfig-messages')
+	compile project(':spring-security-web')
+	compile project(':spring-security-saml2-service-provider')
+	compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
+	compile 'javax.validation:validation-api'
+	compile 'javax.xml.bind:jaxb-api'
+	compile 'org.hibernate:hibernate-validator'
+	compile 'org.springframework:spring-jdbc'
+	compile 'org.springframework:spring-webmvc'
+	compile slf4jDependencies
+	compile "org.bouncycastle:bcprov-jdk15on"
+	compile "org.bouncycastle:bcpkix-jdk15on"
+
+
+	providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api'
+	compile 'javax.servlet:javax.servlet-api:4.0.1'
+
+	runtime 'opensymphony:sitemesh'
+
+	testCompile project(':spring-security-test')
+}

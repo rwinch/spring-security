@@ -102,7 +102,7 @@ public class Saml2ServiceProviderConfigurer
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer relyingPartyRepository(RelyingPartyRegistrationRepository repo) {
+	public Saml2ServiceProviderConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
 		this.providerDetailsRepository = repo;
 		return this;
 	}
@@ -115,7 +115,6 @@ public class Saml2ServiceProviderConfigurer
 	@Override
 	public void init(HttpSecurity builder) throws Exception {
 		super.init(builder);
-		builder.authorizeRequests().mvcMatchers(this.filterPrefix + "/**").permitAll().anyRequest().authenticated();
 		builder.csrf().ignoringAntMatchers(this.filterPrefix + "/**");
 
 		this.providerDetailsRepository = getSharedObject(

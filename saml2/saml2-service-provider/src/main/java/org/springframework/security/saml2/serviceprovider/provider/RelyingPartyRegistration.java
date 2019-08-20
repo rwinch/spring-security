@@ -57,7 +57,7 @@ public class RelyingPartyRegistration {
 		}
 		this.remoteIdpEntityId = idpEntityId;
 		this.registrationId = registrationId;
-		this.credentials = credentials;
+		this.credentials = new LinkedList<>(credentials);
 		this.idpWebSsoUrl = idpWebSsoUri;
 		this.localEntityIdTemplate = localEntityIdTemplate;
 	}
