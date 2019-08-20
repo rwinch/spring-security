@@ -76,11 +76,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * A {@link HttpSecurity} is similar to Spring Security's XML &lt;http&gt; element in the
@@ -1864,7 +1864,7 @@ public final class HttpSecurity extends
 	 * <br>
 	 *
 	 * The &quot;authentication flow&quot; is implemented using the <b>Web Browser SSO Profile, using POST and REDIRECT bindings</b>,
-	 * as documented in the <a target="_blank" href="http://saml.xml.org/saml-specifications">SAML V2.0 Core,Profiles and Bindings</a>
+	 * as documented in the <a target="_blank" href="https://docs.oasis-open.org/security/saml/">SAML V2.0 Core,Profiles and Bindings</a>
 	 * specifications.
 	 * <br>
 	 * <br>
