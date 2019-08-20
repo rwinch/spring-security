@@ -18,6 +18,7 @@ package org.springframework.security.config.annotation.web.configurers.saml2;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,9 +38,17 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.accept.ContentNegotiationStrategy;
+import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -47,6 +56,7 @@ import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 
 import static java.util.Optional.ofNullable;
+import static org.springframework.util.StringUtils.hasText;
 
 /**
  * @since 5.2
@@ -131,31 +141,38 @@ public class Saml2ServiceProviderConfigurer
 		builder.authenticationProvider(postProcess(this.authenticationProvider));
 
 		if (this.entryPoint != null) {
-			registerDefaultAuthenticationEntryPoint(builder, this.entryPoint);
+			registerAuthenticationEntryPoint(builder, this.entryPoint);
 		}
 		else {
 			final Map<String, String> providerUrlMap =
 					getIdentityProviderUrlMap(this.filterPrefix + "/authenticate/", this.providerDetailsRepository);
 
-			String loginUrl = (providerUrlMap.size() != 1) ?
-					"/login" :
-					providerUrlMap.entrySet().iterator().next().getValue();
-			registerDefaultAuthenticationEntryPoint(builder, new LoginUrlAuthenticationEntryPoint(loginUrl));
+			boolean singleProvider = providerUrlMap.size() == 1;
+			String loginUrl = (singleProvider) ? providerUrlMap.entrySet().iterator().next().getKey() : "/login";
+			final LoginUrlAuthenticationEntryPoint entryPoint = new LoginUrlAuthenticationEntryPoint(loginUrl);
+			if (singleProvider) {
+				registerAuthenticationEntryPoint(builder, entryPoint);
+			}
+			else {
+				registerDefaultAuthenticationEntryPoint(builder, entryPoint);
+			}
+
 		}
 
 		this.authenticationRequestResolver = getSharedObject(
 				builder,
 				Saml2AuthenticationRequestResolver.class,
-				() -> new OpenSamlAuthenticationRequestResolver(),
+				OpenSamlAuthenticationRequestResolver::new,
 				this.authenticationRequestResolver
 		);
+
+		String authNRequestUrlPrefix = this.filterPrefix + "/authenticate/";
+		configureSaml2LoginPageFilter(builder, authNRequestUrlPrefix, "/login");
 	}
 
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
 		String authNRequestUrlPrefix = this.filterPrefix + "/authenticate/";
-		configureSaml2LoginPageFilter(builder, authNRequestUrlPrefix, "/login");
-
 		String authNRequestUriMatcher = authNRequestUrlPrefix + "**";
 		String authNAliasExtractor = authNRequestUrlPrefix + "{registrationId}/**";
 		configureSaml2AuthenticationRequestFilter(
@@ -170,7 +187,6 @@ public class Saml2ServiceProviderConfigurer
 				builder,
 				new RelyingPartyAliasUrlRequestMatcher(ssoUriMatcher, ssoAliasExtractor)
 		);
-
 	}
 
 	private void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
@@ -180,6 +196,10 @@ public class Saml2ServiceProviderConfigurer
 		if (loginPageGeneratingFilter != null) {
 			loginPageGeneratingFilter.setSaml2LoginEnabled(true);
 			loginPageGeneratingFilter.setSaml2AuthenticationUrlToProviderName(idps);
+			if (!hasText(loginPageGeneratingFilter.getLoginPageUrl())) {
+				loginPageGeneratingFilter.setLoginPageUrl(loginFilterUrl);
+				loginPageGeneratingFilter.setFailureUrl(loginFilterUrl + "?error");
+			}
 		}
 		else {
 			Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
@@ -228,7 +248,7 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	@SuppressWarnings("unchecked")
-	private void registerDefaultAuthenticationEntryPoint(HttpSecurity http, AuthenticationEntryPoint entryPoint) {
+	private void registerAuthenticationEntryPoint(HttpSecurity http, AuthenticationEntryPoint entryPoint) {
 		ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling =
 				http.getConfigurer(ExceptionHandlingConfigurer.class);
 
@@ -240,12 +260,42 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	@SuppressWarnings("unchecked")
+	private void registerDefaultAuthenticationEntryPoint(HttpSecurity http, AuthenticationEntryPoint entryPoint) {
+		ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling =
+				http.getConfigurer(ExceptionHandlingConfigurer.class);
+
+		if (exceptionHandling == null) {
+			return;
+		}
+
+		exceptionHandling.defaultAuthenticationEntryPointFor(entryPoint, getAuthenticationEntryPointMatcher(http));
+	}
+
+	private RequestMatcher getAuthenticationEntryPointMatcher(HttpSecurity http) {
+		ContentNegotiationStrategy contentNegotiationStrategy = http
+				.getSharedObject(ContentNegotiationStrategy.class);
+		if (contentNegotiationStrategy == null) {
+			contentNegotiationStrategy = new HeaderContentNegotiationStrategy();
+		}
+
+		MediaTypeRequestMatcher mediaMatcher = new MediaTypeRequestMatcher(
+				contentNegotiationStrategy, MediaType.APPLICATION_XHTML_XML,
+				new MediaType("image", "*"), MediaType.TEXT_HTML, MediaType.TEXT_PLAIN);
+		mediaMatcher.setIgnoredMediaTypes(Collections.singleton(MediaType.ALL));
+
+		RequestMatcher notXRequestedWith = new NegatedRequestMatcher(
+				new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest"));
+
+		return new AndRequestMatcher(Arrays.asList(notXRequestedWith, mediaMatcher));
+	}
+
+	@SuppressWarnings("unchecked")
 	private Map<String, String> getIdentityProviderUrlMap(String authRequestPrefixUrl, RelyingPartyRegistrationRepository idpRepo) {
 		Map<String, String> idps = new LinkedHashMap<>();
 		if (idpRepo instanceof Iterable) {
 			Iterable<RelyingPartyRegistration> repo = (Iterable<RelyingPartyRegistration>) idpRepo;
 			repo.forEach(
-					p -> idps.put(p.getRegistrationId(), authRequestPrefixUrl + p.getRegistrationId())
+					p -> idps.put(authRequestPrefixUrl + p.getRegistrationId(), p.getRegistrationId())
 			);
 		}
 		return idps;

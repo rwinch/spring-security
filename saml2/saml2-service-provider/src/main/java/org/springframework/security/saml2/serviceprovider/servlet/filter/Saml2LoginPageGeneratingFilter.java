@@ -17,18 +17,18 @@
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
 
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.HtmlUtils;
+
 import java.io.IOException;
 import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.util.Assert;
-import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.HtmlUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -88,9 +88,9 @@ public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 					.append("        <li>\n")
 					.append("            <a href=\"")
 					.append(contextPath)
-					.append(entry.getValue())
+					.append(entry.getKey())
 					.append("\"><span style=\"font-weight:bold\">")
-					.append(HtmlUtils.htmlEscape(entry.getKey()))
+					.append(HtmlUtils.htmlEscape(entry.getValue()))
 					.append("</span></a>\n")
 					.append("        </li>\n");
 		}

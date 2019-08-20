@@ -128,7 +128,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 	}
 
 	public boolean isEnabled() {
-		return formLoginEnabled || openIdEnabled || oauth2LoginEnabled;
+		return formLoginEnabled || openIdEnabled || oauth2LoginEnabled || this.saml2LoginEnabled;
 	}
 
 	public void setLogoutSuccessUrl(String logoutSuccessUrl) {
@@ -307,8 +307,8 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 				sb.append(" <tr><td>");
 				String url = relyingPartyUrlToName.getKey();
 				sb.append("<a href=\"").append(contextPath).append(url).append("\">");
-				String clientName = HtmlUtils.htmlEscape(relyingPartyUrlToName.getValue());
-				sb.append(clientName);
+				String partyName = HtmlUtils.htmlEscape(relyingPartyUrlToName.getValue());
+				sb.append(partyName);
 				sb.append("</a>");
 				sb.append("</td></tr>\n");
 			}

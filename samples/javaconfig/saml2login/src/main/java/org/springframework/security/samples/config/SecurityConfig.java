@@ -15,11 +15,6 @@
  */
 package org.springframework.security.samples.config;
 
-import java.net.URI;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,6 +24,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.serviceprovider.provider.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+
+import java.net.URI;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.DECRYPTION;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
@@ -69,6 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 		http
+			.authorizeRequests()
+				.anyRequest().authenticated()
+				.and()
 			.saml2Login()
 				.relyingPartyRegistrationRepository(
 						new InMemoryRelyingPartyRegistrationRepository(
