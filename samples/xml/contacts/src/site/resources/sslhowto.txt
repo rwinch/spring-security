@@ -13,7 +13,7 @@ already created and shipped with Spring Security, you
 can skip directly to step 3.
 
 
-1. keytool -keystore keystore -registrationId acegisecurity -genkey -keyalg RSA -validity 9999 -storepass password -keypass password
+1. keytool -keystore keystore -alias acegisecurity -genkey -keyalg RSA -validity 9999 -storepass password -keypass password
 
 What is your first and last name?
   [Unknown]:  localhost
@@ -32,7 +32,7 @@ O NOT USE IN PRODUCTION., L=Unknown, ST=Unknown, C=Unknown correct?
   [no]:  yes
 
 
-2. keytool -export -v -rfc -registrationId acegisecurity -file acegisecurity.txt -keystore keystore -storepass password
+2. keytool -export -v -rfc -alias acegisecurity -file acegisecurity.txt -keystore keystore -storepass password
 
 3. copy acegisecurity.txt %JAVA_HOME%\lib\security
 
@@ -45,7 +45,7 @@ O NOT USE IN PRODUCTION., L=Unknown, ST=Unknown, C=Unknown correct?
 
 5. cd %JAVA_HOME%\lib\security
 
-6. keytool -import -v -file acegisecurity.txt -keypass password -keystore cacerts -storepass changeit -registrationId acegisecurity
+6. keytool -import -v -file acegisecurity.txt -keypass password -keystore cacerts -storepass changeit -alias acegisecurity
 
 Owner: CN=localhost, OU=Spring Security, O=TEST CERTIFICATE ONL
 Y. DO NOT USE IN PRODUCTION., L=Unknown, ST=Unknown, C=Unknown

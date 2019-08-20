@@ -37,7 +37,7 @@
 	   <property name="authenticationManager" ref="authenticationManager"/>
 	</bean>
 
-	<sec:authentication-manager registrationId="authenticationManager">
+	<sec:authentication-manager alias="authenticationManager">
 		<sec:authentication-provider>
 			<sec:user-service>
 				<sec:user name="jemima" password="password" authorities="A"/>

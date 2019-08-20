@@ -21,7 +21,7 @@
 
 	<http pattern="/**" security="none" />
 
-	<authentication-manager registrationId="authenticationManager">
+	<authentication-manager alias="authenticationManager">
 		<authentication-provider>
 			<user-service id="userService">
 				<user name="notused" password="notused" authorities="ROLE_0,ROLE_1"/>

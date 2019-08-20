@@ -1003,9 +1003,9 @@
         <xs:documentation>Specifies that an unauthorized error should be reported when a user attempts to login when they already have the maximum configured sessions open. The default behaviour is to expire the original session. If the session-authentication-error-url attribute is set on the session-management URL, the user will be redirected to this URL.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="session-registry-registrationId" type="xs:token">
+    <xs:attribute name="session-registry-alias" type="xs:token">
       <xs:annotation>
-        <xs:documentation>Allows you to define an registrationId for the SessionRegistry bean in order to access it in your own configuration.</xs:documentation>
+        <xs:documentation>Allows you to define an alias for the SessionRegistry bean in order to access it in your own configuration.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="session-registry-ref" type="xs:token">
@@ -1037,9 +1037,9 @@
         <xs:documentation>A reference to a user-service (or UserDetailsService bean) Id</xs:documentation>
       </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="services-registrationId" type="xs:token">
+    <xs:attribute name="services-alias" type="xs:token">
       <xs:annotation>
-        <xs:documentation>Exports the internally defined RememberMeServices as a bean registrationId, allowing it to be used by other beans in the application context.</xs:documentation>
+        <xs:documentation>Exports the internally defined RememberMeServices as a bean alias, allowing it to be used by other beans in the application context.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="use-secure-cookie" type="security:boolean">
@@ -1115,7 +1115,7 @@
     </xs:attribute>
   </xs:attributeGroup>
   <xs:element name="authentication-manager"><xs:annotation>
-      <xs:documentation>Registers the AuthenticationManager instance and allows its list of AuthenticationProviders to be defined. Also allows you to define an registrationId to allow you to reference the AuthenticationManager in your own beans.</xs:documentation>
+      <xs:documentation>Registers the AuthenticationManager instance and allows its list of AuthenticationProviders to be defined. Also allows you to define an alias to allow you to reference the AuthenticationManager in your own beans.</xs:documentation>
     </xs:annotation><xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="authentication-provider"><xs:annotation>
@@ -1196,9 +1196,9 @@
       <xs:attributeGroup ref="security:authman.attlist"/>
     </xs:complexType></xs:element>
   <xs:attributeGroup name="authman.attlist">
-    <xs:attribute name="registrationId" type="xs:ID">
+    <xs:attribute name="alias" type="xs:ID">
       <xs:annotation>
-        <xs:documentation>The registrationId you wish to use for the AuthenticationManager bean</xs:documentation>
+        <xs:documentation>The alias you wish to use for the AuthenticationManager bean</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="erase-credentials" type="security:boolean">

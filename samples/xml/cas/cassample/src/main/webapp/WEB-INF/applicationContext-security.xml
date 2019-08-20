@@ -27,7 +27,7 @@
 		<csrf disabled="true"/>
 	</http>
 
-	<authentication-manager registrationId="authManager">
+	<authentication-manager alias="authManager">
 		<authentication-provider ref="casAuthProvider" />
 	</authentication-manager>
 

@@ -26,7 +26,7 @@
 
 	<http auto-config="true">
 		<session-management>
-			<concurrency-control session-registry-registrationId="sessionRegistry"/>
+			<concurrency-control session-registry-alias="sessionRegistry"/>
 		</session-management>
 		<csrf disabled="true"/>
 	</http>
