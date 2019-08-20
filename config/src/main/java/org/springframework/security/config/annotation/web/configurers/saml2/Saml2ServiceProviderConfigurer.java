@@ -16,12 +16,6 @@
 
 package org.springframework.security.config.annotation.web.configurers.saml2;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,9 +35,16 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
 
 import static java.util.Optional.ofNullable;
 
@@ -175,8 +176,15 @@ public class Saml2ServiceProviderConfigurer
 	private void configureSaml2LoginPageFilter(HttpSecurity builder, String authRequestPrefixUrl, String loginFilterUrl) {
 		RelyingPartyRegistrationRepository idpRepo = this.providerDetailsRepository;
 		Map<String, String> idps = getIdentityProviderUrlMap(authRequestPrefixUrl, idpRepo);
-		Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
-		builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
+		DefaultLoginPageGeneratingFilter loginPageGeneratingFilter = builder.getSharedObject(DefaultLoginPageGeneratingFilter.class);
+		if (loginPageGeneratingFilter != null) {
+			loginPageGeneratingFilter.setSaml2LoginEnabled(true);
+			loginPageGeneratingFilter.setSaml2AuthenticationUrlToProviderName(idps);
+		}
+		else {
+			Filter loginPageFilter = new Saml2LoginPageGeneratingFilter(loginFilterUrl, idps);
+			builder.addFilterAfter(loginPageFilter, HeaderWriterFilter.class);
+		}
 	}
 
 	private void configureSaml2AuthenticationRequestFilter(HttpSecurity builder, RequestMatcher matcher) {
