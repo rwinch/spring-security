@@ -49,7 +49,7 @@ public class Saml2SampleBootConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RelyingPartyRegistrationRepository saml2RelyingPartyRegistrationRepository() {
+	public RelyingPartyRegistrationRepository relyingPartyRegistrationRepository() {
 		return new InMemoryRelyingPartyRegistrationRepository(getRelyingParties(relyingParties));
 	}
 
