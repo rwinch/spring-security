@@ -81,12 +81,12 @@ final class Saml2Utils {
 		}
 	}
 
-	static String getServiceProviderEntityId(RelyingPartyRegistration idp, HttpServletRequest request) {
+	static String getServiceProviderEntityId(RelyingPartyRegistration rp, HttpServletRequest request) {
 		return resolveUrlTemplate(
-				idp.getLocalEntityIdTemplate(),
+				rp.getLocalEntityIdTemplate(),
 				getApplicationUri(request),
-				idp.getRemoteIdpEntityId(),
-				idp.getRegistrationId()
+				rp.getRemoteIdpEntityId(),
+				rp.getRegistrationId()
 		);
 	}
 

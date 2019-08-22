@@ -32,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static java.lang.String.format;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.deflate;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.encode;
@@ -70,7 +71,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 		String relayState = request.getParameter("RelayState");
 		String registrationId = this.matcher.matcher(request).getVariables().get("registrationId");
 		if (logger.isDebugEnabled()) {
-			logger.debug("Creating SAML2 SP Authentication Request for IDP[" + registrationId + "]");
+			logger.debug(format("Creating SAML2 SP Authentication Request for IDP[%s]", registrationId));
 		}
 		RelyingPartyRegistration rp = relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);

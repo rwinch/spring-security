@@ -16,15 +16,15 @@
 
 package org.springframework.security.saml2.serviceprovider.provider;
 
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.notEmpty;
@@ -53,17 +53,17 @@ public class InMemoryRelyingPartyRegistrationRepository
 	}
 
 	private static Map<String, RelyingPartyRegistration> createMappingToIdentityProvider(
-			Collection<RelyingPartyRegistration> idps,
+			Collection<RelyingPartyRegistration> rps,
 			Function<RelyingPartyRegistration,
 					String> mapper
 	) {
 		LinkedHashMap<String, RelyingPartyRegistration> result = new LinkedHashMap<>();
-		for (RelyingPartyRegistration idp : idps) {
-			notNull(idp, "relying party collection cannot contain null values");
-			String key = mapper.apply(idp);
-			notNull(idp, "relying party key cannot be null");
+		for (RelyingPartyRegistration rp : rps) {
+			notNull(rp, "relying party collection cannot contain null values");
+			String key = mapper.apply(rp);
+			notNull(rp, "relying party key cannot be null");
 			Assert.isNull(result.get(key), () -> "relying party duplicate key:" + key);
-			result.put(key, idp);
+			result.put(key, rp);
 		}
 		return Collections.unmodifiableMap(result);
 	}

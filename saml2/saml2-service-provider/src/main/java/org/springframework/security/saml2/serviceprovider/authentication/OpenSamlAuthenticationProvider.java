@@ -90,7 +90,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 	private GrantedAuthoritiesMapper authoritiesMapper = (a -> a);
 	private Duration responseTimeValidationSkewMillis = Duration.ofMillis(1000 * 60 * 5); // 5 minutes
 
-	private String getUsername(Saml2AuthenticationToken idp, Assertion assertion) {
+	private String getUsername(Saml2AuthenticationToken token, Assertion assertion) {
 		final Subject subject = assertion.getSubject();
 		if (subject == null) {
 			return null;
@@ -99,13 +99,13 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 			return subject.getNameID().getValue();
 		}
 		if (subject.getEncryptedID() != null) {
-			NameID nameId = decrypt(idp, subject.getEncryptedID());
+			NameID nameId = decrypt(token, subject.getEncryptedID());
 			return nameId.getValue();
 		}
 		return null;
 	}
 
-	private Assertion validateSaml2Response(Saml2AuthenticationToken idp,
+	private Assertion validateSaml2Response(Saml2AuthenticationToken token,
 											String recipient,
 											Response samlResponse) throws AuthenticationException {
 		if (hasText(samlResponse.getDestination()) && !recipient.equals(samlResponse.getDestination())) {
@@ -116,30 +116,30 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Processing SAML response from " + issuer);
 		}
-		if (idp == null) {
+		if (token == null) {
 			throw new ProviderNotFoundException(format("SAML 2 Provider for %s was not found.", issuer));
 		}
-		boolean responseSigned = hasValidSignature(samlResponse, idp);
+		boolean responseSigned = hasValidSignature(samlResponse, token);
 		for (Assertion a : samlResponse.getAssertions()) {
-			if (isValidAssertion(recipient, a, idp, !responseSigned)) {
+			if (isValidAssertion(recipient, a, token, !responseSigned)) {
 				return a;
 			}
 		}
 		for (EncryptedAssertion ea : samlResponse.getEncryptedAssertions()) {
-			Assertion a = decrypt(idp, ea);
-			if (isValidAssertion(recipient, a, idp, false)) {
+			Assertion a = decrypt(token, ea);
+			if (isValidAssertion(recipient, a, token, false)) {
 				return a;
 			}
 		}
 		throw new InsufficientAuthenticationException("Unable to find a valid assertion");
 	}
 
-	private boolean hasValidSignature(SignableSAMLObject samlResponse, Saml2AuthenticationToken idp) {
+	private boolean hasValidSignature(SignableSAMLObject samlResponse, Saml2AuthenticationToken token) {
 		if (!samlResponse.isSigned()) {
 			return false;
 		}
 
-		final List<X509Certificate> verificationKeys = getVerificationKeys(idp);
+		final List<X509Certificate> verificationKeys = getVerificationKeys(token);
 		if (verificationKeys.isEmpty()) {
 			return false;
 		}
@@ -156,8 +156,8 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		return false;
 	}
 
-	private boolean isValidAssertion(String recipient, Assertion a, Saml2AuthenticationToken idp, boolean signatureRequired) {
-		final SAML20AssertionValidator validator = getAssertionValidator(idp);
+	private boolean isValidAssertion(String recipient, Assertion a, Saml2AuthenticationToken token, boolean signatureRequired) {
+		final SAML20AssertionValidator validator = getAssertionValidator(token);
 		Map<String, Object> validationParams = new HashMap<>();
 		validationParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
 		validationParams.put(
@@ -166,13 +166,13 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		);
 		validationParams.put(
 				SAML2AssertionValidationParameters.COND_VALID_AUDIENCES,
-				singleton(idp.getLocalSpEntityId())
+				singleton(token.getLocalSpEntityId())
 		);
 		if (hasText(recipient)) {
 			validationParams.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, singleton(recipient));
 		}
 
-		if (signatureRequired && !hasValidSignature(a, idp)) {
+		if (signatureRequired && !hasValidSignature(a, token)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug(format("Assertion [%s] does not a valid signature.", a.getID()));
 			}
@@ -187,8 +187,8 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 			final boolean valid = result.equals(ValidationResult.VALID);
 			if (!valid) {
 				if (logger.isDebugEnabled()) {
-					logger.debug(format("Failed to validate assertion from %s with user %s", idp.getIdpEntityId(),
-							getUsername(idp, a)
+					logger.debug(format("Failed to validate assertion from %s with user %s", token.getIdpEntityId(),
+							getUsername(token, a)
 					));
 				}
 			}
@@ -254,9 +254,9 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		return decrypter;
 	}
 
-	private Assertion decrypt(Saml2AuthenticationToken idp, EncryptedAssertion assertion) {
+	private Assertion decrypt(Saml2AuthenticationToken token, EncryptedAssertion assertion) {
 		Saml2Exception last = null;
-		for (Saml2X509Credential key : getDecryptionCredentials(idp)) {
+		for (Saml2X509Credential key : getDecryptionCredentials(token)) {
 			final Decrypter decrypter = getDecrypter(key);
 			try {
 				return decrypter.decrypt(assertion);
