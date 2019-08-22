@@ -44,8 +44,8 @@ public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 	private final Map<String, String> providerUrls;
 
 	public Saml2LoginPageGeneratingFilter(String filterProcessesUrl, Map<String, String> providerUrls) {
-		Assert.hasText(filterProcessesUrl, "filterProcessesUrl is required");
-		Assert.notEmpty(providerUrls, "providerUrls are required");
+		Assert.hasText(filterProcessesUrl, "filterProcessesUrl cannot be empty");
+		Assert.notEmpty(providerUrls, "providerUrls cannot be empty");
 		this.matcher = new AntPathRequestMatcher(filterProcessesUrl);
 		this.providerUrls = providerUrls;
 	}

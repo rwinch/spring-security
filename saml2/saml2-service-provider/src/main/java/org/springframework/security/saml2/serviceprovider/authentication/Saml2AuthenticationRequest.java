@@ -16,11 +16,11 @@
 
 package org.springframework.security.saml2.serviceprovider.authentication;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.util.Assert;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @since 5.2
@@ -31,8 +31,8 @@ public class Saml2AuthenticationRequest {
 	private String webSsoUri;
 
 	public Saml2AuthenticationRequest(String localSpEntityId, String webSsoUri, List<Saml2X509Credential> credentials) {
-		Assert.hasText(localSpEntityId, "localSpEntityId is required");
-		Assert.hasText(localSpEntityId, "webSsoUri is required");
+		Assert.hasText(localSpEntityId, "localSpEntityId cannot be null");
+		Assert.hasText(localSpEntityId, "webSsoUri cannot be null");
 		this.localSpEntityId = localSpEntityId;
 		this.webSsoUri = webSsoUri;
 		this.credentials = new LinkedList<>();

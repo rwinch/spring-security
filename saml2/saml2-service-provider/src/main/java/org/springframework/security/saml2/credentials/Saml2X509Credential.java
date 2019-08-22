@@ -45,13 +45,13 @@ public class Saml2X509Credential {
 	private final Set<Saml2X509CredentialUsage> saml2X509CredentialUsage;
 
 	public Saml2X509Credential(PrivateKey privateKey, X509Certificate certificate, Saml2X509CredentialUsage... usages) {
-		notNull(certificate, "certificate is required and cannot be null");
+		notNull(certificate, "certificate cannot be null");
 		notEmpty(usages, "credentials usages cannot be empty");
 		this.privateKey = privateKey;
 		this.certificate = certificate;
 		this.saml2X509CredentialUsage = new LinkedHashSet<>(asList(usages));
 		if (isSigningCredential() || isDecryptionCredential()) {
-			notNull(this.privateKey, "private key is required for signing and decryption credentials");
+			notNull(this.privateKey, "private key cannot be null for signing and decryption credentials");
 		}
 	}
 

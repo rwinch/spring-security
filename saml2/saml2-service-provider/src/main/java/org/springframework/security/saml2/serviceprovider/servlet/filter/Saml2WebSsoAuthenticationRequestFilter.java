@@ -16,13 +16,6 @@
 
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
@@ -31,6 +24,13 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.deflate;
@@ -48,7 +48,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
 	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
-		notNull(matcher, "matcher is required");
+		notNull(matcher, "matcher cannot be null");
 		this.matcher = matcher;
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;

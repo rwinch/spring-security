@@ -70,11 +70,11 @@ public class RelyingPartyRegistration {
 	}
 
 	public RelyingPartyRegistration(String idpEntityId, String registrationId, URI idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
-		hasText(idpEntityId, "idpEntityId is required");
-		hasText(registrationId, "registrationId is required");
-		hasText(localEntityIdTemplate, "localEntityIdTemplate is required");
-		notEmpty(credentials, "credentials are required");
-		notNull(idpWebSsoUri, "idpWebSsoUri is required");
+		hasText(idpEntityId, "idpEntityId cannot be empty");
+		hasText(registrationId, "registrationId cannot be empty");
+		hasText(localEntityIdTemplate, "localEntityIdTemplate cannot be empty");
+		notEmpty(credentials, "credentials cannot be empty");
+		notNull(idpWebSsoUri, "idpWebSsoUri cannot be empty");
 		for (Saml2X509Credential c : credentials) {
 			notNull(c, "credentials cannot contain null elements");
 		}

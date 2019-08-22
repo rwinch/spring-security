@@ -16,12 +16,12 @@
 
 package org.springframework.security.saml2.serviceprovider.authentication;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
+
+import java.util.Collection;
 
 /**
  * @since 5.2
@@ -33,8 +33,8 @@ public class Saml2Authentication extends AbstractAuthenticationToken {
 
 	public Saml2Authentication(String saml2Response, AuthenticatedPrincipal principal, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
-		Assert.hasText(saml2Response, "saml2Response is required");
-		Assert.notNull(principal, "principal is required");
+		Assert.hasText(saml2Response, "saml2Response cannot be null");
+		Assert.notNull(principal, "principal cannot be null");
 		this.saml2Response = saml2Response;
 		this.principal = principal;
 		setAuthenticated(true);
