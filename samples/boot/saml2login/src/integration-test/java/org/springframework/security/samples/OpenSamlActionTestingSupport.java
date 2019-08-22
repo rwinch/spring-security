@@ -16,9 +16,6 @@
 
 package org.springframework.security.samples;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -47,12 +44,15 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * <b>Copied from OpenSAML Source Code</b> Helper methods for creating/testing SAML 2
  * objects within profile action tests. When methods herein refer to mock objects they are
  * always objects that have been created via Mockito unless otherwise noted.
  */
-public class SAML2ActionTestingSupport {
+public class OpenSamlActionTestingSupport {
 
 	/** ID used for all generated {@link Response} objects. */
 	final static String REQUEST_ID = "request";

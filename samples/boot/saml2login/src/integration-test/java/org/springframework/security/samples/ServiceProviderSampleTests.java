@@ -63,11 +63,11 @@ import org.w3c.dom.Element;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
-import static org.springframework.security.samples.SAML2ActionTestingSupport.buildConditions;
-import static org.springframework.security.samples.SAML2ActionTestingSupport.buildIssuer;
-import static org.springframework.security.samples.SAML2ActionTestingSupport.buildSubject;
-import static org.springframework.security.samples.SAML2ActionTestingSupport.buildSubjectConfirmation;
-import static org.springframework.security.samples.SAML2ActionTestingSupport.buildSubjectConfirmationData;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildConditions;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildIssuer;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubject;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubjectConfirmation;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubjectConfirmationData;
 import static org.springframework.security.samples.Saml2TestUtils.encryptNameId;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
@@ -226,7 +226,7 @@ public class ServiceProviderSampleTests {
 	}
 
 	private Response buildResponse() {
-		Response response = SAML2ActionTestingSupport.buildResponse();
+		Response response = OpenSamlActionTestingSupport.buildResponse();
 		response.setID("_" + UUID.randomUUID().toString());
 		response.setDestination("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp");
 		response.setIssuer(buildIssuer("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
@@ -234,7 +234,7 @@ public class ServiceProviderSampleTests {
 	}
 
 	private Assertion buildAssertion(String username) {
-		Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+		Assertion assertion = OpenSamlActionTestingSupport.buildAssertion();
 		assertion.setIssueInstant(DateTime.now());
 		assertion.setIssuer(buildIssuer("https://simplesaml-for-spring-saml.cfapps.io/saml2/idp/metadata.php"));
 		assertion.setSubject(buildSubject(username));
