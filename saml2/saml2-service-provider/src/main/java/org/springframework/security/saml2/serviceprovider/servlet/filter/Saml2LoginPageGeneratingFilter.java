@@ -41,13 +41,13 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 
 	private final RequestMatcher matcher;
-	private final Map<String, String> providerUrls;
+	private final Map<String, String> relyingPartyUrlToNameMap;
 
-	public Saml2LoginPageGeneratingFilter(String filterProcessesUrl, Map<String, String> providerUrls) {
+	public Saml2LoginPageGeneratingFilter(String filterProcessesUrl, Map<String, String> relyingPartyUrlToNameMap) {
 		Assert.hasText(filterProcessesUrl, "filterProcessesUrl cannot be empty");
-		Assert.notEmpty(providerUrls, "providerUrls cannot be empty");
+		Assert.notEmpty(relyingPartyUrlToNameMap, "relyingPartyUrlToNameMap cannot be empty");
 		this.matcher = new AntPathRequestMatcher(filterProcessesUrl);
-		this.providerUrls = providerUrls;
+		this.relyingPartyUrlToNameMap = relyingPartyUrlToNameMap;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public final class Saml2LoginPageGeneratingFilter extends OncePerRequestFilter {
 		if (this.matcher.matches(request)) {
 			response.setContentType(TEXT_HTML_VALUE);
 			response.setCharacterEncoding(UTF_8.name());
-			response.getWriter().write(getSaml2LoginPageHtml(this.providerUrls, request.getContextPath()));
+			response.getWriter().write(getSaml2LoginPageHtml(this.relyingPartyUrlToNameMap, request.getContextPath()));
 		}
 		else {
 			filterChain.doFilter(request, response);
