@@ -16,13 +16,6 @@
 
 package boot.saml2.config;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.cert.X509Certificate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +29,13 @@ import org.springframework.util.StringUtils;
 
 import boot.saml2.config.OpenSamlKeyConverters.Saml2X509CredentialConverter;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.cert.X509Certificate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static java.util.Collections.emptyList;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.ENCRYPTION;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.VERIFICATION;
@@ -45,20 +45,20 @@ import static org.springframework.security.saml2.credentials.Saml2X509Credential
 @Import(OpenSamlKeyConverters.class)
 public class Saml2SampleBootConfiguration {
 
-	private List<IdentityProvider> providers;
+	private List<SampleRelyingParty> relyingParties;
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RelyingPartyRegistrationRepository saml2IdentityProviderDetailsRepository() {
-		return new InMemoryRelyingPartyRegistrationRepository(getIdentityProviders(providers));
+	public RelyingPartyRegistrationRepository saml2RelyingPartyRegistrationRepository() {
+		return new InMemoryRelyingPartyRegistrationRepository(getRelyingParties(relyingParties));
 	}
 
-	public void setIdentityProviders(List<IdentityProvider> providers) {
-		this.providers = providers;
+	public void setRelyingParties(List<SampleRelyingParty> providers) {
+		this.relyingParties = providers;
 	}
 
-	private List<RelyingPartyRegistration> getIdentityProviders(List<IdentityProvider> identityProviders) {
-		return identityProviders.stream()
+	private List<RelyingPartyRegistration> getRelyingParties(List<SampleRelyingParty> sampleRelyingParties) {
+		return sampleRelyingParties.stream()
 				.map(
 					p -> StringUtils.hasText(p.getLocalSpEntityIdTemplate()) ?
 							new RelyingPartyRegistration(
@@ -78,7 +78,7 @@ public class Saml2SampleBootConfiguration {
 				.collect(Collectors.toList());
 	}
 
-	public static class IdentityProvider {
+	public static class SampleRelyingParty {
 
 		private String entityId;
 		private List<Saml2X509Credential> signingCredentials = emptyList();
@@ -128,7 +128,7 @@ public class Saml2SampleBootConfiguration {
 			return registrationId;
 		}
 
-		public IdentityProvider setRegistrationId(String registrationId) {
+		public SampleRelyingParty setRegistrationId(String registrationId) {
 			this.registrationId = registrationId;
 			return this;
 		}
@@ -145,7 +145,7 @@ public class Saml2SampleBootConfiguration {
 			}
 		}
 
-		public IdentityProvider setWebSsoUrl(String webSsoUrl) {
+		public SampleRelyingParty setWebSsoUrl(String webSsoUrl) {
 			this.webSsoUrl = webSsoUrl;
 			return this;
 		}
