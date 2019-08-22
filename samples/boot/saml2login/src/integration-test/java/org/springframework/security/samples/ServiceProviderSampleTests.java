@@ -15,12 +15,6 @@
  */
 package org.springframework.security.samples;
 
-import java.security.KeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.CertificateException;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -60,6 +54,12 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.w3c.dom.Element;
 
+import java.security.KeyException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.CertificateException;
+import java.util.UUID;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
@@ -68,7 +68,7 @@ import static org.springframework.security.samples.OpenSamlActionTestingSupport.
 import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubject;
 import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubjectConfirmation;
 import static org.springframework.security.samples.OpenSamlActionTestingSupport.buildSubjectConfirmationData;
-import static org.springframework.security.samples.Saml2TestUtils.encryptNameId;
+import static org.springframework.security.samples.OpenSamlActionTestingSupport.encryptNameId;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -128,7 +128,7 @@ public class ServiceProviderSampleTests {
 		String xml = toXml(response);
 		mockMvc.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+				.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
 				.andExpect(authenticated().withUsername(username));
 	}
@@ -143,7 +143,7 @@ public class ServiceProviderSampleTests {
 		final ResultActions actions = mockMvc
 				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+						.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
 				.andExpect(authenticated().withUsername(username));
 	}
@@ -155,7 +155,7 @@ public class ServiceProviderSampleTests {
 		String xml = toXml(response);
 		mockMvc.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+				.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection())
 				.andExpect(redirectedUrl("/sample-sp/login?error=saml2-error"))
 				.andExpect(unauthenticated());
@@ -165,7 +165,7 @@ public class ServiceProviderSampleTests {
 	public void signedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
-		EncryptedAssertion encryptedAssertion = Saml2TestUtils.encryptAssertion(assertion,
+		EncryptedAssertion encryptedAssertion = OpenSamlActionTestingSupport.encryptAssertion(assertion,
 				X509Support.decodeCertificate(spCertificate));
 		Response response = buildResponse(encryptedAssertion);
 		signXmlObject(assertion, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
@@ -173,7 +173,7 @@ public class ServiceProviderSampleTests {
 		final ResultActions actions = mockMvc
 				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+						.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
 				.andExpect(authenticated().withUsername(username));
 	}
@@ -182,14 +182,14 @@ public class ServiceProviderSampleTests {
 	public void unsignedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
-		EncryptedAssertion encryptedAssertion = Saml2TestUtils.encryptAssertion(assertion,
+		EncryptedAssertion encryptedAssertion = OpenSamlActionTestingSupport.encryptAssertion(assertion,
 				X509Support.decodeCertificate(spCertificate));
 		Response response = buildResponse(encryptedAssertion);
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
 				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+						.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
 				.andExpect(authenticated().withUsername(username));
 	}
@@ -208,7 +208,7 @@ public class ServiceProviderSampleTests {
 		final ResultActions actions = mockMvc
 				.perform(post("http://localhost:8080/sample-sp/saml2/SSO/simplesamlphp").contextPath("/sample-sp")
 						.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-						.param("SAMLResponse", Saml2TestUtils.encode(xml.getBytes(UTF_8))))
+						.param("SAMLResponse", OpenSamlActionTestingSupport.encode(xml.getBytes(UTF_8))))
 				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/sample-sp/"))
 				.andExpect(authenticated().withUsername(username));
 	}
