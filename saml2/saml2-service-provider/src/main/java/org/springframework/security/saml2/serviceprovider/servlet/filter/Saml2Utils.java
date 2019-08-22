@@ -16,8 +16,15 @@
 
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
+import org.springframework.security.saml2.Saml2Exception;
+import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.Deflater;
@@ -25,14 +32,6 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterOutputStream;
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.security.saml2.Saml2Exception;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
-import org.springframework.util.StringUtils;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import org.apache.commons.codec.binary.Base64;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.zip.Deflater.DEFLATED;
@@ -45,14 +44,15 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 final class Saml2Utils {
 
 	private static final char PATH_DELIMITER = '/';
-	private static Base64 UNCHUNKED_ENCODER = new Base64(0, new byte[]{'\n'});
+	private static Base64.Encoder ENCODER = Base64.getEncoder();
+	private static Base64.Decoder DECODER = Base64.getDecoder();
 
 	static String encode(byte[] b) {
-		return UNCHUNKED_ENCODER.encodeToString(b);
+		return ENCODER.encodeToString(b);
 	}
 
 	static byte[] decode(String s) {
-		return UNCHUNKED_ENCODER.decode(s);
+		return DECODER.decode(s);
 	}
 
 	static byte[] deflate(String s) {
