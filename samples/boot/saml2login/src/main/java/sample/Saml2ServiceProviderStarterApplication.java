@@ -28,11 +28,7 @@ import org.apache.commons.logging.LogFactory;
 public class Saml2ServiceProviderStarterApplication {
 
 	public static void main(String[] args) {
-		Log log = LogFactory.getLog(Saml2ServiceProviderStarterApplication.class);
-		log.info("Starting SAML 2 Sample Application");
-		SpringApplication.run(
-			Saml2ServiceProviderStarterApplication.class, args
-		);
+		SpringApplication.run(Saml2ServiceProviderStarterApplication.class, args);
 	}
 
 }
