@@ -137,7 +137,7 @@ public class Saml2SampleBootConfiguration {
 			return webSsoUrl;
 		}
 
-		public URI getWebSsoUrlAsURI() {
+		public String getWebSsoUrlAsURI() {
 			try {
 				return new URI(webSsoUrl);
 			} catch (URISyntaxException e) {

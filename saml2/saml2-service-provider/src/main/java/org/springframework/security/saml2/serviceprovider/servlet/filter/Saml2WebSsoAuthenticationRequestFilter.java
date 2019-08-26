@@ -16,6 +16,15 @@
 
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
@@ -24,13 +33,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static java.lang.String.format;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
@@ -60,14 +62,19 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		if (this.matcher.matches(request)) {
-			sendAuthenticationRequest(request, response);
+			try {
+				sendAuthenticationRequest(request, response);
+			} catch (URISyntaxException e) {
+				throw new ServletException(e);
+			}
 		}
 		else {
 			filterChain.doFilter(request, response);
 		}
 	}
 
-	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, URISyntaxException {
 		String relayState = request.getParameter("RelayState");
 		String registrationId = this.matcher.matcher(request).getVariables().get("registrationId");
 		if (logger.isDebugEnabled()) {
@@ -88,7 +95,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 		String xml = authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
 		String encoded = encode(deflate(xml));
 		String redirect = UriComponentsBuilder
-				.fromUri(rp.getIdpWebSsoUrl())
+				.fromUri(new URI(rp.getIdpWebSsoUrl()))
 				.queryParam("SAMLRequest", UriUtils.encode(encoded, StandardCharsets.ISO_8859_1))
 				.queryParam("RelayState", UriUtils.encode(relayState, StandardCharsets.ISO_8859_1))
 				.build(true)

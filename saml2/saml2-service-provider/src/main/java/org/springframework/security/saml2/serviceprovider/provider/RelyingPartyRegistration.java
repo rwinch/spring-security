@@ -16,14 +16,13 @@
 
 package org.springframework.security.saml2.serviceprovider.provider;
 
-import org.springframework.security.saml2.credentials.Saml2X509Credential;
-import org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage;
-
-import java.net.URI;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.saml2.credentials.Saml2X509Credential;
+import org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.hasText;
@@ -61,15 +60,15 @@ public class RelyingPartyRegistration {
 
 	private final String registrationId;
 	private final String remoteIdpEntityId;
-	private final URI idpWebSsoUrl;
+	private final String idpWebSsoUrl;
 	private final List<Saml2X509Credential> credentials;
 	private final String localEntityIdTemplate;
 
-	public RelyingPartyRegistration(String idpEntityId, String registrationId, URI idpWebSsoUri, List<Saml2X509Credential> credentials) {
+	public RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials) {
 		this(idpEntityId, registrationId, idpWebSsoUri, credentials, "{baseUrl}/saml2/service-provider-metadata/{registrationId}");
 	}
 
-	public RelyingPartyRegistration(String idpEntityId, String registrationId, URI idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
+	public RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
 		hasText(idpEntityId, "idpEntityId cannot be empty");
 		hasText(registrationId, "registrationId cannot be empty");
 		hasText(localEntityIdTemplate, "localEntityIdTemplate cannot be empty");
@@ -93,7 +92,7 @@ public class RelyingPartyRegistration {
 		return this.registrationId;
 	}
 
-	public URI getIdpWebSsoUrl() {
+	public String getIdpWebSsoUrl() {
 		return this.idpWebSsoUrl;
 	}
 
