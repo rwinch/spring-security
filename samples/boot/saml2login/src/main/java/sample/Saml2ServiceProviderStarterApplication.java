@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import;
 import boot.saml2.config.Saml2SampleBootConfiguration;
 
 @SpringBootApplication
-@Import({ Saml2SampleBootConfiguration.class })
+@Import(Saml2SampleBootConfiguration.class)
 public class Saml2ServiceProviderStarterApplication {
 
 	public static void main(String[] args) {
