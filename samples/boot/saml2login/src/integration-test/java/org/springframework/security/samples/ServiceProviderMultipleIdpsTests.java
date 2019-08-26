@@ -51,14 +51,14 @@ public class ServiceProviderMultipleIdpsTests {
 
 	@Test
 	public void redirectToLoginPage() throws Exception {
-		mockMvc.perform(get("http://localhost:8080/sample-sp/some/url").contextPath("/sample-sp"))
+		mockMvc.perform(get("http://localhost:8080/some/url"))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("http://localhost:8080/sample-sp/login"));
+			.andExpect(redirectedUrl("http://localhost:8080/login"));
 	}
 
 	@Test
 	public void loginPage() throws Exception {
-		mockMvc.perform(get("http://localhost:8080/sample-sp/login").contextPath("/sample-sp"))
+		mockMvc.perform(get("http://localhost:8080/login"))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString(">simplesamlphp<")))
 			.andExpect(content().string(containsString(">simplesamlphp2<")))
