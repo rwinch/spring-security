@@ -1,9 +1,14 @@
 = OAuth 2.0 Login Sample
 
-This guide provides instructions on setting up the sample application with OAuth 2.0 Login using an OAuth 2.0 Provider or OpenID Connect 1.0 Provider.
-The sample application uses Spring Boot 2.0.0.M6 and the `spring-security-oauth2-client` module which is new in Spring Security 5.0.
+This guide provides instructions on setting up the sample application with SAML 2.0 Login using
+Spring Security's `saml2Login()` feature.
 
-The following sections provide detailed steps for setting up OAuth 2.0 Login for these Providers:
+The sample application uses Spring Boot 2.2.0.M3 and the `spring-security-saml2-service-provider`
+module which is new in Spring Security 5.2.
+
+== Goals
+
+The following sections provide detailed steps for setting up SAML 2.0 Login for these Providers:
 
 * <<google-login, Google>>
 * <<github-login, GitHub>>
