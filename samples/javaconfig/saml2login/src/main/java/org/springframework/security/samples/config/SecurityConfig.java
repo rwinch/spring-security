@@ -15,8 +15,9 @@
  */
 package org.springframework.security.samples.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
+
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,11 +26,6 @@ import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.serviceprovider.provider.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
 
-import java.net.URI;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
-
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.DECRYPTION;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.VERIFICATION;
@@ -37,11 +33,6 @@ import static org.springframework.security.saml2.credentials.Saml2X509Credential
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-	}
 
 	RelyingPartyRegistration getSaml2AuthenticationConfiguration() throws Exception {
 		//remote IDP entity ID
@@ -56,13 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		Saml2X509Credential signingCredential = getSigningCredential();
 		//IDP certificate for verification of incoming messages
 		Saml2X509Credential idpVerificationCertificate = getVerificationCertificate();
-		return new RelyingPartyRegistration(
-				idpEntityId,
-				registrationId,
-				new URI(webSsoEndpoint),
-				Arrays.asList(signingCredential, idpVerificationCertificate),
-				localEntityIdTemplate
-		);
+		return RelyingPartyRegistration.withRegistrationId(registrationId)
+				.remoteIdpEntityId(idpEntityId)
+				.idpWebSsoUrl(webSsoEndpoint)
+				.credential(signingCredential)
+				.credential(idpVerificationCertificate)
+				.localEntityIdTemplate(localEntityIdTemplate)
+				.build();
 	}
 
 	@Override

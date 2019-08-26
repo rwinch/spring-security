@@ -16,6 +16,7 @@
 
 package org.springframework.security.saml2.serviceprovider.provider;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage;
+import org.springframework.util.Assert;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.hasText;
@@ -64,11 +66,7 @@ public class RelyingPartyRegistration {
 	private final List<Saml2X509Credential> credentials;
 	private final String localEntityIdTemplate;
 
-	public RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials) {
-		this(idpEntityId, registrationId, idpWebSsoUri, credentials, "{baseUrl}/saml2/service-provider-metadata/{registrationId}");
-	}
-
-	public RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
+	private RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
 		hasText(idpEntityId, "idpEntityId cannot be empty");
 		hasText(registrationId, "registrationId cannot be empty");
 		hasText(localEntityIdTemplate, "localEntityIdTemplate cannot be empty");
@@ -121,6 +119,63 @@ public class RelyingPartyRegistration {
 			}
 		}
 		return false;
+	}
+
+	public static Builder withRegistrationId(String registrationId) {
+		Assert.hasText(registrationId, "registrationId cannot be empty");
+		return new Builder(registrationId);
+	}
+
+	public static class Builder {
+		private String registrationId;
+		private String remoteIdpEntityId;
+		private String idpWebSsoUrl;
+		private List<Saml2X509Credential> credentials = new LinkedList<>();
+		private String localEntityIdTemplate = "{baseUrl}/saml2/service-provider-metadata/{registrationId}";
+
+		private Builder(String registrationId) {
+			this.registrationId = registrationId;
+		}
+
+		public Builder registrationId(String id) {
+			this.registrationId = registrationId;
+			return this;
+		}
+
+		public Builder remoteIdpEntityId(String entityId) {
+			this.remoteIdpEntityId = entityId;
+			return this;
+		}
+
+		public Builder idpWebSsoUrl(String url) {
+			this.idpWebSsoUrl = url;
+			return this;
+		}
+
+		public Builder credential(Saml2X509Credential credential) {
+			this.credentials.add(credential);
+			return this;
+		}
+
+		public Builder credentials(Collection<Saml2X509Credential> credentials) {
+			this.credentials.addAll(credentials);
+			return this;
+		}
+
+		public Builder localEntityIdTemplate(String template) {
+			this.localEntityIdTemplate = template;
+			return this;
+		}
+
+		public RelyingPartyRegistration build() {
+			return new RelyingPartyRegistration(
+					remoteIdpEntityId,
+					registrationId,
+					idpWebSsoUrl,
+					credentials,
+					localEntityIdTemplate
+			);
+		}
 	}
 
 

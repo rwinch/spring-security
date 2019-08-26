@@ -20,8 +20,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 import boot.saml2.config.Saml2SampleBootConfiguration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 @SpringBootApplication
 @Import({ Saml2SampleBootConfiguration.class })

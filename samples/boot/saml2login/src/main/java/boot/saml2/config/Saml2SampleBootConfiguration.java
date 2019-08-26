@@ -16,6 +16,11 @@
 
 package boot.saml2.config;
 
+import java.security.cert.X509Certificate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +33,6 @@ import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyR
 import org.springframework.util.StringUtils;
 
 import boot.saml2.config.OpenSamlKeyConverters.Saml2X509CredentialConverter;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.cert.X509Certificate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.ENCRYPTION;
@@ -61,19 +59,17 @@ public class Saml2SampleBootConfiguration {
 		return sampleRelyingParties.stream()
 				.map(
 					p -> StringUtils.hasText(p.getLocalSpEntityIdTemplate()) ?
-							new RelyingPartyRegistration(
-								p.getEntityId(),
-								p.getRegistrationId(),
-								p.getWebSsoUrlAsURI(),
-								p.getProviderCredentials(),
-								p.getLocalSpEntityIdTemplate()
-							) :
-							new RelyingPartyRegistration(
-								p.getEntityId(),
-								p.getRegistrationId(),
-								p.getWebSsoUrlAsURI(),
-								p.getProviderCredentials()
-							)
+							RelyingPartyRegistration.withRegistrationId(p.getRegistrationId())
+									.remoteIdpEntityId(p.getEntityId())
+									.idpWebSsoUrl(p.getWebSsoUrl())
+									.credentials(p.getProviderCredentials())
+									.localEntityIdTemplate(p.getLocalSpEntityIdTemplate())
+									.build() :
+							RelyingPartyRegistration.withRegistrationId(p.getRegistrationId())
+									.remoteIdpEntityId(p.getEntityId())
+									.idpWebSsoUrl(p.getWebSsoUrl())
+									.credentials(p.getProviderCredentials())
+									.build()
 				)
 				.collect(Collectors.toList());
 	}
@@ -135,14 +131,6 @@ public class Saml2SampleBootConfiguration {
 
 		public String getWebSsoUrl() {
 			return webSsoUrl;
-		}
-
-		public String getWebSsoUrlAsURI() {
-			try {
-				return new URI(webSsoUrl);
-			} catch (URISyntaxException e) {
-				throw new IllegalArgumentException(e);
-			}
 		}
 
 		public SampleRelyingParty setWebSsoUrl(String webSsoUrl) {
