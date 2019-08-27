@@ -1928,13 +1928,13 @@ public final class HttpSecurity extends
 	 * 		Saml2X509Credential signingCredential = getSigningCredential();
 	 * 		//IDP certificate for verification of incoming messages
 	 * 		Saml2X509Credential idpVerificationCertificate = getVerificationCertificate();
-	 * 		return new RelyingPartyRegistration(
-	 * 				idpEntityId,
-	 * 				registrationId,
-	 * 				new URI(webSsoEndpoint),
-	 * 				Arrays.asList(signingCredential, idpVerificationCertificate),
-	 * 				localEntityIdTemplate
-	 * 		);
+	 * 		return RelyingPartyRegistration.withRegistrationId(registrationId)
+	 *  * 				.remoteIdpEntityId(idpEntityId)
+	 *  * 				.idpWebSsoUrl(webSsoEndpoint)
+	 *  * 				.credential(signingCredential)
+	 *  * 				.credential(idpVerificationCertificate)
+	 *  * 				.localEntityIdTemplate(localEntityIdTemplate)
+	 *  * 				.build();
 	 *	}
 	 * }
 	 * </pre>

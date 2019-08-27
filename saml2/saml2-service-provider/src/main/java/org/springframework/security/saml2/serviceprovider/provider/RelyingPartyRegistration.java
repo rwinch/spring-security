@@ -48,13 +48,13 @@ import static org.springframework.util.Assert.notNull;
  *		Saml2X509Credential signingCredential = getSigningCredential();
  *		//IDP certificate for verification of incoming messages
  *		Saml2X509Credential idpVerificationCertificate = getVerificationCertificate();
- *		RelyingPartyRegistration rp = new RelyingPartyRegistration(
- *				idpEntityId,
- *				registrationId,
- *				new URI(webSsoEndpoint),
- *				Arrays.asList(signingCredential, idpVerificationCertificate),
- *				localEntityIdTemplate
- *		);
+ *		RelyingPartyRegistration rp = RelyingPartyRegistration.withRegistrationId(registrationId)
+ * 				.remoteIdpEntityId(idpEntityId)
+ * 				.idpWebSsoUrl(webSsoEndpoint)
+ * 				.credential(signingCredential)
+ * 				.credential(idpVerificationCertificate)
+ * 				.localEntityIdTemplate(localEntityIdTemplate)
+ * 				.build();
  * </pre>
  * @since 5.2
  */
