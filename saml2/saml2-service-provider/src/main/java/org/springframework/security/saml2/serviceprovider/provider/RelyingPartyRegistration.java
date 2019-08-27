@@ -33,7 +33,7 @@ import static org.springframework.util.Assert.notNull;
 
 /**
  * Represents a configured service provider, SP, and a remote identity provider, IDP, pair.
- * Each SP/IDP pair is uniquely identified using a <code>registrationId</code>, and arbitrary string.
+ * Each SP/IDP pair is uniquely identified using a <code>registrationId</code>, an arbitrary string.
  * A fully configured registration may look like
  * <pre>
  *		//remote IDP entity ID
