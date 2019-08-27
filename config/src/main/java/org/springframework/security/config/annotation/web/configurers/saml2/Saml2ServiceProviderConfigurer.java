@@ -16,6 +16,14 @@
 
 package org.springframework.security.config.annotation.web.configurers.saml2;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -47,14 +55,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
-
 import static java.util.Optional.ofNullable;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -84,8 +84,8 @@ public class Saml2ServiceProviderConfigurer
 
 	private static class RelyingPartyAliasUrlRequestMatcher implements RequestMatcher {
 
-		private final AntPathRequestMatcher filterProcessesMatcher;
-		private final AntPathRequestMatcher aliasExtractor;
+		private final RequestMatcher filterProcessesMatcher;
+		private final RequestMatcher aliasExtractor;
 
 		RelyingPartyAliasUrlRequestMatcher(String filterProcessesUrl, String aliasExtractorUrl) {
 			this.filterProcessesMatcher = new AntPathRequestMatcher(filterProcessesUrl);
