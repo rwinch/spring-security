@@ -15,6 +15,12 @@
  */
 package org.springframework.security.config.annotation.web.builders;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -53,7 +59,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.cli
 import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.annotation.web.configurers.openid.OpenIDLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.saml2.Saml2ServiceProviderConfigurer;
+import org.springframework.security.config.annotation.web.configurers.saml2.Saml2LoginConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,12 +81,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * A {@link HttpSecurity} is similar to Spring Security's XML &lt;http&gt; element in the
@@ -1942,11 +1942,11 @@ public final class HttpSecurity extends
 	 * <p>
 	 *
 	 * @since 5.2
-	 * @return the {@link Saml2ServiceProviderConfigurer} for further customizations
+	 * @return the {@link Saml2LoginConfigurer} for further customizations
 	 * @throws Exception
 	 */
-	public Saml2ServiceProviderConfigurer saml2Login() throws Exception {
-		return getOrApply(Saml2ServiceProviderConfigurer.saml2Login());
+	public Saml2LoginConfigurer saml2Login() throws Exception {
+		return getOrApply(Saml2LoginConfigurer.saml2Login());
 	}
 
 	/**

@@ -15,6 +15,16 @@
  */
 package org.springframework.security.saml2.serviceprovider.authentication;
 
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -62,16 +72,6 @@ import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
-
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static java.lang.String.format;
 import static java.util.Collections.singleton;
@@ -311,7 +311,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		this.responseTimeValidationSkewMillis = responseTimeValidationSkewMillis;
 	}
 
-	protected List<? extends GrantedAuthority> getAssertionAuthorities(Assertion assertion) {
+	private List<? extends GrantedAuthority> getAssertionAuthorities(Assertion assertion) {
 		return singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 

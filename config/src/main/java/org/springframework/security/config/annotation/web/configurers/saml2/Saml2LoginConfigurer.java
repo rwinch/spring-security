@@ -22,7 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -61,8 +60,8 @@ import static org.springframework.util.StringUtils.hasText;
 /**
  * @since 5.2
  */
-public class Saml2ServiceProviderConfigurer
-		extends AbstractHttpConfigurer<Saml2ServiceProviderConfigurer, HttpSecurity> {
+public class Saml2LoginConfigurer
+		extends AbstractHttpConfigurer<Saml2LoginConfigurer, HttpSecurity> {
 
 	private static final String PREFIX = "/saml2";
 	private final String filterPrefix;
@@ -70,55 +69,34 @@ public class Saml2ServiceProviderConfigurer
 	private RelyingPartyRegistrationRepository providerDetailsRepository;
 	private AuthenticationEntryPoint entryPoint = null;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
-	protected Saml2ServiceProviderConfigurer(String filterPrefix) {
+	protected Saml2LoginConfigurer(String filterPrefix) {
 		this.filterPrefix = filterPrefix;
 	}
 
-	public static Saml2ServiceProviderConfigurer saml2Login() {
+	public static Saml2LoginConfigurer saml2Login() {
 		return saml2Login(PREFIX);
 	}
 
-	public static Saml2ServiceProviderConfigurer saml2Login(String filterPrefix) {
-		return new Saml2ServiceProviderConfigurer(filterPrefix);
+	public static Saml2LoginConfigurer saml2Login(String filterPrefix) {
+		return new Saml2LoginConfigurer(filterPrefix);
 	}
 
-	private static class RelyingPartyAliasUrlRequestMatcher implements RequestMatcher {
-
-		private final RequestMatcher filterProcessesMatcher;
-		private final RequestMatcher aliasExtractor;
-
-		RelyingPartyAliasUrlRequestMatcher(String filterProcessesUrl, String aliasExtractorUrl) {
-			this.filterProcessesMatcher = new AntPathRequestMatcher(filterProcessesUrl);
-			this.aliasExtractor = new AntPathRequestMatcher(aliasExtractorUrl);
-		}
-
-		@Override
-		public MatchResult matcher(HttpServletRequest request) {
-			return aliasExtractor.matcher(request);
-		}
-
-		@Override
-		public boolean matches(HttpServletRequest request) {
-			return filterProcessesMatcher.matches(request);
-		}
-	}
-
-	public Saml2ServiceProviderConfigurer authenticationProvider(AuthenticationProvider provider) {
+	public Saml2LoginConfigurer authenticationProvider(AuthenticationProvider provider) {
 		this.authenticationProvider = provider;
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer authenticationRequestResolver(Saml2AuthenticationRequestResolver resolver) {
+	public Saml2LoginConfigurer authenticationRequestResolver(Saml2AuthenticationRequestResolver resolver) {
 		this.authenticationRequestResolver = resolver;
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
+	public Saml2LoginConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
 		this.providerDetailsRepository = repo;
 		return this;
 	}
 
-	public Saml2ServiceProviderConfigurer authenticationEntryPoint(AuthenticationEntryPoint ep) {
+	public Saml2LoginConfigurer authenticationEntryPoint(AuthenticationEntryPoint ep) {
 		this.entryPoint = ep;
 		return this;
 	}
@@ -173,19 +151,17 @@ public class Saml2ServiceProviderConfigurer
 	@Override
 	public void configure(HttpSecurity builder) throws Exception {
 		String authNRequestUrlPrefix = this.filterPrefix + "/authenticate/";
-		String authNRequestUriMatcher = authNRequestUrlPrefix + "**";
 		String authNAliasExtractor = authNRequestUrlPrefix + "{registrationId}/**";
 		configureSaml2AuthenticationRequestFilter(
 				builder,
-				new RelyingPartyAliasUrlRequestMatcher(authNRequestUriMatcher, authNAliasExtractor)
+				new AntPathRequestMatcher(authNAliasExtractor)
 		);
 
 		String ssoUriPrefix = this.filterPrefix + "/SSO/";
-		String ssoUriMatcher = ssoUriPrefix + "**";
 		String ssoAliasExtractor = ssoUriPrefix + "{registrationId}/**";
 		configureSaml2WebSsoAuthenticationFilter(
 				builder,
-				new RelyingPartyAliasUrlRequestMatcher(ssoUriMatcher, ssoAliasExtractor)
+				new AntPathRequestMatcher(ssoAliasExtractor)
 		);
 	}
 
@@ -227,10 +203,10 @@ public class Saml2ServiceProviderConfigurer
 		builder.addFilterAfter(webSsoFilter, HeaderWriterFilter.class);
 	}
 
-	private <C> C getSharedObject(HttpSecurity http, Class<C> clazz, Supplier<? extends C> creator, Object existingInstance) {
-		C result = ofNullable((C) existingInstance).orElseGet(() -> getSharedObject(http, clazz));
+	private <C> C getSharedObject(HttpSecurity builder, Class<C> clazz, Supplier<? extends C> creator, Object existingInstance) {
+		C result = ofNullable((C) existingInstance).orElseGet(() -> getSharedObject(builder, clazz));
 		if (result == null) {
-			ApplicationContext context = getSharedObject(http, ApplicationContext.class);
+			ApplicationContext context = getSharedObject(builder, ApplicationContext.class);
 			try {
 				result = context.getBean(clazz);
 			}
@@ -243,14 +219,14 @@ public class Saml2ServiceProviderConfigurer
 				}
 			}
 		}
-		setSharedObject(http, clazz, result);
+		setSharedObject(builder, clazz, result);
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	private void registerAuthenticationEntryPoint(HttpSecurity http, AuthenticationEntryPoint entryPoint) {
+	private void registerAuthenticationEntryPoint(HttpSecurity builder, AuthenticationEntryPoint entryPoint) {
 		ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling =
-				http.getConfigurer(ExceptionHandlingConfigurer.class);
+				builder.getConfigurer(ExceptionHandlingConfigurer.class);
 
 		if (exceptionHandling == null) {
 			return;
@@ -260,19 +236,19 @@ public class Saml2ServiceProviderConfigurer
 	}
 
 	@SuppressWarnings("unchecked")
-	private void registerDefaultAuthenticationEntryPoint(HttpSecurity http, AuthenticationEntryPoint entryPoint) {
+	private void registerDefaultAuthenticationEntryPoint(HttpSecurity builder, AuthenticationEntryPoint entryPoint) {
 		ExceptionHandlingConfigurer<HttpSecurity> exceptionHandling =
-				http.getConfigurer(ExceptionHandlingConfigurer.class);
+				builder.getConfigurer(ExceptionHandlingConfigurer.class);
 
 		if (exceptionHandling == null) {
 			return;
 		}
 
-		exceptionHandling.defaultAuthenticationEntryPointFor(entryPoint, getAuthenticationEntryPointMatcher(http));
+		exceptionHandling.defaultAuthenticationEntryPointFor(entryPoint, getAuthenticationEntryPointMatcher(builder));
 	}
 
-	private RequestMatcher getAuthenticationEntryPointMatcher(HttpSecurity http) {
-		ContentNegotiationStrategy contentNegotiationStrategy = http
+	private RequestMatcher getAuthenticationEntryPointMatcher(HttpSecurity builder) {
+		ContentNegotiationStrategy contentNegotiationStrategy = builder
 				.getSharedObject(ContentNegotiationStrategy.class);
 		if (contentNegotiationStrategy == null) {
 			contentNegotiationStrategy = new HeaderContentNegotiationStrategy();
@@ -301,8 +277,8 @@ public class Saml2ServiceProviderConfigurer
 		return idps;
 	}
 
-	private <C> C getSharedObject(HttpSecurity http, Class<C> clazz) {
-		return http.getSharedObject(clazz);
+	private <C> C getSharedObject(HttpSecurity builder, Class<C> clazz) {
+		return builder.getSharedObject(clazz);
 	}
 
 	private <C> void setSharedObject(HttpSecurity http, Class<C> clazz, C object) {

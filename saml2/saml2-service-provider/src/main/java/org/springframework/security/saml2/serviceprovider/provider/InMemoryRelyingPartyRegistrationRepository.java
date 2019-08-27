@@ -16,15 +16,14 @@
 
 package org.springframework.security.saml2.serviceprovider.provider;
 
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.springframework.util.Assert;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.notEmpty;
@@ -38,8 +37,6 @@ public class InMemoryRelyingPartyRegistrationRepository
 
 	private final Map<String, RelyingPartyRegistration> byEntityId;
 	private final Map<String, RelyingPartyRegistration> byRegistrationId;
-	private final RelyingPartyRegistration defaultRegistration;
-
 
 	public InMemoryRelyingPartyRegistrationRepository(RelyingPartyRegistration... registrations) {
 		this(asList(registrations));
@@ -49,7 +46,6 @@ public class InMemoryRelyingPartyRegistrationRepository
 		notEmpty(registrations, "registrations cannot be empty");
 		this.byEntityId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRemoteIdpEntityId);
 		this.byRegistrationId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRegistrationId);
-		this.defaultRegistration = registrations.iterator().next();
 	}
 
 	private static Map<String, RelyingPartyRegistration> createMappingToIdentityProvider(
@@ -76,12 +72,7 @@ public class InMemoryRelyingPartyRegistrationRepository
 
 	@Override
 	public RelyingPartyRegistration findByRegistrationId(String id) {
-		if (StringUtils.hasText(id)) {
 			return this.byRegistrationId.get(id);
-		}
-		else {
-			return this.defaultRegistration;
-		}
 	}
 
 	@Override

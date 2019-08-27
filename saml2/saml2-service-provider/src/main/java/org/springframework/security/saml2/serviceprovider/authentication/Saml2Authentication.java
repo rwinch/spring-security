@@ -16,33 +16,28 @@
 
 package org.springframework.security.saml2.serviceprovider.authentication;
 
+import java.util.Collection;
+
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
-
-import java.util.Collection;
 
 /**
  * @since 5.2
  */
 public class Saml2Authentication extends AbstractAuthenticationToken {
 
-	private final String saml2Response;
 	private final AuthenticatedPrincipal principal;
+	private final String saml2Response;
 
 	public Saml2Authentication(String saml2Response, AuthenticatedPrincipal principal, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
-		Assert.hasText(saml2Response, "saml2Response cannot be null");
 		Assert.notNull(principal, "principal cannot be null");
-		this.saml2Response = saml2Response;
+		Assert.hasText(saml2Response, "saml2Response cannot be null");
 		this.principal = principal;
+		this.saml2Response = saml2Response;
 		setAuthenticated(true);
-	}
-
-	@Override
-	public Object getCredentials() {
-		return getSaml2Response();
 	}
 
 	@Override
@@ -52,6 +47,11 @@ public class Saml2Authentication extends AbstractAuthenticationToken {
 
 	public String getSaml2Response() {
 		return this.saml2Response;
+	}
+
+	@Override
+	public Object getCredentials() {
+		return getSaml2Response();
 	}
 
 }
