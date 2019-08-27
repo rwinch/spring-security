@@ -28,7 +28,6 @@ import java.util.Set;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -109,7 +108,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 											String recipient,
 											Response samlResponse) throws AuthenticationException {
 		if (hasText(samlResponse.getDestination()) && !recipient.equals(samlResponse.getDestination())) {
-			throw new ProviderNotFoundException("Invalid SAML response destination: " + samlResponse.getDestination());
+			throw new Saml2Exception("Invalid SAML response destination: " + samlResponse.getDestination());
 		}
 
 		final String issuer = samlResponse.getIssuer().getValue();
@@ -117,7 +116,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 			logger.debug("Processing SAML response from " + issuer);
 		}
 		if (token == null) {
-			throw new ProviderNotFoundException(format("SAML 2 Provider for %s was not found.", issuer));
+			throw new Saml2Exception(format("SAML 2 Provider for %s was not found.", issuer));
 		}
 		boolean responseSigned = hasValidSignature(samlResponse, token);
 		for (Assertion a : samlResponse.getAssertions()) {
