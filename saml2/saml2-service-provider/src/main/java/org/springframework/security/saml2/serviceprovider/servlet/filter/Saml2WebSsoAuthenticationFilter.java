@@ -16,9 +16,6 @@
 
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -28,7 +25,11 @@ import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyR
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.decode;
@@ -40,12 +41,13 @@ import static org.springframework.util.StringUtils.hasText;
  */
 public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
+	public static final String DEFAULT_FILTER_PROCESSES_URI = "/login/saml2/sso/{registrationId}";
 	private final RequestMatcher matcher;
 	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-	public Saml2WebSsoAuthenticationFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
-		super(matcher);
-		this.matcher = matcher;
+	public Saml2WebSsoAuthenticationFilter(RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
+		super(DEFAULT_FILTER_PROCESSES_URI);
+		this.matcher = new AntPathRequestMatcher(DEFAULT_FILTER_PROCESSES_URI);
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		setAllowSessionCreation(true);
 		setSessionAuthenticationStrategy(new ChangeSessionIdAuthenticationStrategy());
@@ -79,7 +81,6 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 		return getAuthenticationManager().authenticate(authentication);
 	}
 
-
 	private String inflateIfRequired(HttpServletRequest request, byte[] b) {
 		if (HttpMethod.GET.matches(request.getMethod())) {
 			return inflate(b);
@@ -88,6 +89,5 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 			return new String(b, UTF_8);
 		}
 	}
-
 
 }

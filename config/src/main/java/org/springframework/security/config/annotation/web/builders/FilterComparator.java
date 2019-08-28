@@ -15,12 +15,6 @@
  */
 package org.springframework.security.config.annotation.web.builders;
 
-import java.io.Serializable;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.Filter;
-
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
@@ -45,6 +39,12 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.filter.CorsFilter;
+
+import java.io.Serializable;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.Filter;
 
 /**
  * An internal use only {@link Comparator} that sorts the Security {@link Filter}
@@ -79,6 +79,9 @@ final class FilterComparator implements Comparator<Filter>, Serializable {
 				order.next());
 		filterToOrder.put(
 			"org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter",
+				order.next());
+		filterToOrder.put(
+				"org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter",
 				order.next());
 		put(UsernamePasswordAuthenticationFilter.class, order.next());
 		put(ConcurrentSessionFilter.class, order.next());
