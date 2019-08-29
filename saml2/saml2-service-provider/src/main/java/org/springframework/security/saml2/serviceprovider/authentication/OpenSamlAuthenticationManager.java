@@ -88,7 +88,7 @@ public final class OpenSamlAuthenticationManager implements AuthenticationManage
 
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
 	private GrantedAuthoritiesMapper authoritiesMapper = (a -> a);
-	private Duration responseTimeValidationSkew = Duration.ofMillis(1000 * 60 * 5); // 5 minutes
+	private Duration responseTimeValidationSkew = Duration.ofMinutes(5);
 
 	private String getUsername(Saml2AuthenticationToken token, Assertion assertion) {
 		final Subject subject = assertion.getSubject();
