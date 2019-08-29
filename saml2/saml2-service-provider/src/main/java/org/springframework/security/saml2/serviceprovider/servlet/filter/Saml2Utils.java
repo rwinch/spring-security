@@ -17,7 +17,7 @@
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
 import org.springframework.security.saml2.Saml2Exception;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;

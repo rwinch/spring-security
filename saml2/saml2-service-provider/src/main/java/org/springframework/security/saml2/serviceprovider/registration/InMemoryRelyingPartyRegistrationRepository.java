@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.security.saml2.serviceprovider.provider;
+package org.springframework.security.saml2.serviceprovider.registration;
 
 import java.util.Collection;
 import java.util.Collections;

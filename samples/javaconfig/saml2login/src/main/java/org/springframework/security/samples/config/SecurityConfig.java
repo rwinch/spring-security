@@ -23,8 +23,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
-import org.springframework.security.saml2.serviceprovider.provider.InMemoryRelyingPartyRegistrationRepository;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.registration.InMemoryRelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.DECRYPTION;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;

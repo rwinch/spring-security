@@ -1871,12 +1871,12 @@ public final class HttpSecurity extends
 	 *
 	 * As a prerequisite to using this feature, is that you have a SAML v2.0 Identity Provider to provide an assertion.
 	 * The representation of the Service Provider, the relying party, and the remote Identity Provider, the asserting party
-	 * is contained within {@link org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration}.
+	 * is contained within {@link org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration}.
 	 * <br>
 	 * <br>
 	 *
-	 * {@link org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration}(s) are composed within a
-	 * {@link org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository},
+	 * {@link org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration}(s) are composed within a
+	 * {@link org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository},
 	 * which is <b>required</b> and must be registered with the {@link ApplicationContext} or
 	 * configured via <code>saml2Login().relyingPartyRegistrationRepository(..)</code>.
 	 * <br>

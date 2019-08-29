@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.security.saml2.serviceprovider.provider;
+package org.springframework.security.saml2.serviceprovider.registration;
 
 /**
  * Resolves a {@link RelyingPartyRegistration}, a configured service provider and remote identity provider pair,

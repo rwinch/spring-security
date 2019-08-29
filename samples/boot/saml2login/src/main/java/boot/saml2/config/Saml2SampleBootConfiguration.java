@@ -27,9 +27,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
-import org.springframework.security.saml2.serviceprovider.provider.InMemoryRelyingPartyRegistrationRepository;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.serviceprovider.registration.InMemoryRelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.util.StringUtils;
 
 import boot.saml2.config.OpenSamlKeyConverters.Saml2X509CredentialConverter;

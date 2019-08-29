@@ -29,8 +29,8 @@ import org.springframework.security.saml2.serviceprovider.authentication.OpenSam
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
-import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
+import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationRequestFilter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
