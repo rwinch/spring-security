@@ -16,8 +16,7 @@
 
 package org.springframework.security.saml2.serviceprovider.authentication;
 
-import java.time.Clock;
-import java.util.UUID;
+import org.springframework.util.Assert;
 
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -26,11 +25,15 @@ import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * @since 5.2
  */
 public class OpenSamlAuthenticationRequestResolver implements Saml2AuthenticationRequestResolver {
-	private final Clock clock = Clock.systemUTC();
+	private Clock clock = Clock.systemUTC();
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
 
 	@Override
@@ -55,5 +58,17 @@ public class OpenSamlAuthenticationRequestResolver implements Saml2Authenticatio
 		catch (MarshallingException | SignatureException | SecurityException e) {
 			throw new IllegalStateException(e);
 		}
+	}
+
+	/**
+	 * '
+	 * Use this {@link Clock} with {@link Instant#now()} for generating
+	 * timestamps
+	 *
+	 * @param clock
+	 */
+	public void setClock(Clock clock) {
+		Assert.notNull(clock, "clock cannot be null");
+		this.clock = clock;
 	}
 }
