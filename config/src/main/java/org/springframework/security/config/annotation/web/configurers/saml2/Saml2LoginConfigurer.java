@@ -244,7 +244,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 
 	public final class AuthenticationRequestEndpointConfig {
 		private Saml2AuthenticationRequestResolver authenticationRequestResolver;
-		private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 		private String filterProcessingUrl = "/saml2/authenticate/{registrationId}";
 		private AuthenticationRequestEndpointConfig() {
 		}
@@ -254,14 +253,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		) {
 			Assert.notNull(authenticationRequestResolver, "authenticationRequestResolver cannot be null");
 			this.authenticationRequestResolver = authenticationRequestResolver;
-			return this;
-		}
-
-		public AuthenticationRequestEndpointConfig relyingPartyRegistrationRepository(
-				RelyingPartyRegistrationRepository relyingPartyRegistrationRepository
-		) {
-			Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
-			this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 			return this;
 		}
 
@@ -286,13 +277,10 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 					this.authenticationRequestResolver
 			);
 
-			this.relyingPartyRegistrationRepository = Saml2LoginConfigurer.this.relyingPartyRegistrationRepository;
-
-
 			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 					new AntPathRequestMatcher(this.filterProcessingUrl),
 					"{baseUrl}" + webSsoUrl,
-					this.relyingPartyRegistrationRepository,
+					Saml2LoginConfigurer.this.relyingPartyRegistrationRepository,
 					this.authenticationRequestResolver
 			);
 
