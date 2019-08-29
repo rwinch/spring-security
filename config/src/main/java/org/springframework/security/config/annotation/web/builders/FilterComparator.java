@@ -81,6 +81,9 @@ final class FilterComparator implements Comparator<Filter>, Serializable {
 			"org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter",
 				order.next());
 		filterToOrder.put(
+				"org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationRequestFilter",
+				order.next());
+		filterToOrder.put(
 				"org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter",
 				order.next());
 		put(UsernamePasswordAuthenticationFilter.class, order.next());
