@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import sample.Saml2ServiceProviderStarterApplication;
+import sample.Saml2LoginApplication;
 
 @Controller
 public class SampleSaml2AppController {
 
-	private static final Log logger = LogFactory.getLog(Saml2ServiceProviderStarterApplication.class);
+	private static final Log logger = LogFactory.getLog(Saml2LoginApplication.class);
 
 	@RequestMapping(value = { "/logged-in" })
 	public String loggedIn() {

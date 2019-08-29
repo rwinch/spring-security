@@ -23,10 +23,10 @@ import boot.saml2.config.Saml2SampleBootConfiguration;
 
 @SpringBootApplication
 @Import(Saml2SampleBootConfiguration.class)
-public class Saml2ServiceProviderStarterApplication {
+public class Saml2LoginApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Saml2ServiceProviderStarterApplication.class, args);
+		SpringApplication.run(Saml2LoginApplication.class, args);
 	}
 
 }
