@@ -210,7 +210,7 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		else if (result instanceof Response) {
 			return (Response) result;
 		}
-		throw new ClassCastException(result.getClass().getName());
+		throw new IllegalArgumentException("Invalid response class:"+result.getClass().getName());
 	}
 
 	private SAML20AssertionValidator getAssertionValidator(Saml2AuthenticationToken provider) {
