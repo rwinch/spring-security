@@ -17,7 +17,6 @@
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
@@ -61,9 +60,6 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		if (!requiresAuthentication(request, response)) {
-			throw new BadCredentialsException("Missing SAML2 response data");
-		}
 		String saml2Response = request.getParameter("SAMLResponse");
 		byte[] b = decode(saml2Response);
 
