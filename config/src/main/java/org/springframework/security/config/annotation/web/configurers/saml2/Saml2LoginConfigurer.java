@@ -44,7 +44,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import javax.servlet.Filter;
 
-import static java.util.Optional.ofNullable;
 import static org.springframework.util.StringUtils.hasText;
 
 /**
@@ -192,7 +191,10 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 	}
 
 	private <C> C getSharedObject(B http, Class<C> clazz, Supplier<? extends C> creator, Object existingInstance) {
-		C result = ofNullable((C) existingInstance).orElseGet(() -> getSharedObject(http, clazz));
+		C result = (C) existingInstance;
+		if (result == null) {
+			result = getSharedObject(http, clazz);
+		}
 		if (result == null) {
 			ApplicationContext context = getSharedObject(http, ApplicationContext.class);
 			try {
