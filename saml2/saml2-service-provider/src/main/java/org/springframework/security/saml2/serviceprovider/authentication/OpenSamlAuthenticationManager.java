@@ -256,13 +256,17 @@ public final class OpenSamlAuthenticationManager implements AuthenticationManage
 
 	private Assertion decrypt(Saml2AuthenticationToken token, EncryptedAssertion assertion) {
 		Saml2Exception last = null;
-		for (Saml2X509Credential key : getDecryptionCredentials(token)) {
+		List<Saml2X509Credential> decryptionCredentials = getDecryptionCredentials(token);
+		if (decryptionCredentials.isEmpty()) {
+			throw new Saml2Exception("No valid decryption credentials found.");
+		}
+		for (Saml2X509Credential key : decryptionCredentials) {
 			final Decrypter decrypter = getDecrypter(key);
 			try {
 				return decrypter.decrypt(assertion);
 			}
 			catch (DecryptionException e) {
-				throw new Saml2Exception(e);
+				last = new Saml2Exception(e);
 			}
 		}
 		throw last;
@@ -270,7 +274,11 @@ public final class OpenSamlAuthenticationManager implements AuthenticationManage
 
 	private NameID decrypt(Saml2AuthenticationToken token, EncryptedID assertion) {
 		Saml2Exception last = null;
-		for (Saml2X509Credential key : getDecryptionCredentials(token)) {
+		List<Saml2X509Credential> decryptionCredentials = getDecryptionCredentials(token);
+		if (decryptionCredentials.isEmpty()) {
+			throw new Saml2Exception("No valid decryption credentials found.");
+		}
+		for (Saml2X509Credential key : decryptionCredentials) {
 			final Decrypter decrypter = getDecrypter(key);
 			try {
 				return (NameID) decrypter.decrypt(assertion);
