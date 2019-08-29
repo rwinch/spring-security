@@ -31,11 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.saml2Login()
 				.and()
 			.authorizeRequests()
-				.mvcMatchers("/logged-out").permitAll()
 				.anyRequest().authenticated()
-				.and()
-			.logout()
-				.logoutSuccessUrl("/logged-out")
 				.and()
 		;
 		//@formatter:on
