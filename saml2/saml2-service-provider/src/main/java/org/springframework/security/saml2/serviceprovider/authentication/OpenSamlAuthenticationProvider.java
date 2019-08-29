@@ -15,18 +15,9 @@
  */
 package org.springframework.security.saml2.serviceprovider.authentication;
 
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -71,6 +62,16 @@ import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
+
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.lang.String.format;
 import static java.util.Collections.singleton;
@@ -316,18 +317,24 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		Saml2AuthenticationToken token = (Saml2AuthenticationToken) authentication;
-		String xml = token.getSaml2Response();
-		Response samlResponse = getSaml2Response(xml);
+		try {
+			Saml2AuthenticationToken token = (Saml2AuthenticationToken) authentication;
+			String xml = token.getSaml2Response();
+			Response samlResponse = getSaml2Response(xml);
 
-		Assertion assertion = validateSaml2Response(token, token.getRecipientUri(), samlResponse);
-		final String username = getUsername(token, assertion);
-		if (username == null) {
-			throw new UsernameNotFoundException("Assertion [" + assertion.getID() + "] is missing a user identifier");
+			Assertion assertion = validateSaml2Response(token, token.getRecipientUri(), samlResponse);
+			final String username = getUsername(token, assertion);
+			if (username == null) {
+				throw new UsernameNotFoundException("Assertion [" +
+						assertion.getID() +
+						"] is missing a user identifier");
+			}
+			return new Saml2Authentication(token.getSaml2Response(), () -> username,
+					this.authoritiesMapper.mapAuthorities(getAssertionAuthorities(assertion))
+			);
+		}catch (Saml2Exception | IllegalArgumentException e) {
+			throw new AuthenticationServiceException(e.getMessage(), e);
 		}
-		return new Saml2Authentication(token.getSaml2Response(), () -> username,
-				this.authoritiesMapper.mapAuthorities(getAssertionAuthorities(assertion))
-		);
 	}
 
 	@Override
