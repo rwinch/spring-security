@@ -18,13 +18,17 @@ package org.springframework.security.config.annotation.web.configurers.saml2;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationManager;
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
+import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.provider.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
@@ -54,7 +58,7 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 
 	private AuthenticationRequestEndpointConfig authenticationRequestEndpoint = new AuthenticationRequestEndpointConfig();
 
-	private AuthenticationProvider authenticationProvider;
+	private AuthenticationManager authenticationManager;
 	private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
 	public Saml2LoginConfigurer() {
@@ -75,8 +79,8 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		return this;
 	}
 
-	public Saml2LoginConfigurer authenticationProvider(AuthenticationProvider provider) {
-		this.authenticationProvider = provider;
+	public Saml2LoginConfigurer authenticationManager(AuthenticationManager manager) {
+		this.authenticationManager = manager;
 		return this;
 	}
 
@@ -134,11 +138,21 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 				super.init(http);
 			}
 		}
+		final AuthenticationManager manager = this.authenticationManager == null ?
+				new OpenSamlAuthenticationManager() : this.authenticationManager;
 
-		if (this.authenticationProvider == null) {
-			this.authenticationProvider = new OpenSamlAuthenticationProvider();
-		}
-		http.authenticationProvider(postProcess(this.authenticationProvider));
+		final AuthenticationProvider provider = new AuthenticationProvider() {
+				@Override
+				public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+					return manager.authenticate(authentication);
+				}
+
+				@Override
+				public boolean supports(Class<?> authentication) {
+					return authentication != null && Saml2AuthenticationToken.class.isAssignableFrom(authentication);
+				}
+			};
+		http.authenticationProvider(postProcess(provider));
 
 		this.initDefaultLoginFilter(http);
 	}

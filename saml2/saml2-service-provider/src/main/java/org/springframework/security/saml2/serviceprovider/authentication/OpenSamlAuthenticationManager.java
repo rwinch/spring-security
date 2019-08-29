@@ -16,7 +16,7 @@
 package org.springframework.security.saml2.serviceprovider.authentication;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
@@ -82,9 +82,9 @@ import static org.springframework.util.StringUtils.hasText;
 /**
  * @since 5.2
  */
-public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
+public final class OpenSamlAuthenticationManager implements AuthenticationManager {
 
-	private static Log logger = LogFactory.getLog(OpenSamlAuthenticationProvider.class);
+	private static Log logger = LogFactory.getLog(OpenSamlAuthenticationManager.class);
 
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
 	private GrantedAuthoritiesMapper authoritiesMapper = (a -> a);
@@ -337,8 +337,4 @@ public class OpenSamlAuthenticationProvider implements AuthenticationProvider {
 		}
 	}
 
-	@Override
-	public boolean supports(Class<?> authentication) {
-		return authentication != null && Saml2AuthenticationToken.class.isAssignableFrom(authentication);
-	}
 }
