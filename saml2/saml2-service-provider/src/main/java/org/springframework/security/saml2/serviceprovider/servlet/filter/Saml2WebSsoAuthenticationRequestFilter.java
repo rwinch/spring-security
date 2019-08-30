@@ -30,6 +30,7 @@ import org.springframework.security.saml2.serviceprovider.authentication.Saml2Au
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher.MatchResult;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -61,26 +62,23 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (this.matcher.matches(request)) {
-			try {
-				sendAuthenticationRequest(request, response);
-			} catch (URISyntaxException e) {
-				throw new ServletException(e);
-			}
-		}
-		else {
+		MatchResult matcher = this.matcher.matcher(request);
+		if (!matcher.isMatch()) {
 			filterChain.doFilter(request, response);
+			return;
 		}
+
+		String registrationId = matcher.getVariables().get("registrationId");
+		String redirectUrl = createSamlRequestRedirectUrl(request, registrationId);
+		response.sendRedirect(redirectUrl);
 	}
 
-	private void sendAuthenticationRequest(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, URISyntaxException {
+	private String createSamlRequestRedirectUrl(HttpServletRequest request, String registrationId) {
 		String relayState = request.getParameter("RelayState");
-		String registrationId = this.matcher.matcher(request).getVariables().get("registrationId");
-		if (logger.isDebugEnabled()) {
-			logger.debug(format("Creating SAML2 SP Authentication Request for IDP[%s]", registrationId));
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug(format("Creating SAML2 SP Authentication Request for IDP[%s]", registrationId));
 		}
-		RelyingPartyRegistration rp = relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
+		RelyingPartyRegistration rp = this.relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
 		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
 		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
 				localSpEntityId,
@@ -92,19 +90,15 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 				),
 				rp.getCredentialsForUsage(SIGNING)
 		);
-		String xml = authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
+		String xml = this.authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
 		String encoded = encode(deflate(xml));
 		String redirect = UriComponentsBuilder
-				.fromUri(new URI(rp.getIdpWebSsoUrl()))
+				.fromUriString(rp.getIdpWebSsoUrl())
 				.queryParam("SAMLRequest", UriUtils.encode(encoded, StandardCharsets.ISO_8859_1))
 				.queryParam("RelayState", UriUtils.encode(relayState, StandardCharsets.ISO_8859_1))
 				.build(true)
 				.toUriString();
-		response.sendRedirect(redirect);
-		if (logger.isDebugEnabled()) {
-			logger.debug("SAML2 SP Authentication Request Sent to Browser");
-		}
-
+		return redirect;
 	}
 
 }
