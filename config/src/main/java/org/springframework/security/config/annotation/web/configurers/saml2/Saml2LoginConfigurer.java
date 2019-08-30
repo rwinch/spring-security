@@ -204,48 +204,29 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 	}
 
 	public final class AuthenticationRequestEndpointConfig {
-		private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 		private String filterProcessingUrl = "/saml2/authenticate/{registrationId}";
 		private AuthenticationRequestEndpointConfig() {
 		}
 
-		public AuthenticationRequestEndpointConfig authenticationRequestResolver(
-				Saml2AuthenticationRequestResolver authenticationRequestResolver
-		) {
-			Assert.notNull(authenticationRequestResolver, "authenticationRequestResolver cannot be null");
-			this.authenticationRequestResolver = authenticationRequestResolver;
-			return this;
-		}
-
-		public AuthenticationRequestEndpointConfig filterProcessingUrl(
-				String filterProcessingUrl
-		) {
-			Assert.hasText(filterProcessingUrl, "filterProcessingUrl cannot be empty");
-			Assert.state(filterProcessingUrl.contains("{registrationId}"), "{registrationId} path variable is required");
-			this.filterProcessingUrl = filterProcessingUrl;
-			return this;
-		}
-
-		public Saml2LoginConfigurer<B> and() {
-			return Saml2LoginConfigurer.this;
-		}
-
 		private Filter build(B http, String webSsoUrl) {
-			if (this.authenticationRequestResolver == null) {
-				this.authenticationRequestResolver = getSharedOrBean(http, Saml2AuthenticationRequestResolver.class);
-			}
-			if (this.authenticationRequestResolver == null) {
-				this.authenticationRequestResolver = new OpenSamlAuthenticationRequestResolver();
-			}
+			Saml2AuthenticationRequestResolver authenticationRequestResolver = getResolver(http);
 
 			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 					new AntPathRequestMatcher(this.filterProcessingUrl),
 					"{baseUrl}" + webSsoUrl,
 					Saml2LoginConfigurer.this.relyingPartyRegistrationRepository,
-					this.authenticationRequestResolver
+					authenticationRequestResolver
 			);
 
 			return authenticationRequestFilter;
+		}
+
+		private Saml2AuthenticationRequestResolver getResolver(B http) {
+			Saml2AuthenticationRequestResolver resolver = getSharedOrBean(http, Saml2AuthenticationRequestResolver.class);
+			if (resolver == null ) {
+				resolver = new OpenSamlAuthenticationRequestResolver();
+			}
+			return resolver;
 		}
 	}
 
