@@ -24,14 +24,6 @@ package org.springframework.security.saml2.serviceprovider.registration;
 public interface RelyingPartyRegistrationRepository {
 
 	/**
-	 * Resolves an {@link RelyingPartyRegistration} by entityId, cannot be null
-	 *
-	 * @param idpEntityId - unique entityId for the remote identity provider, not null
-	 * @return {@link RelyingPartyRegistration} if found, otherwise {@code null}
-	 */
-	RelyingPartyRegistration findByEntityId(String idpEntityId);
-
-	/**
 	 * Resolves an {@link RelyingPartyRegistration} by registrationId, or returns the default provider
 	 * if no registrationId is provided
 	 *

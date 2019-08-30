@@ -214,7 +214,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 
 			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 					new AntPathRequestMatcher(this.filterProcessingUrl),
-					"{baseUrl}" + webSsoUrl,
 					Saml2LoginConfigurer.this.relyingPartyRegistrationRepository,
 					authenticationRequestResolver
 			);

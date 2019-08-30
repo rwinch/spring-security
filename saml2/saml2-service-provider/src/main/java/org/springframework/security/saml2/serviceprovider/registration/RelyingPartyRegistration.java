@@ -62,21 +62,25 @@ public class RelyingPartyRegistration {
 
 	private final String registrationId;
 	private final String remoteIdpEntityId;
+	private final String assertionConsumerServiceUrlTemplate;
 	private final String idpWebSsoUrl;
 	private final List<Saml2X509Credential> credentials;
 	private final String localEntityIdTemplate;
 
-	private RelyingPartyRegistration(String idpEntityId, String registrationId, String idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
+	private RelyingPartyRegistration(String idpEntityId, String registrationId, String assertionConsumerServiceUrlTemplate,
+			String idpWebSsoUri, List<Saml2X509Credential> credentials, String localEntityIdTemplate) {
 		hasText(idpEntityId, "idpEntityId cannot be empty");
 		hasText(registrationId, "registrationId cannot be empty");
+		hasText(assertionConsumerServiceUrlTemplate, "assertionConsumerServiceUrlTemplate cannot be empty");
 		hasText(localEntityIdTemplate, "localEntityIdTemplate cannot be empty");
 		notEmpty(credentials, "credentials cannot be empty");
 		notNull(idpWebSsoUri, "idpWebSsoUri cannot be empty");
 		for (Saml2X509Credential c : credentials) {
 			notNull(c, "credentials cannot contain null elements");
 		}
-		this.remoteIdpEntityId = idpEntityId;
 		this.registrationId = registrationId;
+		this.remoteIdpEntityId = idpEntityId;
+		this.assertionConsumerServiceUrlTemplate = assertionConsumerServiceUrlTemplate;
 		this.credentials = new LinkedList<>(credentials);
 		this.idpWebSsoUrl = idpWebSsoUri;
 		this.localEntityIdTemplate = localEntityIdTemplate;
@@ -88,6 +92,10 @@ public class RelyingPartyRegistration {
 
 	public String getRegistrationId() {
 		return this.registrationId;
+	}
+
+	public String getAssertionConsumerServiceUrlTemplate() {
+		return this.assertionConsumerServiceUrlTemplate;
 	}
 
 	public String getIdpWebSsoUrl() {
@@ -130,6 +138,7 @@ public class RelyingPartyRegistration {
 		private String registrationId;
 		private String remoteIdpEntityId;
 		private String idpWebSsoUrl;
+		private String assertionConsumerServiceUrlTemplate;
 		private List<Saml2X509Credential> credentials = new LinkedList<>();
 		private String localEntityIdTemplate = "{baseUrl}/saml2/service-provider-metadata/{registrationId}";
 
@@ -144,6 +153,19 @@ public class RelyingPartyRegistration {
 
 		public Builder remoteIdpEntityId(String entityId) {
 			this.remoteIdpEntityId = entityId;
+			return this;
+		}
+
+		/**
+		 * <a href="https://wiki.shibboleth.net/confluence/display/CONCEPT/AssertionConsumerService">Assertion Consumer
+		 * Service</a> URL template. It can contain variables {@code baseUrl}, {@code registrationId},
+		 * {@code baseScheme}, {@code baseHost}, and {@code basePort}.
+		 * @param assertionConsumerServiceUrlTemplate the Assertion Consumer Service URL template (i.e.
+		 * "{baseUrl}/login/saml2/sso/{registrationId}".
+		 * @return the Builder
+		 */
+		public Builder assertionConsumerServiceUrlTemplate(String assertionConsumerServiceUrlTemplate) {
+			this.assertionConsumerServiceUrlTemplate = assertionConsumerServiceUrlTemplate;
 			return this;
 		}
 
@@ -171,6 +193,7 @@ public class RelyingPartyRegistration {
 			return new RelyingPartyRegistration(
 					remoteIdpEntityId,
 					registrationId,
+					assertionConsumerServiceUrlTemplate,
 					idpWebSsoUrl,
 					credentials,
 					localEntityIdTemplate

@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.notEmpty;
@@ -35,7 +34,6 @@ import static org.springframework.util.Assert.notNull;
 public class InMemoryRelyingPartyRegistrationRepository
 		implements RelyingPartyRegistrationRepository, Iterable<RelyingPartyRegistration> {
 
-	private final Map<String, RelyingPartyRegistration> byEntityId;
 	private final Map<String, RelyingPartyRegistration> byRegistrationId;
 
 	public InMemoryRelyingPartyRegistrationRepository(RelyingPartyRegistration... registrations) {
@@ -44,30 +42,21 @@ public class InMemoryRelyingPartyRegistrationRepository
 
 	public InMemoryRelyingPartyRegistrationRepository(Collection<RelyingPartyRegistration> registrations) {
 		notEmpty(registrations, "registrations cannot be empty");
-		this.byEntityId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRemoteIdpEntityId);
-		this.byRegistrationId = createMappingToIdentityProvider(registrations, RelyingPartyRegistration::getRegistrationId);
+		this.byRegistrationId = createMappingToIdentityProvider(registrations);
 	}
 
 	private static Map<String, RelyingPartyRegistration> createMappingToIdentityProvider(
-			Collection<RelyingPartyRegistration> rps,
-			Function<RelyingPartyRegistration,
-					String> mapper
+			Collection<RelyingPartyRegistration> rps
 	) {
 		LinkedHashMap<String, RelyingPartyRegistration> result = new LinkedHashMap<>();
 		for (RelyingPartyRegistration rp : rps) {
 			notNull(rp, "relying party collection cannot contain null values");
-			String key = mapper.apply(rp);
+			String key = rp.getRegistrationId();
 			notNull(rp, "relying party identifier cannot be null");
 			Assert.isNull(result.get(key), () -> "relying party duplicate identifier '" + key+"' detected.");
 			result.put(key, rp);
 		}
 		return Collections.unmodifiableMap(result);
-	}
-
-	@Override
-	public RelyingPartyRegistration findByEntityId(String entityId) {
-		Assert.notNull(entityId, "entityId cannot be null");
-		return this.byEntityId.get(entityId);
 	}
 
 	@Override
@@ -77,7 +66,7 @@ public class InMemoryRelyingPartyRegistrationRepository
 
 	@Override
 	public Iterator<RelyingPartyRegistration> iterator() {
-		return this.byEntityId.values().iterator();
+		return this.byRegistrationId.values().iterator();
 	}
 
 }

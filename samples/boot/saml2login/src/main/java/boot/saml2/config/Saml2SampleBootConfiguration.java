@@ -24,6 +24,7 @@ import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.serviceprovider.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
 import java.security.cert.X509Certificate;
@@ -55,16 +56,19 @@ public class Saml2SampleBootConfiguration {
 	}
 
 	private List<RelyingPartyRegistration> getRelyingParties(List<SampleRelyingParty> sampleRelyingParties) {
+		String acsUrlTemplate = "{baseUrl}" + Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI;
 		return sampleRelyingParties.stream()
 				.map(
 					p -> StringUtils.hasText(p.getLocalSpEntityIdTemplate()) ?
 							RelyingPartyRegistration.withRegistrationId(p.getRegistrationId())
+									.assertionConsumerServiceUrlTemplate(acsUrlTemplate)
 									.remoteIdpEntityId(p.getEntityId())
 									.idpWebSsoUrl(p.getWebSsoUrl())
 									.credentials(p.getProviderCredentials())
 									.localEntityIdTemplate(p.getLocalSpEntityIdTemplate())
 									.build() :
 							RelyingPartyRegistration.withRegistrationId(p.getRegistrationId())
+									.assertionConsumerServiceUrlTemplate(acsUrlTemplate)
 									.remoteIdpEntityId(p.getEntityId())
 									.idpWebSsoUrl(p.getWebSsoUrl())
 									.credentials(p.getProviderCredentials())

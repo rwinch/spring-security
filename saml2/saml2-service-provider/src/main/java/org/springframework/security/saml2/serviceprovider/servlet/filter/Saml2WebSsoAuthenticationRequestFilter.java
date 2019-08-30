@@ -47,18 +47,15 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private final RequestMatcher matcher;
 	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
-	private final String webSsoUriTemplate;
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
-	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
+	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
 		Assert.notNull(matcher, "matcher cannot be null");
-		Assert.notNull(webSsoUriTemplate, "webSsoUriTemplate cannot be null");
 		Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
 		Assert.notNull(authenticationRequestResolver, "authenticationRequestResolver cannot be null");
 		this.matcher = matcher;
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;
-		this.webSsoUriTemplate = webSsoUriTemplate;
 	}
 
 	@Override
@@ -88,7 +85,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
 				localSpEntityId,
 				Saml2Utils.resolveUrlTemplate(
-						webSsoUriTemplate,
+						rp.getAssertionConsumerServiceUrlTemplate(),
 						Saml2Utils.getApplicationUri(request),
 						rp.getRemoteIdpEntityId(),
 						rp.getRegistrationId()
