@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
@@ -65,16 +66,19 @@ public class RsaKeyConversionServicePostProcessor implements BeanFactoryPostProc
 
 		Converter<String, RSAPrivateKey> pkcs8 = pkcs8();
 		Converter<String, RSAPublicKey> x509 = x509();
+		Converter<String, X509Certificate> x509Certificate = x509Certificate();
 
 		ConversionService service = beanFactory.getConversionService();
 		if (service instanceof ConverterRegistry) {
 			ConverterRegistry registry = (ConverterRegistry) service;
 			registry.addConverter(String.class, RSAPrivateKey.class, pkcs8);
 			registry.addConverter(String.class, RSAPublicKey.class, x509);
+			registry.addConverter(String.class, X509Certificate.class, x509Certificate);
 		} else {
 			beanFactory.addPropertyEditorRegistrar(registry -> {
 				registry.registerCustomEditor(RSAPublicKey.class, new ConverterPropertyEditorAdapter<>(x509));
 				registry.registerCustomEditor(RSAPrivateKey.class, new ConverterPropertyEditorAdapter<>(pkcs8));
+				registry.registerCustomEditor(X509Certificate.class, new ConverterPropertyEditorAdapter<>(x509Certificate));
 			});
 		}
 	}
@@ -94,6 +98,12 @@ public class RsaKeyConversionServicePostProcessor implements BeanFactoryPostProc
 		Converter<String, InputStream> pemInputStreamConverter = pemInputStreamConverter();
 		Converter<InputStream, RSAPublicKey> x509KeyConverter = autoclose(RsaKeyConverters.x509());
 		return pair(pemInputStreamConverter, x509KeyConverter);
+	}
+
+	private Converter<String, X509Certificate> x509Certificate() {
+		Converter<String, InputStream> pemInputStreamConverter = pemInputStreamConverter();
+		Converter<InputStream, X509Certificate> x509CertificateConverter = autoclose(RsaKeyConverters.x509Certificate());
+		return pair(pemInputStreamConverter, x509CertificateConverter);
 	}
 
 	private Converter<String, InputStream> pemInputStreamConverter() {

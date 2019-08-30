@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -44,6 +46,8 @@ public class RsaKeyConverters {
 	private static final String PKCS8_PEM_FOOTER = DASHES + "END PRIVATE KEY" + DASHES;
 	private static final String X509_PEM_HEADER = DASHES + "BEGIN PUBLIC KEY" + DASHES;
 	private static final String X509_PEM_FOOTER = DASHES + "END PUBLIC KEY" + DASHES;
+	private static final String X509_CERT_PEM_HEADER = DASHES + "BEGIN CERTIFICATE" + DASHES;
+	private static final String X509_CERT_PEM_FOOTER = DASHES + "END CERTIFICATE" + DASHES;
 
 	/**
 	 * Construct a {@link Converter} for converting a PEM-encoded PKCS#8 RSA Private Key
@@ -105,6 +109,17 @@ public class RsaKeyConverters {
 			try {
 				return (RSAPublicKey) keyFactory.generatePublic(
 						new X509EncodedKeySpec(x509));
+			} catch (Exception e) {
+				throw new IllegalArgumentException(e);
+			}
+		};
+	}
+
+	public static Converter<InputStream, X509Certificate> x509Certificate() {
+		return source -> {
+			try {
+				final CertificateFactory factory = CertificateFactory.getInstance("X.509");
+				return (X509Certificate) factory.generateCertificate(source);
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
