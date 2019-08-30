@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.security.converter.RsaKeyConverters;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -47,17 +48,18 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.w3c.dom.Element;
 
+import java.io.ByteArrayInputStream;
 import java.security.KeyException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -164,8 +166,8 @@ public class ServiceProviderSampleTests {
 	public void signedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
-		EncryptedAssertion encryptedAssertion = OpenSamlActionTestingSupport.encryptAssertion(assertion,
-				X509Support.decodeCertificate(spCertificate));
+		EncryptedAssertion encryptedAssertion =
+				OpenSamlActionTestingSupport.encryptAssertion(assertion, decodeCertificate(spCertificate));
 		Response response = buildResponse(encryptedAssertion);
 		signXmlObject(assertion, getSigningCredential(idpCertificate, idpPrivateKey, UsageType.SIGNING));
 		String xml = toXml(response);
@@ -181,8 +183,8 @@ public class ServiceProviderSampleTests {
 	public void unsignedResponseEncryptedAssertion() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
-		EncryptedAssertion encryptedAssertion = OpenSamlActionTestingSupport.encryptAssertion(assertion,
-				X509Support.decodeCertificate(spCertificate));
+		EncryptedAssertion encryptedAssertion =
+				OpenSamlActionTestingSupport.encryptAssertion(assertion, decodeCertificate(spCertificate));
 		Response response = buildResponse(encryptedAssertion);
 		String xml = toXml(response);
 		final ResultActions actions = mockMvc
@@ -197,8 +199,7 @@ public class ServiceProviderSampleTests {
 	public void signedResponseEncryptedNameId() throws Exception {
 		final String username = "testuser@spring.security.saml";
 		Assertion assertion = buildAssertion(username);
-		final EncryptedID nameId = encryptNameId(assertion.getSubject().getNameID(),
-				X509Support.decodeCertificate(spCertificate));
+		final EncryptedID nameId = encryptNameId(assertion.getSubject().getNameID(), decodeCertificate(spCertificate));
 		assertion.getSubject().setEncryptedID(nameId);
 		assertion.getSubject().setNameID(null);
 		Response response = buildResponse(assertion);
@@ -253,7 +254,7 @@ public class ServiceProviderSampleTests {
 
 	protected Credential getSigningCredential(String certificate, String key, UsageType usageType)
 			throws CertificateException, KeyException {
-		PublicKey publicKey = X509Support.decodeCertificate(certificate.getBytes(UTF_8)).getPublicKey();
+		PublicKey publicKey = decodeCertificate(certificate).getPublicKey();
 		final PrivateKey privateKey = KeySupport.decodePrivateKey(key.getBytes(UTF_8), new char[0]);
 		BasicCredential cred = CredentialSupport.getSimpleCredential(publicKey, privateKey);
 		cred.setUsageType(usageType);
@@ -275,6 +276,10 @@ public class ServiceProviderSampleTests {
 		final MarshallerFactory marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
 		Element element = marshallerFactory.getMarshaller(object).marshall(object);
 		return SerializeSupport.nodeToString(element);
+	}
+
+	private X509Certificate decodeCertificate(String certificate) {
+		return RsaKeyConverters.x509Certificate().convert(new ByteArrayInputStream(certificate.getBytes()));
 	}
 
 	private String idpCertificate = "-----BEGIN CERTIFICATE-----\n"
@@ -329,18 +334,21 @@ public class ServiceProviderSampleTests {
 			+ "BZrn8SdDlQqalMxUBYEFwnsYD3cQ8yOUnijFVC4xNcdDv8OIqVgSk4KKxU5AshaA\n" + "xk6Mox+u8Cc2eAK12H13i+8=\n"
 			+ "-----END PRIVATE KEY-----\n";
 
-	private String spCertificate = "MIICgTCCAeoCCQCuVzyqFgMSyDANBgkqhkiG9w0BAQsFADCBhDELMAkGA1UEBhMC\n"
-			+ "VVMxEzARBgNVBAgMCldhc2hpbmd0b24xEjAQBgNVBAcMCVZhbmNvdXZlcjEdMBsG\n"
-			+ "A1UECgwUU3ByaW5nIFNlY3VyaXR5IFNBTUwxCzAJBgNVBAsMAnNwMSAwHgYDVQQD\n"
-			+ "DBdzcC5zcHJpbmcuc2VjdXJpdHkuc2FtbDAeFw0xODA1MTQxNDMwNDRaFw0yODA1\n"
-			+ "MTExNDMwNDRaMIGEMQswCQYDVQQGEwJVUzETMBEGA1UECAwKV2FzaGluZ3RvbjES\n"
-			+ "MBAGA1UEBwwJVmFuY291dmVyMR0wGwYDVQQKDBRTcHJpbmcgU2VjdXJpdHkgU0FN\n"
-			+ "TDELMAkGA1UECwwCc3AxIDAeBgNVBAMMF3NwLnNwcmluZy5zZWN1cml0eS5zYW1s\n"
-			+ "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRu7/EI0BlNzMEBFVAcbx+lLos\n"
-			+ "vzIWU+01dGTY8gBdhMQNYKZ92lMceo2CuVJ66cUURPym3i7nGGzoSnAxAre+0YIM\n"
-			+ "+U0razrWtAUE735bkcqELZkOTZLelaoOztmWqRbe5OuEmpewH7cx+kNgcVjdctOG\n"
-			+ "y3Q6x+I4qakY/9qhBQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAAeViTvHOyQopWEi\n"
-			+ "XOfI2Z9eukwrSknDwq/zscR0YxwwqDBMt/QdAODfSwAfnciiYLkmEjlozWRtOeN+\n"
-			+ "qK7UFgP1bRl5qksrYX5S0z2iGJh0GvonLUt3e20Ssfl5tTEDDnAEUMLfBkyaxEHD\n" + "RZ/nbTJ7VTeZOSyRoVn5XHhpuJ0B";
+	private String spCertificate = "-----BEGIN CERTIFICATE-----\n" +
+			"MIICgTCCAeoCCQCuVzyqFgMSyDANBgkqhkiG9w0BAQsFADCBhDELMAkGA1UEBhMC\n" +
+			"VVMxEzARBgNVBAgMCldhc2hpbmd0b24xEjAQBgNVBAcMCVZhbmNvdXZlcjEdMBsG\n" +
+			"A1UECgwUU3ByaW5nIFNlY3VyaXR5IFNBTUwxCzAJBgNVBAsMAnNwMSAwHgYDVQQD\n" +
+			"DBdzcC5zcHJpbmcuc2VjdXJpdHkuc2FtbDAeFw0xODA1MTQxNDMwNDRaFw0yODA1\n" +
+			"MTExNDMwNDRaMIGEMQswCQYDVQQGEwJVUzETMBEGA1UECAwKV2FzaGluZ3RvbjES\n" +
+			"MBAGA1UEBwwJVmFuY291dmVyMR0wGwYDVQQKDBRTcHJpbmcgU2VjdXJpdHkgU0FN\n" +
+			"TDELMAkGA1UECwwCc3AxIDAeBgNVBAMMF3NwLnNwcmluZy5zZWN1cml0eS5zYW1s\n" +
+			"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDRu7/EI0BlNzMEBFVAcbx+lLos\n" +
+			"vzIWU+01dGTY8gBdhMQNYKZ92lMceo2CuVJ66cUURPym3i7nGGzoSnAxAre+0YIM\n" +
+			"+U0razrWtAUE735bkcqELZkOTZLelaoOztmWqRbe5OuEmpewH7cx+kNgcVjdctOG\n" +
+			"y3Q6x+I4qakY/9qhBQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAAeViTvHOyQopWEi\n" +
+			"XOfI2Z9eukwrSknDwq/zscR0YxwwqDBMt/QdAODfSwAfnciiYLkmEjlozWRtOeN+\n" +
+			"qK7UFgP1bRl5qksrYX5S0z2iGJh0GvonLUt3e20Ssfl5tTEDDnAEUMLfBkyaxEHD\n" +
+			"RZ/nbTJ7VTeZOSyRoVn5XHhpuJ0B\n" +
+			"-----END CERTIFICATE-----";
 
 }

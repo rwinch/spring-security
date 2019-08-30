@@ -16,14 +16,14 @@
 
 package org.springframework.security.saml2.serviceprovider.registration;
 
+import org.springframework.util.Assert;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
 
 import static java.util.Arrays.asList;
 import static org.springframework.util.Assert.notEmpty;
@@ -57,8 +57,8 @@ public class InMemoryRelyingPartyRegistrationRepository
 		for (RelyingPartyRegistration rp : rps) {
 			notNull(rp, "relying party collection cannot contain null values");
 			String key = mapper.apply(rp);
-			notNull(rp, "relying party key cannot be null");
-			Assert.isNull(result.get(key), () -> "relying party duplicate key:" + key);
+			notNull(rp, "relying party identifier cannot be null");
+			Assert.isNull(result.get(key), () -> "relying party duplicate identifier '" + key+"' detected.");
 			result.put(key, rp);
 		}
 		return Collections.unmodifiableMap(result);

@@ -16,31 +16,30 @@
 
 package boot.saml2.config;
 
-import java.security.cert.X509Certificate;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.saml2.credentials.Saml2X509Credential;
 import org.springframework.security.saml2.serviceprovider.registration.InMemoryRelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.util.StringUtils;
 
-import boot.saml2.config.OpenSamlKeyConverters.Saml2X509CredentialConverter;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.RSAPrivateKey;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
+import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.DECRYPTION;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.ENCRYPTION;
+import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.VERIFICATION;
 
 @Configuration
 @ConfigurationProperties(prefix = "spring.security.saml2.login")
-@Import(OpenSamlKeyConverters.class)
 public class Saml2SampleBootConfiguration {
 
 	private List<SampleRelyingParty> relyingParties;
@@ -99,9 +98,18 @@ public class Saml2SampleBootConfiguration {
 			return signingCredentials;
 		}
 
-		public void setSigningCredentials(List<StringX509Credential> credentials) {
-			final Saml2X509CredentialConverter converter = new Saml2X509CredentialConverter();
-			this.signingCredentials = credentials.stream().map(c -> converter.convert(c)).collect(Collectors.toList());
+		public void setSigningCredentials(List<X509KeyCertificatePair> credentials) {
+			this.signingCredentials = credentials
+					.stream()
+					.map(c ->
+							new Saml2X509Credential(
+									c.getPrivateKey(),
+									c.getCertificate(),
+									SIGNING,
+									DECRYPTION
+							)
+					)
+					.collect(Collectors.toList());
 		}
 
 		public void setVerificationCredentials(List<X509Certificate> credentials) {
@@ -143,33 +151,24 @@ public class Saml2SampleBootConfiguration {
 		}
 	}
 
-	public static class StringX509Credential {
+	public static class X509KeyCertificatePair {
 
-		private String privateKey;
-		private String passphrase;
-		private String certificate;
+		private RSAPrivateKey privateKey;
+		private X509Certificate certificate;
 
-		public String getPrivateKey() {
-			return privateKey;
+		public RSAPrivateKey getPrivateKey() {
+			return this.privateKey;
 		}
 
-		public void setPrivateKey(String privateKey) {
+		public void setPrivateKey(RSAPrivateKey privateKey) {
 			this.privateKey = privateKey;
 		}
 
-		public String getPassphrase() {
-			return passphrase;
-		}
-
-		public void setPassphrase(String passphrase) {
-			this.passphrase = passphrase;
-		}
-
-		public String getCertificate() {
+		public X509Certificate getCertificate() {
 			return certificate;
 		}
 
-		public void setCertificate(String certificate) {
+		public void setCertificate(X509Certificate certificate) {
 			this.certificate = certificate;
 		}
 
