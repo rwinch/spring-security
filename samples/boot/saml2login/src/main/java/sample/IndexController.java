@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package sample.web;
+package sample;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import sample.Saml2LoginApplication;
 
 @Controller
-public class Saml2LoginController {
+public class IndexController {
 
 	private static final Log logger = LogFactory.getLog(Saml2LoginApplication.class);
 
-	@RequestMapping(value = { "/", "/index", "/logged-in" })
-	public String landingPage() {
-		logger.info("Sample SP Application - Landing Page");
-		return "/logged-in";
+	@GetMapping("/")
+	public String index() {
+		return "index";
 	}
-
 }
