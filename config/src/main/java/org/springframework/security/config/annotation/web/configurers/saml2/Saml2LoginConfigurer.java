@@ -48,11 +48,17 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		AbstractAuthenticationFilterConfigurer<B, Saml2LoginConfigurer<B>, Saml2WebSsoAuthenticationFilter> {
 
 	private String loginPage;
+
 	private String loginProcessingUrl = Saml2WebSsoAuthenticationFilter.DEFAULT_FILTER_PROCESSES_URI;
 
 	private AuthenticationRequestEndpointConfig authenticationRequestEndpoint = new AuthenticationRequestEndpointConfig();
 
 	private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
+
+	public Saml2LoginConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
+		this.relyingPartyRegistrationRepository = repo;
+		return this;
+	}
 
 	@Override
 	public Saml2LoginConfigurer<B> loginPage(String loginPage) {
@@ -69,11 +75,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		return this;
 	}
 
-	public Saml2LoginConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
-		this.relyingPartyRegistrationRepository = repo;
-		return this;
-	}
-
 	@Override
 	protected RequestMatcher createLoginProcessingUrlMatcher(String loginProcessingUrl) {
 		return new AntPathRequestMatcher(loginProcessingUrl);
@@ -87,7 +88,7 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		}
 
 		Saml2WebSsoAuthenticationFilter webSsoFilter = new Saml2WebSsoAuthenticationFilter(this.relyingPartyRegistrationRepository);
-		this.setAuthenticationFilter(webSsoFilter);
+		setAuthenticationFilter(webSsoFilter);
 		super.loginProcessingUrl(this.loginProcessingUrl);
 
 		if (hasText(this.loginPage)) {
@@ -120,15 +121,15 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		this.initDefaultLoginFilter(http);
 	}
 
-	private AuthenticationProvider getAuthenticationProvider() {
-		AuthenticationProvider provider = new OpenSamlAuthenticationProvider();
-		return postProcess(provider);
-	}
-
 	@Override
 	public void configure(B http) throws Exception {
 		http.addFilter(this.authenticationRequestEndpoint.build(http, this.loginProcessingUrl));
 		super.configure(http);
+	}
+
+	private AuthenticationProvider getAuthenticationProvider() {
+		AuthenticationProvider provider = new OpenSamlAuthenticationProvider();
+		return postProcess(provider);
 	}
 
 	private void registerDefaultCsrfOverride(B http) {
@@ -203,7 +204,7 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		}
 	}
 
-	public final class AuthenticationRequestEndpointConfig {
+	private final class AuthenticationRequestEndpointConfig {
 		private String filterProcessingUrl = "/saml2/authenticate/{registrationId}";
 		private AuthenticationRequestEndpointConfig() {
 		}
