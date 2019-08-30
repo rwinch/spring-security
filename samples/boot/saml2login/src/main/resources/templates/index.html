@@ -14,39 +14,24 @@
   ~ limitations under the License.
   -->
 
-<!DOCTYPE html>
-
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-	<title>Spring Security - Simple SAML 2 Flow</title>
+	<title>Spring Security - SAML 2 Log In</title>
 	<meta charset="utf-8" />
 </head>
 <body>
-<div style="float: right" th:fragment="logout" sec:authorize="isAuthenticated()">
-	<div style="float:left">
-		<span style="font-weight:bold">User: </span><span sec:authentication="name"></span><br/>
-	</div>
-	<div style="float:none">&nbsp</div>
-	<div style="float:right">
-		<form action="#" th:action="@{/logout}" method="post">
-			<input type="submit" value="Logout" />
-		</form>
-	</div>
-</div>
-<h1>Success</h1>
-<div>
-	<span style="font-weight:bold">You are authenticated!</span>
-	<br/><br/>
-	<span style="font-weight:lighter">
-		<a href="https://simplesaml-for-spring-saml.cfapps.io/module.php/core/authenticate.php?as=example-userpass&logout">
-			Log out of SimpleSAMLPhp
-		</a>
-	</span>
-    <span style="font-weight:lighter">
-		<a href="https://simplesaml-for-spring-saml.cfapps.io/module.php/core/authenticate.php?as=example-userpass&logout">
-			Log out of SimpleSAMLPhp
-		</a>
-	</span>
-</div>
+    <h1>Success</h1>
+    <div>You are authenticated as <span sec:authentication="name"></span></div>
+    <ul>
+        <li>
+            <a th:href="@{/logout}">Log Out</a>
+        </li>
+        <li>
+            <a href="https://simplesaml-for-spring-saml.cfapps.io/module.php/core/authenticate.php?as=example-userpass&logout">
+                Log out of SimpleSAMLPhp
+            </a>
+        </li>
+    </ul>
 </body>
 </html>
