@@ -26,6 +26,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.authentication.session.ChangeSessionIdAuthenticationStrategy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +47,7 @@ public class Saml2WebSsoAuthenticationFilter extends AbstractAuthenticationProce
 
 	public Saml2WebSsoAuthenticationFilter(RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
 		super(DEFAULT_FILTER_PROCESSES_URI);
+		Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
 		this.matcher = new AntPathRequestMatcher(DEFAULT_FILTER_PROCESSES_URI);
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		setAllowSessionCreation(true);
