@@ -121,13 +121,26 @@ public final class OpenSamlAuthenticationManager implements AuthenticationManage
 		}
 		boolean responseSigned = hasValidSignature(samlResponse, token);
 		for (Assertion a : samlResponse.getAssertions()) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Checking plain assertion validity " + a);
+			}
 			if (isValidAssertion(recipient, a, token, !responseSigned)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Found valid assertion. Skipping potential others.");
+				}
 				return a;
 			}
 		}
 		for (EncryptedAssertion ea : samlResponse.getEncryptedAssertions()) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Checking encrypted assertion validity " + ea);
+			}
+
 			Assertion a = decrypt(token, ea);
 			if (isValidAssertion(recipient, a, token, false)) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Found valid encrypted assertion. Skipping potential others.");
+				}
 				return a;
 			}
 		}
