@@ -18,17 +18,13 @@ package org.springframework.security.config.annotation.web.configurers.saml2;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationManager;
+import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationProvider;
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestResolver;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
-import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationToken;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
@@ -39,10 +35,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.servlet.Filter;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -57,7 +53,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 
 	private AuthenticationRequestEndpointConfig authenticationRequestEndpoint = new AuthenticationRequestEndpointConfig();
 
-	private AuthenticationManager authenticationManager;
 	private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
 	public Saml2LoginConfigurer() {
@@ -75,11 +70,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		Assert.hasText(loginProcessingUrl, "loginProcessingUrl cannot be empty");
 		Assert.state(loginProcessingUrl.contains("{registrationId}"), "{registrationId} path variable is required");
 		this.loginProcessingUrl = loginProcessingUrl;
-		return this;
-	}
-
-	public Saml2LoginConfigurer authenticationManager(AuthenticationManager manager) {
-		this.authenticationManager = manager;
 		return this;
 	}
 
@@ -137,23 +127,13 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 				super.init(http);
 			}
 		}
-		final AuthenticationManager manager = this.authenticationManager == null ?
-				new OpenSamlAuthenticationManager() : this.authenticationManager;
-
-		final AuthenticationProvider provider = new AuthenticationProvider() {
-				@Override
-				public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-					return manager.authenticate(authentication);
-				}
-
-				@Override
-				public boolean supports(Class<?> authentication) {
-					return authentication != null && Saml2AuthenticationToken.class.isAssignableFrom(authentication);
-				}
-			};
-		http.authenticationProvider(postProcess(provider));
-
+		http.authenticationProvider(getAuthenticationProvider());
 		this.initDefaultLoginFilter(http);
+	}
+
+	private AuthenticationProvider getAuthenticationProvider() {
+		AuthenticationProvider provider = new OpenSamlAuthenticationProvider();
+		return postProcess(provider);
 	}
 
 	@Override
