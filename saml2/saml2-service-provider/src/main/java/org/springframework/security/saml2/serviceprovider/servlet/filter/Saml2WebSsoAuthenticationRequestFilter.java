@@ -30,6 +30,7 @@ import org.springframework.security.saml2.serviceprovider.authentication.Saml2Au
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
@@ -38,7 +39,6 @@ import static java.lang.String.format;
 import static org.springframework.security.saml2.credentials.Saml2X509Credential.Saml2X509CredentialUsage.SIGNING;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.deflate;
 import static org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2Utils.encode;
-import static org.springframework.util.Assert.notNull;
 
 /**
  * @since 5.2
@@ -51,7 +51,10 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
 
 	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, String webSsoUriTemplate, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
-		notNull(matcher, "matcher cannot be null");
+		Assert.notNull(matcher, "matcher cannot be null");
+		Assert.notNull(webSsoUriTemplate, "webSsoUriTemplate cannot be null");
+		Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
+		Assert.notNull(authenticationRequestResolver, "authenticationRequestResolver cannot be null");
 		this.matcher = matcher;
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
 		this.authenticationRequestResolver = authenticationRequestResolver;
