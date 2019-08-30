@@ -38,7 +38,6 @@ import org.springframework.util.Assert;
 import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -55,9 +54,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 
 	private RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
 
-	public Saml2LoginConfigurer() {
-	}
-
 	@Override
 	public Saml2LoginConfigurer<B> loginPage(String loginPage) {
 		Assert.hasText(loginPage, "loginPage cannot be empty");
@@ -73,10 +69,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		return this;
 	}
 
-	public AuthenticationRequestEndpointConfig authenticationRequestEndpoint() {
-		return this.authenticationRequestEndpoint;
-	}
-
 	public Saml2LoginConfigurer relyingPartyRegistrationRepository(RelyingPartyRegistrationRepository repo) {
 		this.relyingPartyRegistrationRepository = repo;
 		return this;
@@ -90,12 +82,9 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 	@Override
 	public void init(B http) throws Exception {
 		registerDefaultCsrfOverride(http);
-		this.relyingPartyRegistrationRepository = getSharedObject(
-				http,
-				RelyingPartyRegistrationRepository.class,
-				() -> this.relyingPartyRegistrationRepository,
-				this.relyingPartyRegistrationRepository
-		);
+		if (this.relyingPartyRegistrationRepository == null) {
+			this.relyingPartyRegistrationRepository = getSharedOrBean(http, RelyingPartyRegistrationRepository.class);
+		}
 
 		Saml2WebSsoAuthenticationFilter webSsoFilter = new Saml2WebSsoAuthenticationFilter(this.relyingPartyRegistrationRepository);
 		this.setAuthenticationFilter(webSsoFilter);
@@ -170,29 +159,6 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		loginPageGeneratingFilter.setFailureUrl(this.getFailureUrl());
 	}
 
-	private <C> C getSharedObject(B http, Class<C> clazz, Supplier<? extends C> creator, Object existingInstance) {
-		C result = (C) existingInstance;
-		if (result == null) {
-			result = getSharedObject(http, clazz);
-		}
-		if (result == null) {
-			ApplicationContext context = getSharedObject(http, ApplicationContext.class);
-			try {
-				result = context.getBean(clazz);
-			}
-			catch (NoSuchBeanDefinitionException e) {
-				if (creator != null) {
-					result = creator.get();
-				}
-				else {
-					return null;
-				}
-			}
-		}
-		setSharedObject(http, clazz, result);
-		return result;
-	}
-
 	@SuppressWarnings("unchecked")
 	private Map<String, String> getIdentityProviderUrlMap(
 			String authRequestPrefixUrl,
@@ -212,8 +178,23 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		return idps;
 	}
 
-	private <C> C getSharedObject(B http, Class<C> clazz) {
-		return http.getSharedObject(clazz);
+	private <C> C getSharedOrBean(B http, Class<C> clazz) {
+		C shared = http.getSharedObject(clazz);
+		if (shared != null) {
+			return shared;
+		}
+		return getBeanOrNull(http, clazz);
+	}
+
+	private <C> C getBeanOrNull(B http, Class<C> clazz) {
+		ApplicationContext context = http.getSharedObject(ApplicationContext.class);
+		if (context == null) {
+			return null;
+		}
+		try {
+			return context.getBean(clazz);
+		} catch (NoSuchBeanDefinitionException e) {}
+		return null;
 	}
 
 	private <C> void setSharedObject(B http, Class<C> clazz, C object) {
@@ -250,12 +231,12 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		}
 
 		private Filter build(B http, String webSsoUrl) {
-			this.authenticationRequestResolver = getSharedObject(
-					http,
-					Saml2AuthenticationRequestResolver.class,
-					OpenSamlAuthenticationRequestResolver::new,
-					this.authenticationRequestResolver
-			);
+			if (this.authenticationRequestResolver == null) {
+				this.authenticationRequestResolver = getSharedOrBean(http, Saml2AuthenticationRequestResolver.class);
+			}
+			if (this.authenticationRequestResolver == null) {
+				this.authenticationRequestResolver = new OpenSamlAuthenticationRequestResolver();
+			}
 
 			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 					new AntPathRequestMatcher(this.filterProcessingUrl),
