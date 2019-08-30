@@ -23,10 +23,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestFactory;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestFactory;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher.MatchResult;
 import org.springframework.util.Assert;
@@ -44,23 +46,31 @@ import static org.springframework.security.saml2.serviceprovider.servlet.filter.
  */
 public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter {
 
-	private final RequestMatcher matcher;
 	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
-	private Saml2AuthenticationRequestFactory authenticationRequestFactory;
 
-	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestFactory authenticationRequestFactory) {
-		Assert.notNull(matcher, "matcher cannot be null");
+	private RequestMatcher redirectMatcher = new AntPathRequestMatcher("/saml2/authenticate/{registrationId}");
+
+	private Saml2AuthenticationRequestFactory authenticationRequestFactory = new OpenSamlAuthenticationRequestFactory();
+
+	public Saml2WebSsoAuthenticationRequestFilter(RelyingPartyRegistrationRepository relyingPartyRegistrationRepository) {
 		Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
-		Assert.notNull(authenticationRequestFactory, "authenticationRequestFactory cannot be null");
-		this.matcher = matcher;
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
+	}
+
+	public void setAuthenticationRequestFactory(Saml2AuthenticationRequestFactory authenticationRequestFactory) {
+		Assert.notNull(authenticationRequestFactory, "authenticationRequestFactory cannot be null");
 		this.authenticationRequestFactory = authenticationRequestFactory;
+	}
+
+	public void setRedirectMatcher(RequestMatcher redirectMatcher) {
+		Assert.notNull(redirectMatcher, "redirectMatcher cannot be null");
+		this.redirectMatcher = redirectMatcher;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		MatchResult matcher = this.matcher.matcher(request);
+		MatchResult matcher = this.redirectMatcher.matcher(request);
 		if (!matcher.isMatch()) {
 			filterChain.doFilter(request, response);
 			return;

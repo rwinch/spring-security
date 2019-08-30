@@ -212,12 +212,9 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		private Filter build(B http, String webSsoUrl) {
 			Saml2AuthenticationRequestFactory authenticationRequestResolver = getResolver(http);
 
-			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
-					new AntPathRequestMatcher(this.filterProcessingUrl),
-					Saml2LoginConfigurer.this.relyingPartyRegistrationRepository,
-					authenticationRequestResolver
-			);
-
+			Saml2WebSsoAuthenticationRequestFilter authenticationRequestFilter =
+					new Saml2WebSsoAuthenticationRequestFilter(Saml2LoginConfigurer.this.relyingPartyRegistrationRepository);
+			authenticationRequestFilter.setAuthenticationRequestFactory(authenticationRequestResolver);
 			return authenticationRequestFilter;
 		}
 
