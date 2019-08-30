@@ -17,8 +17,6 @@
 package org.springframework.security.saml2.serviceprovider.servlet.filter;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -69,36 +67,45 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 		}
 
 		String registrationId = matcher.getVariables().get("registrationId");
-		String redirectUrl = createSamlRequestRedirectUrl(request, registrationId);
-		response.sendRedirect(redirectUrl);
+		sendRedirect(request, response, registrationId);
 	}
 
-	private String createSamlRequestRedirectUrl(HttpServletRequest request, String registrationId) {
-		String relayState = request.getParameter("RelayState");
+	private void sendRedirect(HttpServletRequest request, HttpServletResponse response, String registrationId)
+			throws IOException {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug(format("Creating SAML2 SP Authentication Request for IDP[%s]", registrationId));
 		}
-		RelyingPartyRegistration rp = this.relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
-		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(rp, request);
-		Saml2AuthenticationRequest authNRequest = new Saml2AuthenticationRequest(
-				localSpEntityId,
-				Saml2Utils.resolveUrlTemplate(
-						rp.getAssertionConsumerServiceUrlTemplate(),
-						Saml2Utils.getApplicationUri(request),
-						rp.getRemoteIdpEntityId(),
-						rp.getRegistrationId()
-				),
-				rp.getCredentialsForUsage(SIGNING)
-		);
+		RelyingPartyRegistration relyingParty = this.relyingPartyRegistrationRepository.findByRegistrationId(registrationId);
+		String redirectUrl = createSamlRequestRedirectUrl(request, relyingParty);
+		response.sendRedirect(redirectUrl);
+	}
+
+	private String createSamlRequestRedirectUrl(HttpServletRequest request, RelyingPartyRegistration relyingParty) {
+		Saml2AuthenticationRequest authNRequest = createAuthenticationRequest(relyingParty, request);
 		String xml = this.authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
 		String encoded = encode(deflate(xml));
+		String relayState = request.getParameter("RelayState");
 		String redirect = UriComponentsBuilder
-				.fromUriString(rp.getIdpWebSsoUrl())
+				.fromUriString(relyingParty.getIdpWebSsoUrl())
 				.queryParam("SAMLRequest", UriUtils.encode(encoded, StandardCharsets.ISO_8859_1))
 				.queryParam("RelayState", UriUtils.encode(relayState, StandardCharsets.ISO_8859_1))
 				.build(true)
 				.toUriString();
 		return redirect;
+	}
+
+	private Saml2AuthenticationRequest createAuthenticationRequest(RelyingPartyRegistration relyingParty, HttpServletRequest request) {
+		String localSpEntityId = Saml2Utils.getServiceProviderEntityId(relyingParty, request);
+		return new Saml2AuthenticationRequest(
+				localSpEntityId,
+				Saml2Utils.resolveUrlTemplate(
+						relyingParty.getAssertionConsumerServiceUrlTemplate(),
+						Saml2Utils.getApplicationUri(request),
+						relyingParty.getRemoteIdpEntityId(),
+						relyingParty.getRegistrationId()
+				),
+				relyingParty.getCredentialsForUsage(SIGNING)
+		);
 	}
 
 }
