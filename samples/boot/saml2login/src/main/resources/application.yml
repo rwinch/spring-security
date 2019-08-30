@@ -1,16 +1,4 @@
-logging:
-  level:
-    root: INFO
-    org.springframework.web: INFO
-    org.springframework.security: INFO
-    org.springframework.security.saml: DEBUG
-    sample: DEBUG
-
 spring:
-  main:
-    allow-bean-definition-overriding: true
-  thymeleaf:
-    cache: false
   security:
     saml2:
       login:
