@@ -164,6 +164,7 @@ public final class OpenSamlAuthenticationManager implements AuthenticationManage
 				return true;
 			}
 			catch (SignatureException ignored) {
+				logger.debug("Signature validation failed", ignored);
 			}
 		}
 		return false;
