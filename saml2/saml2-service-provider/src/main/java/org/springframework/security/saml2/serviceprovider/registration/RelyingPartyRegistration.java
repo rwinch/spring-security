@@ -138,7 +138,7 @@ public class RelyingPartyRegistration {
 		}
 
 		public Builder registrationId(String id) {
-			this.registrationId = registrationId;
+			this.registrationId = id;
 			return this;
 		}
 
