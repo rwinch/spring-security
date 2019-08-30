@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * @since 5.2
  */
-public class OpenSamlAuthenticationRequestResolver implements Saml2AuthenticationRequestResolver {
+public class OpenSamlAuthenticationRequestFactory implements Saml2AuthenticationRequestFactory {
 	private Clock clock = Clock.systemUTC();
 	private final OpenSamlImplementation saml = OpenSamlImplementation.getInstance();
 

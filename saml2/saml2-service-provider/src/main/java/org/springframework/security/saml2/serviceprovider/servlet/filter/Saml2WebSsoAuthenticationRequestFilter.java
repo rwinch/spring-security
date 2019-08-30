@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequest;
-import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
+import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestFactory;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -46,15 +46,15 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private final RequestMatcher matcher;
 	private final RelyingPartyRegistrationRepository relyingPartyRegistrationRepository;
-	private Saml2AuthenticationRequestResolver authenticationRequestResolver;
+	private Saml2AuthenticationRequestFactory authenticationRequestFactory;
 
-	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestResolver authenticationRequestResolver) {
+	public Saml2WebSsoAuthenticationRequestFilter(RequestMatcher matcher, RelyingPartyRegistrationRepository relyingPartyRegistrationRepository, Saml2AuthenticationRequestFactory authenticationRequestFactory) {
 		Assert.notNull(matcher, "matcher cannot be null");
 		Assert.notNull(relyingPartyRegistrationRepository, "relyingPartyRegistrationRepository cannot be null");
-		Assert.notNull(authenticationRequestResolver, "authenticationRequestResolver cannot be null");
+		Assert.notNull(authenticationRequestFactory, "authenticationRequestFactory cannot be null");
 		this.matcher = matcher;
 		this.relyingPartyRegistrationRepository = relyingPartyRegistrationRepository;
-		this.authenticationRequestResolver = authenticationRequestResolver;
+		this.authenticationRequestFactory = authenticationRequestFactory;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class Saml2WebSsoAuthenticationRequestFilter extends OncePerRequestFilter
 
 	private String createSamlRequestRedirectUrl(HttpServletRequest request, RelyingPartyRegistration relyingParty) {
 		Saml2AuthenticationRequest authNRequest = createAuthenticationRequest(relyingParty, request);
-		String xml = this.authenticationRequestResolver.resolveAuthenticationRequest(authNRequest);
+		String xml = this.authenticationRequestFactory.resolveAuthenticationRequest(authNRequest);
 		String encoded = encode(deflate(xml));
 		String relayState = request.getParameter("RelayState");
 		String redirect = UriComponentsBuilder

@@ -23,7 +23,7 @@ package org.springframework.security.saml2.serviceprovider.authentication;
  *
  * @since 5.2
  */
-public interface Saml2AuthenticationRequestResolver {
+public interface Saml2AuthenticationRequestFactory {
 	/**
 	 * Creates an authentication request from the Service Provider, sp,
 	 * to the Identity Provider, idp.

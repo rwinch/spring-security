@@ -23,8 +23,8 @@ import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationProvider;
-import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestResolver;
-import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestResolver;
+import org.springframework.security.saml2.serviceprovider.authentication.OpenSamlAuthenticationRequestFactory;
+import org.springframework.security.saml2.serviceprovider.authentication.Saml2AuthenticationRequestFactory;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistration;
 import org.springframework.security.saml2.serviceprovider.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.serviceprovider.servlet.filter.Saml2WebSsoAuthenticationFilter;
@@ -210,7 +210,7 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 		}
 
 		private Filter build(B http, String webSsoUrl) {
-			Saml2AuthenticationRequestResolver authenticationRequestResolver = getResolver(http);
+			Saml2AuthenticationRequestFactory authenticationRequestResolver = getResolver(http);
 
 			Filter authenticationRequestFilter = new Saml2WebSsoAuthenticationRequestFilter(
 					new AntPathRequestMatcher(this.filterProcessingUrl),
@@ -221,10 +221,10 @@ public final class Saml2LoginConfigurer<B extends HttpSecurityBuilder<B>> extend
 			return authenticationRequestFilter;
 		}
 
-		private Saml2AuthenticationRequestResolver getResolver(B http) {
-			Saml2AuthenticationRequestResolver resolver = getSharedOrBean(http, Saml2AuthenticationRequestResolver.class);
+		private Saml2AuthenticationRequestFactory getResolver(B http) {
+			Saml2AuthenticationRequestFactory resolver = getSharedOrBean(http, Saml2AuthenticationRequestFactory.class);
 			if (resolver == null ) {
-				resolver = new OpenSamlAuthenticationRequestResolver();
+				resolver = new OpenSamlAuthenticationRequestFactory();
 			}
 			return resolver;
 		}
