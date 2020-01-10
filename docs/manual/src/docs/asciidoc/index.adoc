@@ -11,6 +11,26 @@ Spring Security is a framework that provides authentication, authorization, and 
 // FIXME: Add links for imperative and reactive applications
 With first class support for both imperative and reactive applications, it is the de-facto standard for securing Spring-based applications.
 
+[ditaa]
+....
+                   +-------------+
+                   | Asciidoctor |-------+
+                   |   diagram   |       |
+                   +-------------+       | PNG out
+                       ^                 |
+                       | ditaa in        |
+                       |                 v
+ +--------+   +--------+----+    /---------------\
+ |        | --+ Asciidoctor +--> |               |
+ |  Text  |   +-------------+    |   Beautiful   |
+ |Document|   |   !magic!   |    |    Output     |
+ |     {d}|   |             |    |               |
+ +---+----+   +-------------+    \---------------/
+     :                                   ^
+     |          Lots of work             |
+     +-----------------------------------+
+....
+
 include::{include-dir}/about/index.adoc[]
 
 include::{include-dir}/servlet/index.adoc[]
