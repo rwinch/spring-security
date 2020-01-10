@@ -16,3 +16,9 @@ docsZip {
 		into 'guides'
 	}
 }
+
+asciidoctorj {
+	modules {
+		diagram.version '1.5.4.1'
+	}
+}
