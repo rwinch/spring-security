@@ -1,0 +1,9 @@
+[[servlet-authentication-request-credentials]]
+= Request Credentials
+
+Sometimes a client will proactively include credentials such as a username/password to request a resource.
+In these cases, Spring Security does not need to provide an HTTP response that requests credentials from the client since they are already included.
+
+In other cases, a client will make an unauthenticated request to a resource that they are not authorized to access.
+In this case, an implementation of `AuthenticationEntryPoint` is used to request credentials from the client.
+The `AuthenticationEntryPoint` implementation might perform a redirect to a log in page, respond with an https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate[WWW-Authenticate] header, etc.

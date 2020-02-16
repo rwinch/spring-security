@@ -1,0 +1,12 @@
+[[servlet-authentication-authentication]]
+= Authentication
+
+The {security-api-url}org/springframework/security/core/Authentication.html[`Authentication`] is obtained from the <<servlet-authentication-securitycontext>>.
+The `Authentication` contains:
+
+* `principal` - identifies the user.
+When authenticating with a username/password this is often an instance of `UserDetails`.
+* `credentials` - Often a password.
+In many cases this will be cleared after the user is authenticated to ensure it is not leaked.
+* `authorities` - the <<servlet-authentication-granted-authority,``GrantedAuthority``s>> are high level permissions the user is granted.
+A few examples are roles or scopes.
