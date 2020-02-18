@@ -1,0 +1,12 @@
+[[servlet-authorization-architecture]]
+= Authorization Architecture
+
+This section builds on <<servlet-architecture,Servlet Architecture and Implementation>> by digging deeper into how <<authorization>> works within Servlet based applications.
+
+include::filter-security-interceptor.adoc[leveloffset=+1]
+
+// FilterInvocation
+// SecurityMetadataSource
+// ConfigAttributes
+
+include::original-doc.adoc[leveloffset=+1]

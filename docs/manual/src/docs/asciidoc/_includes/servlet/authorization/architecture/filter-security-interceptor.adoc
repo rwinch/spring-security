@@ -1,0 +1,23 @@
+[[servlet-authorization-filtersecurityinterceptor]]
+= Authorize HttpServletRequest
+:figures: images/servlet/authorization/architecture
+
+
+The {security-api-url}org/springframework/security/web/access/intercept/FilterSecurityInterceptor.html[`FilterSecurityInterceptor`] provides <<authorization>> for ``HttpServletRequest``s.
+It is inserted into the <<servlet-filterchainproxy>> as one of the <<servlet-security-filters>>.
+
+image::{figures}/filtersecurityinterceptor.png[]
+
+* First, the `FilterSecurityInterceptor` obtains an  <<servlet-authentication-authentication>> from the <<servlet-authentication-securitycontextholder>>.
+* Second, it creates a `FilterInvocation` from the `HttpServletRequest`, `HttpServletResponse`, and `FilterChain` that are passed into the `FilterSecurityInterceptor`.
+// FIXME: link to FilterInvocation
+* Next, it passes the `FilterInvocation` to `SecurityMetadataSource` to get the ``ConfigAttribute``s.
+* Finally, it passes the `Authentication`, `FilterInvocation`, and ``ConfigAttribute``s to the `AccessDecisionManager`.
+** If authorization is denied, an `AccessDeniedException` is thrown.
+In this case the `ExceptionTranslationFilter` handles the `AccessDeniedException`.
+// FIXME: link to ExceptionTranslationFilter
+** If access is granted, `FilterSecurityInterceptor` continues with the <<servlet-filters-review,FilterChain>> which allows the application to process normally.
+
+// link to exception translation filter
+
+// configuration (xml/java)

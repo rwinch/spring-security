@@ -1,3 +1,4 @@
+// from the original documentation
 
 [[authz-arch]]
 == Authorization Architecture
@@ -19,7 +20,7 @@ String getAuthority();
 ----
 
 This method allows
-			`AccessDecisionManager` s to obtain a precise `String` representation of the `GrantedAuthority`.
+`AccessDecisionManager` s to obtain a precise `String` representation of the `GrantedAuthority`.
 By returning a representation as a `String`, a `GrantedAuthority` can be easily "read" by most `AccessDecisionManager` s.
 If a `GrantedAuthority` cannot be precisely represented as a `String`, the `GrantedAuthority` is considered "complex" and `getAuthority()` must return `null`.
 

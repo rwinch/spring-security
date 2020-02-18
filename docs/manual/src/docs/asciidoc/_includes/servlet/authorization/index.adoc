@@ -6,7 +6,7 @@ Irrespective of how you choose to authenticate - whether using a Spring Security
 In this part we'll explore the different `AbstractSecurityInterceptor` implementations, which were introduced in Part I.
 We then move on to explore how to fine-tune authorization through use of domain access control lists.
 
-include::architecture.adoc[]
+include::architecture/index.adoc[leveloffset=+1]
 
 include::secure-objects.adoc[]
 
