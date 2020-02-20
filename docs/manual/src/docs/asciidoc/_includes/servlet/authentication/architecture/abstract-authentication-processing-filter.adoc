@@ -1,3 +1,25 @@
 = AbstractAuthenticationProcessingFilter
+:figures: images/servlet/authentication/architecture
+:icondir: images/icons
 
-`AbstractAuthenticationProcessingFilter`
+`AbstractAuthenticationProcessingFilter` is used as a base `Filter` for authenticating a user's credentials.
+Before the credentials can be authenticated, Spring Security typically requests the credentials using <<servlet-authentication-authenticationentrypoint>>.
+
+Next, the `AbstractAuthenticationProcessingFilter` can authenticate any authentication requests that are submitted to it.
+
+image::{figures}/abstractauthenticationprocessingfilter.png[]
+
+* image:{icondir}/number_1.png[] When the user submits their credentials, the `AbstractAuthenticationProcessingFilter` creates an <<servlet-authentication>> from the `HttpServletRequest` to be authenticated.
+The type of `Authentication` created depends on the subclass of `AbstractAuthenticationProcessingFilter`.
+For example, `UsernamePasswordAuthenticationFilter` creates a `UsernamePasswordAuthenticationToken` from a __username__ and __password__ that are submitted in the request.
+// FIXME: link UsernamePasswordAuthenticationFilter
+* image:{icondir}/number_2.png[] Next, the `Authentication` is passed into the `AuthenticationManager` to be authenticated.
+** image:{icondir}/number_3.png[] If authentication fails, then the failure is handled.
+*** The <<servlet-authentication-securitycontextholder>> is cleared out.
+*** `RememberMeServices.loginFail` is invoked.
+If remember me is not configured, this is a no-op.
+// FIXME: link to rememberme
+***  `AuthenticationFailureHandler` is invoked.
+// FIXME: link to authenticationfailurehandler
+** image:{icondir}/number_4.png[]
+// FIXME: link to AuthenticationManager

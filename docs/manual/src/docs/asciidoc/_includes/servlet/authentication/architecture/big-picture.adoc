@@ -1,0 +1,15 @@
+[[servlet-authentication-big-picture]]
+== Authentication: The Big Picture
+
+To get a better understanding of how <<authentication>> works within Spring Security, let's take a look at how
+For example, if an unauthenticated user navigates into their browser to `https://example.com/private/`, Spring Security might redirect to `https://example.com/login` and display a log in form asking for a username and password.
+Once a valid username and password are provided, Spring Security will authenticate the user and then send them to the originally requested URL of `https://example.com/private/`.
+
+What does it look like when this flow occurs in Spring Security?
+
+* First, an unauthenticated request comes in.
+Spring Security's <<servlet-authorization-filtersecurityinterceptor,`FilterSecurityInterceptor`>> will choose to that the request is __Denied__.
+* Since the request is __Denied__, <<servlet-exceptiontranslationfilter,`ExceptionTranslationFilter`>> handles the `AccessDeniedException` by first saving the request and then redirecting to the log in page with the configured `AuthenticationEntryPoint`.
+* The browser will then request the log in page.
+Something within the application, must <<servlet-authentication-form-custom,render the log in page>>.
+* When the user submits their username and password, the `UsernamePasswordAuthenticationFilter` authenticates the user and redirects back to the saved request.

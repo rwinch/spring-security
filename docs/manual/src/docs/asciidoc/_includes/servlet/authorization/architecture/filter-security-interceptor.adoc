@@ -15,8 +15,7 @@ image::{figures}/filtersecurityinterceptor.png[]
 * image:{icondir}/number_3.png[] Next, it passes the `FilterInvocation` to `SecurityMetadataSource` to get the ``ConfigAttribute``s.
 * image:{icondir}/number_4.png[] Finally, it passes the `Authentication`, `FilterInvocation`, and ``ConfigAttribute``s to the `AccessDecisionManager`.
 ** image:{icondir}/number_5.png[] If authorization is denied, an `AccessDeniedException` is thrown.
-In this case the `ExceptionTranslationFilter` handles the `AccessDeniedException`.
-// FIXME: link to ExceptionTranslationFilter
+In this case the <<servlet-exceptiontranslationfilter,`ExceptionTranslationFilter`>> handles the `AccessDeniedException`.
 ** image:{icondir}/number_6.png[] If access is granted, `FilterSecurityInterceptor` continues with the <<servlet-filters-review,FilterChain>> which allows the application to process normally.
 
 // link to exception translation filter
