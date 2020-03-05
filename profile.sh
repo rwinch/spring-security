@@ -1,0 +1,1 @@
+gradle-profiler --gradle-version 6.3-20200304230105+0000 --output-dir build/gradle-profiler/results --gradle-user-home build/gradle-profiler/gradle-user-home --benchmark --measure-config-time --warmups 2 --iterations 2 --scenario-file gradle/performance-scenarios/help.scenario regular instant
