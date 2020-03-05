@@ -36,7 +36,7 @@ dependencies {
 
 task springVersion(type: versions.VersionsResourceTasks) {
 	versionsFile = file("${buildDir}/versions/spring-security.versions")
-	versions = provider { ["org.springframework:spring-core":"${springVersion()}"] }
+	versions = provider { ["org.springframework:spring-core":"${springVersion()}".toString()] }
 }
 
 tasks.processResources {
