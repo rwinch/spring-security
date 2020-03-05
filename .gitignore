@@ -28,3 +28,4 @@ s101plugin.state
 
 !.idea/checkstyle-idea.xml
 !.idea/externalDependencies.xml
+.instant-execution-state/
