@@ -7,3 +7,4 @@ cp $FROM/gradle.properties $TO
 cp $FROM/settings.gradle $TO
 cp $FROM/gradlew $TO
 cp $FROM/gradlew.bat $TO
+mv $FROM/src/integration-test $TO/src/integTest
