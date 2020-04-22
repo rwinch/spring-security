@@ -1,16 +1,20 @@
-apply plugin: 'io.spring.convention.spring-sample-boot'
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id "nebula.integtest" version "7.0.9"
+	id 'java'
+}
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+}
 
 dependencies {
-	compile project(':spring-security-config')
-	compile project(':spring-security-oauth2-jose')
-	compile project(':spring-security-oauth2-client')
-	compile project(':spring-security-oauth2-resource-server')
+	implementation 'com.squareup.okhttp3:mockwebserver'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	compile 'org.springframework.boot:spring-boot-starter-webflux'
-	compile 'com.squareup.okhttp3:mockwebserver'
-
-	testCompile project(':spring-security-test')
-	testCompile 'org.springframework.boot:spring-boot-starter-test'
-
-	testCompile 'com.squareup.okhttp3:mockwebserver'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
