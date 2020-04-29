@@ -1,6 +1,7 @@
 plugins {
 	id "nebula.integtest" version "7.0.9"
 	id "java"
+	id "war"
 	id "org.gretty" version "3.0.2"
 }
 
@@ -50,11 +51,14 @@ integrationTest.doFirst {
 }
 
 dependencies {
-	implementation platform("org.springframework:spring-framework-bom:5.2.5.RELEASE")
+	implementation platform("org.springframework.boot:spring-boot-dependencies:2.2.6.RELEASE")
 	implementation platform("org.springframework.security:spring-security-bom:5.4.0.BUILD-SNAPSHOT")
 	implementation "org.springframework.security:spring-security-config"
 	implementation "org.springframework.security:spring-security-web"
-
+	implementation "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:latest.release"
+	implementation "org.apache.taglibs:taglibs-standard-jstlel:latest.release"
+	providedCompile "javax.servlet:javax.servlet-api:latest.release"
+	providedCompile "javax.servlet.jsp:javax.servlet.jsp-api:latest.release"
 	testImplementation "junit:junit:4.12"
 	testImplementation "org.assertj:assertj-core:3.15.0"
 	testImplementation "org.springframework:spring-test"
