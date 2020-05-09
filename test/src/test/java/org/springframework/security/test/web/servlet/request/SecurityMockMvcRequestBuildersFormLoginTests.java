@@ -18,13 +18,32 @@ package org.springframework.security.test.web.servlet.request;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.beans.Mergeable;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.CsrfRequestPostProcessor;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.SmartRequestBuilder;
+import org.springframework.test.web.servlet.request.ConfigurableSmartRequestBuilder;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.test.web.servlet.setup.AbstractMockMvcBuilder;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.Assert;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+
+import javax.servlet.ServletContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 
 public class SecurityMockMvcRequestBuildersFormLoginTests {
@@ -80,6 +99,23 @@ public class SecurityMockMvcRequestBuildersFormLoginTests {
 		assertThat(request.getParameter(token.getParameterName()))
 				.isEqualTo(token.getToken());
 		assertThat(request.getRequestURI()).isEqualTo("/uri-login/val1/val2");
+	}
+
+	/**
+	 * spring-restdocs uses postprocessors to do its trick. It will work only if these are merged together
+	 * with our request builders. (gh-7572)
+	 * @throws Exception
+	 */
+	@Test
+	public void postProcessorsAreMergedDuringMockMvcPerform() throws Exception {
+		RequestPostProcessor postProcessor = mock(RequestPostProcessor.class);
+		when(postProcessor.postProcessRequest(any())).thenAnswer(i -> i.getArgument(0));
+		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new Object())
+				.defaultRequest(MockMvcRequestBuilders.get("/").with(postProcessor))
+				.build();
+
+		mockMvc.perform(formLogin());
+		verify(postProcessor).postProcessRequest(any());
 	}
 
 	// gh-3920
