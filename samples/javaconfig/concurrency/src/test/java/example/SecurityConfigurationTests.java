@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
-import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
- * We customize {@link AbstractSecurityWebApplicationInitializer} to enable the
- * {@link HttpSessionEventPublisher}.
- *
  * @author Rob Winch
+ *
  */
-public class MessageSecurityWebApplicationInitializer extends
-		AbstractSecurityWebApplicationInitializer {
+@SpringJUnitConfig(SecurityConfiguration.class)
+public class SecurityConfigurationTests {
 
-	@Override
-	protected boolean enableHttpSessionEventPublisher() {
-		return true;
+	@Test
+	public void securityConfigurationLoads() {
 	}
 }

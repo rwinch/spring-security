@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
- * @author Rob Winch
+ * Registers Spring Security's FilterChainProxy with the Servlet container.
  *
+ * @author Rob Winch
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SecurityConfig.class)
-public class SecurityConfigTests {
+public class SecurityWebApplicationInitializer extends
+		AbstractSecurityWebApplicationInitializer {
 
-	@Test
-	public void securityConfigurationLoads() {
+	/**
+	 * Enable the {@link HttpSessionEventPublisher} for tracking sessions.
+	 * @return
+	 */
+	@Override
+	protected boolean enableHttpSessionEventPublisher() {
+		return true;
 	}
 }
