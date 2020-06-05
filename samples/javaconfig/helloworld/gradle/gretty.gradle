@@ -1,12 +1,3 @@
-buildscript {
-	repositories {
-		gradlePluginPortal()
-	}
-	dependencies {
-		classpath "gradle.plugin.org.gretty:gretty:3.0.2"
-	}
-}
-
 gretty {
 	servletContainer = "tomcat85"
 	contextPath = "/"
@@ -24,7 +15,7 @@ Task prepareAppServerForIntegrationTests = project.tasks.create('prepareAppServe
 	}
 }
 
-project.tasks.withType(org.akhikhl.gretty.AppBeforeIntegrationTestTask).all { task ->
+project.tasks.withType(Object).matching { it.name == "appBeforeIntegrationTest" }.all { task ->
 	task.dependsOn prepareAppServerForIntegrationTests
 }
 

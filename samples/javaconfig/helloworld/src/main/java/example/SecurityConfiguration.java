@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,12 +23,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfiguration {
 
 	// @formatter:off
 	@Bean
 	public UserDetailsService userDetailsService() {
-		UserDetails user = User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build();
+		UserDetails user = User.withDefaultPasswordEncoder()
+				.username("user")
+				.password("password")
+				.roles("USER")
+				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
 	// @formatter:on
