@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sample.aspectj;
+package example;
 
 import org.springframework.security.access.annotation.Secured;
 
 /**
- * Service which is secured on the class level
+ * Service which is secured on method level
  *
  * @author Mike Wiesner
- * @since 3.0
+ * @since 1.0
  */
-@Secured("ROLE_USER")
-public class SecuredService {
+public class Service {
 
+	@Secured("ROLE_USER")
 	public void secureMethod() {
+		// nothing
+	}
+
+	public void publicMethod() {
 		// nothing
 	}
 
