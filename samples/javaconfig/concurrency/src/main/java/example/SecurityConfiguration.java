@@ -48,18 +48,15 @@ public class SecurityConfiguration
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests
-					.anyRequest().authenticated()
+			.authorizeRequests(requests -> requests
+				.anyRequest().authenticated()
 			)
 			.formLogin(withDefaults())
-			.sessionManagement(sessionManagement ->
-				sessionManagement
-					.sessionConcurrency(sessionConcurrency ->
-						sessionConcurrency
-							.maximumSessions(1)
-							.expiredUrl("/login?expired")
-					)
+			.sessionManagement(sessionManagement -> sessionManagement
+				.sessionConcurrency(concurrency -> concurrency
+					.maximumSessions(1)
+					.expiredUrl("/login?expired")
+				)
 			);
 	}
 	// @formatter:on
