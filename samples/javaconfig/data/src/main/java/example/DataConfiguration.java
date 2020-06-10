@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package samples;
+package example;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,7 +30,7 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.transaction.PlatformTransactionManager;
-import samples.data.Message;
+import example.Message;
 
 import javax.sql.DataSource;
 
@@ -40,7 +40,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 @EnableJpaRepositories
-public class DataConfig {
+public class DataConfiguration {
 
 	@Bean
 	public SecurityEvaluationContextExtension expressionEvaluationContextProvider() {

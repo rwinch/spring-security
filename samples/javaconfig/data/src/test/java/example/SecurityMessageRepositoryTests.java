@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package samples.data;
+package example;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,8 +25,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import samples.DataConfig;
 
 import java.util.List;
 
@@ -35,8 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Rob Winch
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = DataConfig.class)
+@SpringJUnitConfig(SpringJUnit4ClassRunner.class)
 public class SecurityMessageRepositoryTests {
 	@Autowired
 	SecurityMessageRepository repository;
