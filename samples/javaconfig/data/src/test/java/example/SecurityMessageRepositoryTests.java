@@ -15,18 +15,16 @@
  */
 package example;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -35,14 +33,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Rob Winch
  */
-@SpringJUnitConfig(SpringJUnit4ClassRunner.class)
+@SpringJUnitConfig(DataConfiguration.class)
 public class SecurityMessageRepositoryTests {
 	@Autowired
 	SecurityMessageRepository repository;
 
 	User user;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		user = new User();
 		user.setId(0L);
@@ -53,7 +51,7 @@ public class SecurityMessageRepositoryTests {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
-	@After
+	@AfterEach
 	public void cleanup() {
 		SecurityContextHolder.clearContext();
 	}
