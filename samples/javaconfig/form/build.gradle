@@ -1,40 +1,39 @@
-/*
- * Copyright 2002-2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+plugins {
+	id "java"
+	id "nebula.integtest" version "7.0.9"
+	id "org.gretty" version "3.0.3"
+	id "war"
+}
 
-apply plugin: 'io.spring.convention.spring-sample-war'
+apply from: "gradle/gretty.gradle"
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/libs-snapshot" }
+}
 
 dependencies {
-	compile project(':spring-security-config')
-	compile project(':spring-security-core')
-	compile project(':spring-security-samples-javaconfig-messages')
-	compile project(':spring-security-web')
-	compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
-	compile 'javax.validation:validation-api'
-	compile 'org.hibernate:hibernate-validator'
-	compile 'org.springframework:spring-webmvc'
-	compile slf4jDependencies
+	implementation platform("org.springframework:spring-framework-bom:5.2.6.RELEASE")
+	implementation platform("org.springframework.security:spring-security-bom:5.4.0.BUILD-SNAPSHOT")
+	implementation platform("org.junit:junit-bom:5.6.2")
 
-	compile 'javax.xml.bind:jaxb-api'
-	compile 'com.sun.xml.bind:jaxb-core'
-	compile 'com.sun.xml.bind:jaxb-impl'
+	implementation "org.springframework:spring-webmvc"
+	implementation "org.springframework.security:spring-security-config"
+	implementation "org.springframework.security:spring-security-web"
+	implementation "org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE"
 
-	providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api'
-	providedCompile 'javax.servlet:javax.servlet-api'
+	providedCompile "javax.servlet:javax.servlet-api:4.0.1"
 
-	runtime 'opensymphony:sitemesh'
+	testImplementation "org.assertj:assertj-core:3.15.0"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.springframework.security:spring-security-test"
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
 
-	integrationTestCompile seleniumDependencies
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+	integTestImplementation "org.seleniumhq.selenium:htmlunit-driver:2.39.0"
+}
+
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.pages;
+package example.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,7 +37,7 @@ public class LoginPage {
 	}
 
 	public LoginPage assertAt() {
-		assertThat(this.webDriver.getTitle()).isEqualTo("SecureMail: Please Login");
+		assertThat(this.webDriver.getTitle()).isEqualTo("Please Login");
 		return this;
 	}
 

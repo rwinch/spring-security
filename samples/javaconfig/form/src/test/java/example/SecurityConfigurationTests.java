@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
-import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 
 /**
- * No customizations of {@link AbstractSecurityWebApplicationInitializer} are necessary.
- *
  * @author Rob Winch
+ *
  */
-public class MessageSecurityWebApplicationInitializer extends
-		AbstractSecurityWebApplicationInitializer {
+@SpringJUnitWebConfig({SecurityConfiguration.class, WebMvcConfiguration.class})
+public class SecurityConfigurationTests {
+
+	@Test
+	public void securityConfigurationLoads() {
+	}
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.pages;
+package example.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -40,23 +40,12 @@ public class HomePage {
 		this.webDriver = webDriver;
 	}
 
-	public Content assertAt() {
-		assertThat(this.webDriver.getTitle()).isEqualTo("SecureMail: View All");
-		return PageFactory.initElements(this.webDriver, Content.class);
+	public HomePage assertAt() {
+		assertThat(this.webDriver.getTitle()).isEqualTo("Hello Security!");
+		return this;
 	}
-
 	public LoginPage logout() {
 		this.logoutButton.submit();
 		return PageFactory.initElements(this.webDriver, LoginPage.class);
-	}
-
-	public static class Content {
-		@FindBy(css = "p.navbar-text")
-		private WebElement message;
-
-		public Content andTheUserNameDisplayedIs(final String userName) {
-			assertThat(message.getText()).isEqualTo(userName);
-			return this;
-		}
 	}
 }
