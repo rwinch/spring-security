@@ -29,6 +29,8 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.servlet.handler.MatchableHandlerMapping;
 import org.springframework.web.servlet.handler.RequestMatchResult;
 import org.springframework.web.util.UrlPathHelper;
+import org.springframework.web.util.pattern.PathPattern;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 /**
  * A {@link RequestMatcher} that uses Spring MVC's {@link HandlerMappingIntrospector} to
@@ -70,9 +72,10 @@ public class MvcRequestMatcher implements RequestMatcher, RequestVariablesExtrac
 		}
 		MatchableHandlerMapping mapping = getMapping(request);
 		if (mapping == null) {
+			// FIXME: How does defaultMatcher work with PathPatternParser
 			return this.defaultMatcher.matches(request);
 		}
-		RequestMatchResult matchResult = mapping.match(request, this.pattern);
+		RequestMatchResult matchResult = requestMatchResult(mapping, request);
 		return matchResult != null;
 	}
 
@@ -85,6 +88,15 @@ public class MvcRequestMatcher implements RequestMatcher, RequestVariablesExtrac
 		}
 	}
 
+	private RequestMatchResult requestMatchResult(MatchableHandlerMapping mapping, HttpServletRequest request) {
+		if (mapping.usesPathPatterns()) {
+			// FIXME: we cannot parse at startup time because Spring Security doesn't know which `MatchableHandlerMapping` to get the PathPatternParser from
+			PathPatternParser patternParser = mapping.getPatternParser();
+			PathPattern pathPattern = patternParser.parse(this.pattern);
+			return mapping.match(request, pathPattern);
+		}
+		return mapping.match(request, this.pattern);
+	}
 	/*
 	 * (non-Javadoc)
 	 *

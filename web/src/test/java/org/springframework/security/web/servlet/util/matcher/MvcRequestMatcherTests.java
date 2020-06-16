@@ -18,6 +18,8 @@ package org.springframework.security.web.servlet.util.matcher;
 
 import java.util.Collections;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,12 +28,27 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockServletConfig;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.ServletRequestPathFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.web.servlet.handler.MatchableHandlerMapping;
 import org.springframework.web.servlet.handler.RequestMatchResult;
+import org.springframework.web.util.ServletRequestPathUtils;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -218,6 +235,41 @@ public class MvcRequestMatcherTests {
 		when(this.introspector.getMatchableHandlerMapping(this.request)).thenThrow(
 				new HttpRequestMethodNotSupportedException(this.request.getMethod()));
 		assertThat(this.matcher.matches(this.request)).isTrue();
+	}
+
+	@Test
+	public void patternParser() throws Exception {
+		try (AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext()) {
+			context.register(MyRestController.class, PathMatchConfigurerConfiguration.class);
+			context.setServletContext(new MockServletContext());
+			context.setServletConfig(new MockServletConfig());
+			context.refresh();
+			HandlerMappingIntrospector introspector = context.getBean(HandlerMappingIntrospector.class);
+
+			MockHttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/");
+			ServletRequestPathUtils.parseAndCache(request);
+			MatchableHandlerMapping matchableHandlerMapping = introspector.getMatchableHandlerMapping(request);
+			assertThat(matchableHandlerMapping.getPatternParser()).isNotNull();
+
+			this.matcher = new MvcRequestMatcher(introspector, "/**");
+
+			assertThat(this.matcher.matches(request)).isTrue();
+		}
+	}
+
+	@RestController
+	static class MyRestController {
+		@GetMapping("/")
+		String home() { return "home"; }
+	}
+
+	@EnableWebMvc
+	@Configuration
+	static class PathMatchConfigurerConfiguration implements WebMvcConfigurer {
+		@Override
+		public void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
+			pathMatchConfigurer.setPatternParser(new PathPatternParser());
+		}
 	}
 
 	@Test
