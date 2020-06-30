@@ -8,5 +8,5 @@ cp $FROM/settings.gradle $TO
 cp $FROM/gradlew $TO
 cp $FROM/gradlew.bat $TO
 mv $TO/src/integration-test $TO/src/integTest
-mv $FROM/src/main/java/example $TO/src/main/java
-mv $FROM/src/main/resources $TO/src/main/
+cp -r $FROM/src/main/java/example $TO/src/main/java
+cp -r $FROM/src/main/resources $TO/src/main/
