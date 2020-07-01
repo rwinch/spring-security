@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
- * No customizations of {@link AbstractSecurityWebApplicationInitializer} are necessary.
+ * Registers Spring Security's FilterChainProxy with the Servlet container.
  *
  * @author Rob Winch
  */
-@Order(2)
-public class MessageSecurityWebApplicationInitializer extends
+public class SecurityWebApplicationInitializer extends
 		AbstractSecurityWebApplicationInitializer {
 }
