@@ -35,6 +35,6 @@ dependencies {
 	integTestImplementation "org.seleniumhq.selenium:htmlunit-driver:2.39.0"
 }
 
-test {
+tasks.withType(Test).configureEach {
 	useJUnitPlatform()
 }
