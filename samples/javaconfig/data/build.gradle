@@ -22,6 +22,6 @@ dependencies {
 	testImplementation "org.springframework.security:spring-security-test"
 }
 
-test {
+tasks.withType(Test).configureEach {
 	useJUnitPlatform()
 }
