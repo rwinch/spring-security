@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.pages;
+package example.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HomePage {
 	private final WebDriver webDriver;
 
+	@FindBy(css = "p")
+	private WebElement message;
+
 	@FindBy(css = "input[type=submit]")
 	private WebElement logoutButton;
 
@@ -41,21 +44,16 @@ public class HomePage {
 	}
 
 	public Content assertAt() {
-		assertThat(this.webDriver.getTitle()).endsWith("View All");
+		assertThat(this.webDriver.getTitle()).isEqualTo("Hello Security!");
 		return PageFactory.initElements(this.webDriver, Content.class);
 	}
 
-	public LoginPage logout() {
-		this.logoutButton.submit();
-		return PageFactory.initElements(this.webDriver, LoginPage.class);
-	}
-
 	public static class Content {
-		@FindBy(css = "p.navbar-text")
+		@FindBy(css = "p")
 		private WebElement message;
 
-		public Content andTheUserNameDisplayedIs(final String userName) {
-			assertThat(message.getText()).isEqualTo(userName);
+		public Content andTheUserNameIsDisplayed() {
+			assertThat(message.getText()).isEqualTo("Hello user");
 			return this;
 		}
 	}

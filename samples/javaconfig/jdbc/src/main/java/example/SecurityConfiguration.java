@@ -13,28 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 @EnableWebSecurity
-public class SecurityConfig {
-	@Autowired
-	private DataSource dataSource;
+public class SecurityConfiguration {
 
 	// @formatter:off
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.jdbcAuthentication()
-				.dataSource(dataSource)
-				.withDefaultSchema()
-				.withUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER"));
+	@Bean
+	public JdbcUserDetailsManager jdbcAuthenticationManager(DataSource dataSource) throws Exception {
+		UserDetails user = User.withDefaultPasswordEncoder()
+				.username("user")
+				.password("password")
+				.roles("USER")
+				.build();
+		UserDetails admin = User.withDefaultPasswordEncoder()
+				.username("admin")
+				.password("password")
+				.roles("USER", "ADMIN")
+				.build();
+		JdbcUserDetailsManager jdbc = new JdbcUserDetailsManager(dataSource);
+		jdbc.createUser(user);
+		jdbc.createUser(admin);
+		return jdbc;
+		// @formatter:on
 	}
-	// @formatter:on
 }
