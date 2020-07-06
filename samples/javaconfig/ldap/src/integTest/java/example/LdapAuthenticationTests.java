@@ -13,31 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples;
+package example;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import example.pages.HomePage;
+import example.pages.LoginPage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.springframework.security.samples.pages.HomePage;
-import org.springframework.security.samples.pages.LoginPage;
 
 /**
  * @author Michael Simons
  */
-public class LdapJcTests {
+public class LdapAuthenticationTests {
+
 	private WebDriver driver;
 
 	private int port;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		this.port = Integer.parseInt(System.getProperty("app.httpPort"));
 		this.driver = new HtmlUnitDriver();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.driver.quit();
 	}
@@ -50,32 +51,12 @@ public class LdapJcTests {
 
 	@Test
 	public void authenticatedUserIsSentToOriginalPage() {
-		final String userName = "user";
-		// @formatter:off
 		final HomePage homePage = HomePage.to(this.driver, this.port)
-			.loginForm()
-				.username(userName)
-				.password("password")
-			.submit();
-		// @formatter:on
-		homePage
-			.assertAt()
-			.andTheUserNameDisplayedIs(userName);
-	}
-
-	@Test
-	public void authenticatedUserLogsOut() {
-		// @formatter:off
-		LoginPage loginPage = HomePage.to(this.driver, this.port)
 			.loginForm()
 				.username("user")
 				.password("password")
-			.submit()
-			.logout();
-		// @formatter:on
-		loginPage.assertAt();
-
-		loginPage = HomePage.to(this.driver, this.port);
-		loginPage.assertAt();
+			.submit();
+		homePage
+			.assertAt();
 	}
 }
