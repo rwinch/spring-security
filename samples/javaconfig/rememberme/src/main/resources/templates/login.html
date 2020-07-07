@@ -1,8 +1,8 @@
 <html xmlns:th="https://www.thymeleaf.org">
-	<head th:include="layout :: head(title=~{::title},links=~{})">
-		<title>Please Login</title>
+	<head>
+		<title>Please sign in</title>
 	</head>
-	<body th:include="layout :: body" th:with="content=~{::content}">
+	<body>
 		<div th:fragment="content">
 			<form name="f" th:action="@{/login}" method="post">
 				<fieldset>
