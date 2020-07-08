@@ -1,19 +1,41 @@
-apply plugin: 'io.spring.convention.spring-sample-war'
+plugins {
+	id "java"
+	id "nebula.integtest" version "7.0.9"
+	id "org.gretty" version "3.0.3"
+	id "war"
+}
+
+apply from: "gradle/gretty.gradle"
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/libs-snapshot" }
+}
 
 dependencies {
-	compile project(':spring-security-config')
-	compile project(':spring-security-core')
-	compile project(':spring-security-samples-javaconfig-messages')
-	compile project(':spring-security-web')
-	compile 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
-	compile 'javax.validation:validation-api'
-	compile 'org.hibernate:hibernate-validator'
-	compile 'ch.qos.logback:logback-classic'
-	compile 'org.springframework:spring-jdbc'
-	compile 'org.springframework:spring-webmvc'
+	implementation platform("org.springframework:spring-framework-bom:5.2.6.RELEASE")
+	implementation platform("org.springframework.security:spring-security-bom:5.4.0.BUILD-SNAPSHOT")
+	implementation platform("org.junit:junit-bom:5.6.2")
 
-	providedCompile 'javax.servlet:javax.servlet-api'
-	providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api'
+	implementation "org.springframework:spring-webmvc"
+	implementation "org.springframework.security:spring-security-config"
+	implementation "org.springframework.security:spring-security-web"
 
-	runtime 'opensymphony:sitemesh'
+	testImplementation "org.assertj:assertj-core:3.15.0"
+	implementation "org.apache.httpcomponents:httpclient:4.5.12"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.springframework.security:spring-security-test"
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
+}
+
+gretty {
+	loggingLevel = "ALL"
+	consoleLogEnabled = true
+	jvmArgs = ['-Djavax.net.debug=ssl', "-Djavax.net.ssl.trustStore=config/server.jks", "-D-Djavax.net.ssl.trustStore"]
 }
