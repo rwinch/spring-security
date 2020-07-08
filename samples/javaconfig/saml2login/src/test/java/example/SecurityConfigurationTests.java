@@ -13,27 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.saml2.provider.service.servlet.filter.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
 import javax.servlet.Filter;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SecurityConfig.class)
-public class SecurityConfigTests {
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringJUnitWebConfig(SecurityConfiguration.class)
+public class SecurityConfigurationTests {
 
 	@Autowired
 	ApplicationContext context;
@@ -45,9 +42,9 @@ public class SecurityConfigTests {
 	@Test
 	public void filterWhenLoginProcessingUrlIsSetInJavaConfigThenTheFilterHasIt() {
 		FilterChainProxy filterChain = context.getBean(FilterChainProxy.class);
-		Assert.assertNotNull(filterChain);
+		assertThat(filterChain).isNotNull();
 		final List<Filter> filters = filterChain.getFilters("/sample/jc/saml2/sso/test-id");
-		Assert.assertNotNull(filters);
+		assertThat(filters).isNotNull();
 		Saml2WebSsoAuthenticationFilter filter = (Saml2WebSsoAuthenticationFilter) filters
 				.stream()
 				.filter(
@@ -58,7 +55,7 @@ public class SecurityConfigTests {
 		for (String field : Arrays.asList("requiresAuthenticationRequestMatcher", "matcher")) {
 			final Object matcher = ReflectionTestUtils.getField(filter, field);
 			final Object pattern = ReflectionTestUtils.getField(matcher, "pattern");
-			Assert.assertEquals("loginProcessingUrl mismatch", "/sample/jc/saml2/sso/{registrationId}", pattern);
+			assertThat("/sample/jc/saml2/sso/{registrationId}").describedAs("loginProcessingUrl mismatch").isEqualTo(pattern);
 		}
 	}
 }

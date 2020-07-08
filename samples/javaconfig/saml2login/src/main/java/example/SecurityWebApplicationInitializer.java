@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
- * We customize {@link AbstractSecurityWebApplicationInitializer} to enable the
- * {@link HttpSessionEventPublisher}.
+ * Registers Spring Security's FilterChainProxy with the Servlet container.
  *
  * @author Rob Winch
  */
-public class MessageSecurityWebApplicationInitializer extends
+public class SecurityWebApplicationInitializer extends
 		AbstractSecurityWebApplicationInitializer {
-
-	@Override
-	protected boolean enableHttpSessionEventPublisher() {
-		return true;
-	}
 }

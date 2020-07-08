@@ -1,10 +1,37 @@
-apply plugin: 'io.spring.convention.spring-sample-war'
+plugins {
+	id "java"
+	id "org.gretty" version "3.0.3"
+	id "war"
+}
+
+apply from: "gradle/gretty.gradle"
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/libs-snapshot" }
+}
 
 dependencies {
-	compile project(':spring-security-saml2-service-provider')
-	compile project(':spring-security-config')
-	compile "org.bouncycastle:bcprov-jdk15on"
-	compile "org.bouncycastle:bcpkix-jdk15on"
+	implementation platform("org.springframework:spring-framework-bom:5.2.6.RELEASE")
+	implementation platform("org.springframework.security:spring-security-bom:5.4.0.BUILD-SNAPSHOT")
+	implementation platform("org.junit:junit-bom:5.6.2")
 
-	testCompile project(':spring-security-test')
+	implementation "org.springframework:spring-webmvc"
+	implementation "org.springframework.security:spring-security-config"
+	implementation "org.springframework.security:spring-security-saml2-service-provider"
+	implementation "org.springframework.security:spring-security-web"
+	implementation "org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE"
+	implementation "org.bouncycastle:bcprov-jdk15on:1.66"
+	implementation "org.bouncycastle:bcpkix-jdk15on:1.66"
+
+	testImplementation "org.assertj:assertj-core:3.15.0"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.springframework.security:spring-security-test"
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
 }

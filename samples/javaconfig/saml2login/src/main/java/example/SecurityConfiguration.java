@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2019 the original author or authors.
+ * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.security.samples.config;
+package example;
 
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,7 +37,7 @@ import static org.springframework.security.saml2.credentials.Saml2X509Credential
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	RelyingPartyRegistration getSaml2AuthenticationConfiguration() throws Exception {
 		//remote IDP entity ID
@@ -67,14 +67,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// @formatter:off
 		http
-			.authorizeRequests()
+				.authorizeRequests()
 				.anyRequest().authenticated()
 				.and()
-			.saml2Login()
+				.saml2Login()
 				.relyingPartyRegistrationRepository(
 						new InMemoryRelyingPartyRegistrationRepository(
-							getSaml2AuthenticationConfiguration()
-					)
+								getSaml2AuthenticationConfiguration()
+						)
 				)
 				.loginProcessingUrl("/sample/jc/saml2/sso/{registrationId}")
 		;
