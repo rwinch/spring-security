@@ -21,13 +21,13 @@ dependencies {
 	implementation "org.springframework.security:spring-security-config"
 	implementation "org.springframework.security:spring-security-web"
 
+	testImplementation "org.apache.httpcomponents:httpclient:4.5.12"
 	testImplementation "org.assertj:assertj-core:3.15.0"
-	implementation "org.apache.httpcomponents:httpclient:4.5.12"
 	testImplementation "org.springframework:spring-test"
 	testImplementation "org.springframework.security:spring-security-test"
-	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testImplementation "org.junit.jupiter:junit-jupiter-api"
 
-	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
 tasks.withType(Test).configureEach {
@@ -35,7 +35,5 @@ tasks.withType(Test).configureEach {
 }
 
 gretty {
-	loggingLevel = "ALL"
-	consoleLogEnabled = true
-	jvmArgs = ['-Djavax.net.debug=ssl', "-Djavax.net.ssl.trustStore=config/server.jks", "-D-Djavax.net.ssl.trustStore"]
+//	jvmArgs = ['-Djavax.net.debug=ssl']
 }

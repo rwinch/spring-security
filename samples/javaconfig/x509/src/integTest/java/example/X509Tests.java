@@ -24,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class X509Tests {
 	@Test
 	void run()  throws Exception {
+		String httpsPort = System.getProperty("app.httpsPort", "8443");
+
 		KeyStore truststore = KeyStore.getInstance("PKCS12");
 		truststore.load(new FileInputStream("config/client.keystore"), "password".toCharArray());
 
@@ -51,7 +53,7 @@ public class X509Tests {
 		requestFactory.setReadTimeout(10000); // 10 seconds
 		RestTemplate rest = new RestTemplate(requestFactory);
 
-		String body = rest.getForObject("https://localhost:8443/", String.class);
+		String body = rest.getForObject("https://localhost:{port}/", String.class, httpsPort);
 
 		assertThat(body).isEqualTo("Hello Spring!");
 	}
