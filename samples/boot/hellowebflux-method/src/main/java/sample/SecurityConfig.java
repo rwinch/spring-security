@@ -37,9 +37,7 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
-		return http
-			// Demonstrate that method security works
-			// Best practice to use both for defense in depth
+		return httpHeader
 			.authorizeExchange(exchanges -> exchanges
 				.anyExchange().permitAll()
 			)
