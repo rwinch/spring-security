@@ -262,10 +262,14 @@ public final class ServletOAuth2AuthorizedClientExchangeFilterFunction implement
 	}
 
 	private void updateDefaultAuthorizedClientManager() {
+		// @formatter:off
 		OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
-				.authorizationCode().refreshToken((configurer) -> configurer.clockSkew(this.accessTokenExpiresSkew))
+				.authorizationCode()
+				.refreshToken((configurer) -> configurer.clockSkew(this.accessTokenExpiresSkew))
 				.clientCredentials(this::updateClientCredentialsProvider)
-				.password((configurer) -> configurer.clockSkew(this.accessTokenExpiresSkew)).build();
+				.password((configurer) -> configurer.clockSkew(this.accessTokenExpiresSkew))
+				.build();
+		// @formatter:on
 		((DefaultOAuth2AuthorizedClientManager) this.authorizedClientManager)
 				.setAuthorizedClientProvider(authorizedClientProvider);
 	}
@@ -435,15 +439,21 @@ public final class ServletOAuth2AuthorizedClientExchangeFilterFunction implement
 
 	@Override
 	public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
+			// @formatter:off
 		return mergeRequestAttributesIfNecessary(request)
 				.filter((req) -> req.attribute(OAUTH2_AUTHORIZED_CLIENT_ATTR_NAME).isPresent())
 				.flatMap((req) -> reauthorizeClient(getOAuth2AuthorizedClient(req.attributes()), req))
-				.switchIfEmpty(Mono.defer(() -> mergeRequestAttributesIfNecessary(request)
-						.filter((req) -> resolveClientRegistrationId(req) != null)
-						.flatMap((req) -> authorizeClient(resolveClientRegistrationId(req), req))))
+				.switchIfEmpty(
+						Mono.defer(() ->
+							mergeRequestAttributesIfNecessary(request)
+								.filter((req) -> resolveClientRegistrationId(req) != null)
+								.flatMap((req) -> authorizeClient(resolveClientRegistrationId(req), req))
+						)
+				)
 				.map((authorizedClient) -> bearer(request, authorizedClient))
 				.flatMap((requestWithBearer) -> exchangeAndHandleResponse(requestWithBearer, next))
 				.switchIfEmpty(Mono.defer(() -> exchangeAndHandleResponse(request, next)));
+		// @formatter:on
 	}
 
 	private Mono<ClientResponse> exchangeAndHandleResponse(ClientRequest request, ExchangeFunction next) {
