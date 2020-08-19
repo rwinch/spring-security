@@ -52,8 +52,12 @@ import static org.mockito.Mockito.mock;
  */
 public class JwtIssuerReactiveAuthenticationManagerResolverTests {
 
-	private static final String DEFAULT_RESPONSE_TEMPLATE = "{\n" + "    \"issuer\": \"%s\", \n"
-			+ "    \"jwks_uri\": \"%s/.well-known/jwks.json\" \n" + "}";
+	// @formatter:off
+	private static final String DEFAULT_RESPONSE_TEMPLATE = "{\n"
+			+ "    \"issuer\": \"%s\", \n"
+			+ "    \"jwks_uri\": \"%s/.well-known/jwks.json\" \n"
+			+ "}";
+	// @formatter:on
 
 	private String jwt = jwt("iss", "trusted");
 
@@ -87,9 +91,11 @@ public class JwtIssuerReactiveAuthenticationManagerResolverTests {
 		JwtIssuerReactiveAuthenticationManagerResolver authenticationManagerResolver = new JwtIssuerReactiveAuthenticationManagerResolver(
 				"other", "issuers");
 		MockServerWebExchange exchange = withBearerToken(this.jwt);
+		// @formatter:off
 		assertThatExceptionOfType(OAuth2AuthenticationException.class)
 				.isThrownBy(() -> authenticationManagerResolver.resolve(exchange).block())
 				.withMessageContaining("Invalid issuer");
+		// @formatter:on
 	}
 
 	@Test
@@ -114,9 +120,11 @@ public class JwtIssuerReactiveAuthenticationManagerResolverTests {
 		authenticationManagers.put("trusted", authenticationManager);
 		assertThat(authenticationManagerResolver.resolve(exchange).block()).isSameAs(authenticationManager);
 		authenticationManagers.clear();
+		// @formatter:off
 		assertThatExceptionOfType(OAuth2AuthenticationException.class)
 				.isThrownBy(() -> authenticationManagerResolver.resolve(exchange).block())
 				.withMessageContaining("Invalid issuer");
+		// @formatter:on
 	}
 
 	@Test
@@ -124,9 +132,11 @@ public class JwtIssuerReactiveAuthenticationManagerResolverTests {
 		JwtIssuerReactiveAuthenticationManagerResolver authenticationManagerResolver = new JwtIssuerReactiveAuthenticationManagerResolver(
 				"trusted");
 		MockServerWebExchange exchange = withBearerToken("jwt");
+		// @formatter:off
 		assertThatExceptionOfType(OAuth2AuthenticationException.class)
 				.isThrownBy(() -> authenticationManagerResolver.resolve(exchange).block())
 				.withMessageNotContaining("Invalid issuer");
+		// @formatter:on
 	}
 
 	@Test
