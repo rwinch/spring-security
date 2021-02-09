@@ -39,15 +39,6 @@ public class DependencySetPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
 
-		project.ext.spockDependencies = [
-			project.dependencies.create("org.spockframework:spock-spring") {
-				exclude group: 'junit', module: 'junit-dep'
-			},
-			project.dependencies.create("org.spockframework:spock-core") {
-				exclude group: 'junit', module: 'junit-dep'
-			}
-		]
-
 		project.ext.seleniumDependencies = [
 				"org.seleniumhq.selenium:htmlunit-driver",
 				"org.seleniumhq.selenium:selenium-support"
