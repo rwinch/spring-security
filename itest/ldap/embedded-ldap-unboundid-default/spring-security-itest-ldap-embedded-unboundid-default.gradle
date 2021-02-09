@@ -9,5 +9,9 @@ dependencies {
     compile project(':spring-security-config')
     compile project(':spring-security-ldap')
 
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
     testCompile "com.unboundid:unboundid-ldapsdk"
 }

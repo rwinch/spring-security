@@ -21,6 +21,10 @@ dependencies {
 	}
 
 	testCompile project(':spring-security-test')
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'org.slf4j:jcl-over-slf4j'
 	testCompile 'org.slf4j:slf4j-api'
 }

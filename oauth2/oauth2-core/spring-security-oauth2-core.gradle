@@ -10,4 +10,8 @@ dependencies {
 	optional 'org.springframework:spring-webflux'
 
 	testCompile powerMock2Dependencies
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 }

@@ -3,4 +3,9 @@ apply plugin: 'io.spring.convention.spring-module'
 dependencies {
 	optional 'org.springframework:spring-jcl'
 	optional 'org.bouncycastle:bcpkix-jdk15on'
+
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 }

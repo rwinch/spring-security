@@ -14,6 +14,11 @@ dependencies {
 	provided 'javax.servlet.jsp:javax.servlet.jsp-api'
 	provided 'javax.servlet:javax.servlet-api'
 
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
+
 	testRuntime 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api'
 }
 

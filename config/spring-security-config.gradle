@@ -46,6 +46,10 @@ dependencies {
 	testCompile project(path : ':spring-security-web', configuration : 'tests')
 	testCompile apachedsDependencies
 	testCompile powerMock2Dependencies
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'com.squareup.okhttp3:mockwebserver'
 	testCompile 'ch.qos.logback:logback-classic'
 	testCompile 'io.projectreactor.netty:reactor-netty'

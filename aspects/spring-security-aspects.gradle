@@ -9,6 +9,10 @@ dependencies {
 	compile 'org.springframework:spring-core'
 
 	testCompile 'org.springframework:spring-aop'
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testAspect sourceSets.main.output
 }
 

@@ -9,4 +9,8 @@ dependencies {
 	compile 'org.springframework:spring-web'
 
 	testCompile project(path: ':spring-security-core', configuration: 'tests')
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 }

@@ -88,11 +88,5 @@ public class DependencySetPlugin implements Plugin<Project> {
 				"org.apache.directory.server:apacheds-server-jndi",
 				'org.apache.directory.shared:shared-ldap'
 		]
-
-		project.plugins.withType(JavaPlugin) {
-			project.dependencies {
-				testCompile project.testDependencies
-			}
-		}
 	}
 }

@@ -14,5 +14,9 @@ dependencies {
 
 	provided 'javax.servlet:javax.servlet-api'
 
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'org.skyscreamer:jsonassert'
 }

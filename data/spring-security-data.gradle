@@ -6,4 +6,9 @@ dependencies {
 	compile 'org.springframework.data:spring-data-commons'
 	compile 'org.springframework:spring-core'
 
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
+
 }

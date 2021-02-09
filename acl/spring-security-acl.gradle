@@ -10,9 +10,12 @@ dependencies {
 
 	optional 'net.sf.ehcache:ehcache'
 
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'org.springframework:spring-beans'
 	testCompile 'org.springframework:spring-context-support'
-	testCompile 'org.springframework:spring-test'
 
 	testRuntime 'org.hsqldb:hsqldb'
 }

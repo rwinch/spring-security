@@ -27,6 +27,10 @@ dependencies {
 	optional 'org.springframework:spring-tx'
 
 	testCompile powerMock2Dependencies
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'commons-collections:commons-collections'
 	testCompile 'io.projectreactor:reactor-test'
 	testCompile 'org.skyscreamer:jsonassert'

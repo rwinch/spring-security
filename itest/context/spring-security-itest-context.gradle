@@ -9,6 +9,10 @@ dependencies {
 	compile 'org.springframework:spring-tx'
 
 	testCompile project(':spring-security-web')
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 	testCompile 'javax.servlet:javax.servlet-api'
 	testCompile 'org.springframework:spring-web'
 

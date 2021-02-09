@@ -26,4 +26,9 @@ dependencies {
 
 	runtime 'net.sourceforge.nekohtml:nekohtml'
 	runtime 'org.apache.httpcomponents:httpclient'
+
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 }

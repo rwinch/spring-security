@@ -12,4 +12,8 @@ dependencies {
     runtime apachedsDependencies
 
 	testCompile project(path : ':spring-security-ldap', configuration : 'tests')
+	testCompile "junit:junit"
+	testCompile "org.mockito:mockito-core"
+	testCompile "org.springframework:spring-test"
+	testCompile "org.assertj:assertj-core"
 }
