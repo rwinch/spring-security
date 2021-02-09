@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-	testCompile powerMockDependencies
 	testCompile seleniumDependencies
 	testCompile slf4jDependencies
 	testCompile springCoreDependency

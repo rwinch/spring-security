@@ -44,17 +44,6 @@ public class DependencySetPlugin implements Plugin<Project> {
 				"org.seleniumhq.selenium:selenium-support"
 		]
 
-		project.ext.powerMockDependencies = [
-				"org.powermock:powermock-core",
-				"org.powermock:powermock-api-support",
-				"org.powermock:powermock-module-junit4-common",
-				"org.powermock:powermock-module-junit4",
-				project.dependencies.create("org.powermock:powermock-api-mockito") {
-					exclude group: 'org.mockito', module: 'mockito-all'
-				},
-				"org.powermock:powermock-reflect"
-		]
-
 		project.ext.powerMock2Dependencies = [
 				"org.powermock:powermock-core",
 				"org.powermock:powermock-api-support",
