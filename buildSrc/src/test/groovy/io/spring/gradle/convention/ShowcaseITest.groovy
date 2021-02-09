@@ -35,11 +35,6 @@ class ShowcaseITest extends Specification {
 		then: 'entire build passes'
 		result.output.contains("BUILD SUCCESSFUL")
 
-		and: 'javadoc api works'
-
-		and: 'integration tests run'
-		new File(testKit.getRootDir(), 'samples/sgbcs-sample-war/build/test-results/integrationTest/').exists()
-		new File(testKit.getRootDir(), 'samples/sgbcs-sample-war/build/reports/tests/integrationTest/').exists()
 	}
 
 	def "install"() {
