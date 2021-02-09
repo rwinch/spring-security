@@ -53,14 +53,6 @@ public class DependencySetPlugin implements Plugin<Project> {
 				"org.seleniumhq.selenium:selenium-support"
 		]
 
-		project.ext.gebDependencies = project.spockDependencies +
-			project.seleniumDependencies + [
-			"org.gebish:geb-spock",
-			'commons-httpclient:commons-httpclient',
-			"org.codehaus.groovy:groovy",
-			"org.codehaus.groovy:groovy-all"
-		]
-
 		project.ext.powerMockDependencies = [
 				"org.powermock:powermock-core",
 				"org.powermock:powermock-api-support",
