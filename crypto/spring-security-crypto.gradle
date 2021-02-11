@@ -1,4 +1,6 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+}
 
 dependencies {
 	optional 'org.springframework:spring-jcl'

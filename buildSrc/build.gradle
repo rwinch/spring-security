@@ -21,6 +21,10 @@ gradlePlugin {
 			id = "locks"
 			implementationClass = "lock.GlobalLockPlugin"
 		}
+		springModule {
+			id = "org.springframework.security.spring-module"
+			implementationClass = "org.springframework.security.convention.SpringModulePlugin"
+		}
 	}
 }
 configurations.all {
