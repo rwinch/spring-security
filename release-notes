@@ -1,0 +1,18 @@
+## :star: New Features
+
+- Improve HttpSessionSecurityContextSessionRepository Performance [#9391](https://github.com/spring-projects/spring-security/issues/9391)
+- Improve HttpSessionSecurityContextSessionRepository Performance [#9389](https://github.com/spring-projects/spring-security/issues/9389)
+- Migrate SAML 2.0 Samples to Use PCFOne [#9370](https://github.com/spring-projects/spring-security/issues/9370)
+- Resolve artifacts from Maven Central first [#9368](https://github.com/spring-projects/spring-security/issues/9368)
+- Use constant time comparisons for CSRF tokens [#9358](https://github.com/spring-projects/spring-security/issues/9358)
+
+## :beetle: Bug Fixes
+
+- OAuth2ResourceServerSpecTests and OAuth2WebClientControllerTests fail [#9427](https://github.com/spring-projects/spring-security/issues/9427)
+- CurrentSecurityContextArgumentResolver should configure BeanResolver [#9405](https://github.com/spring-projects/spring-security/issues/9405)
+- Fix beanResolver missing in CurrentSecurityContextArgumentResolver. [#9404](https://github.com/spring-projects/spring-security/issues/9404)
+- Remove notEmpty check for authorities in DefaultOAuth2User [#9397](https://github.com/spring-projects/spring-security/issues/9397)
+- Wrong example name in Spring Security documentation [#9384](https://github.com/spring-projects/spring-security/issues/9384)
+- CsrfWebFilter creates CsrfException with incorrect message when no token is found [#9339](https://github.com/spring-projects/spring-security/issues/9339)
+- webflux-x509 sample cert needs renewal [#9323](https://github.com/spring-projects/spring-security/issues/9323)
+- OidcIdToken cannot be serialized to JSON if token contains claim of type JSONArray [#9259](https://github.com/spring-projects/spring-security/issues/9259)

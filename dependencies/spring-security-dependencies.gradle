@@ -1,0 +1,95 @@
+plugins {
+	id 'java-platform'
+}
+
+javaPlatform {
+	allowDependencies()
+}
+
+dependencies {
+	api platform("org.springframework:spring-framework-bom:5.3.+")
+	api platform("io.projectreactor:reactor-bom:2020.0.+")
+	api platform("io.rsocket:rsocket-bom:1.1.0")
+	api platform("org.springframework.data:spring-data-releasetrain:Neumann-SR+")
+	api platform("org.jetbrains.kotlin:kotlin-bom:1.+")
+	constraints {
+		api "ch.qos.logback:logback-classic:1.+"
+		api "com.fasterxml.jackson.core:jackson-databind:2.+"
+		api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.+'
+		api "com.google.appengine:appengine-api-1.0-sdk:$gaeVersion"
+		api "com.google.appengine:appengine-api-labs:$gaeVersion"
+		api "com.google.appengine:appengine-api-stubs:$gaeVersion"
+		api "com.google.appengine:appengine-testing:$gaeVersion"
+		api "com.google.appengine:appengine:$gaeVersion"
+		api "com.google.inject:guice:3.0"
+		api "com.nimbusds:nimbus-jose-jwt:9.+"
+		api "com.nimbusds:oauth2-oidc-sdk:9.+"
+		api "com.squareup.okhttp3:mockwebserver:3.+"
+		api "com.squareup.okhttp3:okhttp:3.+"
+		api "com.sun.xml.bind:jaxb-core:2.+"
+		api "com.sun.xml.bind:jaxb-impl:2.+"
+		api "com.unboundid:unboundid-ldapsdk:4.+"
+		api "commons-codec:commons-codec:1.14"
+		api "commons-collections:commons-collections:3.+"
+		api "commons-httpclient:commons-httpclient:3.+"
+		api "commons-logging:commons-logging:1.2"
+		api "io.projectreactor.tools:blockhound:1.+"
+		api "javax.annotation:jsr250-api:1.+"
+		api "javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.+"
+		api "javax.servlet.jsp:javax.servlet.jsp-api:2.+"
+		api "javax.servlet:javax.servlet-api:4.+"
+		api "javax.validation:validation-api:2.+"
+		api "javax.xml.bind:jaxb-api:2.+"
+		api "junit:junit:4.12"
+		api "ldapsdk:ldapsdk:4.+"
+		api "net.sf.ehcache:ehcache:2.+"
+		api "net.sourceforge.htmlunit:htmlunit:2.37.0"
+		api "net.sourceforge.nekohtml:nekohtml:1.+"
+		api "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.+"
+		api "opensymphony:sitemesh:2.+"
+		api "org.apache.directory.server:apacheds-core-entry:1.5.5"
+		api "org.apache.directory.server:apacheds-core:1.5.5"
+		api "org.apache.directory.server:apacheds-protocol-ldap:1.5.5"
+		api "org.apache.directory.server:apacheds-protocol-shared:1.5.5"
+		api "org.apache.directory.server:apacheds-server-jndi:1.5.5"
+		api "org.apache.directory.shared:shared-ldap:0.9.15"
+		api "org.apache.httpcomponents:httpclient:4.+"
+		api "org.apache.taglibs:taglibs-standard-jstlel:1.+"
+		api "org.aspectj:aspectjrt:$aspectjVersion"
+		api "org.aspectj:aspectjtools:$aspectjVersion"
+		api "org.aspectj:aspectjweaver:$aspectjVersion"
+		api "org.assertj:assertj-core:3.+"
+		api "org.bouncycastle:bcpkix-jdk15on:1.+"
+		api "org.bouncycastle:bcprov-jdk15on:1.+"
+		api "org.eclipse.jetty:jetty-server:9.4.19.v20190610"
+		api "org.eclipse.jetty:jetty-servlet:9.4.19.v20190610"
+		api "org.eclipse.persistence:javax.persistence:2.+"
+		api "org.hibernate:hibernate-entitymanager:5.+"
+		api "org.hibernate:hibernate-validator:6.+"
+		api "org.hsqldb:hsqldb:2.+"
+		api "org.jasig.cas.client:cas-client-core:3.+"
+		api "org.jasig.cas:cas-server-webapp:4.0.7@war"
+		api "org.mockito:mockito-core:3.3.+"
+		api "org.openid4java:openid4java-nodeps:0.+"
+		api "org.opensaml:opensaml-core:$openSamlVersion"
+		api "org.opensaml:opensaml-saml-api:$openSamlVersion"
+		api "org.opensaml:opensaml-saml-impl:$openSamlVersion"
+		api "org.powermock:powermock-api-mockito2:2.+"
+		api "org.powermock:powermock-api-support:2.+"
+		api "org.powermock:powermock-core:2.+"
+		api "org.powermock:powermock-module-junit4-common:2.+"
+		api "org.powermock:powermock-module-junit4:2.+"
+		api "org.powermock:powermock-reflect:2.+"
+		api "org.python:jython:2.5.+"
+		api "org.seleniumhq.selenium:htmlunit-driver:2.37.0"
+		api "org.seleniumhq.selenium:selenium-java:3.+"
+		api "org.seleniumhq.selenium:selenium-support:3.+"
+		api "org.skyscreamer:jsonassert:1.+"
+		api "org.slf4j:jcl-over-slf4j:1.+"
+		api "org.slf4j:log4j-over-slf4j:1.+"
+		api "org.slf4j:slf4j-api:1.+"
+		api "org.springframework.ldap:spring-ldap-core:latest.release"
+		api "org.synchronoss.cloud:nio-multipart-parser:1.+"
+		api "org.thymeleaf:thymeleaf-spring5:3.+"
+	}
+}

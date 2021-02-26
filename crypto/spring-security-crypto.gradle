@@ -2,12 +2,22 @@ plugins {
 	id 'org.springframework.security.spring-module'
 }
 
-dependencies {
-	optional 'org.springframework:spring-jcl'
-	optional 'org.bouncycastle:bcpkix-jdk15on'
+java {
+	registerFeature("bc") {
+		usingSourceSet(sourceSets.main)
+	}
+	registerFeature("springLogging") {
+		usingSourceSet(sourceSets.main)
+	}
+}
 
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
+dependencies {
+	api platform(project(":spring-security-dependencies"))
+	bcApi 'org.bouncycastle:bcpkix-jdk15on'
+	springLoggingImplementation 'org.springframework:spring-jcl'
+
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
 }

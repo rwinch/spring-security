@@ -1,8 +1,21 @@
+plugins {
+	id 'org.springframework.security.spring-module'
+	id 'kotlin'
+	id "nebula.integtest"
+	id 'trang'
+}
+
+
+java {
+	registerFeature("optional") {
+		usingSourceSet(sourceSets.main)
+	}
+}
+
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-apply plugin: 'io.spring.convention.spring-module'
-apply plugin: 'trang'
-apply plugin: 'kotlin'
+configurations.testImplementation.extendsFrom configurations.compileOnly
 
 dependencies {
 	// NB: Don't add other compile time dependencies to the config module as this breaks tooling
@@ -12,28 +25,28 @@ dependencies {
 	compile 'org.springframework:spring-context'
 	compile 'org.springframework:spring-core'
 
-	optional project(':spring-security-ldap')
-	optional project(':spring-security-messaging')
-	optional project(':spring-security-saml2-service-provider')
-	optional project(':spring-security-oauth2-client')
-	optional project(':spring-security-oauth2-jose')
-	optional project(':spring-security-oauth2-resource-server')
-	optional project(':spring-security-openid')
-	optional project(':spring-security-rsocket')
-	optional project(':spring-security-web')
-	optional 'io.projectreactor:reactor-core'
-	optional 'org.aspectj:aspectjweaver'
-	optional 'org.springframework:spring-jdbc'
-	optional 'org.springframework:spring-messaging'
-	optional 'org.springframework:spring-tx'
-	optional 'org.springframework:spring-webmvc'
-	optional'org.springframework:spring-web'
-	optional'org.springframework:spring-webflux'
-	optional'org.springframework:spring-websocket'
-	optional 'org.jetbrains.kotlin:kotlin-reflect'
-	optional 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	optionalApi project(':spring-security-ldap')
+	optionalApi project(':spring-security-messaging')
+	optionalApi project(':spring-security-saml2-service-provider')
+	optionalApi project(':spring-security-oauth2-client')
+	optionalApi project(':spring-security-oauth2-jose')
+	optionalApi project(':spring-security-oauth2-resource-server')
+	optionalApi project(':spring-security-openid')
+	optionalApi project(':spring-security-rsocket')
+	optionalApi project(':spring-security-web')
+	optionalApi 'io.projectreactor:reactor-core'
+	optionalApi 'org.aspectj:aspectjweaver'
+	optionalApi 'org.springframework:spring-jdbc'
+	optionalApi 'org.springframework:spring-messaging'
+	optionalApi 'org.springframework:spring-tx'
+	optionalApi 'org.springframework:spring-webmvc'
+	optionalApi'org.springframework:spring-web'
+	optionalApi'org.springframework:spring-webflux'
+	optionalApi'org.springframework:spring-websocket'
+	optionalApi 'org.jetbrains.kotlin:kotlin-reflect'
+	optionalApi 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
-	provided 'javax.servlet:javax.servlet-api'
+	compileOnly 'javax.servlet:javax.servlet-api'
 
 	testCompile project(':spring-security-aspects')
 	testCompile project(':spring-security-cas')
@@ -44,42 +57,54 @@ dependencies {
 	testCompile project(path : ':spring-security-oauth2-resource-server', configuration : 'tests')
 	testCompile project(path : ':spring-security-saml2-service-provider', configuration : 'tests')
 	testCompile project(path : ':spring-security-web', configuration : 'tests')
-	testCompile apachedsDependencies
-	testCompile powerMock2Dependencies
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'com.squareup.okhttp3:mockwebserver'
-	testCompile 'ch.qos.logback:logback-classic'
-	testCompile 'io.projectreactor.netty:reactor-netty'
-	testCompile 'io.rsocket:rsocket-transport-netty'
-	testCompile 'javax.annotation:jsr250-api:1.0'
-	testCompile 'javax.xml.bind:jaxb-api'
-	testCompile 'ldapsdk:ldapsdk:4.1'
-	testCompile('net.sourceforge.htmlunit:htmlunit') {
+	testCompile "org.apache.directory.server:apacheds-core"
+	testCompile "org.apache.directory.server:apacheds-core-entry"
+	testCompile "org.apache.directory.server:apacheds-protocol-shared"
+	testCompile "org.apache.directory.server:apacheds-protocol-ldap"
+	testCompile "org.apache.directory.server:apacheds-server-jndi"
+	testCompile 'org.apache.directory.shared:shared-ldap'
+	testImplementation "org.powermock:powermock-core"
+	testImplementation "org.powermock:powermock-api-support"
+	testImplementation "org.powermock:powermock-module-junit4-common"
+	testImplementation "org.powermock:powermock-module-junit4"
+	testImplementation("org.powermock:powermock-api-mockito2") {
+		exclude group: 'org.mockito', module: 'mockito-all'
+	}
+	testImplementation "org.powermock:powermock-reflect"
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
+	testImplementation 'ch.qos.logback:logback-classic'
+	testImplementation 'io.projectreactor.netty:reactor-netty'
+	testImplementation 'io.rsocket:rsocket-transport-netty'
+	testImplementation 'javax.annotation:jsr250-api:1.0'
+	testImplementation 'javax.xml.bind:jaxb-api'
+	testImplementation 'ldapsdk:ldapsdk:4.1'
+	testImplementation('net.sourceforge.htmlunit:htmlunit') {
 		exclude group: 'commons-logging', module: 'commons-logging'
 	}
-	testCompile 'org.eclipse.persistence:javax.persistence'
-	testCompile 'org.hibernate:hibernate-entitymanager'
-	testCompile 'org.hsqldb:hsqldb'
-	testCompile ('org.openid4java:openid4java-nodeps') {
+	testImplementation 'org.eclipse.persistence:javax.persistence'
+	testImplementation 'org.hibernate:hibernate-entitymanager'
+	testImplementation 'org.hsqldb:hsqldb'
+	testImplementation ('org.openid4java:openid4java-nodeps') {
 		exclude group: 'com.google.code.guice', module: 'guice'
 	}
-	testCompile('org.seleniumhq.selenium:htmlunit-driver') {
+	testImplementation('org.seleniumhq.selenium:htmlunit-driver') {
 		exclude group: 'commons-logging', module: 'commons-logging'
 	}
-	testCompile('org.seleniumhq.selenium:selenium-java') {
+	testImplementation('org.seleniumhq.selenium:selenium-java') {
 		exclude group: 'commons-logging', module: 'commons-logging'
 		exclude group: 'io.netty', module: 'netty'
 	}
-	testCompile 'org.slf4j:jcl-over-slf4j'
-	testCompile 'org.springframework.ldap:spring-ldap-core'
-	testCompile 'org.springframework:spring-expression'
-	testCompile 'org.springframework:spring-jdbc'
-	testCompile 'org.springframework:spring-orm'
-	testCompile 'org.springframework:spring-tx'
-	testCompile ('org.springframework.data:spring-data-jpa') {
+	testImplementation 'org.slf4j:jcl-over-slf4j'
+	testImplementation 'org.springframework.ldap:spring-ldap-core'
+	testImplementation 'org.springframework:spring-expression'
+	testImplementation 'org.springframework:spring-jdbc'
+	testImplementation 'org.springframework:spring-orm'
+	testImplementation 'org.springframework:spring-tx'
+	testImplementation ('org.springframework.data:spring-data-jpa') {
 		exclude group: 'org.aspectj', module: 'aspectjrt'
 	}
 

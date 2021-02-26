@@ -1,22 +1,36 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+}
+
+java {
+	registerFeature("jackson") {
+		usingSourceSet(sourceSets.main)
+	}
+	registerFeature("ehcache") {
+		usingSourceSet(sourceSets.main)
+	}
+}
+
+configurations.testImplementation.extendsFrom configurations.compileOnly
 
 dependencies {
-	compile project(':spring-security-core')
-	compile project(':spring-security-web')
-	compile 'org.jasig.cas.client:cas-client-core'
-	compile 'org.springframework:spring-beans'
-	compile 'org.springframework:spring-context'
-	compile 'org.springframework:spring-core'
-	compile 'org.springframework:spring-web'
+	api platform(project(":spring-security-dependencies"))
+	api project(':spring-security-core')
+	api project(':spring-security-web')
+	api 'org.jasig.cas.client:cas-client-core'
+	api 'org.springframework:spring-beans'
+	api 'org.springframework:spring-context'
+	api 'org.springframework:spring-core'
+	api 'org.springframework:spring-web'
 
-	optional 'com.fasterxml.jackson.core:jackson-databind'
-	optional 'net.sf.ehcache:ehcache'
+	jacksonApi 'com.fasterxml.jackson.core:jackson-databind'
+	ehcacheApi 'net.sf.ehcache:ehcache'
 
-	provided 'javax.servlet:javax.servlet-api'
+	compileOnly 'javax.servlet:javax.servlet-api'
 
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'org.skyscreamer:jsonassert'
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'org.skyscreamer:jsonassert'
 }
