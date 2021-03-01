@@ -16,12 +16,23 @@ public class SpringModulePlugin implements Plugin<Project> {
 		plugins.apply(JavaTestFixturesPlugin.class);
 
 		project.getPlugins().withType(JavaPlugin.class).all((javaPlugin) -> {
-			JavaPluginExtension extension = project.getExtensions().getByType(JavaPluginExtension.class);
-			extension.withJavadocJar();
-			extension.withSourcesJar();
+			JavaPluginExtension java = project.getExtensions().getByType(JavaPluginExtension.class);
+			java.withJavadocJar();
+			java.withSourcesJar();
+			registerOptionalFeature(project, java);
 		});
 
 		skipPublishingTestFixtures(project);
+	}
+
+	private void registerOptionalFeature(Project project, JavaPluginExtension java) {
+		JavaPluginConvention javaConvention = project.getConvention().findPlugin(JavaPluginConvention.class);
+		java.registerFeature("optional", new Action<FeatureSpec>() {
+			@Override
+			public void execute(FeatureSpec optional) {
+				optional.usingSourceSet(javaConvention.getSourceSets().getByName("main"));
+			}
+		});
 	}
 
 	private void skipPublishingTestFixtures(Project project) {
