@@ -20,9 +20,15 @@ public class SpringModulePlugin implements Plugin<Project> {
 			java.withJavadocJar();
 			java.withSourcesJar();
 			registerOptionalFeature(project, java);
+			testImplementationExtendsCompileOnly(project);
 		});
 
 		skipPublishingTestFixtures(project);
+	}
+
+	private void testImplementationExtendsCompileOnly(Project project) {
+		ConfigurationContainer configurations = project.getConfigurations();
+		configurations.getByName(JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME).extendsFrom(configurations.getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME));
 	}
 
 	private void registerOptionalFeature(Project project, JavaPluginExtension java) {
