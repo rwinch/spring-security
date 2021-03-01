@@ -1,26 +1,45 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id 'kotlin'
+	id "nebula.integtest"
+	id 'trang'
+}
+
+java {
+	registerFeature("optional") {
+		usingSourceSet(sourceSets.main)
+	}
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile 'org.springframework:spring-beans'
-	compile 'org.springframework:spring-context'
-	compile 'org.springframework:spring-core'
-	compile 'org.springframework:spring-expression'
-	compile 'org.springframework:spring-messaging'
+	api project(':spring-security-core')
+	api 'org.springframework:spring-beans'
+	api 'org.springframework:spring-context'
+	api 'org.springframework:spring-core'
+	api 'org.springframework:spring-expression'
+	api 'org.springframework:spring-messaging'
 
-	optional project(':spring-security-web')
-	optional 'org.springframework:spring-websocket'
-	optional 'io.projectreactor:reactor-core'
-	optional 'javax.servlet:javax.servlet-api'
+	optionalImplementation project(':spring-security-web')
+	optionalImplementation 'org.springframework:spring-websocket'
+	optionalImplementation 'io.projectreactor:reactor-core'
+	optionalImplementation 'javax.servlet:javax.servlet-api'
 
-	testCompile project(path: ':spring-security-core', configuration: 'tests')
-	testCompile 'commons-codec:commons-codec'
-	testCompile powerMock2Dependencies
-	testCompile slf4jDependencies
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
+//	testCompile project(path : ':spring-security-core', configuration : 'test')
+	testImplementation 'commons-codec:commons-codec'
+	testImplementation "org.powermock:powermock-core"
+	testImplementation "org.powermock:powermock-api-support"
+	testImplementation "org.powermock:powermock-module-junit4-common"
+	testImplementation "org.powermock:powermock-module-junit4"
+	testImplementation("org.powermock:powermock-api-mockito2") {
+		exclude group: 'org.mockito', module: 'mockito-all'
+	}
+	testImplementation "org.powermock:powermock-reflect"
+	testImplementation 'org.slf4j:jcl-over-slf4j'
+	testImplementation 'org.slf4j:slf4j-api'
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
 
-	testRuntime 'org.hsqldb:hsqldb'
+	testRuntimeOnly 'org.hsqldb:hsqldb'
 }
