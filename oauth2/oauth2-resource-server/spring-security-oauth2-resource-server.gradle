@@ -1,25 +1,31 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id 'kotlin'
+	id "nebula.integtest"
+	id 'trang'
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile project(':spring-security-oauth2-core')
-	compile project(':spring-security-web')
-	compile springCoreDependency
+	api platform(project(":spring-security-dependencies"))
+	api project(':spring-security-core')
+	api project(':spring-security-oauth2-core')
+	api project(':spring-security-web')
+	api "org.springframework:spring-core"
 
-	optional project(':spring-security-oauth2-jose')
-	optional 'com.nimbusds:oauth2-oidc-sdk'
-	optional 'io.projectreactor:reactor-core'
-	optional 'org.springframework:spring-webflux'
+	optionalImplementation project(':spring-security-oauth2-jose')
+	optionalImplementation 'com.nimbusds:oauth2-oidc-sdk'
+	optionalImplementation 'io.projectreactor:reactor-core'
+	optionalImplementation 'org.springframework:spring-webflux'
 
-	provided 'javax.servlet:javax.servlet-api'
+	compileOnly 'javax.servlet:javax.servlet-api'
 
-	testCompile project(path: ':spring-security-oauth2-jose', configuration: 'tests')
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'com.squareup.okhttp3:mockwebserver'
-	testCompile 'com.fasterxml.jackson.core:jackson-databind'
-	testCompile 'io.projectreactor.netty:reactor-netty'
-	testCompile 'io.projectreactor:reactor-test'
+	testImplementation testFixture(project(':spring-security-oauth2-jose'))
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+	testImplementation 'io.projectreactor.netty:reactor-netty'
+	testImplementation 'io.projectreactor:reactor-test'
 }
