@@ -33,6 +33,9 @@ java {
 	}
 }
 
+configurations.testFixturesImplementation.extendsFrom configurations.jsr250Implementation
+configurations.testFixturesImplementation.extendsFrom configurations.jdbcImplementation
+
 dependencies {
 	api platform(project(":spring-security-dependencies"))
 	api 'org.springframework:spring-aop'
