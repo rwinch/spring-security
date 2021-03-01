@@ -1,18 +1,26 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id 'kotlin'
+	id "nebula.integtest"
+	id 'trang'
+}
+
+java {
+	registerFeature("apacheds") {
+		usingSourceSet(sourceSets.main)
+	}
+	registerFeature("unboundid") {
+		usingSourceSet(sourceSets.main)
+	}
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile 'org.springframework:spring-beans'
-	compile 'org.springframework:spring-context'
-	compile 'org.springframework:spring-core'
-	compile 'org.springframework:spring-tx'
-
-	optional apachedsDependencies
-	optional 'ldapsdk:ldapsdk'
-	optional "com.unboundid:unboundid-ldapsdk"
-	optional 'org.apache.directory.shared:shared-ldap'
-
-	compile ('org.springframework.ldap:spring-ldap-core') {
+	api project(':spring-security-core')
+	api 'org.springframework:spring-beans'
+	api 'org.springframework:spring-context'
+	api 'org.springframework:spring-core'
+	api 'org.springframework:spring-tx'
+	api('org.springframework.ldap:spring-ldap-core') {
 		exclude(group: 'commons-logging', module: 'commons-logging')
 		exclude(group: 'org.springframework', module: 'spring-beans')
 		exclude(group: 'org.springframework', module: 'spring-core')
@@ -20,13 +28,24 @@ dependencies {
 		exclude(group: 'org.springframework.data', module: 'spring-data-commons')
 	}
 
-	testCompile project(':spring-security-test')
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'org.slf4j:jcl-over-slf4j'
-	testCompile 'org.slf4j:slf4j-api'
+	apachedsImplementation 'ldapsdk:ldapsdk'
+	apachedsImplementation "org.apache.directory.server:apacheds-core"
+	apachedsImplementation "org.apache.directory.server:apacheds-core-entry"
+	apachedsImplementation "org.apache.directory.server:apacheds-protocol-shared"
+	apachedsImplementation "org.apache.directory.server:apacheds-protocol-ldap"
+	apachedsImplementation "org.apache.directory.server:apacheds-server-jndi"
+	apachedsImplementation 'org.apache.directory.shared:shared-ldap'
+	apachedsImplementation 'org.apache.directory.shared:shared-ldap'
+
+	unboundidImplementation "com.unboundid:unboundid-ldapsdk"
+
+	testImplementation project(':spring-security-test')
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'org.slf4j:jcl-over-slf4j'
+	testImplementation 'org.slf4j:slf4j-api'
 }
 
 integrationTest {
