@@ -24,7 +24,7 @@ dependencies {
 	optionalImplementation 'io.projectreactor:reactor-core'
 	optionalImplementation 'javax.servlet:javax.servlet-api'
 
-//	testCompile project(path : ':spring-security-core', configuration : 'test')
+	testImplementation testFixtures(project(':spring-security-core'))
 	testImplementation 'commons-codec:commons-codec'
 	testImplementation "org.powermock:powermock-core"
 	testImplementation "org.powermock:powermock-api-support"
