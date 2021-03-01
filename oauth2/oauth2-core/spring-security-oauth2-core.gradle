@@ -1,17 +1,31 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id 'kotlin'
+	id "nebula.integtest"
+	id 'trang'
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile springCoreDependency
-	compile 'org.springframework:spring-web'
+	api platform(project(":spring-security-dependencies"))
+	api project(':spring-security-core')
+	api "org.springframework:spring-core"
+	api 'org.springframework:spring-web'
 
-	optional 'com.fasterxml.jackson.core:jackson-databind'
-	optional 'com.nimbusds:oauth2-oidc-sdk'
-	optional 'org.springframework:spring-webflux'
+	optionalImplementation 'com.fasterxml.jackson.core:jackson-databind'
+	optionalImplementation 'com.nimbusds:oauth2-oidc-sdk'
+	optionalImplementation 'org.springframework:spring-webflux'
 
-	testCompile powerMock2Dependencies
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
+
+	testImplementation "org.powermock:powermock-core"
+	testImplementation "org.powermock:powermock-api-support"
+	testImplementation "org.powermock:powermock-module-junit4-common"
+	testImplementation "org.powermock:powermock-module-junit4"
+	testImplementation("org.powermock:powermock-api-mockito2") {
+		exclude group: 'org.mockito', module: 'mockito-all'
+	}
+	testImplementation "org.powermock:powermock-reflect"
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
 }
