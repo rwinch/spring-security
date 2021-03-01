@@ -23,8 +23,11 @@ dependencies {
 	optionalApi 'org.springframework:spring-jdbc'
 	optionalApi 'org.springframework:spring-r2dbc'
 
-	testImplementation project(path: ':spring-security-oauth2-core', configuration: 'tests')
-	testImplementation project(path: ':spring-security-oauth2-jose', configuration: 'tests')
+	testFixturesImplementation testFixtures(project(':spring-security-oauth2-core'))
+	testFixturesImplementation testFixtures(project(':spring-security-oauth2-jose'))
+
+	testImplementation testFixtures(project(':spring-security-oauth2-core'))
+	testImplementation testFixtures(project(':spring-security-oauth2-jose'))
 	testImplementation "org.powermock:powermock-core"
 	testImplementation "org.powermock:powermock-api-support"
 	testImplementation "org.powermock:powermock-module-junit4-common"
