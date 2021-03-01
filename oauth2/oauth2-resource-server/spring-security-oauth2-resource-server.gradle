@@ -19,7 +19,7 @@ dependencies {
 
 	compileOnly 'javax.servlet:javax.servlet-api'
 
-	testImplementation testFixture(project(':spring-security-oauth2-jose'))
+	testImplementation testFixtures(project(':spring-security-oauth2-jose'))
 	testImplementation "junit:junit"
 	testImplementation "org.mockito:mockito-core"
 	testImplementation "org.springframework:spring-test"
