@@ -1,18 +1,22 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id "nebula.integtest"
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile project(':spring-security-web')
+	api platform(project(":spring-security-dependencies"))
+	api project(':spring-security-core')
+	api project(':spring-security-web')
 
-	compile("org.opensaml:opensaml-core")
-	compile("org.opensaml:opensaml-saml-api")
-	compile("org.opensaml:opensaml-saml-impl")
+	api("org.opensaml:opensaml-core")
+	api("org.opensaml:opensaml-saml-api")
+	api("org.opensaml:opensaml-saml-impl")
 
-	provided 'javax.servlet:javax.servlet-api'
+	compileOnly 'javax.servlet:javax.servlet-api'
 
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'com.squareup.okhttp3:mockwebserver'
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
 }
