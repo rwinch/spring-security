@@ -1,14 +1,18 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id "nebula.integtest"
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile 'javax.xml.bind:jaxb-api'
-	compile 'org.springframework.data:spring-data-commons'
-	compile 'org.springframework:spring-core'
+	api platform(project(':spring-security-dependencies'))
+	api project(':spring-security-core')
+	api project(':spring-security-core')
+	api 'org.springframework:spring-core'
+	implementation 'javax.xml.bind:jaxb-api'
+	implementation 'org.springframework.data:spring-data-commons'
 
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
 }
