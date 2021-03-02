@@ -25,6 +25,9 @@ dependencies {
 
 	testFixturesImplementation testFixtures(project(':spring-security-oauth2-core'))
 	testFixturesImplementation testFixtures(project(':spring-security-oauth2-jose'))
+	testFixturesImplementation 'io.projectreactor:reactor-core'
+	testFixturesImplementation "org.mockito:mockito-core"
+	testFixturesImplementation 'org.springframework:spring-webflux'
 
 	testImplementation testFixtures(project(':spring-security-oauth2-core'))
 	testImplementation testFixtures(project(':spring-security-oauth2-jose'))
