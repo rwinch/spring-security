@@ -20,7 +20,7 @@ dependencies {
 	runtimeOnly "org.apache.directory.server:apacheds-server-jndi"
 	runtimeOnly 'org.apache.directory.shared:shared-ldap'
 
-	testImplementation project(path : ':spring-security-ldap', configuration : 'tests')
+	testImplementation testFixtures(project(':spring-security-ldap'))
 	testImplementation "junit:junit"
 	testImplementation "org.mockito:mockito-core"
 	testImplementation "org.springframework:spring-test"
