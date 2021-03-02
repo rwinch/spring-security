@@ -1,32 +1,47 @@
-apply plugin: 'io.spring.convention.spring-module'
+plugins {
+	id 'org.springframework.security.spring-module'
+	id "nebula.integtest"
+}
 
 dependencies {
-	compile project(':spring-security-core')
-	compile project(':spring-security-web')
-	compile 'org.springframework:spring-core'
-	compile 'org.springframework:spring-test'
+	api platform(project(":spring-security-dependencies"))
+	api project(':spring-security-core')
+	api project(':spring-security-web')
+	api 'org.springframework:spring-core'
+	api 'org.springframework:spring-test'
 
-	optional project(':spring-security-config')
-	optional project(':spring-security-oauth2-client')
-	optional project(':spring-security-oauth2-jose')
-	optional project(':spring-security-oauth2-resource-server')
-	optional 'io.projectreactor:reactor-core'
-	optional 'org.springframework:spring-webmvc'
-	optional 'org.springframework:spring-webflux'
+	optionalImplementation project(':spring-security-config')
+	optionalImplementation project(':spring-security-oauth2-client')
+	optionalImplementation project(':spring-security-oauth2-jose')
+	optionalImplementation project(':spring-security-oauth2-resource-server')
+	optionalImplementation 'io.projectreactor:reactor-core'
+	optionalImplementation 'org.springframework:spring-webmvc'
+	optionalImplementation 'org.springframework:spring-webflux'
 
-	provided 'javax.servlet:javax.servlet-api'
+	compileOnly 'javax.servlet:javax.servlet-api'
 
-	testCompile project(path : ':spring-security-config', configuration : 'tests')
-	testCompile "junit:junit"
-	testCompile "org.mockito:mockito-core"
-	testCompile "org.springframework:spring-test"
-	testCompile "org.assertj:assertj-core"
-	testCompile 'com.fasterxml.jackson.core:jackson-databind'
-	testCompile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-	testCompile 'io.projectreactor:reactor-test'
-	testCompile 'javax.xml.bind:jaxb-api'
-	testCompile 'org.skyscreamer:jsonassert'
-	testCompile 'org.springframework:spring-webmvc'
-	testCompile 'org.springframework:spring-tx'
-	testCompile powerMock2Dependencies
+	testFixturesImplementation testFixtures(project(":spring-security-oauth2-core"))
+	testImplementation testFixtures(project(":spring-security-oauth2-core"))
+	testImplementation testFixtures(project(":spring-security-oauth2-client"))
+	testImplementation testFixtures(project(":spring-security-oauth2-jose"))
+	testImplementation testFixtures(project(":spring-security-oauth2-resource-server"))
+	testImplementation "junit:junit"
+	testImplementation "org.mockito:mockito-core"
+	testImplementation "org.springframework:spring-test"
+	testImplementation "org.assertj:assertj-core"
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+	testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'javax.xml.bind:jaxb-api'
+	testImplementation 'org.skyscreamer:jsonassert'
+	testImplementation 'org.springframework:spring-webmvc'
+	testImplementation 'org.springframework:spring-tx'
+	testImplementation "org.powermock:powermock-core"
+	testImplementation "org.powermock:powermock-api-support"
+	testImplementation "org.powermock:powermock-module-junit4-common"
+	testImplementation "org.powermock:powermock-module-junit4"
+	testImplementation("org.powermock:powermock-api-mockito2") {
+		exclude group: 'org.mockito', module: 'mockito-all'
+	}
+	testImplementation "org.powermock:powermock-reflect"
 }
