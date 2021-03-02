@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.jackson2.SimpleGrantedAuthorityMixinTests;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,18 +32,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 4.2
  */
 public class PreAuthenticatedAuthenticationTokenMixinTests extends AbstractMixinTests {
-
+	// FIXME: Reuse all this JSON from SimpleGrantedAuthorityMixinTests
 	// @formatter:off
+	public static final String AUTHORITY_JSON = "{\"@class\": \"org.springframework.security.core.authority.SimpleGrantedAuthority\", \"authority\": \"ROLE_USER\"}";
+
+	public static final String AUTHORITIES_ARRAYLIST_JSON = "[\"java.util.Collections$UnmodifiableRandomAccessList\", [" + AUTHORITY_JSON + "]]";
+
 	private static final String PREAUTH_JSON = "{"
-		+ "\"@class\": \"org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken\","
-		+ "\"principal\": \"principal\", "
-		+ "\"credentials\": \"credentials\", "
-		+ "\"authenticated\": true, "
-		+ "\"details\": null, "
-		+ "\"authorities\": " + SimpleGrantedAuthorityMixinTests.AUTHORITIES_ARRAYLIST_JSON
-	+ "}";
+			+ "\"@class\": \"org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken\","
+			+ "\"principal\": \"principal\", "
+			+ "\"credentials\": \"credentials\", "
+			+ "\"authenticated\": true, "
+			+ "\"details\": null, "
+			+ "\"authorities\": " + AUTHORITIES_ARRAYLIST_JSON
+			+ "}";
 	// @formatter:on
+
 	PreAuthenticatedAuthenticationToken expected;
+
 
 	@Before
 	public void setupExpected() {
