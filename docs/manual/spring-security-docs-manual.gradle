@@ -1,8 +1,7 @@
-apply plugin: 'io.spring.convention.docs'
-apply plugin: 'io.spring.convention.springdependencymangement'
-apply plugin: 'io.spring.convention.dependency-set'
-apply plugin: 'io.spring.convention.repository'
-apply plugin: 'java'
+plugins {
+	id 'java'
+	id 'io.spring.convention.docs'
+}
 
 asciidoctor {
 	attributes([stylesheet: 'css/style.css'])
@@ -31,6 +30,7 @@ docsZip {
 }
 
 dependencies {
+	testCompile platform(project(":spring-security-dependencies"))
 	testCompile "com.unboundid:unboundid-ldapsdk"
 	testCompile "org.apache.directory.server:apacheds-core"
 	testCompile "org.springframework:spring-core"
@@ -42,8 +42,4 @@ def resolvedVersions(Configuration configuration) {
 			.resolvedArtifacts
 			.collectEntries { [(it.name + "-version"): it.moduleVersion.id.version] }
 	}
-}
-
-repositories {
-	maven { url "https://repo.spring.io/release" }
 }
