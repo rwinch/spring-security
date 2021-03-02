@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.web.server.authentication.HttpMeController;
 import reactor.core.publisher.Mono;
 import reactor.test.publisher.TestPublisher;
 
@@ -46,7 +47,6 @@ import org.springframework.security.test.web.reactive.server.WebTestClientBuilde
 import org.springframework.security.web.authentication.preauth.x509.X509PrincipalExtractor;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterChainProxy;
-import org.springframework.security.web.server.authentication.AnonymousAuthenticationWebFilterTests;
 import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint;
 import org.springframework.security.web.server.authentication.ServerX509AuthenticationConverter;
 import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
@@ -265,7 +265,7 @@ public class ServerHttpSecurityTests {
 				.anonymous().and()
 				.build();
 		WebTestClient client = WebTestClientBuilder
-				.bindToControllerAndWebFilters(AnonymousAuthenticationWebFilterTests.HttpMeController.class, securityFilterChain)
+				.bindToControllerAndWebFilters(HttpMeController.class, securityFilterChain)
 				.build();
 		client.get()
 				.uri("/me")
@@ -280,7 +280,7 @@ public class ServerHttpSecurityTests {
 		SecurityWebFilterChain securityFilterChain = this.http.anonymous(withDefaults()).build();
 		// @formatter:off
 		WebTestClient client = WebTestClientBuilder
-				.bindToControllerAndWebFilters(AnonymousAuthenticationWebFilterTests.HttpMeController.class, securityFilterChain)
+				.bindToControllerAndWebFilters(HttpMeController.class, securityFilterChain)
 				.build();
 		client.get()
 				.uri("/me")

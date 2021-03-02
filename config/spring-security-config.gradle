@@ -48,15 +48,20 @@ dependencies {
 
 	compileOnly 'javax.servlet:javax.servlet-api'
 
+	testFixturesImplementation 'io.projectreactor:reactor-core'
+	testFixturesImplementation 'org.springframework:spring-webflux'
+
 	testCompile project(':spring-security-aspects')
 	testCompile project(':spring-security-cas')
 	testCompile project(':spring-security-test')
-	testCompile project(path : ':spring-security-core', configuration : 'tests')
-	testCompile project(path : ':spring-security-ldap', configuration : 'tests')
-	testCompile project(path : ':spring-security-oauth2-client', configuration : 'tests')
-	testCompile project(path : ':spring-security-oauth2-resource-server', configuration : 'tests')
-	testCompile project(path : ':spring-security-saml2-service-provider', configuration : 'tests')
-	testCompile project(path : ':spring-security-web', configuration : 'tests')
+	testCompile testFixtures(project(':spring-security-core'))
+	testCompile testFixtures(project(':spring-security-ldap'))
+	testCompile testFixtures(project(':spring-security-oauth2-core'))
+	testCompile testFixtures(project(':spring-security-oauth2-client'))
+	testCompile testFixtures(project(':spring-security-oauth2-jose'))
+	testCompile testFixtures(project(':spring-security-oauth2-resource-server'))
+	testCompile testFixtures(project(':spring-security-saml2-service-provider'))
+	testCompile testFixtures(project(':spring-security-web'))
 	testCompile "org.apache.directory.server:apacheds-core"
 	testCompile "org.apache.directory.server:apacheds-core-entry"
 	testCompile "org.apache.directory.server:apacheds-protocol-shared"
@@ -78,6 +83,7 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver'
 	testImplementation 'ch.qos.logback:logback-classic'
 	testImplementation 'io.projectreactor.netty:reactor-netty'
+	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'io.rsocket:rsocket-transport-netty'
 	testImplementation 'javax.annotation:jsr250-api:1.0'
 	testImplementation 'javax.xml.bind:jaxb-api'
