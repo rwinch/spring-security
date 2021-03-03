@@ -25,6 +25,10 @@ gradlePlugin {
 			id = "org.springframework.security.spring-module"
 			implementationClass = "org.springframework.security.convention.SpringModulePlugin"
 		}
+		docs {
+			id = "org.springframework.security.spring-docs"
+			implementationClass = "org.springframework.security.convention.DocsPlugin"
+		}
 	}
 }
 configurations.all {
