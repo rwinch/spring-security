@@ -1,15 +1,12 @@
 package io.spring.gradle.convention
 
 import org.asciidoctor.gradle.jvm.AbstractAsciidoctorTask
-import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.DependencySet
 import org.gradle.api.plugins.PluginManager
-import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Zip
+import org.springframework.security.convention.AsciidoctorConventionPlugin
 
 /**
  * Aggregates asciidoc, javadoc, and deploying of the docs into a single plugin

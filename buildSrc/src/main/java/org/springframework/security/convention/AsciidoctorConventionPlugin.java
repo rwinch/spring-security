@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.spring.gradle.convention;
+package org.springframework.security.convention;
 
 import org.asciidoctor.gradle.base.AsciidoctorAttributeProvider;
 import org.asciidoctor.gradle.jvm.AbstractAsciidoctorTask;
@@ -30,6 +30,7 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.tasks.Sync;
+import org.gradle.api.tasks.util.PatternSet;
 
 import java.io.File;
 import java.net.URI;
@@ -99,6 +100,13 @@ public class AsciidoctorConventionPlugin implements Plugin<Project> {
 								// resourcesSrcDirSpec.include("images/**");
 							}
 						});
+					}
+				});
+				asciidoctorTask.sources(new Action<PatternSet>() {
+					@Override
+					public void execute(PatternSet sources) {
+						sources.include("**/*.adoc");
+						sources.exclude("_*/**");
 					}
 				});
 				if (asciidoctorTask instanceof AsciidoctorTask) {
