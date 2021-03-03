@@ -23,6 +23,7 @@ import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.component.AdhocComponentWithVariants;
 import org.gradle.api.component.ConfigurationVariantDetails;
 import org.gradle.api.plugins.*;
+import org.gradle.api.plugins.quality.CheckstylePlugin;
 
 public class SpringModulePlugin implements Plugin<Project> {
 	@Override
@@ -30,6 +31,8 @@ public class SpringModulePlugin implements Plugin<Project> {
 		PluginManager plugins = project.getPluginManager();
 		plugins.apply(JavaLibraryPlugin.class);
 		plugins.apply(JavaTestFixturesPlugin.class);
+		plugins.apply(CheckstylePlugin.class);
+		plugins.apply(CheckstyleConventionsPlugin.class);
 
 		project.getPlugins().withType(JavaPlugin.class).all((javaPlugin) -> {
 			JavaPluginExtension java = project.getExtensions().getByType(JavaPluginExtension.class);
