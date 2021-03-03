@@ -4,6 +4,13 @@ apply plugin: 'groovy'
 
 sourceCompatibility = 1.8
 
+sourceSets {
+	main {
+		java { srcDirs = [] }
+		groovy { srcDirs += ['src/main/java'] }
+	}
+}
+
 repositories {
 	jcenter()
 	gradlePluginPortal()
@@ -56,7 +63,7 @@ dependencies {
 	implementation 'io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE'
 	implementation 'io.spring.gradle:docbook-reference-plugin:0.3.1'
 	implementation 'io.spring.gradle:propdeps-plugin:0.0.10.RELEASE'
-	implementation 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.15'
+	implementation 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.25'
 	implementation 'io.spring.nohttp:nohttp-gradle:0.0.5.RELEASE'
 	implementation 'org.asciidoctor:asciidoctor-gradle-jvm:3.1.0'
 	implementation 'org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.1.0'
