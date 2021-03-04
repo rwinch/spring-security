@@ -16,13 +16,14 @@
 
 package org.springframework.security.web.server.authentication;
 
+import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import org.springframework.security.test.web.reactive.server.WebTestClientBuilder;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import java.util.UUID;
 
 /**
  * @author Ankur Pathak
