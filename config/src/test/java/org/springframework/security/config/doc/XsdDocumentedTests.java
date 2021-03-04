@@ -33,7 +33,8 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Test;
 
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.security.config.http.SecurityFiltersAssertions;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -144,14 +145,12 @@ public class XsdDocumentedTests {
 	 */
 	@Test
 	public void sizeWhenReadingFilesystemThenIsCorrectNumberOfSchemaFiles() throws IOException {
-		ClassPathResource resource = new ClassPathResource(this.schemaDocumentLocation);
-		// @formatter:off
-		String[] schemas = resource.getFile()
-				.getParentFile()
-				.list((dir, name) -> name.endsWith(".xsd"));
-		// @formatter:on
-		assertThat(schemas.length).isEqualTo(17)
-				.withFailMessage("the count is equal to 17, if not then schemaDocument needs updating");
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		Resource[] schemas = resolver.getResources("classpath*:/org/springframework/security/config/*.xsd");
+		assertThat(schemas)
+				.filteredOn(Resource::exists)
+				.hasSize(17)
+				.withFailMessage("the count is equal to 17, if not then schemaDocument needs updating. Got " + Arrays.asList(schemas));
 	}
 
 	/**
