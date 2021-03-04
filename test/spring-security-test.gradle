@@ -11,6 +11,7 @@ dependencies {
 	api 'org.springframework:spring-test'
 
 	optionalImplementation project(':spring-security-config')
+	optionalImplementation project(':spring-security-oauth2-core')
 	optionalImplementation project(':spring-security-oauth2-client')
 	optionalImplementation project(':spring-security-oauth2-jose')
 	optionalImplementation project(':spring-security-oauth2-resource-server')
@@ -25,12 +26,15 @@ dependencies {
 	testImplementation testFixtures(project(":spring-security-oauth2-client"))
 	testImplementation testFixtures(project(":spring-security-oauth2-jose"))
 	testImplementation testFixtures(project(":spring-security-oauth2-resource-server"))
+	testImplementation testFixtures(project(":spring-security-core"))
 	testImplementation "junit:junit"
 	testImplementation "org.mockito:mockito-core"
 	testImplementation "org.springframework:spring-test"
 	testImplementation "org.assertj:assertj-core"
 	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
 	testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	testImplementation 'io.projectreactor:reactor-core'
+	testImplementation 'org.springframework:spring-webflux'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'javax.xml.bind:jaxb-api'
 	testImplementation 'org.skyscreamer:jsonassert'
@@ -45,3 +49,6 @@ dependencies {
 	}
 	testImplementation "org.powermock:powermock-reflect"
 }
+
+
+configurations.testImplementation.extendsFrom configurations.optionalImplementation
