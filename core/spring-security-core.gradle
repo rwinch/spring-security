@@ -37,7 +37,7 @@ configurations.testFixturesImplementation.extendsFrom configurations.jsr250Imple
 configurations.testFixturesImplementation.extendsFrom configurations.jdbcImplementation
 
 dependencies {
-	api platform(project(":spring-security-dependencies"))
+	management platform(project(":spring-security-dependencies"))
 	api 'org.springframework:spring-aop'
 	api 'org.springframework:spring-beans'
 	api 'org.springframework:spring-context'

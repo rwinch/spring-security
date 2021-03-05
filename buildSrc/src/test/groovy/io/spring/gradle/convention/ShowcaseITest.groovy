@@ -37,16 +37,17 @@ class ShowcaseITest extends Specification {
 
 	}
 
-	def "install"() {
+	def "publishToMavenLocal"() {
 		when:
 		BuildResult result = testKit.withProjectResource("samples/showcase/")
-				.withArguments('install','--stacktrace')
+				.withArguments('publishToMavenLocal','--stacktrace')
 				.build();
+        println result.output
 		then:
 		result.output.contains("SUCCESS")
 
 		and: 'pom exists'
-		File pom = new File(testKit.getRootDir(), 'sgbcs-core/build/poms/pom-default.xml')
+		File pom = new File(testKit.getRootDir(), 'sgbcs-core/build/publications/maven/pom-default.xml')
 		pom.exists()
 		String pomText = pom.getText()
 
@@ -54,41 +55,44 @@ class ShowcaseITest extends Specification {
 		!pomText.contains('<dependencyManagement>')
 
 		and: 'creates optional dependencies correctly'
-		pomText.replaceAll('\\s','').contains("""<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-			<version>4.3.6.RELEASE</version>
+
+        pomText.replaceAll('\\s','').contains("""<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.9</version>
+			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>""".replaceAll('\\s',''))
+
+// FIXME: Should we add test dependencies? Gradle does not do this by default
+//        and: 'test dependencies correctly'
+//		pomText.replaceAll('\\s','').contains("""<dependency>
+//			<groupId>org.springframework</groupId>
+//			<artifactId>spring-test</artifactId>
+//			<scope>test</scope>
+//			<version>4.3.6.RELEASE</version>
+//		</dependency>""".replaceAll('\\s',''))
 
 		and: 'adds author'
 		pomText.replaceAll('\\s','').contains("""<developers>
 			<developer>
-				<id>rwinch</id>
-				<name>Rob Winch</name>
-				<email>rwinch@pivotal.io</email>
-			</developer>
-			<developer>
-				<id>jgrandja</id>
-				<name>Joe Grandja</name>
-				<email>jgrandja@pivotal.io</email>
+				<name>Pivotal</name>
+				<email>info@pivotal.io</email>
+				<organization>Pivotal Software, Inc.</organization>
+				<organizationUrl>https://www.spring.io</organizationUrl>
 			</developer>
 		</developers>""".replaceAll('\\s',''))
 
-		and: 'adds repositories'
-		pomText.replaceAll('\\s','').contains("""<scm>
-			<connection>scm:git:git://github.com/spring-projects/spring-security</connection>
-			<developerConnection>scm:git:git://github.com/spring-projects/spring-security</developerConnection>
-			<url>https://github.com/spring-projects/spring-security</url>
-		</scm>""".replaceAll('\\s',''))
-
 		and: 'adds description & url'
-		pomText.contains('<description>sgbcs-core</description>')
+		pomText.contains('<description>org.springframework.build.test:sgbcs-core</description>')
 		pomText.contains('<url>https://spring.io/spring-security</url>')
+
+		and: 'adds group'
+		pomText.contains('''<groupId>org.springframework.build.test</groupId>''')
 
 		and: 'adds organization'
 		pomText.replaceAll('\\s','').contains('''<organization>
-			<name>spring.io</name>
+			<name>Spring</name>
 			<url>https://spring.io/</url>
 		</organization>'''.replaceAll('\\s',''))
 
@@ -96,30 +100,22 @@ class ShowcaseITest extends Specification {
 		pomText.replaceAll('\\s','').contains('''	<licenses>
 			<license>
 				<name>The Apache Software License, Version 2.0</name>
-				<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-				<distribution>repo</distribution>
+				<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 			</license>
 		</licenses>'''.replaceAll('\\s',''))
 
 		and: 'adds scm'
-		pomText.replaceAll('\\s','').replaceAll('\\s','').contains("""<scm>
+        pomText.replaceAll('\\s','').contains("""<scm>
 			<connection>scm:git:git://github.com/spring-projects/spring-security</connection>
-			<developerConnection>scm:git:git://github.com/spring-projects/spring-security</developerConnection>
+			<developerConnection>scm:git:ssh://git@github.com/spring-projects/spring-security.git</developerConnection>
 			<url>https://github.com/spring-projects/spring-security</url>
 		</scm>""".replaceAll('\\s',''))
 
 		and: 'bom created'
-		File bom = new File(testKit.getRootDir(), 'bom/build/poms/pom-default.xml')
+		File bom = new File(testKit.getRootDir(), 'bom/build/publications/maven/pom-default.xml')
 		bom.exists()
 		String bomText = bom.getText()
 		bomText.contains("""<artifactId>sgbcs-core</artifactId>""")
-
-		when: 'mavenBom ran again'
-		result = testKit.withProjectResource("samples/showcase/")
-				.withArguments('mavenBom','--stacktrace')
-				.build();
-		then: 'mavenBom is not up to date since install is never up to date'
-		result.task(':bom:mavenBom').getOutcome() == TaskOutcome.SUCCESS
 	}
 
 }

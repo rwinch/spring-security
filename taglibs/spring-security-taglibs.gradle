@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-	api platform(project(":spring-security-dependencies"))
+	management platform(project(":spring-security-dependencies"))
 	api project(':spring-security-acl')
 	api project(':spring-security-core')
 	api project(':spring-security-web')

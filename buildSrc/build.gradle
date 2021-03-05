@@ -32,6 +32,10 @@ gradlePlugin {
 			id = "org.springframework.security.spring-module"
 			implementationClass = "org.springframework.security.convention.SpringModulePlugin"
 		}
+		springBom {
+			id = "org.springframework.security.spring-bom"
+			implementationClass = "org.springframework.security.convention.SpringBomPlugin"
+		}
 		docs {
 			id = "org.springframework.security.spring-docs"
 			implementationClass = "org.springframework.security.convention.DocsPlugin"

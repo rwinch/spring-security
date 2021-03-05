@@ -1,2 +1,2 @@
-apply plugin: 'io.spring.convention.bom'
+apply plugin: 'org.springframework.security.spring-bom'
 

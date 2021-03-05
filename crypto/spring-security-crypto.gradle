@@ -12,7 +12,7 @@ java {
 }
 
 dependencies {
-	api platform(project(":spring-security-dependencies"))
+	management platform(project(":spring-security-dependencies"))
 	bcApi 'org.bouncycastle:bcpkix-jdk15on'
 	springLoggingImplementation 'org.springframework:spring-jcl'
 

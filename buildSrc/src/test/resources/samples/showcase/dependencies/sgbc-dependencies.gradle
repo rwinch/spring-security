@@ -1,0 +1,11 @@
+plugins {
+	id "java-platform"
+}
+
+javaPlatform {
+	allowDependencies()
+}
+
+dependencies {
+	api platform("io.spring.platform:platform-bom:Brussels-RELEASE")
+}

@@ -25,7 +25,7 @@ dependencies {
 	testFixturesImplementation 'org.springframework:spring-test'
 
 	testCompile testFixtures(project(":spring-security-core"))
-	testCompile testFixtures(project(":spring-security-saml2-service-provider"))
+	testCompile testFixtures(project(":spring-security-saml2-service-defaultNameProvider"))
 	testCompile "junit:junit"
 	testCompile "org.mockito:mockito-core"
 	testCompile "org.springframework:spring-test"

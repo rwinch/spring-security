@@ -1,8 +1,9 @@
-apply plugin: 'io.spring.convention.spring-module'
+apply plugin: 'org.springframework.security.spring-module'
 
 dependencies {
-	compile 'org.springframework:spring-web'
-	compile 'org.springframework:spring-core'
-	testCompile 'junit:junit'
+	management platform(project(':sgbc-dependencies'))
+	api 'org.springframework:spring-web'
+	api 'org.springframework:spring-core'
+	testImplementation 'junit:junit'
 }
 

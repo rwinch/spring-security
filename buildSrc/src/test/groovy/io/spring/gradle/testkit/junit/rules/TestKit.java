@@ -31,7 +31,35 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class TestKit implements TestRule {
-	final TemporaryFolder testProjectDir = new TemporaryFolder();
+	final TemporaryFolder testProjectDir = new TemporaryFolder() {
+		private boolean isError;
+
+		@Override
+		public Statement apply(Statement base, Description description) {
+			return new Statement() {
+				@Override
+				public void evaluate() throws Throwable {
+					before();
+					try {
+						isError = true;
+						base.evaluate();
+						isError = false;
+					} finally {
+						after();
+					}
+				}
+			};
+		}
+
+		@Override
+		public void delete() {
+			System.out.println("delete...");
+			if (!this.isError) {
+//				super.delete();
+			}
+		}
+	};
+
 	File buildDir;
 
 	@Override

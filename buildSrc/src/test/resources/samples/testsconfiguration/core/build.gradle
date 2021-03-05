@@ -1,2 +1,2 @@
-apply plugin: 'io.spring.convention.tests-configuration'
+apply plugin: 'io.spring.convention.tests-management'
 apply plugin: 'java' // second to test ordering

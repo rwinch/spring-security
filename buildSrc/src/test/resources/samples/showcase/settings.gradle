@@ -1,5 +1,10 @@
 rootProject.name = 'spring-gradle-build-conventions-sample'
 
+dependencyResolutionManagement {
+	repositories {
+		mavenCentral()
+	}
+}
 
 FileTree projects = fileTree(rootDir) {
 	include '**/*.gradle'

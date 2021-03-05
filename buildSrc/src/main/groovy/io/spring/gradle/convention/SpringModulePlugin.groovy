@@ -32,7 +32,6 @@ class SpringModulePlugin extends AbstractSpringJavaPlugin {
 		pluginManager.apply(JavaLibraryPlugin.class)
 		pluginManager.apply(MavenPlugin.class);
 		pluginManager.apply("io.spring.convention.maven");
-		pluginManager.apply("io.spring.convention.artifactory");
 		pluginManager.apply("io.spring.convention.jacoco");
 
 		def deployArtifacts = project.task("deployArtifacts")
