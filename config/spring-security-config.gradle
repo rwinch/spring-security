@@ -27,7 +27,7 @@ dependencies {
 
 	optionalApi project(':spring-security-ldap')
 	optionalApi project(':spring-security-messaging')
-	optionalApi project(':spring-security-saml2-service')
+	optionalApi project(':spring-security-saml2-service-provider')
 	optionalApi project(':spring-security-oauth2-client')
 	optionalApi project(':spring-security-oauth2-jose')
 	optionalApi project(':spring-security-oauth2-resource-server')
@@ -60,7 +60,7 @@ dependencies {
 	testCompile testFixtures(project(':spring-security-oauth2-client'))
 	testCompile testFixtures(project(':spring-security-oauth2-jose'))
 	testCompile testFixtures(project(':spring-security-oauth2-resource-server'))
-	testCompile testFixtures(project(':spring-security-saml2-service-defaultNameProvider'))
+	testCompile testFixtures(project(':spring-security-saml2-service-provider'))
 	testCompile testFixtures(project(':spring-security-web'))
 	testCompile "org.apache.directory.server:apacheds-core"
 	testCompile "org.apache.directory.server:apacheds-core-entry"

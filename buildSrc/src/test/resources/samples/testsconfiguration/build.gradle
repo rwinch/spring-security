@@ -1,4 +1,4 @@
 plugins {
-	id 'io.spring.convention.tests-management'
+	id 'io.spring.convention.tests-configuration'
 	id 'java'
 }
