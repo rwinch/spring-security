@@ -1,8 +1,5 @@
 plugins {
 	id 'org.springframework.security.spring-module'
-	id 'kotlin'
-	id "nebula.integtest"
-	id 'trang'
 }
 
 java {
@@ -12,6 +9,7 @@ java {
 }
 
 dependencies {
+	management platform(project(":spring-security-dependencies"))
 	api project(':spring-security-core')
 	api 'org.springframework:spring-beans'
 	api 'org.springframework:spring-context'

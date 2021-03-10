@@ -1,8 +1,6 @@
 plugins {
 	id 'org.springframework.security.spring-module'
-	id 'kotlin'
 	id "nebula.integtest"
-	id 'trang'
 }
 
 java {
