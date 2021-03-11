@@ -41,6 +41,7 @@ public class SpringModulePlugin implements Plugin<Project> {
 		project.setGroup(project.getRootProject().getGroup());
 		PluginManager plugins = project.getPluginManager();
 		plugins.apply(ManagementConfigurationPlugin.class);
+		plugins.apply(VersionsPlugin.class);
 		plugins.apply(JavaLibraryPlugin.class);
 		plugins.apply(JavaTestFixturesPlugin.class);
 		plugins.apply(CheckstylePlugin.class);
