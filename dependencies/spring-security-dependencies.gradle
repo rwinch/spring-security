@@ -93,4 +93,12 @@ dependencies {
 
 tasks.dependencyUpdates {
 	checkConstraints = true
+	rejectVersionIf {
+		def currentVersion = it.currentVersion
+		def separator = currentVersion.indexOf(".")
+		def major = separator > 0 ? currentVersion.substring(0,separator) : currentVersion
+		def differentMajorVersion = !it.candidate.version.startsWith(major)
+		def isUnstable = (it.candidate.version ==~ /(?i).*?(alpha|beta|m\d+|rc\d+).*/)
+		return differentMajorVersion || isUnstable
+	}
 }
