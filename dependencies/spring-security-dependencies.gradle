@@ -91,14 +91,52 @@ dependencies {
 	}
 }
 
-tasks.dependencyUpdates {
+tasks.dependencyUpdates.configure {
 	checkConstraints = true
-	rejectVersionIf {
-		def currentVersion = it.currentVersion
-		def separator = currentVersion.indexOf(".")
-		def major = separator > 0 ? currentVersion.substring(0,separator) : currentVersion
-		def differentMajorVersion = !it.candidate.version.startsWith(major)
-		def isUnstable = (it.candidate.version ==~ /(?i).*?(alpha|beta|m\d+|rc\d+).*/)
-		return differentMajorVersion || isUnstable
+	resolutionStrategy {
+		componentSelection {
+			all { ComponentSelection selection ->
+				def candidateVersion = selection.candidate.version
+				if (candidateVersion ==~ /(?i).*?(alpha|beta|m\d+|rc\d+).*/) {
+					reject("$canidateVersion is not allowed because it is an alpha or beta version")
+				}
+			}
+			all { ComponentSelection selection ->
+				def candidateVersion = selection.candidate.version
+				if (candidateVersion ==~ /(?i).*?m\d+.*/) {
+					reject("$canidateVersion is not allowed because it is a milestone version")
+				}
+			}
+			all { ComponentSelection selection ->
+				def candidateVersion = selection.candidate.version
+				if (candidateVersion ==~ /(?i).*?rc\d+.*/) {
+					reject("$canidateVersion is not allowed because it is a release candidate version")
+				}
+			}
+			all { ComponentSelection selection ->
+				def currentVersion = selection.currentVersion
+				def separator = currentVersion.indexOf(".")
+				def major = separator > 0 ? currentVersion.substring(0,separator) : currentVersion
+				if (!selection.candidate.version.startsWith(major)) {
+					reject("Cannot Upgrade to new Major Version")
+				}
+			}
+			all { ComponentSelection selection ->
+				def candidate = selection.candidate
+				if (candidate.group == "org.apache.directory.server" && candidate.version != selection.currentVersion) {
+					reject("org.apache.directory.server has breaking changes in newer versions")
+				}
+			}
+			withModule("javax.xml.bind:jaxb-api") { ComponentSelection selection ->
+				if (selection.candidate.version ==~ /b\d+/) {
+					reject("Reject jaxb-api beta versions")
+				}
+			}
+			withModule("com.sun.xml.bind:jaxb-impl") { ComponentSelection selection ->
+				if (selection.candidate.version ==~ /b\d+/) {
+					reject("Reject jaxb-api beta versions")
+				}
+			}
+		}
 	}
 }
