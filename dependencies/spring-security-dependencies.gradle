@@ -128,12 +128,12 @@ tasks.dependencyUpdates.configure {
 				}
 			}
 			withModule("javax.xml.bind:jaxb-api") { ComponentSelection selection ->
-				if (selection.candidate.version ==~ /b\d+/) {
+				if (selection.candidate.version ==~ /.*?b\d+.*/) {
 					reject("Reject jaxb-api beta versions")
 				}
 			}
 			withModule("com.sun.xml.bind:jaxb-impl") { ComponentSelection selection ->
-				if (selection.candidate.version ==~ /b\d+/) {
+				if (selection.candidate.version ==~ /.*?b\d+.*/) {
 					reject("Reject jaxb-api beta versions")
 				}
 			}
