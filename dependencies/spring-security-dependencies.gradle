@@ -117,7 +117,8 @@ tasks.dependencyUpdates.configure {
 				def currentVersion = selection.currentVersion
 				def separator = currentVersion.indexOf(".")
 				def major = separator > 0 ? currentVersion.substring(0,separator) : currentVersion
-				if (!selection.candidate.version.startsWith(major)) {
+				def candidateVersion = selection.candidate.version
+				if (candidateVersion !=~ /\d\d\d\d.*/ && !candidateVersion.startsWith(major)) {
 					reject("Cannot Upgrade to new Major Version")
 				}
 			}
@@ -135,6 +136,12 @@ tasks.dependencyUpdates.configure {
 			withModule("com.sun.xml.bind:jaxb-impl") { ComponentSelection selection ->
 				if (selection.candidate.version ==~ /.*?b\d+.*/) {
 					reject("Reject jaxb-api beta versions")
+				}
+			}
+			withModule("org.springframework.data:spring-data-releasetrain") { ComponentSelection selection ->
+				println "candidate " + selection.candidate
+				if (selection.candidate.version !=~ /\d\d\d\d.*/) {
+					reject("calver is latest version scheme")
 				}
 			}
 		}
