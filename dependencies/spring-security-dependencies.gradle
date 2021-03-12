@@ -98,19 +98,19 @@ tasks.dependencyUpdates.configure {
 			all { ComponentSelection selection ->
 				def candidateVersion = selection.candidate.version
 				if (candidateVersion ==~ /(?i).*?(alpha|beta|m\d+|rc\d+).*/) {
-					reject("$canidateVersion is not allowed because it is an alpha or beta version")
+					reject("$candidateVersion is not allowed because it is an alpha or beta version")
 				}
 			}
 			all { ComponentSelection selection ->
 				def candidateVersion = selection.candidate.version
 				if (candidateVersion ==~ /(?i).*?m\d+.*/) {
-					reject("$canidateVersion is not allowed because it is a milestone version")
+					reject("$candidateVersion is not allowed because it is a milestone version")
 				}
 			}
 			all { ComponentSelection selection ->
 				def candidateVersion = selection.candidate.version
 				if (candidateVersion ==~ /(?i).*?rc\d+.*/) {
-					reject("$canidateVersion is not allowed because it is a release candidate version")
+					reject("$candidateVersion is not allowed because it is a release candidate version")
 				}
 			}
 			all { ComponentSelection selection ->
