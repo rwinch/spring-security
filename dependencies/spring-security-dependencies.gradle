@@ -101,12 +101,12 @@ def updateDepencencyInlineVersion(Project project, DependencyOutdated dependency
 }
 
 def updateDepencencyWithVersionVariable(Project project, DependencyOutdated dependency) {
-	def originalDependency = "\"${dependency.group}:${dependency.name}:.*"
+	def originalDependency = "\"${dependency.group}:${dependency.name}:(.*)"
 	java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(originalDependency);
 	def buildFileText = project.buildFile.text
 	java.util.regex.Matcher matcher = pattern.matcher(buildFileText)
 	while (matcher.find()) {
-		println "  matcher " +  matcher.group()
+		println "  matcher " +  matcher.group(0)
 	}
 }
 
