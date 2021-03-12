@@ -3,7 +3,6 @@ import com.github.benmanes.gradle.versions.reporter.result.Result
 plugins {
 	id 'java-platform'
 	id 'com.github.ben-manes.versions'
-	id 'se.patrikerdes.use-latest-versions' version '0.2.15'
 }
 
 javaPlatform {
@@ -95,6 +94,17 @@ dependencies {
 
 tasks.dependencyUpdates.configure {
 	checkConstraints = true
+	outputFormatter = { Result result ->
+		def updatable = result.outdated.dependencies
+		if (!updatable.isEmpty()){
+			updatable.each { dependency ->
+				def originalDependency = "${dependency.group}:${dependency.name}:${dependency.version}"
+				def replacementDependency = "${dependency.group}:${dependency.name}:${dependency.available.release ?: dependency.available.milestone}"
+				def buildFileText = project.buildFile.text
+				project.buildFile.text = buildFileText.replace(originalDependency, replacementDependency)
+			}
+		}
+	}
 	resolutionStrategy {
 		componentSelection {
 			all { ComponentSelection selection ->
@@ -141,7 +151,6 @@ tasks.dependencyUpdates.configure {
 				}
 			}
 			withModule("org.springframework.data:spring-data-releasetrain") { ComponentSelection selection ->
-				println "candidate " + selection.candidate
 				if (selection.candidate.version !=~ /\d\d\d\d.*/) {
 					reject("calver is latest version scheme")
 				}
@@ -150,13 +159,3 @@ tasks.dependencyUpdates.configure {
 	}
 }
 
-tasks.named("dependencyUpdates").configure {
-	outputFormatter = { Result result ->
-		def updatable = result.outdated.dependencies
-		if (!updatable.isEmpty()){
-			updatable.each { dependency ->
-				println dependency
-			}
-		}
-	}
-}
