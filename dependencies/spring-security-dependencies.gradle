@@ -122,13 +122,19 @@ tasks.dependencyUpdates.configure {
 	outputFormatter = { Result result ->
 		def updatable = result.outdated.dependencies
 		if (!updatable.isEmpty()){
+			def groups = [:]
 			updatable.each { DependencyOutdated dependency ->
-				def originalDependency = "${dependency.group}:${dependency.name}:${dependency.version}"
-				def updatedDependency = "${dependency.group}:${dependency.name}:${dependency.available.release ?: dependency.available.milestone}"
-				println "Updating $originalDependency to $updatedDependency"
-				updateDepencencyInlineVersion(project, dependency)
-				updateDepencencyWithVersionVariable(project, dependency)
-				def title = "Update to $updatedDependency"
+				groups.get(dependency.group, []).add(dependency)
+			}
+			groups.forEach { group, dependencies ->
+				dependencies.forEach { dependency ->
+					def originalDependency = "${dependency.group}:${dependency.name}:${dependency.version}"
+					def updatedDependency = "${dependency.group}:${dependency.name}:${dependency.available.release ?: dependency.available.milestone}"
+					println "Updating $originalDependency to $updatedDependency"
+					updateDepencencyInlineVersion(project, dependency)
+					updateDepencencyWithVersionVariable(project, dependency)
+				}
+				def title = "Update $group"
 				if (new ProcessBuilder().directory(project.rootDir).command("git", "commit", "-am", title).start()
 						.waitFor() != 0) {
 					throw new IllegalStateException("git commit failed");
