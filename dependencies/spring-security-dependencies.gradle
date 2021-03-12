@@ -101,13 +101,20 @@ def updateDepencencyInlineVersion(Project project, DependencyOutdated dependency
 }
 
 def updateDepencencyWithVersionVariable(Project project, DependencyOutdated dependency) {
-	def originalDependency = "\"${dependency.group}:${dependency.name}:(.*)"
+	java.io.File gradleProperties = project.getRootProject().file(Project.GRADLE_PROPERTIES)
+	def gradlePropertiesText = gradleProperties.text
+	if (!gradleProperties.exists()) {
+		return
+	}
+	def originalDependency = "\"${dependency.group}:${dependency.name}:\\\$\\{?([^'\"]+?)\\}?\""
 	java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(originalDependency);
 	def buildFileText = project.buildFile.text
 	java.util.regex.Matcher matcher = pattern.matcher(buildFileText)
 	while (matcher.find()) {
-		println "  matcher " +  matcher.group(0)
+		def versionVariable =  matcher.group(1)
+		gradlePropertiesText = gradlePropertiesText.replace("$versionVariable=${dependency.version}","$versionVariable=${dependency.available.release ?: dependency.available.milestone}")
 	}
+	gradleProperties.text = gradlePropertiesText
 }
 
 tasks.dependencyUpdates.configure {
@@ -117,9 +124,11 @@ tasks.dependencyUpdates.configure {
 		if (!updatable.isEmpty()){
 			updatable.each { DependencyOutdated dependency ->
 				def originalDependency = "${dependency.group}:${dependency.name}:${dependency.version}"
-				println "Updating $originalDependency"
+				def updatedDependency = "${dependency.group}:${dependency.name}:${dependency.available.release ?: dependency.available.milestone}"
+				println "Updating $originalDependency to $updatedDependency"
 				updateDepencencyInlineVersion(project, dependency)
 				updateDepencencyWithVersionVariable(project, dependency)
+				"git commit -m 'Update to $updatedDependency'".execute()
 			}
 		}
 	}
