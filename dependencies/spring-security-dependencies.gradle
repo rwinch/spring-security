@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.reporter.result.Result
+
 plugins {
 	id 'java-platform'
 	id 'com.github.ben-manes.versions'
@@ -143,6 +145,17 @@ tasks.dependencyUpdates.configure {
 				if (selection.candidate.version !=~ /\d\d\d\d.*/) {
 					reject("calver is latest version scheme")
 				}
+			}
+		}
+	}
+}
+
+tasks.named("dependencyUpdates").configure {
+	outputFormatter = { Result result ->
+		def updatable = result.outdated.dependencies
+		if (!updatable.isEmpty()){
+			updatable.each { dependency ->
+				println dependency
 			}
 		}
 	}
