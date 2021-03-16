@@ -140,7 +140,8 @@ tasks.dependencyUpdates.configure {
 					updateDepencencyInlineVersion(project, dependency)
 					updateDepencencyWithVersionVariable(project, dependency)
 				}
-				def title = dependencies.size() == 1 ? "Update $dependencies[0].name to $dependencies[0].version" : "Update $group to $dependencies[0].version"
+				def version = ${dependencies[0].available.release ?: dependencies[0].available.milestone}
+				def title = dependencies.size() == 1 ? "Update $dependencies[0].name to $version" : "Update $group to $version"
 				if (new ProcessBuilder().directory(project.rootDir).command("git", "commit", "-am", title).start()
 						.waitFor() != 0) {
 					throw new IllegalStateException("git commit failed");
