@@ -24,7 +24,7 @@ dependencies {
 	api platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion")
 	api platform("com.fasterxml.jackson:jackson-bom:2.12.2")
 	constraints {
-		api "ch.qos.logback:logback-classic:1.+"
+		api "ch.qos.logback:logback-classic:1.2.3"
 		api "com.google.appengine:appengine-api-1.0-sdk:$gaeVersion"
 		api "com.google.appengine:appengine-api-labs:$gaeVersion"
 		api "com.google.appengine:appengine-api-stubs:$gaeVersion"
@@ -140,7 +140,7 @@ tasks.dependencyUpdates.configure {
 					updateDepencencyInlineVersion(project, dependency)
 					updateDepencencyWithVersionVariable(project, dependency)
 				}
-				def title = "Update $group"
+				def title = dependencies.size() == 1 ? "Update $dependencies[0].name to $dependencies[0].version" : "Update $group to $dependencies[0].version"
 				if (new ProcessBuilder().directory(project.rootDir).command("git", "commit", "-am", title).start()
 						.waitFor() != 0) {
 					throw new IllegalStateException("git commit failed");
