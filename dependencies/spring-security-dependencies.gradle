@@ -1,5 +1,11 @@
 import com.github.benmanes.gradle.versions.reporter.result.DependencyOutdated
 import com.github.benmanes.gradle.versions.reporter.result.Result
+import org.gradle.wrapper.BootstrapMainStarter
+import org.gradle.wrapper.Download
+import org.gradle.wrapper.Install
+import org.gradle.wrapper.Logger
+import org.gradle.wrapper.PathAssembler
+import org.gradle.wrapper.WrapperExecutor
 
 plugins {
 	id 'java-platform'
@@ -139,6 +145,22 @@ tasks.dependencyUpdates.configure {
 						.waitFor() != 0) {
 					throw new IllegalStateException("git commit failed");
 				}
+			}
+		}
+		def currentGradleVersion = result.gradle.current
+		def runningGradleVersion = result.gradle.running
+		if (currentGradleVersion > runningGradleVersion) {
+			def title = "Upgrade Gradle to $currentGradleVersion.version"
+			println title
+			GradleRunner.create()
+					.withGradleInstallation(project.getGradle().getGradleHomeDir())
+					.withProjectDir(project.rootDir)
+					.withArguments("wrapper", "--gradle-version", currentGradleVersion.version)
+					.forwardOutput()
+					.build()
+			if (new ProcessBuilder().directory(project.rootDir).command("git", "commit", "-am", title).start()
+					.waitFor() != 0) {
+				throw new IllegalStateException("git commit failed");
 			}
 		}
 	}
