@@ -132,6 +132,7 @@ tasks.dependencyUpdates.configure {
 			updatable.each { DependencyOutdated dependency ->
 				groups.get(dependency.group, []).add(dependency)
 			}
+			println groups.keySet()
 			groups.forEach { group, dependencies ->
 				dependencies.forEach { dependency ->
 					def originalDependency = "${dependency.group}:${dependency.name}:${dependency.version}"
@@ -142,7 +143,7 @@ tasks.dependencyUpdates.configure {
 				}
 				def version = dependencies[0].available.release ?: dependencies[0].available.milestone
 				def title = dependencies.size() == 1 ? "Update ${dependencies[0].name} to $version" : "Update $group to $version"
-				if (new ProcessBuilder().directory(project.rootDir).command("git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowercase()).start()
+				if (new ProcessBuilder().directory(project.rootDir).command("git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowerCase()).start()
 						.waitFor() != 0) {
 					throw new IllegalStateException("git branch failed");
 				}
