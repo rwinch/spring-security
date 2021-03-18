@@ -142,9 +142,17 @@ tasks.dependencyUpdates.configure {
 				}
 				def version = dependencies[0].available.release ?: dependencies[0].available.milestone
 				def title = dependencies.size() == 1 ? "Update ${dependencies[0].name} to $version" : "Update $group to $version"
+				if (new ProcessBuilder().directory(project.rootDir).command("git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowercase()).start()
+						.waitFor() != 0) {
+					throw new IllegalStateException("git branch failed");
+				}
 				if (new ProcessBuilder().directory(project.rootDir).command("git", "commit", "-am", title).start()
 						.waitFor() != 0) {
 					throw new IllegalStateException("git commit failed");
+				}
+				if (new ProcessBuilder().directory(project.rootDir).command("git", "checkout", "-").start()
+						.waitFor() != 0) {
+					throw new IllegalStateException("git checkout previous failed");
 				}
 			}
 		}
