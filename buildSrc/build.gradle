@@ -40,6 +40,10 @@ gradlePlugin {
 			id = "org.springframework.security.spring-docs"
 			implementationClass = "org.springframework.security.convention.DocsPlugin"
 		}
+		updateDependencies {
+			id = "org.springframework.security.update-dependencies"
+			implementationClass = "org.springframework.security.convention.versions.UpdateDependenciesPlugin"
+		}
 	}
 }
 configurations.all {
