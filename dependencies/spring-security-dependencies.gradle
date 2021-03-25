@@ -9,7 +9,6 @@ import org.gradle.wrapper.WrapperExecutor
 
 plugins {
 	id 'java-platform'
-	id 'org.springframework.security.update-dependencies'
 }
 
 javaPlatform {
