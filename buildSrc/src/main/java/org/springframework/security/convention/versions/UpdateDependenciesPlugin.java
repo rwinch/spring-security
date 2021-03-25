@@ -42,22 +42,37 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 							String ga = outdated.getGroup() + ":" + outdated.getName() + ":";
 							String originalDependency = ga + outdated.getVersion();
 							String replacementDependency = ga + updatedVersion(outdated);
-							System.out.println(originalDependency + " update to " + replacementDependency);
+							System.out.println("Update " + originalDependency + " to " + replacementDependency);
 							groups.computeIfAbsent(outdated.getGroup(), (key) -> new ArrayList<>()).add(outdated);
 						});
 						File buildSrcBuildFile = project.getRootProject().file("buildSrc/build.gradle");
 						File gradlePropertiesFile = project.getRootProject().file(Project.GRADLE_PROPERTIES);
 						groups.forEach((group, outdated) -> {
 							outdated.forEach((dependency) -> {
+								// this build file
+								updateDependencyInlineVersion(project.getBuildFile(), dependency);
+								updateDependencyWithVersionVariable(project.getBuildFile(), gradlePropertiesFile, dependency);
+
+								// child build files
 								project.getChildProjects().values().forEach(project -> {
 									updateDependencyInlineVersion(project.getBuildFile(), dependency);
 									updateDependencyWithVersionVariable(project.getBuildFile(), gradlePropertiesFile, dependency);
 								});
+
+								// buildSrc
 								if (buildSrcBuildFile.exists()) {
 									updateDependencyInlineVersion(buildSrcBuildFile, dependency);
 									updateDependencyWithVersionVariable(buildSrcBuildFile, gradlePropertiesFile, dependency);
 								}
 							});
+
+							// commit
+							DependencyOutdated firstDependency = outdated.get(0);
+							String updatedVersion = updatedVersion(firstDependency);
+							String title = outdated.size() == 1 ? "Update " + firstDependency.getName() + " to " + updatedVersion : "Update " + firstDependency.getGroup() + " to " + updatedVersion;
+							runCommand(project.getRootDir(), "git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowerCase());
+							runCommand(project.getRootDir(), "git", "commit", "-am", title);
+							runCommand(project.getRootDir(), "git", "checkout", "-");
 						});
 						return null;
 					}
@@ -97,6 +112,16 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 				});
 			}
 		});
+	}
+
+	static void runCommand(File dir, String... args) {
+		try {
+			if (new ProcessBuilder().directory(dir).command(args).start().waitFor() != 0) {
+				new RuntimeException("Failed to run " + Arrays.toString(args));
+			}
+		} catch (IOException | InterruptedException e) {
+			throw new RuntimeException("Failed to run " + Arrays.toString(args), e);
+		}
 	}
 
 	static Action<ComponentSelectionWithCurrent> excludeWithRegex(String regex, String reason) {
