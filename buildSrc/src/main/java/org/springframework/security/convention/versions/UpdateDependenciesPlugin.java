@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,12 +45,18 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 							System.out.println(originalDependency + " update to " + replacementDependency);
 							groups.computeIfAbsent(outdated.getGroup(), (key) -> new ArrayList<>()).add(outdated);
 						});
+						File buildSrcBuildFile = project.getRootProject().file("buildSrc/build.gradle");
+						File gradlePropertiesFile = project.getRootProject().file(Project.GRADLE_PROPERTIES);
 						groups.forEach((group, outdated) -> {
 							outdated.forEach((dependency) -> {
 								project.getChildProjects().values().forEach(project -> {
-									updateDependencyInlineVersion(project, dependency);
-									updateDependencyWithVersionVariable(project, dependency);
+									updateDependencyInlineVersion(project.getBuildFile(), dependency);
+									updateDependencyWithVersionVariable(project.getBuildFile(), gradlePropertiesFile, dependency);
 								});
+								if (buildSrcBuildFile.exists()) {
+									updateDependencyInlineVersion(buildSrcBuildFile, dependency);
+									updateDependencyWithVersionVariable(buildSrcBuildFile, gradlePropertiesFile, dependency);
+								}
 							});
 						});
 						return null;
@@ -104,11 +109,10 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 		};
 	}
 
-	static void updateDependencyInlineVersion(Project project, DependencyOutdated dependency){
+	static void updateDependencyInlineVersion(File buildFile, DependencyOutdated dependency){
 		String ga = dependency.getGroup() + ":" + dependency.getName() + ":";
 		String originalDependency = ga + dependency.getVersion();
 		String replacementDependency = ga + updatedVersion(dependency);
-		File buildFile = project.getBuildFile();
 		replaceFileText(buildFile, buildFileText -> buildFileText.replace(originalDependency, replacementDependency));
 	}
 
@@ -135,15 +139,14 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 		}
 	}
 
-	static void updateDependencyWithVersionVariable(Project project, DependencyOutdated dependency) {
-		File gradlePropertiesFile = project.getRootProject().file(Project.GRADLE_PROPERTIES);
+	static void updateDependencyWithVersionVariable(File scanFile, File gradlePropertiesFile, DependencyOutdated dependency) {
 		if (!gradlePropertiesFile.exists()) {
 			return;
 		}
 		replaceFileText(gradlePropertiesFile, (gradlePropertiesText) -> {
 			String ga = dependency.getGroup() + ":" + dependency.getName() + ":";
 			Pattern pattern = Pattern.compile("\"" + ga + "\\$\\{?([^'\"]+?)\\}?\"");
-			String buildFileText = readString(project.getBuildFile());
+			String buildFileText = readString(scanFile);
 			Matcher matcher = pattern.matcher(buildFileText);
 			while (matcher.find()) {
 				String versionVariable = matcher.group(1);
