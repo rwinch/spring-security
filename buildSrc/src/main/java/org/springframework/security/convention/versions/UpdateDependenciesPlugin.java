@@ -44,8 +44,10 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 						});
 						groups.forEach((group, outdated) -> {
 							outdated.forEach((dependency) -> {
-								updateDependencyInlineVersion(project, dependency);
-								updateDependencyWithVersionVariable(project, dependency);
+								project.getChildProjects().values().forEach(project -> {
+									updateDependencyInlineVersion(project, dependency);
+									updateDependencyWithVersionVariable(project, dependency);
+								});
 							});
 						});
 						return null;
