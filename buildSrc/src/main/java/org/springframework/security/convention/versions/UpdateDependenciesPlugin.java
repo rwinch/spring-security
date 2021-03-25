@@ -79,6 +79,7 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 								String jaxbBetaRegex = ".*?b\\d+.*";
 								components.withModule("javax.xml.bind:jaxb-api", excludeWithRegex(jaxbBetaRegex, "Reject jaxb-api beta versions"));
 								components.withModule("com.sun.xml.bind:jaxb-impl", excludeWithRegex(jaxbBetaRegex, "Reject jaxb-api beta versions"));
+								components.withModule("commons-collections:commons-collections", excludeWithRegex("^\\d{3,}.*", "Reject commons-collections date based releases"));
 							}
 						});
 					}
