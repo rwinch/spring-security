@@ -72,9 +72,9 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 							DependencyOutdated firstDependency = outdated.get(0);
 							String updatedVersion = updatedVersion(firstDependency);
 							String title = outdated.size() == 1 ? "Update " + firstDependency.getName() + " to " + updatedVersion : "Update " + firstDependency.getGroup() + " to " + updatedVersion;
-							runCommand(project.getRootDir(), "git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowerCase());
+//							runCommand(project.getRootDir(), "git", "checkout", "-b", "bot-"+title.replace(' ', '-').toLowerCase());
 							runCommand(project.getRootDir(), "git", "commit", "-am", title);
-							runCommand(project.getRootDir(), "git", "checkout", "-");
+//							runCommand(project.getRootDir(), "git", "checkout", "-");
 						});
 						return null;
 					}
