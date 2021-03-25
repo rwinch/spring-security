@@ -40,6 +40,10 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 						}
 						Map<String, List<DependencyOutdated>> groups = new LinkedHashMap<>();
 						dependencies.forEach(outdated -> {
+							String ga = outdated.getGroup() + ":" + outdated.getName() + ":";
+							String originalDependency = ga + outdated.getVersion();
+							String replacementDependency = ga + updatedVersion(outdated);
+							System.out.println(originalDependency + " update to " + replacementDependency);
 							groups.computeIfAbsent(outdated.getGroup(), (key) -> new ArrayList<>()).add(outdated);
 						});
 						groups.forEach((group, outdated) -> {
