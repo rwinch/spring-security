@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 public class UpdateDependenciesPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
+		UpdateDependenciesExtension updateDependenciesSettings = project.getExtensions().create("updateDependenciesSettings", UpdateDependenciesExtension.class);
 		project.getTasks().register("updateDependencies", DependencyUpdatesTask.class, new Action<DependencyUpdatesTask>() {
 			@Override
 			public void execute(DependencyUpdatesTask updateDependencies) {
@@ -35,6 +36,7 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 						Result result = (Result) argument;
 						SortedSet<DependencyOutdated> dependencies = result.getOutdated().getDependencies();
 						if (dependencies.isEmpty()) {
+							// FIXME need to ensure gradle version can be updated
 							return null;
 						}
 						Map<String, List<DependencyOutdated>> groups = new LinkedHashMap<>();
@@ -83,20 +85,8 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 						resolution.componentSelection(new Action<ComponentSelectionRulesWithCurrent>() {
 							@Override
 							public void execute(ComponentSelectionRulesWithCurrent components) {
-								components.all(excludeWithRegex("(?i).*?(alpha|beta).*", "an alpha or beta version"));
-								components.all(excludeWithRegex("(?i).*?rc\\d+.*", "a release candidate version"));
-								components.all(excludeWithRegex("(?i).*?m\\d+.*", "a milestone version"));
-								components.all(excludeWithRegex(".*?-SNAPSHOT.*", "a SNAPSHOT version"));
-								components.all((selection) -> {
-									String currentVersion = selection.getCurrentVersion();
-									int separator = currentVersion.indexOf(".");
-									String major = separator > 0 ? currentVersion.substring(0, separator) : currentVersion;
-									String candidateVersion = selection.getCandidate().getVersion();
-									Pattern calVerPattern = Pattern.compile("\\d\\d\\d\\d.*");
-									boolean isCalVer = calVerPattern.matcher(candidateVersion).matches();
-									if (!isCalVer && !candidateVersion.startsWith(major)) {
-										selection.reject("Cannot grade to new Major Version");
-									}
+								updateDependenciesSettings.getExcludes().getActions().forEach((action) -> {
+									components.all(action);
 								});
 								components.all((selection) -> {
 									ModuleComponentIdentifier candidate = selection.getCandidate();
