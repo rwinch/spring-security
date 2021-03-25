@@ -83,8 +83,10 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 						resolution.componentSelection(new Action<ComponentSelectionRulesWithCurrent>() {
 							@Override
 							public void execute(ComponentSelectionRulesWithCurrent components) {
-								components.all(excludeWithRegex("(?i).*?(alpha|beta|m\\d+|rc\\d+).*", "an alpha or beta version"));
+								components.all(excludeWithRegex("(?i).*?(alpha|beta).*", "an alpha or beta version"));
 								components.all(excludeWithRegex("(?i).*?rc\\d+.*", "a release candidate version"));
+								components.all(excludeWithRegex("(?i).*?m\\d+.*", "a milestone version"));
+								components.all(excludeWithRegex(".*?-SNAPSHOT.*", "a SNAPSHOT version"));
 								components.all((selection) -> {
 									String currentVersion = selection.getCurrentVersion();
 									int separator = currentVersion.indexOf(".");
