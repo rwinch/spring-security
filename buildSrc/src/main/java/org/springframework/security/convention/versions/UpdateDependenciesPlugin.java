@@ -92,7 +92,7 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 		return (selection) -> {
 			String candidateVersion = selection.getCandidate().getVersion();
 			if (pattern.matcher(candidateVersion).matches()) {
-				selection.reject(candidateVersion + " is not allowed becuase it is " + reason);
+				selection.reject(candidateVersion + " is not allowed because it is " + reason);
 			}
 		};
 	}
