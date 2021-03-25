@@ -39,7 +39,7 @@ subprojects {
 }
 
 updateDependenciesSettings {
-	excludes {
+	dependencyExcludes {
 		majorVersionBump()
 		alphaBeta()
 		releaseCandidates()

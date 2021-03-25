@@ -8,32 +8,32 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class UpdateDependenciesExtension {
-	private Excludes excludes = new Excludes();
+	private DependencyExcludes dependencyExcludes = new DependencyExcludes();
 
-	Excludes getExcludes() {
-		return excludes;
+	DependencyExcludes getExcludes() {
+		return dependencyExcludes;
 	}
 
-	public void excludes(Action<Excludes> excludes) {
-		excludes.execute(this.excludes);
+	public void dependencyExcludes(Action<DependencyExcludes> excludes) {
+		excludes.execute(this.dependencyExcludes);
 	}
 
 	/**
 	 * Consider creating some Predicates instead since they are composible
 	 */
-	public class Excludes {
+	public class DependencyExcludes {
 		private List<Action<ComponentSelectionWithCurrent>> actions = new ArrayList<>();
 
 		List<Action<ComponentSelectionWithCurrent>> getActions() {
 			return actions;
 		}
 
-		public Excludes alphaBeta() {
+		public DependencyExcludes alphaBeta() {
 			this.actions.add(excludeVersionWithRegex("(?i).*?(alpha|beta).*", "an alpha or beta version"));
 			return this;
 		}
 
-		public Excludes majorVersionBump() {
+		public DependencyExcludes majorVersionBump() {
 			this.actions.add((selection) -> {
 				String currentVersion = selection.getCurrentVersion();
 				int separator = currentVersion.indexOf(".");
@@ -48,17 +48,17 @@ public class UpdateDependenciesExtension {
 			return this;
 		}
 
-		public Excludes releaseCandidates() {
+		public DependencyExcludes releaseCandidates() {
 			this.actions.add(excludeVersionWithRegex("(?i).*?rc\\d+.*", "a release candidate version"));
 			return this;
 		}
 
-		public Excludes milestones() {
+		public DependencyExcludes milestones() {
 			this.actions.add(excludeVersionWithRegex("(?i).*?m\\d+.*", "a milestone version"));
 			return this;
 		}
 
-		public Excludes snapshots() {
+		public DependencyExcludes snapshots() {
 			this.actions.add(excludeVersionWithRegex(".*?-SNAPSHOT.*", "a SNAPSHOT version"));
 			return this;
 		}
