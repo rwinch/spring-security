@@ -68,7 +68,7 @@ dependencies {
 		api "org.bouncycastle:bcprov-jdk15on:1.68"
 		api "org.eclipse.jetty:jetty-server:9.4.38.v20210224"
 		api "org.eclipse.jetty:jetty-servlet:9.4.38.v20210224"
-		api "org.eclipse.persistence:javax.persistence:2.+"
+		api "org.eclipse.persistence:javax.persistence:2.2.1"
 		api "org.hibernate:hibernate-entitymanager:5.+"
 		api "org.hibernate:hibernate-validator:6.+"
 		api "org.hsqldb:hsqldb:2.+"
