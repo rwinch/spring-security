@@ -63,7 +63,7 @@ dependencies {
 		api "org.aspectj:aspectjrt:$aspectjVersion"
 		api "org.aspectj:aspectjtools:$aspectjVersion"
 		api "org.aspectj:aspectjweaver:$aspectjVersion"
-		api "org.assertj:assertj-core:3.+"
+		api "org.assertj:assertj-core:3.19.0"
 		api "org.bouncycastle:bcpkix-jdk15on:1.+"
 		api "org.bouncycastle:bcprov-jdk15on:1.+"
 		api "org.eclipse.jetty:jetty-server:9.4.19.v20190610"
