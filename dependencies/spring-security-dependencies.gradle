@@ -73,7 +73,7 @@ dependencies {
 		api "org.hibernate:hibernate-validator:6.2.0.Final"
 		api "org.hsqldb:hsqldb:2.5.1"
 		api "org.jasig.cas.client:cas-client-core:3.+"
-		api "org.jasig.cas:cas-server-webapp:4.0.7@war"
+		api "org.jasig.cas:cas-server-webapp:4.2.7@war"
 		api "org.mockito:mockito-core:3.3.+"
 		api "org.openid4java:openid4java-nodeps:0.+"
 		api "org.opensaml:opensaml-core:$openSamlVersion"
