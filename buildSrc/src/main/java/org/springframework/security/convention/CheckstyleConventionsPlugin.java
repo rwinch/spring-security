@@ -50,7 +50,7 @@ public class CheckstyleConventionsPlugin implements Plugin<Project> {
 				DependencySet checkstyleDependencies = project.getConfigurations().getByName("checkstyle").getDependencies();
 				DependencyHandler dependencyHandler = project.getDependencies();
 				checkstyleDependencies.add(dependencyHandler.create("io.spring.javaformat:spring-javaformat-checkstyle:" + javaformatVersion));
-				checkstyleDependencies.add(dependencyHandler.create("io.spring.nohttp:nohttp-checkstyle:0.0.3.RELEASE"));
+				checkstyleDependencies.add(dependencyHandler.create("io.spring.nohttp:nohttp-checkstyle:0.0.5.RELEASE"));
 			}
 		});
 	}
