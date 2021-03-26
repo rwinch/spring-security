@@ -3,15 +3,40 @@ package org.springframework.security.convention.versions;
 import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent;
 import org.gradle.api.Action;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 public class UpdateDependenciesExtension {
+	private Supplier<List<File>> files;
+
 	private DependencyExcludes dependencyExcludes = new DependencyExcludes();
+
+	public UpdateDependenciesExtension(Supplier<List<File>> files) {
+		this.files = files;
+	}
 
 	DependencyExcludes getExcludes() {
 		return dependencyExcludes;
+	}
+
+	Supplier<List<File>> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Supplier<List<File>> files) {
+		this.files = files;
+	}
+
+	public void addFiles(Supplier<List<File>> files) {
+		Supplier<List<File>> original = this.files;
+		setFiles(() -> {
+			List<File> result = new ArrayList<>(original.get());
+			result.addAll(files.get());
+			return result;
+		});
 	}
 
 	public void dependencyExcludes(Action<DependencyExcludes> excludes) {

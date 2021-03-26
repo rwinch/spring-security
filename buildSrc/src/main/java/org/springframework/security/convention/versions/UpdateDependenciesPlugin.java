@@ -18,13 +18,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UpdateDependenciesPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
-		UpdateDependenciesExtension updateDependenciesSettings = project.getExtensions().create("updateDependenciesSettings", UpdateDependenciesExtension.class);
+		UpdateDependenciesExtension updateDependenciesSettings = project.getExtensions().create("updateDependenciesSettings", UpdateDependenciesExtension.class, defaultFiles(project));
 		project.getTasks().register("updateDependencies", DependencyUpdatesTask.class, new Action<DependencyUpdatesTask>() {
 			@Override
 			public void execute(DependencyUpdatesTask updateDependencies) {
@@ -47,25 +48,15 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 							System.out.println("Update " + originalDependency + " to " + replacementDependency);
 							groups.computeIfAbsent(outdated.getGroup(), (key) -> new ArrayList<>()).add(outdated);
 						});
-						File buildSrcBuildFile = project.getRootProject().file("buildSrc/build.gradle");
 						File gradlePropertiesFile = project.getRootProject().file(Project.GRADLE_PROPERTIES);
+
+						List<File> filesWithDependencies = updateDependenciesSettings.getFiles().get();
 						groups.forEach((group, outdated) -> {
 							outdated.forEach((dependency) -> {
-								// this build file
-								updateDependencyInlineVersion(project.getBuildFile(), dependency);
-								updateDependencyWithVersionVariable(project.getBuildFile(), gradlePropertiesFile, dependency);
-
-								// child build files
-								project.getChildProjects().values().forEach(project -> {
-									updateDependencyInlineVersion(project.getBuildFile(), dependency);
-									updateDependencyWithVersionVariable(project.getBuildFile(), gradlePropertiesFile, dependency);
+								filesWithDependencies.forEach((fileWithDependency) -> {
+									updateDependencyInlineVersion(fileWithDependency, dependency);
+									updateDependencyWithVersionVariable(fileWithDependency, gradlePropertiesFile, dependency);
 								});
-
-								// buildSrc
-								if (buildSrcBuildFile.exists()) {
-									updateDependencyInlineVersion(buildSrcBuildFile, dependency);
-									updateDependencyWithVersionVariable(buildSrcBuildFile, gradlePropertiesFile, dependency);
-								}
 							});
 
 							// commit
@@ -104,6 +95,18 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 				});
 			}
 		});
+	}
+
+	private static Supplier<List<File>> defaultFiles(Project project) {
+		return () -> {
+			List<File> result = new ArrayList<>();
+			result.add(project.getBuildFile());
+			project.getChildProjects().values().forEach((childProject) ->
+					result.add(childProject.getBuildFile())
+			);
+			result.add(project.getRootProject().file("buildSrc/build.gradle"));
+			return result;
+		};
 	}
 
 	static void runCommand(File dir, String... args) {

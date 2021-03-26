@@ -39,6 +39,12 @@ subprojects {
 }
 
 updateDependenciesSettings {
+	addFiles({
+		return [
+			project.file("buildSrc/src/main/java/org/springframework/security/convention/AsciidoctorConventionPlugin.java"),
+			project.file("buildSrc/src/main/java/org/springframework/security/convention/CheckstyleConventionsPlugin.java")
+		]
+	})
 	dependencyExcludes {
 		majorVersionBump()
 		alphaBeta()
