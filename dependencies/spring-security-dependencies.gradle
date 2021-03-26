@@ -31,7 +31,7 @@ dependencies {
 		api "com.google.appengine:appengine:$gaeVersion"
 		api "com.google.inject:guice:3.0"
 		api "com.nimbusds:nimbus-jose-jwt:9.7"
-		api "com.nimbusds:oauth2-oidc-sdk:9.2.2"
+		api "com.nimbusds:oauth2-oidc-sdk:9.2.4"
 		api "com.squareup.okhttp3:mockwebserver:3.+"
 		api "com.squareup.okhttp3:okhttp:3.+"
 		api "com.sun.xml.bind:jaxb-core:2.+"
