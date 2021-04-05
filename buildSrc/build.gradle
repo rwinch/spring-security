@@ -43,8 +43,8 @@ configurations {
 }
 
 dependencies {
-	compile 'com.thaiopensource:trang:20091111'
-	compile 'net.sourceforge.saxon:saxon:9.1.0.8'
+	implementation 'com.thaiopensource:trang:20091111'
+	implementation 'net.sourceforge.saxon:saxon:9.1.0.8'
 	implementation localGroovy()
 
 	implementation 'io.projectreactor:reactor-core:3.4.4'
