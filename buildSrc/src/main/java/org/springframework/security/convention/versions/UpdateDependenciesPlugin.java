@@ -1,5 +1,6 @@
 package org.springframework.security.convention.versions;
 
+import com.github.benmanes.gradle.versions.VersionsPlugin;
 import com.github.benmanes.gradle.versions.reporter.result.DependencyOutdated;
 import com.github.benmanes.gradle.versions.reporter.result.Result;
 import com.github.benmanes.gradle.versions.reporter.result.VersionAvailable;
@@ -29,6 +30,7 @@ public class UpdateDependenciesPlugin implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
+		project.getPlugins().apply(VersionsPlugin.class);
 		UpdateDependenciesExtension updateDependenciesSettings = project.getExtensions().create("updateDependenciesSettings", UpdateDependenciesExtension.class, defaultFiles(project));
 		if (project.hasProperty("updateMode")) {
 			String updateMode = String.valueOf(project.findProperty("updateMode"));
