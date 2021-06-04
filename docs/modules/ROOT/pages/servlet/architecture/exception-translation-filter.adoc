@@ -1,7 +1,5 @@
 [[servlet-exceptiontranslationfilter]]
 = Handling Security Exceptions
-:figures: images/servlet/architecture
-:icondir: images/icons
 
 
 The {security-api-url}org/springframework/security/web/access/ExceptionTranslationFilter.html[`ExceptionTranslationFilter`] allows translation of {security-api-url}org/springframework/security/access/AccessDeniedException.html[`AccessDeniedException`] and {security-api-url}/org/springframework/security/core/AuthenticationException.html[`AuthenticationException`] into HTTP responses.
