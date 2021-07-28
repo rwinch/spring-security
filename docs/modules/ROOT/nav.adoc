@@ -49,3 +49,12 @@
 *** xref:servlet/oauth2/oauth2-client.adoc[OAuth2 Client]
 *** xref:servlet/oauth2/oauth2-resourceserver.adoc[OAuth2 Resource Server]
 ** xref:servlet/saml2/index.adoc[SAML2]
+** xref:servlet/exploits/index.adoc[Protection Against Exploits]
+** xref:servlet/integrations/index.adoc[Integrations]
+** Configuration
+*** xref:servlet/java-configuration/index.adoc[Java Configuration]
+*** xref:servlet/kotlin-configuration/index.adoc[Kotlin Configuration]
+*** xref:servlet/namespace/index.adoc[Namespace Configuration]
+** xref:servlet/test/index.adoc[Testing]
+** xref:servlet/crypto/index.adoc[Cryptography]
+** xref:servlet/appendix/index.adoc[Appendix]
