@@ -72,6 +72,9 @@
 * Reactive Applications
 ** xref:reactive/webflux.adoc[WebFlux Security]
 ** xref:reactive/exploits/index.adoc[Protection Against Exploits]
+*** xref:reactive/exploits/csrf.adoc[CSRF]
+*** xref:reactive/exploits/headers.adoc[Headers]
+*** xref:reactive/exploits/http.adoc[HTTP Requests]
 ** xref:reactive/oauth2/index.adoc[OAuth2]
 ** xref:reactive/registered-oauth2-authorized-client.adoc[@RegisteredOAuth2AuthorizedClient]
 ** xref:reactive/x509.adoc[X.509 Authentication]
