@@ -7,6 +7,9 @@
 *** xref:overview/features/authentication/index.adoc[Authentication]
 **** xref:overview/features/authentication/password-storage.adoc[Password Storage]
 *** xref:overview/features/exploits/index.adoc[Protection Against Exploits]
+**** xref:overview/features/exploits/csrf.adoc[CSRF]
+**** xref:overview/features/exploits/headers.adoc[HTTP Headers]
+**** xref:overview/features/exploits/http.adoc[HTTP Requests]
 ** xref:overview/modules.adoc[Project Modules & Dependencies]
 ** xref:overview/samples.adoc[Samples]
 * Servlet Applications
