@@ -73,6 +73,9 @@
 ** xref:servlet/test/mockmvc.adoc[MockMvc Support]
 ** xref:servlet/crypto/index.adoc[Cryptography]
 ** xref:servlet/appendix/index.adoc[Appendix]
+*** xref:servlet/appendix/database-schema.adoc[Database Schemas]
+*** xref:servlet/appendix/namespace.adoc[XML Namespace]
+*** xref:servlet/appendix/faq.adoc[FAQ]
 * Reactive Applications
 ** xref:reactive/webflux.adoc[WebFlux Security]
 ** xref:reactive/exploits/index.adoc[Protection Against Exploits]
