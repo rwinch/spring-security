@@ -39,28 +39,28 @@ This also gives a good idea of the high level flow of authentication and how pie
 // FIXME: Add other mechanisms
 
 // We intentionally do not increase leveloffset, this is just for organization vs document structure
-include::architecture/index.adoc[]
+* xref:servlet/authentication/architecture/index.adoc[]
 
-include::unpwd/index.adoc[leveloffset=+1]
+* xref:servlet/authentication/unpwd/index.adoc[leveloffset=+1]
 
-include::session-management.adoc[]
+* xref:servlet/authentication/session-management.adoc[]
 
-include::rememberme.adoc[]
+* xref:servlet/authentication/rememberme.adoc[]
 
-include::openid.adoc[]
+* xref:servlet/authentication/openid.adoc[]
 
-include::anonymous.adoc[]
+* xref:servlet/authentication/anonymous.adoc[]
 
-include::preauth.adoc[]
+* xref:servlet/authentication/preauth.adoc[]
 
-include::jaas.adoc[]
+* xref:servlet/authentication/jaas.adoc[]
 
-include::cas.adoc[]
+* xref:servlet/authentication/cas.adoc[]
 
-include::x509.adoc[]
+* xref:servlet/authentication/x509.adoc[]
 
-include::runas.adoc[]
+* xref:servlet/authentication/runas.adoc[]
 
-include::logout.adoc[]
+* xref:servlet/authentication/logout.adoc[]
 
-include::events.adoc[]
+* xref:servlet/authentication/events.adoc[]
