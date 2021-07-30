@@ -12,7 +12,7 @@
 **** xref:overview/features/exploits/http.adoc[HTTP Requests]
 ** xref:overview/modules.adoc[Project Modules & Dependencies]
 ** xref:overview/samples.adoc[Samples]
-* Servlet Applications
+* xref:servlet/index.adoc[Servlet Applications]
 ** xref:servlet/hello/index.adoc[Hello Spring Security]
 ** xref:servlet/architecture/index.adoc[The Big Picture]
 ** Authentication
