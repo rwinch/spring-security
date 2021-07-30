@@ -5,6 +5,7 @@
 ** xref:overview/getting-spring-security.adoc[Getting Spring Security]
 ** xref:overview/features/index.adoc[Features]
 *** xref:overview/features/authentication/index.adoc[Authentication]
+**** xref:overview/features/authentication/password-storage.adoc[Password Storage]
 *** xref:overview/features/exploits/index.adoc[Protection Against Exploits]
 ** xref:overview/modules.adoc[Project Modules & Dependencies]
 ** xref:overview/samples.adoc[Samples]
