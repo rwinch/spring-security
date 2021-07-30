@@ -76,7 +76,7 @@
 *** xref:servlet/appendix/database-schema.adoc[Database Schemas]
 *** xref:servlet/appendix/namespace.adoc[XML Namespace]
 *** xref:servlet/appendix/faq.adoc[FAQ]
-* Reactive Applications
+* xref:reactive/index.adoc[Reactive Applications]
 ** xref:reactive/webflux.adoc[WebFlux Security]
 ** xref:reactive/exploits/index.adoc[Protection Against Exploits]
 *** xref:reactive/exploits/csrf.adoc[CSRF]
