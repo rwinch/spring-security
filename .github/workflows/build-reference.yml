@@ -7,6 +7,7 @@ on:
 
 env:
   GH_TOKEN_DISPATCH: ${{ secrets.GH_TOKEN_DISPATCH }}
+  GH_TOKEN_PUSH: ${{ secrets.GH_TOKEN_PUSH }}
 
 jobs:
   build:
@@ -14,5 +15,14 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v2
+      - name: Generate antora.yml
+        run: ./gradlew :spring-security-docs:generateAntora
+      - name: Push generated antora files to the spring-security-docs-generated
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: 6.0.x-antora-2.x # The branch the action should deploy to.
+          folder: "build/generateAntora" # The folder the action should deploy.
+          repository-name: "rwinch/spring-security-docs-generated"
+          token: "$GH_TOKEN_PUSH"
       - name: Dispatch Build Request
         run: ${GITHUB_WORKSPACE}/.github/actions/dispatch.sh 'rwinch/spring-reference' "$GH_TOKEN_DISPATCH"
