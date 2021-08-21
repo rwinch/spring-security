@@ -8,5 +8,6 @@ asciidoc:
     page-pagination: true
     idprefix: ''
     idseparator: '-'
+    icondir: icons
 nav:
 - modules/ROOT/nav.adoc
