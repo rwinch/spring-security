@@ -23,6 +23,6 @@ jobs:
           branch: "docs-6.0.x" # The branch the action should deploy to.
           folder: "docs/build/generateAntora" # The folder the action should deploy.
           repository-name: "rwinch/spring-security-docs-generated"
-#          token: "$GH_TOKEN_PUSH"
+          token: ${{ secrets.GH_TOKEN_PUSH }}
       - name: Dispatch Build Request
         run: ${GITHUB_WORKSPACE}/.github/actions/dispatch.sh 'rwinch/spring-reference' "$GH_TOKEN_DISPATCH"
