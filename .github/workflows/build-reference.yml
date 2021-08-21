@@ -20,7 +20,7 @@ jobs:
       - name: Push generated antora files to the spring-security-docs-generated
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          branch: 6.0.x-antora-2.x # The branch the action should deploy to.
+          branch: "docs-6.0.x" # The branch the action should deploy to.
           folder: "docs/build/generateAntora" # The folder the action should deploy.
           repository-name: "rwinch/spring-security-docs-generated"
           token: "$GH_TOKEN_PUSH"
