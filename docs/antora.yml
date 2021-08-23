@@ -3,11 +3,5 @@ title: Spring Security
 version: ~
 display_version: 6.0
 start_page: ROOT:overview/index.adoc
-asciidoc:
-  attributes:
-    page-pagination: true
-    idprefix: ''
-    idseparator: '-'
-    icondir: icons
 nav:
 - modules/ROOT/nav.adoc
