@@ -1,7 +1,7 @@
 name: security
 title: Spring Security
 version: 5.6
-start_page: ROOT:overview/index.adoc
+start_page: ROOT:index.adoc
 asciidoc:
   attributes:
     page-pagination: true
