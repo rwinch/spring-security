@@ -2,6 +2,6 @@ name: security
 title: Spring Security
 version: ~
 display_version: 6.0
-start_page: ROOT:overview/index.adoc
+start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/nav.adoc
