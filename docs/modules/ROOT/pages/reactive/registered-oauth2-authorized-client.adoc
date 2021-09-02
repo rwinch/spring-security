@@ -1,0 +1,1 @@
+../../../../manual/src/docs/asciidoc/_includes/reactive/registered-oauth2-authorized-client.adoc

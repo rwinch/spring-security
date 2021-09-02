@@ -1,0 +1,1 @@
+../../../../../manual/src/docs/asciidoc/_includes/servlet/authentication/cas.adoc

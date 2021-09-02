@@ -1,0 +1,1 @@
+../../../../../../manual/src/docs/asciidoc/_includes/servlet/authentication/architecture/authentication-entry-point.adoc
