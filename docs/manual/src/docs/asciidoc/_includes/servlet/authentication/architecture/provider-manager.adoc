@@ -1,6 +1,6 @@
 [[servlet-authentication-providermanager]]
 = ProviderManager
-:figures: images/servlet/authentication/architecture
+:figures: {images-dir}servlet/authentication/architecture
 
 {security-api-url}org/springframework/security/authentication/ProviderManager.html[`ProviderManager`] is the most commonly used implementation of <<servlet-authentication-authenticationmanager,`AuthenticationManager`>>.
 `ProviderManager` delegates to a `List` of <<servlet-authentication-authenticationprovider,``AuthenticationProvider``s>>.

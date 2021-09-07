@@ -1,6 +1,6 @@
 [[servlet-authentication-architecture]]
 = Servlet Authentication Architecture
-:figures: servlet/authentication/architecture
+:figures: {images-dir}servlet/authentication/architecture
 
 This discussion expands on xref:servlet/architecture.adoc#servlet-architecture[Servlet Security: The Big Picture] to describe the main architectural components of Spring Security's used in Servlet authentication.
 If you need concrete flows that explain how these pieces fit together, look at the xref:servlet/authentication/index.adoc#servlet-authentication-mechanisms[Authentication Mechanism] specific sections.

@@ -28,6 +28,7 @@ asciidoctorj {
 		'spring-boot-version' : springBootVersion,
 		revnumber : project.version,
 		'gh-url': ghUrl,
+		'images-dir': 'images/',
 		'gh-samples-url': ghSamplesUrl,
 		'gh-old-samples-url': ghOldSamplesUrl,
 		'security-api-url': securityApiUrl,

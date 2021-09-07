@@ -1,7 +1,7 @@
 [[servlet-authentication-securitycontextholder]]
 = SecurityContextHolder
 
-:figures: images/servlet/authentication/architecture
+:figures: {images-dir}servlet/authentication/architecture
 
 At the heart of Spring Security's authentication model is the `SecurityContextHolder`.
 It contains the <<servlet-authentication-securitycontext>>.

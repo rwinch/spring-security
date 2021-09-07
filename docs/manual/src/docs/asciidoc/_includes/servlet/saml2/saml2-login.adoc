@@ -1,8 +1,8 @@
 
 [[servlet-saml2login]]
 == SAML 2.0 Login
-:figures: images/servlet/saml2
-:icondir: images/icons
+:figures: {images-dir}servlet/saml2
+:icondir: {images-dir}icons
 
 The SAML 2.0 Login feature provides an application with the capability to act as a SAML 2.0 Relying Party, having users https://wiki.shibboleth.net/confluence/display/CONCEPT/FlowsAndConfig[log in] to the application by using their existing account at a SAML 2.0 Asserting Party (Okta, ADFS, etc).
 

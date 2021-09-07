@@ -1,7 +1,7 @@
 [[servlet-authentication-abstractprocessingfilter]]
 = AbstractAuthenticationProcessingFilter
-:figures: images/servlet/authentication/architecture
-:icondir: images/icons
+:figures: {images-dir}servlet/authentication/architecture
+:icondir: {images-dir}icons
 
 {security-api-url}org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html[`AbstractAuthenticationProcessingFilter`] is used as a base `Filter` for authenticating a user's credentials.
 Before the credentials can be authenticated, Spring Security typically requests the credentials using <<servlet-authentication-authenticationentrypoint,`AuthenticationEntryPoint`>>.
