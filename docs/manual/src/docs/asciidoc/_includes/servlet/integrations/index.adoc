@@ -1,19 +1,19 @@
 = Integrations
 
-include::servlet-api.adoc[]
+include::servlet-api.adoc[leveloffset=+1]
 
-include::data.adoc[]
+include::data.adoc[leveloffset=+1]
 
-include::concurrency.adoc[]
+include::concurrency.adoc[leveloffset=+1]
 
-include::jackson.adoc[]
+include::jackson.adoc[leveloffset=+1]
 
-include::localization.adoc[]
+include::localization.adoc[leveloffset=+1]
 
-include::mvc.adoc[]
+include::mvc.adoc[leveloffset=+1]
 
-include::websocket.adoc[]
+include::websocket.adoc[leveloffset=+1]
 
-include::cors.adoc[]
+include::cors.adoc[leveloffset=+1]
 
-include::jsp-taglibs.adoc[]
+include::jsp-taglibs.adoc[leveloffset=+1]

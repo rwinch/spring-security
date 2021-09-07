@@ -1,7 +1,7 @@
 = OAuth2
 
-include::oauth2-login.adoc[]
+include::oauth2-login.adoc[leveloffset=+1]
 
-include::oauth2-client.adoc[]
+include::oauth2-client.adoc[leveloffset=+1]
 
-include::oauth2-resourceserver.adoc[]
+include::oauth2-resourceserver.adoc[leveloffset=+1]

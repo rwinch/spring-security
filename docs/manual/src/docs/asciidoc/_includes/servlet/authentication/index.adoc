@@ -43,24 +43,24 @@ include::architecture/index.adoc[]
 
 include::unpwd/index.adoc[leveloffset=+1]
 
-include::session-management.adoc[]
+include::session-management.adoc[leveloffset=+1]
 
-include::rememberme.adoc[]
+include::rememberme.adoc[leveloffset=+1]
 
-include::openid.adoc[]
+include::openid.adoc[leveloffset=+1]
 
-include::anonymous.adoc[]
+include::anonymous.adoc[leveloffset=+1]
 
-include::preauth.adoc[]
+include::preauth.adoc[leveloffset=+1]
 
-include::jaas.adoc[]
+include::jaas.adoc[leveloffset=+1]
 
-include::cas.adoc[]
+include::cas.adoc[leveloffset=+1]
 
-include::x509.adoc[]
+include::x509.adoc[leveloffset=+1]
 
-include::runas.adoc[]
+include::runas.adoc[leveloffset=+1]
 
-include::logout.adoc[]
+include::logout.adoc[leveloffset=+1]
 
-include::events.adoc[]
+include::events.adoc[leveloffset=+1]

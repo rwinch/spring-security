@@ -10,11 +10,11 @@ include::architecture.adoc[leveloffset=+1]
 
 include::authorize-requests.adoc[leveloffset=+1]
 
-include::expression-based.adoc[]
+include::expression-based.adoc[leveloffset=+1]
 
-include::secure-objects.adoc[]
+include::secure-objects.adoc[leveloffset=+1]
 
-include::method-security.adoc[]
+include::method-security.adoc[leveloffset=+1]
 
-include::acls.adoc[]
+include::acls.adoc[leveloffset=+1]
 

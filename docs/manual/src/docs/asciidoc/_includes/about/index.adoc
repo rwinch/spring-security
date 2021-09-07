@@ -6,7 +6,7 @@ include::prerequisites.adoc[leveloffset=+1]
 
 include::community.adoc[leveloffset=+1]
 
-include::whats-new.adoc[]
+include::whats-new.adoc[leveloffset=+1]
 
 include::getting-spring-security.adoc[leveloffset=+1]
 

@@ -1,11 +1,11 @@
 [[new]]
-== What's New in Spring Security 5.5
+= What's New in Spring Security 5.5
 
 Spring Security 5.5 provides a number of new features.
 Below are the highlights of the release.
 
 [[whats-new-servlet]]
-=== Servlet
+== Servlet
 * OAuth 2.0 Client
 
 ** Added support for https://github.com/spring-projects/spring-security/pull/9520[Jwt Client Authentication] `private_key_jwt` and `client_secret_jwt`
@@ -37,12 +37,12 @@ Below are the highlights of the release.
 ** Added https://github.com/spring-projects/spring-security/issues/9319[rememberMe support]
 
 [[whats-new-webflux]]
-=== WebFlux
+== WebFlux
 
 ** Added https://github.com/spring-projects/spring-security/issues/8143[Kotlin coroutine support] for `EnableReactiveMethodSecurity`
 
 [[whats-new-build]]
-=== Build
+== Build
 
 The build has been modernized in a number of different ways.
 Here are a couple of highlights:
