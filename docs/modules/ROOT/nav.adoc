@@ -41,7 +41,7 @@
 *** xref:servlet/authentication/runas.adoc[Run-As]
 *** xref:servlet/authentication/logout.adoc[Logout]
 *** xref:servlet/authentication/events.adoc[Authentication Events]
-** Authorization
+** xref:servlet/authorization/index.adoc[Authorization]
 *** xref:servlet/authorization/architecture.adoc[]
 *** xref:servlet/authorization/authorize-requests.adoc[Authorize HTTP Requests]
 *** xref:servlet/authorization/expression-based.adoc[]
@@ -55,7 +55,7 @@
 *** xref:servlet/oauth2/oauth2-resourceserver.adoc[OAuth2 Resource Server]
 ** xref:servlet/saml2/index.adoc[SAML 2]
 
-** Protection Against Exploits
+** xref:servlet/exploits/index.adoc[Protection Against Exploits]
 *** xref:servlet/exploits/csrf.adoc[CSRF]
 *** xref:servlet/exploits/headers.adoc[HTTP Headers]
 *** xref:servlet/exploits/http.adoc[HTTP Requests]
