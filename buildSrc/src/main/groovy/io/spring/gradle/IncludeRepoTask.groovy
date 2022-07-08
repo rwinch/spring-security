@@ -96,7 +96,7 @@ abstract class IncludeRepoTask extends DefaultTask {
 
 	private String getRemoteUri() {
 		String remoteUri = this.repository.get()
-		if (remoteUri.startsWith(DEFAULT_URI_PREFIX)) {
+		if (remoteUri.startsWith(DEFAULT_URI_PREFIX) || remoteUri.startsWith("https://") || remoteUri.startsWith("file://")) {
 			return remoteUri
 		}
 		return DEFAULT_URI_PREFIX + remoteUri
