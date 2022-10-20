@@ -143,6 +143,12 @@ public final class SessionManagementConfigurer<H extends HttpSecurityBuilder<H>>
 	private Boolean requireExplicitAuthenticationStrategy;
 
 	/**
+	 * This should not use RequestAttributeSecurityContextRepository since that is
+	 * stateless and sesison management is about state management.
+	 */
+	private SecurityContextRepository sessionManagementSecurityContextRepository = new HttpSessionSecurityContextRepository();
+
+	/**
 	 * Creates a new instance
 	 * @see HttpSecurity#sessionManagement()
 	 */
@@ -366,6 +372,7 @@ public final class SessionManagementConfigurer<H extends HttpSecurityBuilder<H>>
 				if (trustResolver != null) {
 					httpSecurityRepository.setTrustResolver(trustResolver);
 				}
+				this.sessionManagementSecurityContextRepository = httpSecurityRepository;
 				DelegatingSecurityContextRepository defaultRepository = new DelegatingSecurityContextRepository(
 						httpSecurityRepository, new RequestAttributeSecurityContextRepository());
 				http.setSharedObject(SecurityContextRepository.class, defaultRepository);
@@ -423,7 +430,7 @@ public final class SessionManagementConfigurer<H extends HttpSecurityBuilder<H>>
 		if (shouldRequireExplicitAuthenticationStrategy()) {
 			return null;
 		}
-		SecurityContextRepository securityContextRepository = http.getSharedObject(SecurityContextRepository.class);
+		SecurityContextRepository securityContextRepository = this.sessionManagementSecurityContextRepository;
 		SessionManagementFilter sessionManagementFilter = new SessionManagementFilter(securityContextRepository,
 				getSessionAuthenticationStrategy(http));
 		if (this.sessionAuthenticationErrorUrl != null) {
