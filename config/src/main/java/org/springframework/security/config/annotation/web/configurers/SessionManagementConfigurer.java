@@ -48,6 +48,7 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -365,7 +366,9 @@ public final class SessionManagementConfigurer<H extends HttpSecurityBuilder<H>>
 				if (trustResolver != null) {
 					httpSecurityRepository.setTrustResolver(trustResolver);
 				}
-				http.setSharedObject(SecurityContextRepository.class, httpSecurityRepository);
+				DelegatingSecurityContextRepository defaultRepository = new DelegatingSecurityContextRepository(
+						httpSecurityRepository, new RequestAttributeSecurityContextRepository());
+				http.setSharedObject(SecurityContextRepository.class, defaultRepository);
 			}
 		}
 		RequestCache requestCache = http.getSharedObject(RequestCache.class);
