@@ -362,7 +362,9 @@ public final class SessionManagementConfigurer<H extends HttpSecurityBuilder<H>>
 		boolean stateless = isStateless();
 		if (securityContextRepository == null) {
 			if (stateless) {
-				http.setSharedObject(SecurityContextRepository.class, new RequestAttributeSecurityContextRepository());
+				RequestAttributeSecurityContextRepository defaultRepository = new RequestAttributeSecurityContextRepository();
+				this.sessionManagementSecurityContextRepository = defaultRepository;
+				http.setSharedObject(SecurityContextRepository.class, defaultRepository);
 			}
 			else {
 				HttpSessionSecurityContextRepository httpSecurityRepository = new HttpSessionSecurityContextRepository();
