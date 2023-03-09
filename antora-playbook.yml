@@ -15,7 +15,7 @@ antora:
     root_component_name: 'security'
 site:
   title: Spring Security
-  url: https://docs.spring.io/spring-security/reference
+  url: https://rwinch.github.io/spring-security/
   robots: allow
 git:
   ensure_git_suffix: false
