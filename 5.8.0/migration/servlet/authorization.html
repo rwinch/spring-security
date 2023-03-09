@@ -1,0 +1,3231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Authorization Migrations :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/migration/servlet/authorization.html">
+    <link rel="prev" href="authentication.html">
+    <link rel="next" href="oauth2.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="5.8.0">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="5.8.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Preparing for 6.0</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Servlet Migrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="exploits.html">Exploit Protection</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="config.html">Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="authentication.html">Authentication</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="authorization.html">Authorization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="oauth2.html">OAuth</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="saml2.html">SAML</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="cas.html">CAS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../reactive.html">Reactive Migrations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../servlet/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../servlet/architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../servlet/authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/persistence.html">Persistence</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/openid.html">OpenID</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/cas.html">CAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/authorization/events.html">Authorization Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../servlet/appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../servlet/appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../servlet/appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">5.8.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Spring Security</a></li>
+    <li><a href="../index.html">Preparing for 6.0</a></li>
+    <li><a href="index.html">Servlet Migrations</a></li>
+    <li><a href="authorization.html">Authorization</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../6.1/migration/servlet/authorization.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../6.1.0-M1/migration/servlet/authorization.html">6.1.0-M1</a>
+    <a class="version" href="../../../6.0.3/migration/servlet/authorization.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../migration/servlet/authorization.html">6.0.2</a>
+    <a class="version" href="../../../6.0.1/migration/servlet/authorization.html">6.0.1</a>
+    <a class="version" href="../../../6.0.0/migration/servlet/authorization.html">6.0.0</a>
+    <a class="version is-missing" href="../../../6.0.0-RC2/index.html">6.0.0-RC2</a>
+    <a class="version is-missing" href="../../../6.0.0-RC1/index.html">6.0.0-RC1</a>
+    <a class="version is-missing" href="../../../6.0.0-M7/index.html">6.0.0-M7</a>
+    <a class="version is-missing" href="../../../6.0.0-M6/index.html">6.0.0-M6</a>
+    <a class="version is-missing" href="../../../6.0.0-M5/index.html">6.0.0-M5</a>
+    <a class="version is-missing" href="../../../6.0.0-M4/index.html">6.0.0-M4</a>
+    <a class="version is-missing" href="../../../6.0.0-M3/index.html">6.0.0-M3</a>
+    <a class="version is-missing" href="../../../6.0.0-M2/index.html">6.0.0-M2</a>
+    <a class="version is-missing" href="../../../6.0.0-M1/index.html">6.0.0-M1</a>
+    <a class="version" href="../../../5.8.3/migration/servlet/authorization.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../5.8/migration/servlet/authorization.html">5.8.2</a>
+    <a class="version" href="../../../5.8.1/migration/servlet/authorization.html">5.8.1</a>
+    <a class="version is-current" href="authorization.html">5.8.0</a>
+    <a class="version is-missing" href="../../../5.8.0-RC1/index.html">5.8.0-RC1</a>
+    <a class="version is-missing" href="../../../5.7.8/index.html">5.7.8-SNAPSHOT</a>
+    <a class="version is-missing" href="../../../5.7/index.html">5.7.7</a>
+    <a class="version is-missing" href="../../../5.7.6/index.html">5.7.6</a>
+    <a class="version is-missing" href="../../../5.7.5/index.html">5.7.5</a>
+    <a class="version is-missing" href="../../../5.7.4/index.html">5.7.4</a>
+    <a class="version is-missing" href="../../../5.7.3/index.html">5.7.3</a>
+    <a class="version is-missing" href="../../../5.7.2/index.html">5.7.2</a>
+    <a class="version is-missing" href="../../../5.7.1/index.html">5.7.1</a>
+    <a class="version is-missing" href="../../../5.7.0/index.html">5.7.0</a>
+    <a class="version is-missing" href="../../../5.7.0-RC1/index.html">5.7.0-RC1</a>
+    <a class="version is-missing" href="../../../5.6.11/index.html">5.6.11-SNAPSHOT</a>
+    <a class="version is-missing" href="../../../5.6/index.html">5.6.10</a>
+    <a class="version is-missing" href="../../../5.6.9/index.html">5.6.9</a>
+    <a class="version is-missing" href="../../../5.6.8/index.html">5.6.8</a>
+    <a class="version is-missing" href="../../../5.6.7/index.html">5.6.7</a>
+    <a class="version is-missing" href="../../../5.6.6/index.html">5.6.6</a>
+    <a class="version is-missing" href="../../../5.6.5/index.html">5.6.5</a>
+    <a class="version is-missing" href="../../../5.6.4/index.html">5.6.4</a>
+    <a class="version is-missing" href="../../../5.6.3/index.html">5.6.3</a>
+    <a class="version is-missing" href="../../../5.6.2/index.html">5.6.2</a>
+    <a class="version is-missing" href="../../../5.6.1/index.html">5.6.1</a>
+    <a class="version is-missing" href="../../../5.6.0/index.html">5.6.0</a>
+    <a class="version is-missing" href="../../../5.6.0-RC1/index.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.0/docs/modules/ROOT/pages/migration/servlet/authorization.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Authorization Migrations" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p> For the latest stable version, please use <a href="../../../migration/servlet/authorization.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">Authorization Migrations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following steps relate to changes around how authorization is performed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_authorizationmanager_for_method_security"><a class="anchor" href="#_use_authorizationmanager_for_method_security"></a>Use <code>AuthorizationManager</code> for Method Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../../servlet/authorization/method-security.html" class="xref page">Method Security</a> has been <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
+</div>
+<div class="paragraph">
+<p>Should you run into trouble with making these changes, note that <code>@EnableGlobalMethodSecurity</code>, while deprecated, will not be removed in 6.0, allowing you to opt out by sticking with the old annotation.</p>
+</div>
+<div class="sect2">
+<h3 id="servlet-replace-globalmethodsecurity-with-methodsecurity"><a class="anchor" href="#servlet-replace-globalmethodsecurity-with-methodsecurity"></a>Replace <a href="../../servlet/authorization/method-security.html#jc-enable-global-method-security" class="xref page">global method security</a> with <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">method security</a></h3>
+<div class="paragraph">
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html"><code>@EnableGlobalMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-global-method-security" class="xref page"><code>&lt;global-method-security&gt;</code></a> are deprecated in favor of <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-method-security" class="xref page"><code>&lt;method-security&gt;</code></a>, respectively.
+The new annotation and XML element activate Spring&#8217;s <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">pre-post annotations</a> by default and use <code>AuthorizationManager</code> internally.</p>
+</div>
+<div class="paragraph">
+<p>This means that the following two listings are functionally equivalent:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_1_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableGlobalMethodSecurity(prePostEnabled = true)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableGlobalMethodSecurity(prePostEnabled = true)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_xml--panel" class="tabpanel" aria-labelledby="_tabs_1_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;global-method-security pre-post-enabled="true"/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>and:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_2_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableMethodSecurity</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableMethodSecurity</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_xml--panel" class="tabpanel" aria-labelledby="_tabs_2_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;method-security/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>For applications not using the pre-post annotations, make sure to turn it off to avoid activating unwanted behavior.</p>
+</div>
+<div class="paragraph">
+<p>For example, a listing like:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_3_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableGlobalMethodSecurity(securedEnabled = true)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableGlobalMethodSecurity(securedEnabled = true)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_xml--panel" class="tabpanel" aria-labelledby="_tabs_3_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;global-method-security secured-enabled="true"/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>should change to:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_4_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableMethodSecurity(securedEnabled = true, prePostEnabled = false)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_4_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableMethodSecurity(securedEnabled = true, prePostEnabled = false)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_xml--panel" class="tabpanel" aria-labelledby="_tabs_4_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;method-security secured-enabled="true" pre-post-enabled="false"/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"><a class="anchor" href="#servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"></a>Publish a <code>MethodSecurityExpressionHandler</code> instead of a <code>PermissionEvaluator</code></h3>
+<div class="paragraph">
+<p><code>@EnableMethodSecurity</code> does not pick up a <code>PermissionEvaluator</code>.
+This helps keep its API simple.</p>
+</div>
+<div class="paragraph">
+<p>If you have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/PermissionEvaluator.html"><code>PermissionEvaluator</code></a> <code>@Bean</code>, please change it from:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_5_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+static PermissionEvaluator permissionEvaluator() {
+	// ... your evaluator
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
+	@Bean
+	fun permissionEvaluator(): PermissionEvaluator {
+		// ... your evaluator
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+static MethodSecurityExpressionHandler expressionHandler() {
+	var expressionHandler = new DefaultMethodSecurityExpressionHandler();
+	expressionHandler.setPermissionEvaluator(myPermissionEvaluator);
+	return expressionHandler;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
+	@Bean
+	fun expressionHandler(): MethodSecurityExpressionHandler {
+		val expressionHandler = DefaultMethodSecurityExpressionHandler
+		expressionHandler.setPermissionEvaluator(myPermissionEvaluator)
+		return expressionHandler
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_replace_any_custom_method_security_accessdecisionmanagers"><a class="anchor" href="#_replace_any_custom_method_security_accessdecisionmanagers"></a>Replace any custom method-security <code>AccessDecisionManager</code>s</h3>
+<div class="paragraph">
+<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
+The preparation strategy will depend on your reason for each arrangement.
+Read on to find the best match for your situation.</p>
+</div>
+<div class="sect3">
+<h4 id="_i_use_unanimousbased"><a class="anchor" href="#_i_use_unanimousbased"></a>I use <code>UnanimousBased</code></h4>
+<div class="paragraph">
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a> with the default voters, you likely need do nothing since unanimous-based is the default behavior with <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a>.</p>
+</div>
+<div class="paragraph">
+<p>However, if you do discover that you cannot accept the default authorization managers, you can use <code>AuthorizationManagers.allOf</code> to compose your own arrangement.
+Having done that, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_affirmativebased"><a class="anchor" href="#_i_use_affirmativebased"></a>I use <code>AffirmativeBased</code></h4>
+<div class="paragraph">
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AuthorizationManager&lt;MethodInvocation&gt; authorization = AuthorizationManagers.anyOf(
+		// ... your list of authorization managers
+)</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val authorization = AuthorizationManagers.anyOf(
+		// ... your list of authorization managers
+)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_consensusbased"><a class="anchor" href="#_i_use_consensusbased"></a>I use <code>ConsensusBased</code></h4>
+<div class="paragraph">
+<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
+In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_a_custom_accessdecisionvoter"><a class="anchor" href="#_i_use_a_custom_accessdecisionvoter"></a>I use a custom <code>AccessDecisionVoter</code></h4>
+<div class="paragraph">
+<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
+</div>
+<div class="paragraph">
+<p>Without knowing what your custom voter is doing, it is impossible to recommend a general-purpose solution.
+By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>@PreAuthorize</code> would look like:</p>
+</div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class PreAuthorizeAuthorizationManagerAdapter implements AuthorizationManager&lt;MethodInvocation&gt; {
+    private final SecurityMetadataSource metadata;
+    private final AccessDecisionVoter voter;
+
+    public PreAuthorizeAuthorizationManagerAdapter(MethodSecurityExpressionHandler expressionHandler) {
+        ExpressionBasedAnnotationAttributeFactory attributeFactory =
+                new ExpressionBasedAnnotationAttributeFactory(expressionHandler);
+        this.metadata = new PrePostAnnotationSecurityMetadataSource(attributeFactory);
+        ExpressionBasedPreInvocationAdvice expressionAdvice = new ExpressionBasedPreInvocationAdvice();
+        expressionAdvice.setExpressionHandler(expressionHandler);
+        this.voter = new PreInvocationAuthorizationAdviceVoter(expressionAdvice);
+    }
+
+    public AuthorizationDecision check(Supplier&lt;Authentication&gt; authentication, MethodInvocation invocation) {
+        List&lt;ConfigAttribute&gt; attributes = this.metadata.getAttributes(invocation, AopUtils.getTargetClass(invocation.getThis()));
+        int decision = this.voter.vote(authentication.get(), invocation, attributes);
+        if (decision == ACCESS_GRANTED) {
+            return new AuthorizationDecision(true);
+        }
+        if (decision == ACCESS_DENIED) {
+            return new AuthorizationDecision(false);
+        }
+        return null; // abstain
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_a_custom_afterinvocationmanager"><a class="anchor" href="#_i_use_a_custom_afterinvocationmanager"></a>I use a custom <code>AfterInvocationManager</code></h4>
+<div class="paragraph">
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> replaces both <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> and  <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/intercept/AfterInvocationManager.html"><code>AfterInvocationManager</code></a>.
+The difference is that <code>AuthorizationManager&lt;MethodInvocation&gt;</code> replaces <code>AccessDecisionManager</code> and <code>AuthorizationManager&lt;MethodInvocationResult&gt;</code> replaces <code>AfterInvocationManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>Given that, <a href="#_i_use_a_custom_accessdecisionvoter">the same rules apply for adaptation</a>, where the goal this time is to implement <code>AuthorizationManager&lt;MethodInvocationResult&gt;</code> instead of <code>AuthorizationManager&lt;MethodInvocation&gt;</code> and use <code>AuthorizationManagerAfterMethodInterceptor</code> instead of <code>AuthorizationManagerBeforeMethodInterceptor</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_runasmanager"><a class="anchor" href="#_i_use_runasmanager"></a>I use <code>RunAsManager</code></h4>
+<div class="paragraph">
+<p>There is currently <a href="https://github.com/spring-projects/spring-security/issues/11331">no replacement for <code>RunAsManager</code></a> though one is being considered.</p>
+</div>
+<div class="paragraph">
+<p>It is quite straightforward to adapt a <code>RunAsManager</code>, though, to the <code>AuthorizationManager</code> API, if needed.</p>
+</div>
+<div class="paragraph">
+<p>Here is some pseudocode to get you started:</p>
+</div>
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_9_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class RunAsAuthorizationManagerAdapter&lt;T&gt; implements AuthorizationManager&lt;T&gt; {
+	private final RunAsManager runAs = new RunAsManagerImpl();
+	private final SecurityMetadataSource metadata;
+    private final AuthorizationManager&lt;T&gt; authorization;
+
+    // ... constructor
+
+    public AuthorizationDecision check(Supplier&lt;Authentication&gt; authentication, T object) {
+		Supplier&lt;Authentication&gt; wrapped = (auth) -&gt; {
+			List&lt;ConfigAttribute&gt; attributes = this.metadata.getAttributes(object);
+			return this.runAs.buildRunAs(auth, object, attributes);
+		};
+		return this.authorization.check(wrapped, object);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-check-for-annotationconfigurationexceptions"><a class="anchor" href="#servlet-check-for-annotationconfigurationexceptions"></a>Check for <code>AnnotationConfigurationException</code>s</h3>
+<div class="paragraph">
+<p><code>@EnableMethodSecurity</code> and <code>&lt;method-security&gt;</code> activate stricter enforcement of Spring Security&#8217;s non-repeatable or otherwise incompatible annotations.
+If after moving to either you see <code>AnnotationConfigurationException</code>s in your logs, follow the instructions in the exception message to clean up your application&#8217;s method security annotation usage.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_authorizationmanager_for_message_security"><a class="anchor" href="#_use_authorizationmanager_for_message_security"></a>Use <code>AuthorizationManager</code> for Message Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../../servlet/integrations/websocket.html" class="xref page">Message Security</a> has been <a href="../../servlet/integrations/websocket.html#websocket-configuration" class="xref page">improved</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
+</div>
+<div class="paragraph">
+<p>Should you run into trouble with making these changes, you can follow the <a href="#servlet-authorizationmanager-messages-opt-out">opt out steps</a> at the end of this section.</p>
+</div>
+<div class="sect2">
+<h3 id="_ensure_all_messages_have_defined_authorization_rules"><a class="anchor" href="#_ensure_all_messages_have_defined_authorization_rules"></a>Ensure all messages have defined authorization rules</h3>
+<div class="paragraph">
+<p>The now-deprecated <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/web/socket/AbstractSecurityWebSocketMessageBrokerConfigurer.html">message security support</a> permits all messages by default.
+<a href="../../servlet/integrations/websocket.html" class="xref page">The new support</a> has the stronger default of denying all messages.</p>
+</div>
+<div class="paragraph">
+<p>To prepare for this, ensure that authorization rules exist are declared for every request.</p>
+</div>
+<div class="paragraph">
+<p>For example, an application configuration like:</p>
+</div>
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_10_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_10_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_10_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
+protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+    messages
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN");
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
+    messages
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_10_xml--panel" class="tabpanel" aria-labelledby="_tabs_10_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>should change to:</p>
+</div>
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_11_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_11_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_11_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
+protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_xml--panel" class="tabpanel" aria-labelledby="_tabs_11_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
+    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_add_enablewebsocketsecurity"><a class="anchor" href="#_add_enablewebsocketsecurity"></a>Add <code>@EnableWebSocketSecurity</code></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you want to have CSRF disabled and you are using Java configuration, the migration steps are slightly different.
+Instead of using <code>@EnableWebSocketSecurity</code>, you will override the appropriate methods in <code>WebSocketMessageBrokerConfigurer</code> yourself.
+Please see <a href="../../servlet/integrations/websocket.html#websocket-sameorigin-disable" class="xref page">the reference manual</a> for details about this step.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you are using Java Configuration, add <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/web/socket/EnableWebSocketSecurity.html"><code>@EnableWebSocketSecurity</code></a> to your application.</p>
+</div>
+<div class="paragraph">
+<p>For example, you can add it to your websocket security configuration class, like so:</p>
+</div>
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_12_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_12_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
+@Configuration
+public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
+@Configuration
+class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer() {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This will make a prototype instance of <code>MessageMatcherDelegatingAuthorizationManager.Builder</code> available to encourage configuration by composition instead of extension.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_an_authorizationmanagermessage_instance"><a class="anchor" href="#_use_an_authorizationmanagermessage_instance"></a>Use an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> instance</h3>
+<div class="paragraph">
+<p>To start using <code>AuthorizationManager</code>, you can set the <code>use-authorization-manager</code> attribute in XML or you can publish an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> <code>@Bean</code> in Java.</p>
+</div>
+<div class="paragraph">
+<p>For example, the following application configuration:</p>
+</div>
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_13_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_13_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_13_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
+protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_13_xml--panel" class="tabpanel" aria-labelledby="_tabs_13_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
+    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>changes to:</p>
+</div>
+<div id="_tabs_14" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_14_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_14_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_14_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll();
+	return messages.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun messageSecurity(val messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager&lt;Message&lt;?&gt;&gt; {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll()
+    return messages.build()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_xml--panel" class="tabpanel" aria-labelledby="_tabs_14_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="true"&gt;
+    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"><a class="anchor" href="#_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"></a>Stop Implementing <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code></h3>
+<div class="paragraph">
+<p>If you are using Java configuration, you can now simply extend <code>WebSocketMessageBrokerConfigurer</code>.</p>
+</div>
+<div class="paragraph">
+<p>For example, if your class that extends <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code> is called <code>WebSocketSecurityConfig</code>, then:</p>
+</div>
+<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_15_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_15_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
+@Configuration
+public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
+@Configuration
+class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer() {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>changes to:</p>
+</div>
+<div id="_tabs_16" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_16_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_16_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
+@Configuration
+public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
+@Configuration
+class WebSocketSecurityConfig: WebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-authorizationmanager-messages-opt-out"><a class="anchor" href="#servlet-authorizationmanager-messages-opt-out"></a>Opt-out Steps</h3>
+<div class="paragraph">
+<p>In case you had trouble, take a look at these scenarios for optimal opt out behavior:</p>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_declare_an_authorization_rule_for_all_requests"><a class="anchor" href="#_i_cannot_declare_an_authorization_rule_for_all_requests"></a>I cannot declare an authorization rule for all requests</h4>
+<div class="paragraph">
+<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/messaging/access/intercept/MessageMatcherDelegatingAuthorizationManager.Builder.Constraint.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
+</div>
+<div id="_tabs_17" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_17_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_17_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_17_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+    messages
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        // ...
+        .anyMessage().permitAll();
+	return messages.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun messageSecurity(val messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager&lt;Message&lt;?&gt;&gt; {
+    messages
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        // ...
+        .anyMessage().permitAll();
+    return messages.build()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_xml--panel" class="tabpanel" aria-labelledby="_tabs_17_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="true"&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-message pattern="/**" access="permitAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_get_csrf_working_need_some_other_abstractsecuritywebsocketmessagebrokerconfigurer_feature_or_am_having_trouble_with_authorizationmanager"><a class="anchor" href="#_i_cannot_get_csrf_working_need_some_other_abstractsecuritywebsocketmessagebrokerconfigurer_feature_or_am_having_trouble_with_authorizationmanager"></a>I cannot get CSRF working, need some other <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code> feature, or am having trouble with <code>AuthorizationManager</code></h4>
+<div class="paragraph">
+<p>In the case of Java, you may continue using <code>AbstractMessageSecurityWebSocketMessageBrokerConfigurer</code>.
+Even though it is deprecated, it will not be removed in 6.0.</p>
+</div>
+<div class="paragraph">
+<p>In the case of XML, you can opt out of <code>AuthorizationManager</code> by setting <code>use-authorization-manager="false"</code>:</p>
+</div>
+<div class="listingblock secondary">
+<div class="title">Xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div class="listingblock secondary">
+<div class="title">Xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="false"&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_authorizationmanager_for_request_security"><a class="anchor" href="#_use_authorizationmanager_for_request_security"></a>Use <code>AuthorizationManager</code> for Request Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../../servlet/authorization/authorize-requests.html" class="xref page">HTTP Request Security</a> has been <a href="../../servlet/authorization/authorize-http-requests.html" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a>.</p>
+</div>
+<div class="paragraph">
+<p>Should you run into trouble with making these changes, you can follow the <a href="#servlet-authorizationmanager-requests-opt-out">opt out steps</a> at the end of this section.</p>
+</div>
+<div class="sect2">
+<h3 id="_ensure_that_all_requests_have_defined_authorization_rules"><a class="anchor" href="#_ensure_that_all_requests_have_defined_authorization_rules"></a>Ensure that all requests have defined authorization rules</h3>
+<div class="paragraph">
+<p>In Spring Security 5.8 and earlier, requests with no authorization rule are permitted by default.
+It is a stronger security position to deny by default, thus requiring that authorization rules be clearly defined for every endpoint.
+As such, in 6.0, Spring Security by default denies any request that is missing an authorization rule.</p>
+</div>
+<div class="paragraph">
+<p>The simplest way to prepare for this change is to introduce an appropriate <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#anyRequest()"><code>anyRequest</code></a> rule as the last authorization rule.
+The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#denyAll()"><code>denyAll</code></a> since that is the implied 6.0 default.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You may already have an <code>anyRequest</code> rule defined that you are happy with in which case this step can be skipped.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Adding <code>denyAll</code> to the end looks like changing:</p>
+</div>
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_18_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_18_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_18_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/app/**", hasRole("APP"))
+        // ...
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_18_xml--panel" class="tabpanel" aria-labelledby="_tabs_18_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_19_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_19_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_19_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_xml--panel" class="tabpanel" aria-labelledby="_tabs_19_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have already migrated to <code>authorizeHttpRequests</code>, the recommended change is the same.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_switch_to_authorizationmanager"><a class="anchor" href="#_switch_to_authorizationmanager"></a>Switch to <code>AuthorizationManager</code></h3>
+<div class="paragraph">
+<p>To opt in to using <code>AuthorizationManager</code>, you can use <code>authorizeHttpRequests</code> or <a href="../../servlet/appendix/namespace/http.html#nsa-http-use-authorization-manager" class="xref page"><code>use-authorization-manager</code></a> for Java or XML, respectively.</p>
+</div>
+<div class="paragraph">
+<p>Change:</p>
+</div>
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_20_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_20_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_20_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_20_xml--panel" class="tabpanel" aria-labelledby="_tabs_20_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div id="_tabs_21" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_21_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_21_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_21_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(false)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = false
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_21_xml--panel" class="tabpanel" aria-labelledby="_tabs_21_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_migrate_spel_expressions_to_authorizationmanager"><a class="anchor" href="#_migrate_spel_expressions_to_authorizationmanager"></a>Migrate SpEL expressions to <code>AuthorizationManager</code></h3>
+<div class="paragraph">
+<p>For authorization rules, Java tends to be easier to test and maintain than SpEL.
+As such, <code>authorizeHttpRequests</code> does not have a method for declaring a <code>String</code> SpEL.</p>
+</div>
+<div class="paragraph">
+<p>Instead, you can implement your own <code>AuthorizationManager</code> implementation or use <code>WebExpressionAuthorizationManager</code>.</p>
+</div>
+<div class="paragraph">
+<p>For completeness, both options will be demonstrated.</p>
+</div>
+<div class="paragraph">
+<p>First, if you have the following SpEL:</p>
+</div>
+<div id="_tabs_22" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_22_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_22_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_22_java--panel" class="tabpanel" aria-labelledby="_tabs_22_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/complicated/**").access("hasRole('ADMIN') || hasAuthority('SCOPE_read')")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_22_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_22_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/complicated/**", access("hasRole('ADMIN') || hasAuthority('SCOPE_read')"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you can compose your own <code>AuthorizationManager</code> with Spring Security authorization primitives like so:</p>
+</div>
+<div id="_tabs_23" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_23_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_23_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_23_java--panel" class="tabpanel" aria-labelledby="_tabs_23_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(false)
+        .mvcMatchers("/complicated/**").access(anyOf(hasRole("ADMIN"), hasAuthority("SCOPE_read"))
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_23_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_23_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = false
+        authorize("/complicated/**", access(anyOf(hasRole("ADMIN"), hasAuthority("SCOPE_read"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can use <code>WebExpressionAuthorizationManager</code> in the following way:</p>
+</div>
+<div id="_tabs_24" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_24_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_24_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_24_java--panel" class="tabpanel" aria-labelledby="_tabs_24_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/complicated/**").access(
+			new WebExpressionAuthorizationManager("hasRole('ADMIN') || hasAuthority('SCOPE_read')")
+        )
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_24_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_24_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/complicated/**", access(
+            WebExpressionAuthorizationManager("hasRole('ADMIN') || hasAuthority('SCOPE_read')"))
+        )
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="switch-filter-all-dispatcher-types"><a class="anchor" href="#switch-filter-all-dispatcher-types"></a>Switch to filter all dispatcher types</h3>
+<div class="paragraph">
+<p>Spring Security 5.8 and earlier only <a href="../../servlet/authorization/architecture.html" class="xref page">perform authorization</a> once per request.
+This means that dispatcher types like <code>FORWARD</code> and <code>INCLUDE</code> that run after <code>REQUEST</code> are not secured by default.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s recommended that Spring Security secure all dispatch types.
+As such, in 6.0, Spring Security changes this default.</p>
+</div>
+<div class="paragraph">
+<p>So, finally, change your authorization rules to filter all dispatcher types.</p>
+</div>
+<div class="paragraph">
+<p>To do this, you should change:</p>
+</div>
+<div id="_tabs_25" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_25_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_25_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_25_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_25_java--panel" class="tabpanel" aria-labelledby="_tabs_25_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(false)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_25_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_25_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = false
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_25_xml--panel" class="tabpanel" aria-labelledby="_tabs_25_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div id="_tabs_26" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_26_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_26_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_26_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_26_java--panel" class="tabpanel" aria-labelledby="_tabs_26_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(true)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_26_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_26_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = true
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_26_xml--panel" class="tabpanel" aria-labelledby="_tabs_26_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>And, the <code>FilterChainProxy</code> should be registered for all dispatcher types as well.
+If you are using Spring Boot, <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.security.spring.security.filter.dispatcher-types">you have to change the <code>spring.security.filter.dispatcher-types</code> property</a> to include all dispatcher types:</p>
+</div>
+<div id="_tabs_27" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_27_application_properties" class="tab">
+<p>application.properties</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_27_application_properties--panel" class="tabpanel" aria-labelledby="_tabs_27_application_properties">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.security.filter.dispatcher-types=request,async,error,forward,include</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are <a href="../../servlet/configuration/java.html#_abstractsecuritywebapplicationinitializer" class="xref page">using the <code>AbstractSecurityWebApplicationInitializer</code></a> you should override the <code>getSecurityDispatcherTypes</code> method and return all dispatcher types:</p>
+</div>
+<div id="_tabs_28" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_28_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_28_java--panel" class="tabpanel" aria-labelledby="_tabs_28_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="fold-block is-hidden-folded">import org.springframework.security.web.context.*;
+
+</span><span class="fold-block">public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
+
+    @Override
+    protected EnumSet&lt;DispatcherType&gt; getSecurityDispatcherTypes() {
+        return EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR, DispatcherType.FORWARD,
+                DispatcherType.FORWARD, DispatcherType.INCLUDE);
+    }
+
+}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_permit_forward_when_using_spring_mvc"><a class="anchor" href="#_permit_forward_when_using_spring_mvc"></a>Permit <code>FORWARD</code> when using Spring MVC</h4>
+<div class="paragraph">
+<p>If you are using <a href="https://docs.spring.io/spring-framework/docs/5.3.24/reference/html//web.html#mvc-viewresolver">Spring MVC to resolve view names</a>, you will need to permit <code>FORWARD</code> requests.
+This is because when Spring MVC detects a mapping between view name and the actual views, it will perform a forward to the view.
+As we saw on the <a href="#switch-filter-all-dispatcher-types">previous section</a>, Spring Security 6.0 will apply authorization to <code>FORWARD</code> requests by default.</p>
+</div>
+<div class="paragraph">
+<p>Consider the following common configuration:</p>
+</div>
+<div id="_tabs_29" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_29_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_29_java--panel" class="tabpanel" aria-labelledby="_tabs_29_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests((authorize) -&gt; authorize
+            .shouldFilterAllDispatcherTypes(true)
+            .requestMatchers("/").authenticated()
+            .anyRequest().denyAll()
+        )
+        .formLogin((form) -&gt; form
+            .loginPage("/login")
+            .permitAll()
+        ));
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>and one of the following equivalents MVC view mapping configurations:</p>
+</div>
+<div id="_tabs_30" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_30_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_30_java--panel" class="tabpanel" aria-labelledby="_tabs_30_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class MyController {
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="_tabs_31" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_31_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_31_java--panel" class="tabpanel" aria-labelledby="_tabs_31_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class MyWebMvcConfigurer implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>With either configuration, when there is a request to <code>/login</code>, Spring MVC will perform a <strong>forward</strong> to the view <code>login</code>, which, with the default configuration, is under <code>src/main/resources/templates/login.html</code> path.
+The security configuration permits requests to <code>/login</code> but every other request will be denied, including the <code>FORWARD</code> request to the view under <code>/templates/login.html</code>.</p>
+</div>
+<div class="paragraph">
+<p>To fix this, you should configure Spring Security to permit <code>FORWARD</code> requests:</p>
+</div>
+<div id="_tabs_32" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_32_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_32_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_32_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_32_java--panel" class="tabpanel" aria-labelledby="_tabs_32_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(true)
+        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_32_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_32_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = true
+        authorize(DispatcherTypeRequestMatcher(DispatcherType.FORWARD), permitAll)
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_32_xml--panel" class="tabpanel" aria-labelledby="_tabs_32_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
+    &lt;intercept-url request-matcher-ref="forwardRequestMatcher" access="permitAll()" /&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;
+
+&lt;bean name="forwardRequestMatcher" class="org.springframework.security.web.util.matcher.DispatcherTypeRequestMatcher"&gt;
+    &lt;constructor-arg value="FORWARD"/&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_replace_any_custom_filter_security_accessdecisionmanagers"><a class="anchor" href="#_replace_any_custom_filter_security_accessdecisionmanagers"></a>Replace any custom filter-security <code>AccessDecisionManager</code>s</h3>
+<div class="paragraph">
+<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
+The preparation strategy will depend on your reason for each arrangement.
+Read on to find the best match for your situation.</p>
+</div>
+<div class="sect3">
+<h4 id="_i_use_unanimousbased_2"><a class="anchor" href="#_i_use_unanimousbased_2"></a>I use <code>UnanimousBased</code></h4>
+<div class="paragraph">
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a>, you should first adapt or replace any <code>AccessDecisionVoter</code>s and then you can construct an <code>AuthorizationManager</code> like so:</p>
+</div>
+<div id="_tabs_33" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_33_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_33_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_33_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_33_java--panel" class="tabpanel" aria-labelledby="_tabs_33_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+AuthorizationManager&lt;RequestAuthorizationContext&gt; requestAuthorization() {
+    PolicyAuthorizationManager policy = ...;
+    LocalAuthorizationManager local = ...;
+    return AuthorizationMangers.allOf(policy, local);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_33_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_33_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&gt; {
+    val policy: PolicyAuthorizationManager = ...
+    val local: LocalAuthorizationManager = ...
+    return AuthorizationMangers.allOf(policy, local)
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_33_xml--panel" class="tabpanel" aria-labelledby="_tabs_33_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bean id="requestAuthorization" class="org.springframework.security.authorization.AuthorizationManagers"
+        factory-method="allOf"&gt;
+    &lt;constructor-arg&gt;
+        &lt;util:list&gt;
+            &lt;bean class="my.PolicyAuthorizationManager"/&gt;
+            &lt;bean class="my.LocalAuthorizationManager"/&gt;
+        &lt;/util:list&gt;
+    &lt;/constructor-arg&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>then, wire it into the DSL like so:</p>
+</div>
+<div id="_tabs_34" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_34_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_34_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_34_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_34_java--panel" class="tabpanel" aria-labelledby="_tabs_34_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize.anyRequest().access(requestAuthorization))
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_34_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_34_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        authorize(anyRequest, requestAuthorization)
+    }
+    // ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_34_xml--panel" class="tabpanel" aria-labelledby="_tabs_34_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http authorization-manager-ref="requestAuthorization"/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>authorizeHttpRequests</code> is designed so that you can apply a custom <code>AuthorizationManager</code> to any url pattern.
+See <a href="../../servlet/authorization/authorize-http-requests.html#custom-authorization-manager" class="xref page">the reference</a> for more details.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_affirmativebased_2"><a class="anchor" href="#_i_use_affirmativebased_2"></a>I use <code>AffirmativeBased</code></h4>
+<div class="paragraph">
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
+</div>
+<div id="_tabs_35" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_35_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_35_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_35_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_35_java--panel" class="tabpanel" aria-labelledby="_tabs_35_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+AuthorizationManager&lt;RequestAuthorizationContext&gt; requestAuthorization() {
+    PolicyAuthorizationManager policy = ...;
+    LocalAuthorizationManager local = ...;
+    return AuthorizationMangers.anyOf(policy, local);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_35_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_35_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&gt; {
+    val policy: PolicyAuthorizationManager = ...
+    val local: LocalAuthorizationManager = ...
+    return AuthorizationMangers.anyOf(policy, local)
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_35_xml--panel" class="tabpanel" aria-labelledby="_tabs_35_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bean id="requestAuthorization" class="org.springframework.security.authorization.AuthorizationManagers"
+        factory-method="anyOf"&gt;
+    &lt;constructor-arg&gt;
+        &lt;util:list&gt;
+            &lt;bean class="my.PolicyAuthorizationManager"/&gt;
+            &lt;bean class="my.LocalAuthorizationManager"/&gt;
+        &lt;/util:list&gt;
+    &lt;/constructor-arg&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>then, wire it into the DSL like so:</p>
+</div>
+<div id="_tabs_36" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_36_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_36_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_36_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_36_java--panel" class="tabpanel" aria-labelledby="_tabs_36_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize.anyRequest().access(requestAuthorization))
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_36_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_36_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        authorize(anyRequest, requestAuthorization)
+    }
+    // ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_36_xml--panel" class="tabpanel" aria-labelledby="_tabs_36_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http authorization-manager-ref="requestAuthorization"/&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>authorizeHttpRequests</code> is designed so that you can apply a custom <code>AuthorizationManager</code> to any url pattern.
+See <a href="../../servlet/authorization/authorize-http-requests.html#custom-authorization-manager" class="xref page">the reference</a> for more details.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_consensusbased_2"><a class="anchor" href="#_i_use_consensusbased_2"></a>I use <code>ConsensusBased</code></h4>
+<div class="paragraph">
+<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
+In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/authorize-http-requests.html#custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_use_a_custom_accessdecisionvoter_2"><a class="anchor" href="#_i_use_a_custom_accessdecisionvoter_2"></a>I use a custom <code>AccessDecisionVoter</code></h4>
+<div class="paragraph">
+<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
+</div>
+<div class="paragraph">
+<p>Without knowing what your custom voter is doing, it is impossible to recommend a general-purpose solution.
+By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>anyRequest().authenticated()</code> would look like:</p>
+</div>
+<div id="_tabs_37" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_37_java" class="tab">
+<p>Java</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_37_java--panel" class="tabpanel" aria-labelledby="_tabs_37_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class AnyRequestAuthenticatedAuthorizationManagerAdapter implements AuthorizationManager&lt;RequestAuthorizationContext&gt; {
+    private final SecurityMetadataSource metadata;
+    private final AccessDecisionVoter voter;
+
+    public PreAuthorizeAuthorizationManagerAdapter(SecurityExpressionHandler expressionHandler) {
+        Map&lt;RequestMatcher, List&lt;ConfigAttribute&gt;&gt; requestMap = Collections.singletonMap(
+                AnyRequestMatcher.INSTANCE, Collections.singletonList(new SecurityConfig("authenticated")));
+        this.metadata = new DefaultFilterInvocationSecurityMetadataSource(requestMap);
+        WebExpressionVoter voter = new WebExpressionVoter();
+        voter.setExpressionHandler(expressionHandler);
+        this.voter = voter;
+    }
+
+    public AuthorizationDecision check(Supplier&lt;Authentication&gt; authentication, RequestAuthorizationContext context) {
+        List&lt;ConfigAttribute&gt; attributes = this.metadata.getAttributes(context);
+        int decision = this.voter.vote(authentication.get(), invocation, attributes);
+        if (decision == ACCESS_GRANTED) {
+            return new AuthorizationDecision(true);
+        }
+        if (decision == ACCESS_DENIED) {
+            return new AuthorizationDecision(false);
+        }
+        return null; // abstain
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/authorize-http-requests.html#custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-authorizationmanager-requests-opt-out"><a class="anchor" href="#servlet-authorizationmanager-requests-opt-out"></a>Opt-out Steps</h3>
+<div class="paragraph">
+<p>In case you had trouble, take a look at these scenarios for optimal opt out behavior:</p>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_secure_all_dispatcher_types"><a class="anchor" href="#_i_cannot_secure_all_dispatcher_types"></a>I cannot secure all dispatcher types</h4>
+<div class="paragraph">
+<p>If you cannot secure all dispatcher types, first try and declare which dispatcher types should not require authorization like so:</p>
+</div>
+<div id="_tabs_38" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_38_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_38_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_38_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_38_java--panel" class="tabpanel" aria-labelledby="_tabs_38_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .shouldFilterAllDispatcherTypes(true)
+        .dispatcherTypeMatchers(FORWARD, INCLUDE).permitAll()
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+        .anyRequest().denyAll()
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_38_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_38_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        shouldFilterAllDispatcherTypes = true
+        authorize(DispatcherTypeRequestMatcher(FORWARD, INCLUDE), permitAll)
+        authorize("/app/**", hasRole("APP"))
+        // ...
+        authorize(anyRequest, denyAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_38_xml--panel" class="tabpanel" aria-labelledby="_tabs_38_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
+    &lt;intercept-url request-matcher-ref="dispatchers"/&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="denyAll"/&gt;
+&lt;/http&gt;
+
+&lt;bean id="dispatchers" class="org.springframework.security.web.util.matcher.DispatcherTypeRequestMatcher"&gt;
+    &lt;constructor-arg&gt;
+        &lt;util:list value-type="javax.servlet.DispatcherType"&gt;
+            &lt;value&gt;FORWARD&lt;/value&gt;
+            &lt;value&gt;INCLUDE&lt;/value&gt;
+        &lt;/util:list&gt;
+    &lt;/constructor-arg&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, if that doesn&#8217;t work, then you can explicitly opt out of the behavior by setting <code>filter-all-dispatcher-types</code> and <code>filterAllDispatcherTypes</code> to <code>false</code>:</p>
+</div>
+<div id="_tabs_39" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_39_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_39_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_39_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_39_java--panel" class="tabpanel" aria-labelledby="_tabs_39_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpRequests((authorize) -&gt; authorize
+        .filterAllDispatcherTypes(false)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_39_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_39_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        filterAllDispatcherTypes = false
+        authorize("/messages/**", hasRole("APP"))
+        // ...
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_39_xml--panel" class="tabpanel" aria-labelledby="_tabs_39_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>or, if you are still using <code>authorizeRequests</code> or <code>use-authorization-manager="false"</code>, set <code>oncePerRequest</code> to <code>true</code>:</p>
+</div>
+<div id="_tabs_40" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_40_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_40_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_40_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_40_java--panel" class="tabpanel" aria-labelledby="_tabs_40_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeRequests((authorize) -&gt; authorize
+        .filterSecurityInterceptorOncePerRequest(true)
+        .mvcMatchers("/app/**").hasRole("APP")
+        // ...
+    )
+    // ...</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_40_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_40_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeRequests {
+        filterSecurityInterceptorOncePerRequest = true
+        authorize("/messages/**", hasRole("APP"))
+        // ...
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_40_xml--panel" class="tabpanel" aria-labelledby="_tabs_40_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true" use-authorization-manager="false"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_declare_an_authorization_rule_for_all_requests_2"><a class="anchor" href="#_i_cannot_declare_an_authorization_rule_for_all_requests_2"></a>I cannot declare an authorization rule for all requests</h4>
+<div class="paragraph">
+<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.0/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
+</div>
+<div id="_tabs_41" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_41_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_41_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_41_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_41_java--panel" class="tabpanel" aria-labelledby="_tabs_41_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
+    .authorizeHttpReqeusts((authorize) -&gt; authorize
+        .mvcMatchers("/app/*").hasRole("APP")
+        // ...
+        .anyRequest().permitAll()
+    )</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_41_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_41_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
+    authorizeHttpRequests {
+        authorize("/app*", hasRole("APP"))
+        // ...
+        authorize(anyRequest, permitAll)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_41_xml--panel" class="tabpanel" aria-labelledby="_tabs_41_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+    &lt;intercept-url pattern="/**" access="permitAll"/&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_migrate_my_spel_or_my_accessdecisionmanager"><a class="anchor" href="#_i_cannot_migrate_my_spel_or_my_accessdecisionmanager"></a>I cannot migrate my SpEL or my <code>AccessDecisionManager</code></h4>
+<div class="paragraph">
+<p>If you are having trouble with SpEL, <code>AccessDecisionManager</code>, or there is some other feature that you are needing to keep using in <code>&lt;http&gt;</code> or <code>authorizeRequests</code>, try the following.</p>
+</div>
+<div class="paragraph">
+<p>First, if you still need <code>authorizeRequests</code>, you are welcome to keep using it. Even though it is deprecated, it is not removed in 6.0.</p>
+</div>
+<div class="paragraph">
+<p>Second, if you still need your custom <code>access-decision-manager-ref</code> or have some other reason to opt out of <code>AuthorizationManager</code>, do:</p>
+</div>
+<div class="listingblock secondary">
+<div class="title">Xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http use-authorization-manager="false"&gt;
+    &lt;intercept-url pattern="/app/*" access="hasRole('APP')"/&gt;
+    &lt;!-- ... --&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="authentication.html">Authentication</a></span>
+  <span class="next"><a href="oauth2.html">OAuth</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.0"></script>
+  </body>
+</html>

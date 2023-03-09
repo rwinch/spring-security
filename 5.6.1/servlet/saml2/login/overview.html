@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SAML 2.0 Login Overview :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/servlet/saml2/login/overview.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="authentication-requests.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="5.6.1">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="5.6.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/openid.html">OpenID</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/cas.html">CAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">5.6.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">Spring Security</a></li>
+    <li><a href="../../index.html">Servlet Applications</a></li>
+    <li><a href="../index.html">SAML2</a></li>
+    <li><a href="index.html">SAML2 Log In</a></li>
+    <li><a href="overview.html">SAML2 Log In Overview</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">5.6.1</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../6.1/servlet/saml2/login/overview.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../../6.1.0-M1/servlet/saml2/login/overview.html">6.1.0-M1</a>
+    <a class="version" href="../../../../6.0.3/servlet/saml2/login/overview.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../../servlet/saml2/login/overview.html">6.0.2</a>
+    <a class="version" href="../../../../6.0.1/servlet/saml2/login/overview.html">6.0.1</a>
+    <a class="version" href="../../../../6.0.0/servlet/saml2/login/overview.html">6.0.0</a>
+    <a class="version" href="../../../../6.0.0-RC2/servlet/saml2/login/overview.html">6.0.0-RC2</a>
+    <a class="version" href="../../../../6.0.0-RC1/servlet/saml2/login/overview.html">6.0.0-RC1</a>
+    <a class="version" href="../../../../6.0.0-M7/servlet/saml2/login/overview.html">6.0.0-M7</a>
+    <a class="version" href="../../../../6.0.0-M6/servlet/saml2/login/overview.html">6.0.0-M6</a>
+    <a class="version" href="../../../../6.0.0-M5/servlet/saml2/login/overview.html">6.0.0-M5</a>
+    <a class="version" href="../../../../6.0.0-M4/servlet/saml2/login/overview.html">6.0.0-M4</a>
+    <a class="version" href="../../../../6.0.0-M3/servlet/saml2/login/overview.html">6.0.0-M3</a>
+    <a class="version" href="../../../../6.0.0-M2/servlet/saml2/login/overview.html">6.0.0-M2</a>
+    <a class="version" href="../../../../6.0.0-M1/servlet/saml2/login/overview.html">6.0.0-M1</a>
+    <a class="version" href="../../../../5.8.3/servlet/saml2/login/overview.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/servlet/saml2/login/overview.html">5.8.2</a>
+    <a class="version" href="../../../../5.8.1/servlet/saml2/login/overview.html">5.8.1</a>
+    <a class="version" href="../../../../5.8.0/servlet/saml2/login/overview.html">5.8.0</a>
+    <a class="version" href="../../../../5.8.0-RC1/servlet/saml2/login/overview.html">5.8.0-RC1</a>
+    <a class="version" href="../../../../5.7.8/servlet/saml2/login/overview.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../../5.7/servlet/saml2/login/overview.html">5.7.7</a>
+    <a class="version" href="../../../../5.7.6/servlet/saml2/login/overview.html">5.7.6</a>
+    <a class="version" href="../../../../5.7.5/servlet/saml2/login/overview.html">5.7.5</a>
+    <a class="version" href="../../../../5.7.4/servlet/saml2/login/overview.html">5.7.4</a>
+    <a class="version" href="../../../../5.7.3/servlet/saml2/login/overview.html">5.7.3</a>
+    <a class="version" href="../../../../5.7.2/servlet/saml2/login/overview.html">5.7.2</a>
+    <a class="version" href="../../../../5.7.1/servlet/saml2/login/overview.html">5.7.1</a>
+    <a class="version" href="../../../../5.7.0/servlet/saml2/login/overview.html">5.7.0</a>
+    <a class="version" href="../../../../5.7.0-RC1/servlet/saml2/login/overview.html">5.7.0-RC1</a>
+    <a class="version" href="../../../../5.6.11/servlet/saml2/login/overview.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../../5.6/servlet/saml2/login/overview.html">5.6.10</a>
+    <a class="version" href="../../../../5.6.9/servlet/saml2/login/overview.html">5.6.9</a>
+    <a class="version" href="../../../../5.6.8/servlet/saml2/login/overview.html">5.6.8</a>
+    <a class="version" href="../../../../5.6.7/servlet/saml2/login/overview.html">5.6.7</a>
+    <a class="version" href="../../../../5.6.6/servlet/saml2/login/overview.html">5.6.6</a>
+    <a class="version" href="../../../../5.6.5/servlet/saml2/login/overview.html">5.6.5</a>
+    <a class="version" href="../../../../5.6.4/servlet/saml2/login/overview.html">5.6.4</a>
+    <a class="version" href="../../../../5.6.3/servlet/saml2/login/overview.html">5.6.3</a>
+    <a class="version" href="../../../../5.6.2/servlet/saml2/login/overview.html">5.6.2</a>
+    <a class="version is-current" href="overview.html">5.6.1</a>
+    <a class="version" href="../../../../5.6.0/servlet/saml2/login/overview.html">5.6.0</a>
+    <a class="version is-missing" href="../../../../5.6.0-RC1/index.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.6.1/docs/modules/ROOT/pages/servlet/saml2/login/overview.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="SAML 2.0 Login Overview" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p> For the latest stable version, please use <a href="../../../../servlet/saml2/login/overview.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">SAML 2.0 Login Overview</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s take a look at how SAML 2.0 Relying Party Authentication works within Spring Security.
+First, we see that, like <a href="../../oauth2/login/index.html" class="xref page">OAuth 2.0 Login</a>, Spring Security takes the user to a third-party for performing authentication.
+It does this through a series of redirects.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../../_images/servlet/saml2/saml2webssoauthenticationrequestfilter.png" alt="saml2webssoauthenticationrequestfilter">
+</div>
+<div class="title">Figure 1. Redirecting to Asserting Party Authentication</div>
+</div>
+<div class="paragraph">
+<p>The figure above builds off our <a href="../../architecture.html#servlet-securityfilterchain" class="xref page"><code>SecurityFilterChain</code></a> and <a href="../../authentication/architecture.html#servlet-authentication-abstractprocessingfilter" class="xref page"><code>AbstractAuthenticationProcessingFilter</code></a> diagrams:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_1.png" alt="number 1"></span> First, a user makes an unauthenticated request to the resource <code>/private</code> for which it is not authorized.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_2.png" alt="number 2"></span> Spring Security&#8217;s <a href="../../authorization/authorize-requests.html#servlet-authorization-filtersecurityinterceptor" class="xref page"><code>FilterSecurityInterceptor</code></a> indicates that the unauthenticated request is <em>Denied</em> by throwing an <code>AccessDeniedException</code>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_3.png" alt="number 3"></span> Since the user lacks authorization, the <a href="../../architecture.html#servlet-exceptiontranslationfilter" class="xref page"><code>ExceptionTranslationFilter</code></a> initiates <em>Start Authentication</em>.
+The configured <a href="../../authentication/architecture.html#servlet-authentication-authenticationentrypoint" class="xref page"><code>AuthenticationEntryPoint</code></a> is an instance of <a href="https://docs.spring.io/spring-security/site/docs/5.6.1/api/org/springframework/security/web/authentication/LoginUrlAuthenticationEntryPoint.html"><code>LoginUrlAuthenticationEntryPoint</code></a> which redirects to <a href="authentication-requests.html#servlet-saml2login-sp-initiated-factory" class="xref page">the <code>&lt;saml2:AuthnRequest&gt;</code> generating endpoint</a>, <code>Saml2WebSsoAuthenticationRequestFilter</code>.
+Or, if you&#8217;ve <a href="#servlet-saml2login-relyingpartyregistrationrepository">configured more than one asserting party</a>, it will first redirect to a picker page.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_4.png" alt="number 4"></span> Next, the <code>Saml2WebSsoAuthenticationRequestFilter</code> creates, signs, serializes, and encodes a <code>&lt;saml2:AuthnRequest&gt;</code> using its configured <a href="#servlet-saml2login-sp-initiated-factory"><code>Saml2AuthenticationRequestFactory</code></a>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_5.png" alt="number 5"></span> Then, the browser takes this <code>&lt;saml2:AuthnRequest&gt;</code> and presents it to the asserting party.
+The asserting party attempts to authentication the user.
+If successful, it will return a <code>&lt;saml2:Response&gt;</code> back to the browser.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_6.png" alt="number 6"></span> The browser then POSTs the <code>&lt;saml2:Response&gt;</code> to the assertion consumer service endpoint.</p>
+</div>
+<div id="servlet-saml2login-authentication-saml2webssoauthenticationfilter" class="imageblock">
+<div class="content">
+<img src="../../../_images/servlet/saml2/saml2webssoauthenticationfilter.png" alt="saml2webssoauthenticationfilter">
+</div>
+<div class="title">Figure 2. Authenticating a <code>&lt;saml2:Response&gt;</code></div>
+</div>
+<div class="paragraph">
+<p>The figure builds off our <a href="../../architecture.html#servlet-securityfilterchain" class="xref page"><code>SecurityFilterChain</code></a> diagram.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_1.png" alt="number 1"></span> When the browser submits a <code>&lt;saml2:Response&gt;</code> to the application, it <a href="authentication.html#servlet-saml2login-authenticate-responses" class="xref page">delegates to <code>Saml2WebSsoAuthenticationFilter</code></a>.
+This filter calls its configured <code>AuthenticationConverter</code> to create a <code>Saml2AuthenticationToken</code> by extracting the response from the <code>HttpServletRequest</code>.
+This converter additionally resolves the <a href="#servlet-saml2login-relyingpartyregistration"><code>RelyingPartyRegistration</code></a> and supplies it to <code>Saml2AuthenticationToken</code>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_2.png" alt="number 2"></span> Next, the filter passes the token to its configured <a href="../../authentication/architecture.html#servlet-authentication-providermanager" class="xref page"><code>AuthenticationManager</code></a>.
+By default, it will use the <a href="#servlet-saml2login-architecture"><code>OpenSAML authentication provider</code></a>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_3.png" alt="number 3"></span> If authentication fails, then <em>Failure</em></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="../../authentication/architecture.html#servlet-authentication-securitycontextholder" class="xref page"><code>SecurityContextHolder</code></a> is cleared out.</p>
+</li>
+<li>
+<p>The <a href="../../authentication/architecture.html#servlet-authentication-authenticationentrypoint" class="xref page"><code>AuthenticationEntryPoint</code></a> is invoked to restart the authentication process.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_4.png" alt="number 4"></span> If authentication is successful, then <em>Success</em>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="../../authentication/architecture.html#servlet-authentication-authentication" class="xref page"><code>Authentication</code></a> is set on the <a href="../../authentication/architecture.html#servlet-authentication-securitycontextholder" class="xref page"><code>SecurityContextHolder</code></a>.</p>
+</li>
+<li>
+<p>The <code>Saml2WebSsoAuthenticationFilter</code> invokes <code>FilterChain#doFilter(request,response)</code> to continue with the rest of the application logic.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-minimaldependencies"><a class="anchor" href="#servlet-saml2login-minimaldependencies"></a>Minimal Dependencies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SAML 2.0 service provider support resides in <code>spring-security-saml2-service-provider</code>.
+It builds off of the OpenSAML library.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-minimalconfiguration"><a class="anchor" href="#servlet-saml2login-minimalconfiguration"></a>Minimal Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using <a href="https://spring.io/projects/spring-boot">Spring Boot</a>, configuring an application as a service provider consists of two basic steps.
+First, include the needed dependencies and second, indicate the necessary asserting party metadata.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Also, this presupposes that you&#8217;ve already <a href="../metadata.html#servlet-saml2login-metadata" class="xref page">registered the relying party with your asserting party</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_specifying_identity_provider_metadata"><a class="anchor" href="#_specifying_identity_provider_metadata"></a>Specifying Identity Provider Metadata</h3>
+<div class="paragraph">
+<p>In a Spring Boot application, to specify an identity provider&#8217;s metadata, simply do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yml hljs" data-lang="yml">spring:
+  security:
+    saml2:
+      relyingparty:
+        registration:
+          adfs:
+            identityprovider:
+              entity-id: https://idp.example.com/issuer
+              verification.credentials:
+                - certificate-location: "classpath:idp.crt"
+              singlesignon.url: https://idp.example.com/issuer/sso
+              singlesignon.sign-request: false</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><a href="https://idp.example.com/issuer" class="bare">idp.example.com/issuer</a></code> is the value contained in the <code>Issuer</code> attribute of the SAML responses that the identity provider will issue</p>
+</li>
+<li>
+<p><code>classpath:idp.crt</code> is the location on the classpath for the identity provider&#8217;s certificate for verifying SAML responses, and</p>
+</li>
+<li>
+<p><code><a href="https://idp.example.com/issuer/sso" class="bare">idp.example.com/issuer/sso</a></code> is the endpoint where the identity provider is expecting <code>AuthnRequest</code>s.</p>
+</li>
+<li>
+<p><code>adfs</code> is <a href="#servlet-saml2login-relyingpartyregistrationid">an arbitrary identifier you choose</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And that&#8217;s it!</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Identity Provider and Asserting Party are synonymous, as are Service Provider and Relying Party.
+These are frequently abbreviated as AP and RP, respectively.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runtime_expectations"><a class="anchor" href="#_runtime_expectations"></a>Runtime Expectations</h3>
+<div class="paragraph">
+<p>As configured above, the application processes any <code>POST /login/saml2/sso/{registrationId}</code> request containing a <code>SAMLResponse</code> parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-html hljs" data-lang="html">POST /login/saml2/sso/adfs HTTP/1.1
+
+SAMLResponse=PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two ways to see induce your asserting party to generate a <code>SAMLResponse</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First, you can navigate to your asserting party.
+It likely has some kind of link or button for each registered relying party that you can click to send the <code>SAMLResponse</code>.</p>
+</li>
+<li>
+<p>Second, you can navigate to a protected page in your app, for example, <code><a href="http://localhost:8080" class="bare">localhost:8080</a></code>.
+Your app then redirects to the configured asserting party which then sends the <code>SAMLResponse</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>From here, consider jumping to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#servlet-saml2login-architecture">How SAML 2.0 Login Integrates with OpenSAML</a></p>
+</li>
+<li>
+<p><a href="authentication.html#servlet-saml2login-authenticatedprincipal" class="xref page">How to Use the <code>Saml2AuthenticatedPrincipal</code></a></p>
+</li>
+<li>
+<p><a href="#servlet-saml2login-sansboot">How to Override or Replace Spring Boot&#8217;s Auto Configuration</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-architecture"><a class="anchor" href="#servlet-saml2login-architecture"></a>How SAML 2.0 Login Integrates with OpenSAML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Security&#8217;s SAML 2.0 support has a couple of design goals:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First, rely on a library for SAML 2.0 operations and domain objects.
+To achieve this, Spring Security uses OpenSAML.</p>
+</li>
+<li>
+<p>Second, ensure this library is not required when using Spring Security&#8217;s SAML support.
+To achieve this, any interfaces or classes where Spring Security uses OpenSAML in the contract remain encapsulated.
+This makes it possible for you to switch out OpenSAML for some other library or even an unsupported version of OpenSAML.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As a natural outcome of the above two goals, Spring Security&#8217;s SAML API is quite small relative to other modules.
+Instead, classes like <code>OpenSaml4AuthenticationRequestFactory</code> and <code>OpenSaml4AuthenticationProvider</code> expose <code>Converter</code>s that customize various steps in the authentication process.</p>
+</div>
+<div class="paragraph">
+<p>For example, once your application receives a <code>SAMLResponse</code> and delegates to <code>Saml2WebSsoAuthenticationFilter</code>, the filter will delegate to <code>OpenSaml4AuthenticationProvider</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For backward compatibility, Spring Security will use the latest OpenSAML 3 by default.
+Note, though that OpenSAML 3 has reached it&#8217;s end-of-life and updating to OpenSAML 4.x is recommended.
+For that reason, Spring Security supports both OpenSAML 3.x and 4.x.
+If you manage your OpenSAML dependency to 4.x, then Spring Security will select its OpenSAML 4.x implementations.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<div class="title">Authenticating an OpenSAML <code>Response</code></div>
+<p><span class="image"><img src="../../../_images/servlet/saml2/opensamlauthenticationprovider.png" alt="opensamlauthenticationprovider"></span></p>
+</div>
+<div class="paragraph">
+<p>This figure builds off of the <a href="#servlet-saml2login-authentication-saml2webssoauthenticationfilter"><code>Saml2WebSsoAuthenticationFilter</code> diagram</a>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_1.png" alt="number 1"></span> The <code>Saml2WebSsoAuthenticationFilter</code> formulates the <code>Saml2AuthenticationToken</code> and invokes the <a href="../../authentication/architecture.html#servlet-authentication-providermanager" class="xref page"><code>AuthenticationManager</code></a>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_2.png" alt="number 2"></span> The <a href="../../authentication/architecture.html#servlet-authentication-providermanager" class="xref page"><code>AuthenticationManager</code></a> invokes the OpenSAML authentication provider.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_3.png" alt="number 3"></span> The authentication provider deserializes the response into an OpenSAML <code>Response</code> and checks its signature.
+If the signature is invalid, authentication fails.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_4.png" alt="number 4"></span> Then, the provider <a href="authentication.html#servlet-saml2login-opensamlauthenticationprovider-decryption" class="xref page">decrypts any <code>EncryptedAssertion</code> elements</a>.
+If any decryptions fail, authentication fails.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_5.png" alt="number 5"></span> Next, the provider validates the response&#8217;s <code>Issuer</code> and <code>Destination</code> values.
+If they don&#8217;t match what&#8217;s in the <code>RelyingPartyRegistration</code>, authentication fails.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_6.png" alt="number 6"></span> After that, the provider verifies the signature of each <code>Assertion</code>.
+If any signature is invalid, authentication fails.
+Also, if neither the response nor the assertions have signatures, authentication fails.
+Either the response or all the assertions must have signatures.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_7.png" alt="number 7"></span> Then, the provider <a href="authentication.html#servlet-saml2login-opensamlauthenticationprovider-decryption" class="xref page">,</a>decrypts any <code>EncryptedID</code> or <code>EncryptedAttribute</code> elements].
+If any decryptions fail, authentication fails.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_8.png" alt="number 8"></span> Next, the provider validates each assertion&#8217;s <code>ExpiresAt</code> and <code>NotBefore</code> timestamps, the <code>&lt;Subject&gt;</code> and any <code>&lt;AudienceRestriction&gt;</code> conditions.
+If any validations fail, authentication fails.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_9.png" alt="number 9"></span> Following that, the provider takes the first assertion&#8217;s <code>AttributeStatement</code> and maps it to a <code>Map&lt;String, List&lt;Object&gt;&gt;</code>.
+It also grants the <code>ROLE_USER</code> granted authority.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_10.png" alt="number 10"></span> And finally, it takes the <code>NameID</code> from the first assertion, the <code>Map</code> of attributes, and the <code>GrantedAuthority</code> and constructs a <code>Saml2AuthenticatedPrincipal</code>.
+Then, it places that principal and the authorities into a <code>Saml2Authentication</code>.</p>
+</div>
+<div class="paragraph">
+<p>The resulting <code>Authentication#getPrincipal</code> is a Spring Security <code>Saml2AuthenticatedPrincipal</code> object, and <code>Authentication#getName</code> maps to the first assertion&#8217;s <code>NameID</code> element.
+<code>Saml2AuthenticatedPrincipal#getRelyingPartyRegistrationId</code> holds the <a href="#servlet-saml2login-relyingpartyregistrationid">identifier to the associated <code>RelyingPartyRegistration</code></a>.</p>
+</div>
+<div class="sect2">
+<h3 id="servlet-saml2login-opensaml-customization"><a class="anchor" href="#servlet-saml2login-opensaml-customization"></a>Customizing OpenSAML Configuration</h3>
+<div class="paragraph">
+<p>Any class that uses both Spring Security and OpenSAML should statically initialize <code>OpenSamlInitializationService</code> at the beginning of the class, like so:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static {
+	OpenSamlInitializationService.initialize();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
+    init {
+        OpenSamlInitializationService.initialize()
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This replaces OpenSAML&#8217;s <code>InitializationService#initialize</code>.</p>
+</div>
+<div class="paragraph">
+<p>Occasionally, it can be valuable to customize how OpenSAML builds, marshalls, and unmarshalls SAML objects.
+In these circumstances, you may instead want to call <code>OpenSamlInitializationService#requireInitialize(Consumer)</code> that gives you access to OpenSAML&#8217;s <code>XMLObjectProviderFactory</code>.</p>
+</div>
+<div class="paragraph">
+<p>For example, when sending an unsigned AuthNRequest, you may want to force reauthentication.
+In that case, you can register your own <code>AuthnRequestMarshaller</code>, like so:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static {
+    OpenSamlInitializationService.requireInitialize(factory -&gt; {
+        AuthnRequestMarshaller marshaller = new AuthnRequestMarshaller() {
+            @Override
+            public Element marshall(XMLObject object, Element element) throws MarshallingException {
+                configureAuthnRequest((AuthnRequest) object);
+                return super.marshall(object, element);
+            }
+
+            public Element marshall(XMLObject object, Document document) throws MarshallingException {
+                configureAuthnRequest((AuthnRequest) object);
+                return super.marshall(object, document);
+            }
+
+            private void configureAuthnRequest(AuthnRequest authnRequest) {
+                authnRequest.setForceAuthn(true);
+            }
+        }
+
+        factory.getMarshallerFactory().registerMarshaller(AuthnRequest.DEFAULT_ELEMENT_NAME, marshaller);
+    });
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
+    init {
+        OpenSamlInitializationService.requireInitialize {
+            val marshaller = object : AuthnRequestMarshaller() {
+                override fun marshall(xmlObject: XMLObject, element: Element): Element {
+                    configureAuthnRequest(xmlObject as AuthnRequest)
+                    return super.marshall(xmlObject, element)
+                }
+
+                override fun marshall(xmlObject: XMLObject, document: Document): Element {
+                    configureAuthnRequest(xmlObject as AuthnRequest)
+                    return super.marshall(xmlObject, document)
+                }
+
+                private fun configureAuthnRequest(authnRequest: AuthnRequest) {
+                    authnRequest.isForceAuthn = true
+                }
+            }
+            it.marshallerFactory.registerMarshaller(AuthnRequest.DEFAULT_ELEMENT_NAME, marshaller)
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>requireInitialize</code> method may only be called once per application instance.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-sansboot"><a class="anchor" href="#servlet-saml2login-sansboot"></a>Overriding or Replacing Boot Auto Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two <code>@Bean</code>s that Spring Boot generates for a relying party.</p>
+</div>
+<div class="paragraph">
+<p>The first is a <code>WebSecurityConfigurerAdapter</code> that configures the app as a relying party.
+When including <code>spring-security-saml2-service-provider</code>, the <code>WebSecurityConfigurerAdapter</code> looks like:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="title">Default JWT Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">protected void configure(HttpSecurity http) {
+    http
+        .authorizeHttpRequests(authorize -&gt; authorize
+            .anyRequest().authenticated()
+        )
+        .saml2Login(withDefaults());
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">fun configure(http: HttpSecurity) {
+    http {
+        authorizeRequests {
+            authorize(anyRequest, authenticated)
+        }
+        saml2Login { }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>If the application doesn&#8217;t expose a <code>WebSecurityConfigurerAdapter</code> bean, then Spring Boot will expose the above default one.</p>
+</div>
+<div class="paragraph">
+<p>You can replace this by exposing the bean within the application:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="title">Custom SAML 2.0 Login Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class MyCustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .mvcMatchers("/messages/**").hasAuthority("ROLE_USER")
+                .anyRequest().authenticated()
+            )
+            .saml2Login(withDefaults());
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_4_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class MyCustomSecurityConfiguration : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize("/messages/**", hasAuthority("ROLE_USER"))
+                authorize(anyRequest, authenticated)
+            }
+            saml2Login {
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The above requires the role of <code>USER</code> for any URL that starts with <code>/messages/</code>.</p>
+</div>
+<div id="servlet-saml2login-relyingpartyregistrationrepository" class="paragraph">
+<p>The second <code>@Bean</code> Spring Boot creates is a <a href="https://docs.spring.io/spring-security/site/docs/5.6.1/api/org/springframework/security/saml2/provider/service/registration/RelyingPartyRegistrationRepository.html"><code>RelyingPartyRegistrationRepository</code></a>, which represents the asserting party and relying party metadata.
+This includes things like the location of the SSO endpoint the relying party should use when requesting authentication from the asserting party.</p>
+</div>
+<div class="paragraph">
+<p>You can override the default by publishing your own <code>RelyingPartyRegistrationRepository</code> bean.
+For example, you can look up the asserting party&#8217;s configuration by hitting its metadata endpoint like so:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="title">Relying Party Registration Repository</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_5_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Value("${metadata.location}")
+String assertingPartyMetadataLocation;
+
+@Bean
+public RelyingPartyRegistrationRepository relyingPartyRegistrations() {
+    RelyingPartyRegistration registration = RelyingPartyRegistrations
+            .fromMetadataLocation(assertingPartyMetadataLocation)
+            .registrationId("example")
+            .build();
+    return new InMemoryRelyingPartyRegistrationRepository(registration);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Value("\${metadata.location}")
+var assertingPartyMetadataLocation: String? = null
+
+@Bean
+open fun relyingPartyRegistrations(): RelyingPartyRegistrationRepository? {
+    val registration = RelyingPartyRegistrations
+        .fromMetadataLocation(assertingPartyMetadataLocation)
+        .registrationId("example")
+        .build()
+    return InMemoryRelyingPartyRegistrationRepository(registration)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="servlet-saml2login-relyingpartyregistrationid" class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>registrationId</code> is an arbitrary value that you choose for differentiating between registrations.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Or you can provide each detail manually, as you can see below:</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="title">Relying Party Registration Repository Manual Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Value("${verification.key}")
+File verificationKey;
+
+@Bean
+public RelyingPartyRegistrationRepository relyingPartyRegistrations() throws Exception {
+    X509Certificate certificate = X509Support.decodeCertificate(this.verificationKey);
+    Saml2X509Credential credential = Saml2X509Credential.verification(certificate);
+    RelyingPartyRegistration registration = RelyingPartyRegistration
+            .withRegistrationId("example")
+            .assertingPartyDetails(party -&gt; party
+                .entityId("https://idp.example.com/issuer")
+                .singleSignOnServiceLocation("https://idp.example.com/SSO.saml2")
+                .wantAuthnRequestsSigned(false)
+                .verificationX509Credentials(c -&gt; c.add(credential))
+            )
+            .build();
+    return new InMemoryRelyingPartyRegistrationRepository(registration);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Value("\${verification.key}")
+var verificationKey: File? = null
+
+@Bean
+open fun relyingPartyRegistrations(): RelyingPartyRegistrationRepository {
+    val certificate: X509Certificate? = X509Support.decodeCertificate(verificationKey!!)
+    val credential: Saml2X509Credential = Saml2X509Credential.verification(certificate)
+    val registration = RelyingPartyRegistration
+        .withRegistrationId("example")
+        .assertingPartyDetails { party: AssertingPartyDetails.Builder -&gt;
+            party
+                .entityId("https://idp.example.com/issuer")
+                .singleSignOnServiceLocation("https://idp.example.com/SSO.saml2")
+                .wantAuthnRequestsSigned(false)
+                .verificationX509Credentials { c: MutableCollection&lt;Saml2X509Credential?&gt; -&gt;
+                    c.add(
+                        credential
+                    )
+                }
+        }
+        .build()
+    return InMemoryRelyingPartyRegistrationRepository(registration)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that <code>X509Support</code> is an OpenSAML class, used here in the snippet for brevity
+</td>
+</tr>
+</table>
+</div>
+<div id="servlet-saml2login-relyingpartyregistrationrepository-dsl" class="paragraph">
+<p>Alternatively, you can directly wire up the repository using the DSL, which will also override the auto-configured <code>WebSecurityConfigurerAdapter</code>:</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="title">Custom Relying Party Registration DSL</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class MyCustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .mvcMatchers("/messages/**").hasAuthority("ROLE_USER")
+                .anyRequest().authenticated()
+            )
+            .saml2Login(saml2 -&gt; saml2
+                .relyingPartyRegistrationRepository(relyingPartyRegistrations())
+            );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class MyCustomSecurityConfiguration : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize("/messages/**", hasAuthority("ROLE_USER"))
+                authorize(anyRequest, authenticated)
+            }
+            saml2Login {
+                relyingPartyRegistrationRepository = relyingPartyRegistrations()
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+A relying party can be multi-tenant by registering more than one relying party in the <code>RelyingPartyRegistrationRepository</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-relyingpartyregistration"><a class="anchor" href="#servlet-saml2login-relyingpartyregistration"></a>RelyingPartyRegistration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A <a href="https://docs.spring.io/spring-security/site/docs/5.6.1/api/org/springframework/security/saml2/provider/service/registration/RelyingPartyRegistration.html"><code>RelyingPartyRegistration</code></a>
+instance represents a link between an relying party and assering party&#8217;s metadata.</p>
+</div>
+<div class="paragraph">
+<p>In a <code>RelyingPartyRegistration</code>, you can provide relying party metadata like its <code>Issuer</code> value, where it expects SAML Responses to be sent to, and any credentials that it owns for the purposes of signing or decrypting payloads.</p>
+</div>
+<div class="paragraph">
+<p>Also, you can provide asserting party metadata like its <code>Issuer</code> value, where it expects AuthnRequests to be sent to, and any public credentials that it owns for the purposes of the relying party verifying or encrypting payloads.</p>
+</div>
+<div class="paragraph">
+<p>The following <code>RelyingPartyRegistration</code> is the minimum required for most setups:</p>
+</div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_8_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
+        .fromMetadataLocation("https://ap.example.org/metadata")
+        .registrationId("my-id")
+        .build();</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val relyingPartyRegistration = RelyingPartyRegistrations
+    .fromMetadataLocation("https://ap.example.org/metadata")
+    .registrationId("my-id")
+    .build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you can also create a <code>RelyingPartyRegistration</code> from an arbitrary <code>InputStream</code> source.
+One such example is when the metadata is stored in a database:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String xml = fromDatabase();
+try (InputStream source = new ByteArrayInputStream(xml.getBytes())) {
+    RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistrations
+            .fromMetadata(source)
+            .registrationId("my-id")
+            .build();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Though a more sophisticated setup is also possible, like so:</p>
+</div>
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_9_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_9_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">RelyingPartyRegistration relyingPartyRegistration = RelyingPartyRegistration.withRegistrationId("my-id")
+        .entityId("{baseUrl}/{registrationId}")
+        .decryptionX509Credentials(c -&gt; c.add(relyingPartyDecryptingCredential()))
+        .assertionConsumerServiceLocation("/my-login-endpoint/{registrationId}")
+        .assertingPartyDetails(party -&gt; party
+                .entityId("https://ap.example.org")
+                .verificationX509Credentials(c -&gt; c.add(assertingPartyVerifyingCredential()))
+                .singleSignOnServiceLocation("https://ap.example.org/SSO.saml2")
+        )
+        .build();</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_9_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_9_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val relyingPartyRegistration =
+    RelyingPartyRegistration.withRegistrationId("my-id")
+        .entityId("{baseUrl}/{registrationId}")
+        .decryptionX509Credentials { c: MutableCollection&lt;Saml2X509Credential?&gt; -&gt;
+            c.add(relyingPartyDecryptingCredential())
+        }
+        .assertionConsumerServiceLocation("/my-login-endpoint/{registrationId}")
+        .assertingPartyDetails { party -&gt; party
+                .entityId("https://ap.example.org")
+                .verificationX509Credentials { c -&gt; c.add(assertingPartyVerifyingCredential()) }
+                .singleSignOnServiceLocation("https://ap.example.org/SSO.saml2")
+        }
+        .build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The top-level metadata methods are details about the relying party.
+The methods inside <code>assertingPartyDetails</code> are details about the asserting party.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The location where a relying party is expecting SAML Responses is the Assertion Consumer Service Location.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The default for the relying party&#8217;s <code>entityId</code> is <code>{baseUrl}/saml2/service-provider-metadata/{registrationId}</code>.
+This is this value needed when configuring the asserting party to know about your relying party.</p>
+</div>
+<div class="paragraph">
+<p>The default for the <code>assertionConsumerServiceLocation</code> is <code>/login/saml2/sso/{registrationId}</code>.
+It&#8217;s mapped by default to <a href="#servlet-saml2login-authentication-saml2webssoauthenticationfilter"><code>Saml2WebSsoAuthenticationFilter</code></a> in the filter chain.</p>
+</div>
+<div class="sect2">
+<h3 id="servlet-saml2login-rpr-uripatterns"><a class="anchor" href="#servlet-saml2login-rpr-uripatterns"></a>URI Patterns</h3>
+<div class="paragraph">
+<p>You probably noticed in the above examples the <code>{baseUrl}</code> and <code>{registrationId}</code> placeholders.</p>
+</div>
+<div class="paragraph">
+<p>These are useful for generating URIs. As such, the relying party&#8217;s <code>entityId</code> and <code>assertionConsumerServiceLocation</code> support the following placeholders:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>baseUrl</code> - the scheme, host, and port of a deployed application</p>
+</li>
+<li>
+<p><code>registrationId</code> - the registration id for this relying party</p>
+</li>
+<li>
+<p><code>baseScheme</code> - the scheme of a deployed application</p>
+</li>
+<li>
+<p><code>baseHost</code> - the host of a deployed application</p>
+</li>
+<li>
+<p><code>basePort</code> - the port of a deployed application</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, the <code>assertionConsumerServiceLocation</code> defined above was:</p>
+</div>
+<div class="paragraph">
+<p><code>/my-login-endpoint/{registrationId}</code></p>
+</div>
+<div class="paragraph">
+<p>which in a deployed application would translate to</p>
+</div>
+<div class="paragraph">
+<p><code>/my-login-endpoint/adfs</code></p>
+</div>
+<div class="paragraph">
+<p>The <code>entityId</code> above was defined as:</p>
+</div>
+<div class="paragraph">
+<p><code>{baseUrl}/{registrationId}</code></p>
+</div>
+<div class="paragraph">
+<p>which in a deployed application would translate to</p>
+</div>
+<div class="paragraph">
+<p><code>https://rp.example.com/adfs</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-saml2login-rpr-credentials"><a class="anchor" href="#servlet-saml2login-rpr-credentials"></a>Credentials</h3>
+<div class="paragraph">
+<p>You also likely noticed the credential that was used.</p>
+</div>
+<div class="paragraph">
+<p>Oftentimes, a relying party will use the same key to sign payloads as well as decrypt them.
+Or it will use the same key to verify payloads as well as encrypt them.</p>
+</div>
+<div class="paragraph">
+<p>Because of this, Spring Security ships with <code>Saml2X509Credential</code>, a SAML-specific credential that simplifies configuring the same key for different use cases.</p>
+</div>
+<div class="paragraph">
+<p>At a minimum, it&#8217;s necessary to have a certificate from the asserting party so that the asserting party&#8217;s signed responses can be verified.</p>
+</div>
+<div class="paragraph">
+<p>To construct a <code>Saml2X509Credential</code> that you&#8217;ll use to verify assertions from the asserting party, you can load the file and use
+the <code>CertificateFactory</code> like so:</p>
+</div>
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_10_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_10_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Resource resource = new ClassPathResource("ap.crt");
+try (InputStream is = resource.getInputStream()) {
+    X509Certificate certificate = (X509Certificate)
+            CertificateFactory.getInstance("X.509").generateCertificate(is);
+    return Saml2X509Credential.verification(certificate);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val resource = ClassPathResource("ap.crt")
+resource.inputStream.use {
+    return Saml2X509Credential.verification(
+        CertificateFactory.getInstance("X.509").generateCertificate(it) as X509Certificate?
+    )
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s say that the asserting party is going to also encrypt the assertion.
+In that case, the relying party will need a private key to be able to decrypt the encrypted value.</p>
+</div>
+<div class="paragraph">
+<p>In that case, you&#8217;ll need an <code>RSAPrivateKey</code> as well as its corresponding <code>X509Certificate</code>.
+You can load the first using Spring Security&#8217;s <code>RsaKeyConverters</code> utility class and the second as you did before:</p>
+</div>
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_11_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_11_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">X509Certificate certificate = relyingPartyDecryptionCertificate();
+Resource resource = new ClassPathResource("rp.crt");
+try (InputStream is = resource.getInputStream()) {
+    RSAPrivateKey rsa = RsaKeyConverters.pkcs8().convert(is);
+    return Saml2X509Credential.decryption(rsa, certificate);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val certificate: X509Certificate = relyingPartyDecryptionCertificate()
+val resource = ClassPathResource("rp.crt")
+resource.inputStream.use {
+    val rsa: RSAPrivateKey = RsaKeyConverters.pkcs8().convert(it)
+    return Saml2X509Credential.decryption(rsa, certificate)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+When you specify the locations of these files as the appropriate Spring Boot properties, then Spring Boot will perform these conversions for you.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-saml2login-rpr-relyingpartyregistrationresolver"><a class="anchor" href="#servlet-saml2login-rpr-relyingpartyregistrationresolver"></a>Resolving the Relying Party from the Request</h3>
+<div class="paragraph">
+<p>As seen so far, Spring Security resolves the <code>RelyingPartyRegistration</code> by looking for the registration id in the URI path.</p>
+</div>
+<div class="paragraph">
+<p>There are a number of reasons you may want to customize. Among them:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You may know that you will never be a multi-tenant application and so want to have a simpler URL scheme</p>
+</li>
+<li>
+<p>You may identify tenants in a way other than by the URI path</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To customize the way that a <code>RelyingPartyRegistration</code> is resolved, you can configure a custom <code>RelyingPartyRegistrationResolver</code>.
+The default looks up the registration id from the URI&#8217;s last path element and looks it up in your <code>RelyingPartyRegistrationRepository</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can provide a simpler resolver that, for example, always returns the same relying party:</p>
+</div>
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_12_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_12_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SingleRelyingPartyRegistrationResolver implements RelyingPartyRegistrationResolver {
+
+    private final RelyingPartyRegistrationResolver delegate;
+
+    public SingleRelyingPartyRegistrationResolver(RelyingPartyRegistrationRepository registrations) {
+        this.delegate = new DefaultRelyingPartyRegistrationResolver(registrations);
+    }
+
+    @Override
+    public RelyingPartyRegistration resolve(HttpServletRequest request, String registrationId) {
+        return this.delegate.resolve(request, "single");
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">class SingleRelyingPartyRegistrationResolver(delegate: RelyingPartyRegistrationResolver) : RelyingPartyRegistrationResolver {
+    override fun resolve(request: HttpServletRequest?, registrationId: String?): RelyingPartyRegistration? {
+        return this.delegate.resolve(request, "single")
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, you can provide this resolver to the appropriate filters that <a href="authentication-requests.html#servlet-saml2login-sp-initiated-factory" class="xref page">produce <code>&lt;saml2:AuthnRequest&gt;</code>s</a>, <a href="authentication.html#servlet-saml2login-authenticate-responses" class="xref page">authenticate <code>&lt;saml2:Response&gt;</code>s</a>, and <a href="../metadata.html#servlet-saml2login-metadata" class="xref page">produce <code>&lt;saml2:SPSSODescriptor&gt;</code> metadata</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Remember that if you have any placeholders in your <code>RelyingPartyRegistration</code>, your resolver implementation should resolve them.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-saml2login-rpr-duplicated"><a class="anchor" href="#servlet-saml2login-rpr-duplicated"></a>Duplicated Relying Party Configurations</h3>
+<div class="paragraph">
+<p>When an application uses multiple asserting parties, some configuration is duplicated between <code>RelyingPartyRegistration</code> instances:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The relying party&#8217;s <code>entityId</code></p>
+</li>
+<li>
+<p>Its <code>assertionConsumerServiceLocation</code>, and</p>
+</li>
+<li>
+<p>Its credentials, for example its signing or decryption credentials</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>What&#8217;s nice about this setup is credentials may be more easily rotated for some identity providers vs others.</p>
+</div>
+<div class="paragraph">
+<p>The duplication can be alleviated in a few different ways.</p>
+</div>
+<div class="paragraph">
+<p>First, in YAML this can be alleviated with references, like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  security:
+    saml2:
+      relyingparty:
+        okta:
+          signing.credentials: &amp;relying-party-credentials
+            - private-key-location: classpath:rp.key
+              certificate-location: classpath:rp.crt
+          identityprovider:
+            entity-id: ...
+        azure:
+          signing.credentials: *relying-party-credentials
+          identityprovider:
+            entity-id: ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Second, in a database, it&#8217;s not necessary to replicate <code>RelyingPartyRegistration</code> 's model.</p>
+</div>
+<div class="paragraph">
+<p>Third, in Java, you can create a custom configuration method, like so:</p>
+</div>
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_13_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_13_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">private RelyingPartyRegistration.Builder
+        addRelyingPartyDetails(RelyingPartyRegistration.Builder builder) {
+
+    Saml2X509Credential signingCredential = ...
+    builder.signingX509Credentials(c -&gt; c.addAll(signingCredential));
+    // ... other relying party configurations
+}
+
+@Bean
+public RelyingPartyRegistrationRepository relyingPartyRegistrations() {
+    RelyingPartyRegistration okta = addRelyingPartyDetails(
+            RelyingPartyRegistrations
+                .fromMetadataLocation(oktaMetadataUrl)
+                .registrationId("okta")).build();
+
+    RelyingPartyRegistration azure = addRelyingPartyDetails(
+            RelyingPartyRegistrations
+                .fromMetadataLocation(oktaMetadataUrl)
+                .registrationId("azure")).build();
+
+    return new InMemoryRelyingPartyRegistrationRepository(okta, azure);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">private fun addRelyingPartyDetails(builder: RelyingPartyRegistration.Builder): RelyingPartyRegistration.Builder {
+    val signingCredential: Saml2X509Credential = ...
+    builder.signingX509Credentials { c: MutableCollection&lt;Saml2X509Credential?&gt; -&gt;
+        c.add(
+            signingCredential
+        )
+    }
+    // ... other relying party configurations
+}
+
+@Bean
+open fun relyingPartyRegistrations(): RelyingPartyRegistrationRepository? {
+    val okta = addRelyingPartyDetails(
+        RelyingPartyRegistrations
+            .fromMetadataLocation(oktaMetadataUrl)
+            .registrationId("okta")
+    ).build()
+    val azure = addRelyingPartyDetails(
+        RelyingPartyRegistrations
+            .fromMetadataLocation(oktaMetadataUrl)
+            .registrationId("azure")
+    ).build()
+    return InMemoryRelyingPartyRegistrationRepository(okta, azure)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html">SAML2 Log In</a></span>
+  <span class="next"><a href="authentication-requests.html">SAML2 Authentication Requests</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../../_/js/site.js"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="5.6.1"></script>
+  </body>
+</html>

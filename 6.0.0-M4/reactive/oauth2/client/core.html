@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Core Interfaces / Classes :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/reactive/oauth2/client/core.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="authorization-grants.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="6.0.0-M4">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="6.0.0-M4">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../servlet/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../servlet/architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../../servlet/authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/persistence.html">Persistence</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/authorization/events.html">Authorization Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../servlet/appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../servlet/appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../servlet/appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">6.0.0-M4</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">Spring Security</a></li>
+    <li><a href="../../index.html">Reactive Applications</a></li>
+    <li><a href="../index.html">OAuth2</a></li>
+    <li><a href="index.html">OAuth2 Client</a></li>
+    <li><a href="core.html">Core Interfaces and Classes</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">6.0.0-M4</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../6.1/reactive/oauth2/client/core.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../../6.1.0-M1/reactive/oauth2/client/core.html">6.1.0-M1</a>
+    <a class="version" href="../../../../6.0.3/reactive/oauth2/client/core.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../../reactive/oauth2/client/core.html">6.0.2</a>
+    <a class="version" href="../../../../6.0.1/reactive/oauth2/client/core.html">6.0.1</a>
+    <a class="version" href="../../../../6.0.0/reactive/oauth2/client/core.html">6.0.0</a>
+    <a class="version" href="../../../../6.0.0-RC2/reactive/oauth2/client/core.html">6.0.0-RC2</a>
+    <a class="version" href="../../../../6.0.0-RC1/reactive/oauth2/client/core.html">6.0.0-RC1</a>
+    <a class="version" href="../../../../6.0.0-M7/reactive/oauth2/client/core.html">6.0.0-M7</a>
+    <a class="version" href="../../../../6.0.0-M6/reactive/oauth2/client/core.html">6.0.0-M6</a>
+    <a class="version" href="../../../../6.0.0-M5/reactive/oauth2/client/core.html">6.0.0-M5</a>
+    <a class="version is-current" href="core.html">6.0.0-M4</a>
+    <a class="version" href="../../../../6.0.0-M3/reactive/oauth2/client/core.html">6.0.0-M3</a>
+    <a class="version" href="../../../../6.0.0-M2/reactive/oauth2/client/core.html">6.0.0-M2</a>
+    <a class="version" href="../../../../6.0.0-M1/reactive/oauth2/client/core.html">6.0.0-M1</a>
+    <a class="version" href="../../../../5.8.3/reactive/oauth2/client/core.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/reactive/oauth2/client/core.html">5.8.2</a>
+    <a class="version" href="../../../../5.8.1/reactive/oauth2/client/core.html">5.8.1</a>
+    <a class="version" href="../../../../5.8.0/reactive/oauth2/client/core.html">5.8.0</a>
+    <a class="version" href="../../../../5.8.0-RC1/reactive/oauth2/client/core.html">5.8.0-RC1</a>
+    <a class="version" href="../../../../5.7.8/reactive/oauth2/client/core.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../../5.7/reactive/oauth2/client/core.html">5.7.7</a>
+    <a class="version" href="../../../../5.7.6/reactive/oauth2/client/core.html">5.7.6</a>
+    <a class="version" href="../../../../5.7.5/reactive/oauth2/client/core.html">5.7.5</a>
+    <a class="version" href="../../../../5.7.4/reactive/oauth2/client/core.html">5.7.4</a>
+    <a class="version" href="../../../../5.7.3/reactive/oauth2/client/core.html">5.7.3</a>
+    <a class="version" href="../../../../5.7.2/reactive/oauth2/client/core.html">5.7.2</a>
+    <a class="version" href="../../../../5.7.1/reactive/oauth2/client/core.html">5.7.1</a>
+    <a class="version" href="../../../../5.7.0/reactive/oauth2/client/core.html">5.7.0</a>
+    <a class="version" href="../../../../5.7.0-RC1/reactive/oauth2/client/core.html">5.7.0-RC1</a>
+    <a class="version" href="../../../../5.6.11/reactive/oauth2/client/core.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../../5.6/reactive/oauth2/client/core.html">5.6.10</a>
+    <a class="version" href="../../../../5.6.9/reactive/oauth2/client/core.html">5.6.9</a>
+    <a class="version" href="../../../../5.6.8/reactive/oauth2/client/core.html">5.6.8</a>
+    <a class="version" href="../../../../5.6.7/reactive/oauth2/client/core.html">5.6.7</a>
+    <a class="version" href="../../../../5.6.6/reactive/oauth2/client/core.html">5.6.6</a>
+    <a class="version" href="../../../../5.6.5/reactive/oauth2/client/core.html">5.6.5</a>
+    <a class="version" href="../../../../5.6.4/reactive/oauth2/client/core.html">5.6.4</a>
+    <a class="version" href="../../../../5.6.3/reactive/oauth2/client/core.html">5.6.3</a>
+    <a class="version" href="../../../../5.6.2/reactive/oauth2/client/core.html">5.6.2</a>
+    <a class="version" href="../../../../5.6.1/reactive/oauth2/client/core.html">5.6.1</a>
+    <a class="version" href="../../../../5.6.0/reactive/oauth2/client/core.html">5.6.0</a>
+    <a class="version is-missing" href="../../../../5.6.0-RC1/index.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.0.0-M4/docs/modules/ROOT/pages/reactive/oauth2/client/core.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Core Interfaces / Classes" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../../../reactive/oauth2/client/core.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">Core Interfaces / Classes</h1>
+<div class="sect1">
+<h2 id="oauth2Client-client-registration"><a class="anchor" href="#oauth2Client-client-registration"></a>ClientRegistration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ClientRegistration</code> is a representation of a client registered with an OAuth 2.0 or OpenID Connect 1.0 Provider.</p>
+</div>
+<div class="paragraph">
+<p>A client registration holds information, such as client id, client secret, authorization grant type, redirect URI, scope(s), authorization URI, token URI, and other details.</p>
+</div>
+<div class="paragraph">
+<p><code>ClientRegistration</code> and its properties are defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class ClientRegistration {
+	private String registrationId;	<i class="conum" data-value="1"></i><b>(1)</b>
+	private String clientId;	<i class="conum" data-value="2"></i><b>(2)</b>
+	private String clientSecret;	<i class="conum" data-value="3"></i><b>(3)</b>
+	private ClientAuthenticationMethod clientAuthenticationMethod;	<i class="conum" data-value="4"></i><b>(4)</b>
+	private AuthorizationGrantType authorizationGrantType;	<i class="conum" data-value="5"></i><b>(5)</b>
+	private String redirectUri;	<i class="conum" data-value="6"></i><b>(6)</b>
+	private Set&lt;String&gt; scopes;	<i class="conum" data-value="7"></i><b>(7)</b>
+	private ProviderDetails providerDetails;
+	private String clientName;	<i class="conum" data-value="8"></i><b>(8)</b>
+
+	public class ProviderDetails {
+		private String authorizationUri;	<i class="conum" data-value="9"></i><b>(9)</b>
+		private String tokenUri;	<i class="conum" data-value="10"></i><b>(10)</b>
+		private UserInfoEndpoint userInfoEndpoint;
+		private String jwkSetUri;	<i class="conum" data-value="11"></i><b>(11)</b>
+		private String issuerUri;	<i class="conum" data-value="12"></i><b>(12)</b>
+		private Map&lt;String, Object&gt; configurationMetadata;  <i class="conum" data-value="13"></i><b>(13)</b>
+
+		public class UserInfoEndpoint {
+			private String uri;	<i class="conum" data-value="14"></i><b>(14)</b>
+			private AuthenticationMethod authenticationMethod;  <i class="conum" data-value="15"></i><b>(15)</b>
+			private String userNameAttributeName;	<i class="conum" data-value="16"></i><b>(16)</b>
+
+		}
+	}
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>registrationId</code>: The ID that uniquely identifies the <code>ClientRegistration</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td><code>clientId</code>: The client identifier.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td><code>clientSecret</code>: The client secret.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td><code>clientAuthenticationMethod</code>: The method used to authenticate the Client with the Provider.
+The supported values are <strong>client_secret_basic</strong>, <strong>client_secret_post</strong>, <strong>private_key_jwt</strong>, <strong>client_secret_jwt</strong> and <strong>none</strong> <a href="https://tools.ietf.org/html/rfc6749#section-2.1">(public clients)</a>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td><code>authorizationGrantType</code>: The OAuth 2.0 Authorization Framework defines four <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a> types.
+The supported values are <code>authorization_code</code>, <code>client_credentials</code>, <code>password</code>, as well as, extension grant type <code>urn:ietf:params:oauth:grant-type:jwt-bearer</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><code>redirectUri</code>: The client&#8217;s registered redirect URI that the <em>Authorization Server</em> redirects the end-user&#8217;s user-agent
+to after the end-user has authenticated and authorized access to the client.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td><code>scopes</code>: The scope(s) requested by the client during the Authorization Request flow, such as openid, email, or profile.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="8"></i><b>8</b></td>
+<td><code>clientName</code>: A descriptive name used for the client.
+The name may be used in certain scenarios, such as when displaying the name of the client in the auto-generated login page.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="9"></i><b>9</b></td>
+<td><code>authorizationUri</code>: The Authorization Endpoint URI for the Authorization Server.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="10"></i><b>10</b></td>
+<td><code>tokenUri</code>: The Token Endpoint URI for the Authorization Server.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="11"></i><b>11</b></td>
+<td><code>jwkSetUri</code>: The URI used to retrieve the <a href="https://tools.ietf.org/html/rfc7517">JSON Web Key (JWK)</a> Set from the Authorization Server,
+which contains the cryptographic key(s) used to verify the <a href="https://tools.ietf.org/html/rfc7515">JSON Web Signature (JWS)</a> of the ID Token and optionally the UserInfo Response.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="12"></i><b>12</b></td>
+<td><code>issuerUri</code>: Returns the issuer identifier uri for the OpenID Connect 1.0 provider or the OAuth 2.0 Authorization Server.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="13"></i><b>13</b></td>
+<td><code>configurationMetadata</code>: The <a href="https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig">OpenID Provider Configuration Information</a>.
+This information will only be available if the Spring Boot 2.x property <code>spring.security.oauth2.client.provider.[providerId].issuerUri</code> is configured.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="14"></i><b>14</b></td>
+<td><code>(userInfoEndpoint)uri</code>: The UserInfo Endpoint URI used to access the claims/attributes of the authenticated end-user.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="15"></i><b>15</b></td>
+<td><code>(userInfoEndpoint)authenticationMethod</code>: The authentication method used when sending the access token to the UserInfo Endpoint.
+The supported values are <strong>header</strong>, <strong>form</strong> and <strong>query</strong>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="16"></i><b>16</b></td>
+<td><code>userNameAttributeName</code>: The name of the attribute returned in the UserInfo Response that references the Name or Identifier of the end-user.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A <code>ClientRegistration</code> can be initially configured using discovery of an OpenID Connect Provider&#8217;s <a href="https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig">Configuration endpoint</a> or an Authorization Server&#8217;s <a href="https://tools.ietf.org/html/rfc8414#section-3">Metadata endpoint</a>.</p>
+</div>
+<div class="paragraph">
+<p><code>ClientRegistrations</code> provides convenience methods for configuring a <code>ClientRegistration</code> in this way, as can be seen in the following example:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ClientRegistration clientRegistration =
+	ClientRegistrations.fromIssuerLocation("https://idp.example.com/issuer").build();</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val clientRegistration = ClientRegistrations.fromIssuerLocation("https://idp.example.com/issuer").build()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The above code will query in series <code><a href="https://idp.example.com/issuer/.well-known/openid-configuration" class="bare">idp.example.com/issuer/.well-known/openid-configuration</a></code>, and then <code><a href="https://idp.example.com/.well-known/openid-configuration/issuer" class="bare">idp.example.com/.well-known/openid-configuration/issuer</a></code>, and finally <code><a href="https://idp.example.com/.well-known/oauth-authorization-server/issuer" class="bare">idp.example.com/.well-known/oauth-authorization-server/issuer</a></code>, stopping at the first to return a 200 response.</p>
+</div>
+<div class="paragraph">
+<p>As an alternative, you can use <code>ClientRegistrations.fromOidcIssuerLocation()</code> to only query the OpenID Connect Provider&#8217;s Configuration endpoint.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2Client-client-registration-repo"><a class="anchor" href="#oauth2Client-client-registration-repo"></a>ReactiveClientRegistrationRepository</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ReactiveClientRegistrationRepository</code> serves as a repository for OAuth 2.0 / OpenID Connect 1.0 <code>ClientRegistration</code>(s).</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Client registration information is ultimately stored and owned by the associated Authorization Server.
+This repository provides the ability to retrieve a sub-set of the primary client registration information, which is stored with the Authorization Server.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Spring Boot 2.x auto-configuration binds each of the properties under <code>spring.security.oauth2.client.registration.<em>[registrationId]</em></code> to an instance of <code>ClientRegistration</code> and then composes each of the <code>ClientRegistration</code> instance(s) within a <code>ReactiveClientRegistrationRepository</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The default implementation of <code>ReactiveClientRegistrationRepository</code> is <code>InMemoryReactiveClientRegistrationRepository</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The auto-configuration also registers the <code>ReactiveClientRegistrationRepository</code> as a <code>@Bean</code> in the <code>ApplicationContext</code> so that it is available for dependency-injection, if needed by the application.</p>
+</div>
+<div class="paragraph">
+<p>The following listing shows an example:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class OAuth2ClientController {
+
+	@Autowired
+	private ReactiveClientRegistrationRepository clientRegistrationRepository;
+
+	@GetMapping("/")
+	public Mono&lt;String&gt; index() {
+		return this.clientRegistrationRepository.findByRegistrationId("okta")
+				...
+				.thenReturn("index");
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Controller
+class OAuth2ClientController {
+
+    @Autowired
+    private lateinit var clientRegistrationRepository: ReactiveClientRegistrationRepository
+
+    @GetMapping("/")
+    fun index(): Mono&lt;String&gt; {
+        return this.clientRegistrationRepository.findByRegistrationId("okta")
+            ...
+            .thenReturn("index")
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2Client-authorized-client"><a class="anchor" href="#oauth2Client-authorized-client"></a>OAuth2AuthorizedClient</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>OAuth2AuthorizedClient</code> is a representation of an Authorized Client.
+A client is considered to be authorized when the end-user (Resource Owner) has granted authorization to the client to access its protected resources.</p>
+</div>
+<div class="paragraph">
+<p><code>OAuth2AuthorizedClient</code> serves the purpose of associating an <code>OAuth2AccessToken</code> (and optional <code>OAuth2RefreshToken</code>) to a <code>ClientRegistration</code> (client) and resource owner, who is the <code>Principal</code> end-user that granted the authorization.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2Client-authorized-repo-service"><a class="anchor" href="#oauth2Client-authorized-repo-service"></a>ServerOAuth2AuthorizedClientRepository / ReactiveOAuth2AuthorizedClientService</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>ServerOAuth2AuthorizedClientRepository</code> is responsible for persisting <code>OAuth2AuthorizedClient</code>(s) between web requests.
+Whereas, the primary role of <code>ReactiveOAuth2AuthorizedClientService</code> is to manage <code>OAuth2AuthorizedClient</code>(s) at the application-level.</p>
+</div>
+<div class="paragraph">
+<p>From a developer perspective, the <code>ServerOAuth2AuthorizedClientRepository</code> or <code>ReactiveOAuth2AuthorizedClientService</code> provides the capability to lookup an <code>OAuth2AccessToken</code> associated with a client so that it may be used to initiate a protected resource request.</p>
+</div>
+<div class="paragraph">
+<p>The following listing shows an example:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
+public class OAuth2ClientController {
+
+	@Autowired
+	private ReactiveOAuth2AuthorizedClientService authorizedClientService;
+
+	@GetMapping("/")
+	public Mono&lt;String&gt; index(Authentication authentication) {
+		return this.authorizedClientService.loadAuthorizedClient("okta", authentication.getName())
+				.map(OAuth2AuthorizedClient::getAccessToken)
+				...
+				.thenReturn("index");
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Controller
+class OAuth2ClientController {
+
+    @Autowired
+    private lateinit var authorizedClientService: ReactiveOAuth2AuthorizedClientService
+
+    @GetMapping("/")
+    fun index(authentication: Authentication): Mono&lt;String&gt; {
+        return this.authorizedClientService.loadAuthorizedClient&lt;OAuth2AuthorizedClient&gt;("okta", authentication.name)
+            .map { it.accessToken }
+            ...
+            .thenReturn("index")
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring Boot 2.x auto-configuration registers an <code>ServerOAuth2AuthorizedClientRepository</code> and/or <code>ReactiveOAuth2AuthorizedClientService</code> <code>@Bean</code> in the <code>ApplicationContext</code>.
+However, the application may choose to override and register a custom <code>ServerOAuth2AuthorizedClientRepository</code> or <code>ReactiveOAuth2AuthorizedClientService</code> <code>@Bean</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The default implementation of <code>ReactiveOAuth2AuthorizedClientService</code> is <code>InMemoryReactiveOAuth2AuthorizedClientService</code>, which stores <code>OAuth2AuthorizedClient</code>(s) in-memory.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, the R2DBC implementation <code>R2dbcReactiveOAuth2AuthorizedClientService</code> may be configured for persisting <code>OAuth2AuthorizedClient</code>(s) in a database.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>R2dbcReactiveOAuth2AuthorizedClientService</code> depends on the table definition described in <a href="../../../servlet/appendix/database-schema.html#dbschema-oauth2-client" class="xref page"> OAuth 2.0 Client Schema</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2Client-authorized-manager-provider"><a class="anchor" href="#oauth2Client-authorized-manager-provider"></a>ReactiveOAuth2AuthorizedClientManager / ReactiveOAuth2AuthorizedClientProvider</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>ReactiveOAuth2AuthorizedClientManager</code> is responsible for the overall management of <code>OAuth2AuthorizedClient</code>(s).</p>
+</div>
+<div class="paragraph">
+<p>The primary responsibilities include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Authorizing (or re-authorizing) an OAuth 2.0 Client, using a <code>ReactiveOAuth2AuthorizedClientProvider</code>.</p>
+</li>
+<li>
+<p>Delegating the persistence of an <code>OAuth2AuthorizedClient</code>, typically using a <code>ReactiveOAuth2AuthorizedClientService</code> or <code>ServerOAuth2AuthorizedClientRepository</code>.</p>
+</li>
+<li>
+<p>Delegating to a <code>ReactiveOAuth2AuthorizationSuccessHandler</code> when an OAuth 2.0 Client has been successfully authorized (or re-authorized).</p>
+</li>
+<li>
+<p>Delegating to a <code>ReactiveOAuth2AuthorizationFailureHandler</code> when an OAuth 2.0 Client fails to authorize (or re-authorize).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A <code>ReactiveOAuth2AuthorizedClientProvider</code> implements a strategy for authorizing (or re-authorizing) an OAuth 2.0 Client.
+Implementations will typically implement an authorization grant type, eg. <code>authorization_code</code>, <code>client_credentials</code>, etc.</p>
+</div>
+<div class="paragraph">
+<p>The default implementation of <code>ReactiveOAuth2AuthorizedClientManager</code> is <code>DefaultReactiveOAuth2AuthorizedClientManager</code>, which is associated with a <code>ReactiveOAuth2AuthorizedClientProvider</code> that may support multiple authorization grant types using a delegation-based composite.
+The <code>ReactiveOAuth2AuthorizedClientProviderBuilder</code> may be used to configure and build the delegation-based composite.</p>
+</div>
+<div class="paragraph">
+<p>The following code shows an example of how to configure and build a <code>ReactiveOAuth2AuthorizedClientProvider</code> composite that provides support for the <code>authorization_code</code>, <code>refresh_token</code>, <code>client_credentials</code> and <code>password</code> authorization grant types:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
+		ReactiveClientRegistrationRepository clientRegistrationRepository,
+		ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
+
+	ReactiveOAuth2AuthorizedClientProvider authorizedClientProvider =
+			ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+					.authorizationCode()
+					.refreshToken()
+					.clientCredentials()
+					.password()
+					.build();
+
+	DefaultReactiveOAuth2AuthorizedClientManager authorizedClientManager =
+			new DefaultReactiveOAuth2AuthorizedClientManager(
+					clientRegistrationRepository, authorizedClientRepository);
+	authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
+
+	return authorizedClientManager;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_4_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun authorizedClientManager(
+        clientRegistrationRepository: ReactiveClientRegistrationRepository,
+        authorizedClientRepository: ServerOAuth2AuthorizedClientRepository): ReactiveOAuth2AuthorizedClientManager {
+    val authorizedClientProvider: ReactiveOAuth2AuthorizedClientProvider = ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+            .authorizationCode()
+            .refreshToken()
+            .clientCredentials()
+            .password()
+            .build()
+    val authorizedClientManager = DefaultReactiveOAuth2AuthorizedClientManager(
+            clientRegistrationRepository, authorizedClientRepository)
+    authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider)
+    return authorizedClientManager
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When an authorization attempt succeeds, the <code>DefaultReactiveOAuth2AuthorizedClientManager</code> will delegate to the <code>ReactiveOAuth2AuthorizationSuccessHandler</code>, which (by default) will save the <code>OAuth2AuthorizedClient</code> via the <code>ServerOAuth2AuthorizedClientRepository</code>.
+In the case of a re-authorization failure, eg. a refresh token is no longer valid, the previously saved <code>OAuth2AuthorizedClient</code> will be removed from the <code>ServerOAuth2AuthorizedClientRepository</code> via the <code>RemoveAuthorizedClientReactiveOAuth2AuthorizationFailureHandler</code>.
+The default behaviour may be customized via <code>setAuthorizationSuccessHandler(ReactiveOAuth2AuthorizationSuccessHandler)</code> and <code>setAuthorizationFailureHandler(ReactiveOAuth2AuthorizationFailureHandler)</code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>DefaultReactiveOAuth2AuthorizedClientManager</code> is also associated with a <code>contextAttributesMapper</code> of type <code>Function&lt;OAuth2AuthorizeRequest, Mono&lt;Map&lt;String, Object&gt;&gt;&gt;</code>, which is responsible for mapping attribute(s) from the <code>OAuth2AuthorizeRequest</code> to a <code>Map</code> of attributes to be associated to the <code>OAuth2AuthorizationContext</code>.
+This can be useful when you need to supply a <code>ReactiveOAuth2AuthorizedClientProvider</code> with required (supported) attribute(s), eg. the <code>PasswordReactiveOAuth2AuthorizedClientProvider</code> requires the resource owner&#8217;s <code>username</code> and <code>password</code> to be available in <code>OAuth2AuthorizationContext.getAttributes()</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following code shows an example of the <code>contextAttributesMapper</code>:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_5_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
+		ReactiveClientRegistrationRepository clientRegistrationRepository,
+		ServerOAuth2AuthorizedClientRepository authorizedClientRepository) {
+
+	ReactiveOAuth2AuthorizedClientProvider authorizedClientProvider =
+			ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+					.password()
+					.refreshToken()
+					.build();
+
+	DefaultReactiveOAuth2AuthorizedClientManager authorizedClientManager =
+			new DefaultReactiveOAuth2AuthorizedClientManager(
+					clientRegistrationRepository, authorizedClientRepository);
+	authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
+
+	// Assuming the `username` and `password` are supplied as `ServerHttpRequest` parameters,
+	// map the `ServerHttpRequest` parameters to `OAuth2AuthorizationContext.getAttributes()`
+	authorizedClientManager.setContextAttributesMapper(contextAttributesMapper());
+
+	return authorizedClientManager;
+}
+
+private Function&lt;OAuth2AuthorizeRequest, Mono&lt;Map&lt;String, Object&gt;&gt;&gt; contextAttributesMapper() {
+	return authorizeRequest -&gt; {
+		Map&lt;String, Object&gt; contextAttributes = Collections.emptyMap();
+		ServerWebExchange exchange = authorizeRequest.getAttribute(ServerWebExchange.class.getName());
+		ServerHttpRequest request = exchange.getRequest();
+		String username = request.getQueryParams().getFirst(OAuth2ParameterNames.USERNAME);
+		String password = request.getQueryParams().getFirst(OAuth2ParameterNames.PASSWORD);
+		if (StringUtils.hasText(username) &amp;&amp; StringUtils.hasText(password)) {
+			contextAttributes = new HashMap&lt;&gt;();
+
+			// `PasswordReactiveOAuth2AuthorizedClientProvider` requires both attributes
+			contextAttributes.put(OAuth2AuthorizationContext.USERNAME_ATTRIBUTE_NAME, username);
+			contextAttributes.put(OAuth2AuthorizationContext.PASSWORD_ATTRIBUTE_NAME, password);
+		}
+		return Mono.just(contextAttributes);
+	};
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun authorizedClientManager(
+        clientRegistrationRepository: ReactiveClientRegistrationRepository,
+        authorizedClientRepository: ServerOAuth2AuthorizedClientRepository): ReactiveOAuth2AuthorizedClientManager {
+    val authorizedClientProvider: ReactiveOAuth2AuthorizedClientProvider = ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+            .password()
+            .refreshToken()
+            .build()
+    val authorizedClientManager = DefaultReactiveOAuth2AuthorizedClientManager(
+            clientRegistrationRepository, authorizedClientRepository)
+    authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider)
+
+    // Assuming the `username` and `password` are supplied as `ServerHttpRequest` parameters,
+    // map the `ServerHttpRequest` parameters to `OAuth2AuthorizationContext.getAttributes()`
+    authorizedClientManager.setContextAttributesMapper(contextAttributesMapper())
+    return authorizedClientManager
+}
+
+private fun contextAttributesMapper(): Function&lt;OAuth2AuthorizeRequest, Mono&lt;MutableMap&lt;String, Any&gt;&gt;&gt; {
+    return Function { authorizeRequest -&gt;
+        var contextAttributes: MutableMap&lt;String, Any&gt; = mutableMapOf()
+        val exchange: ServerWebExchange = authorizeRequest.getAttribute(ServerWebExchange::class.java.name)!!
+        val request: ServerHttpRequest = exchange.request
+        val username: String? = request.queryParams.getFirst(OAuth2ParameterNames.USERNAME)
+        val password: String? = request.queryParams.getFirst(OAuth2ParameterNames.PASSWORD)
+        if (StringUtils.hasText(username) &amp;&amp; StringUtils.hasText(password)) {
+            contextAttributes = hashMapOf()
+
+            // `PasswordReactiveOAuth2AuthorizedClientProvider` requires both attributes
+            contextAttributes[OAuth2AuthorizationContext.USERNAME_ATTRIBUTE_NAME] = username!!
+            contextAttributes[OAuth2AuthorizationContext.PASSWORD_ATTRIBUTE_NAME] = password!!
+        }
+        Mono.just(contextAttributes)
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>DefaultReactiveOAuth2AuthorizedClientManager</code> is designed to be used <strong><em>within</em></strong> the context of a <code>ServerWebExchange</code>.
+When operating <strong><em>outside</em></strong> of a <code>ServerWebExchange</code> context, use <code>AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>A <em>service application</em> is a common use case for when to use an <code>AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager</code>.
+Service applications often run in the background, without any user interaction, and typically run under a system-level account instead of a user account.
+An OAuth 2.0 Client configured with the <code>client_credentials</code> grant type can be considered a type of service application.</p>
+</div>
+<div class="paragraph">
+<p>The following code shows an example of how to configure an <code>AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager</code> that provides support for the <code>client_credentials</code> grant type:</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
+		ReactiveClientRegistrationRepository clientRegistrationRepository,
+		ReactiveOAuth2AuthorizedClientService authorizedClientService) {
+
+	ReactiveOAuth2AuthorizedClientProvider authorizedClientProvider =
+			ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+					.clientCredentials()
+					.build();
+
+	AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager authorizedClientManager =
+			new AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager(
+					clientRegistrationRepository, authorizedClientService);
+	authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
+
+	return authorizedClientManager;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun authorizedClientManager(
+        clientRegistrationRepository: ReactiveClientRegistrationRepository,
+        authorizedClientService: ReactiveOAuth2AuthorizedClientService): ReactiveOAuth2AuthorizedClientManager {
+    val authorizedClientProvider: ReactiveOAuth2AuthorizedClientProvider = ReactiveOAuth2AuthorizedClientProviderBuilder.builder()
+            .clientCredentials()
+            .build()
+    val authorizedClientManager = AuthorizedClientServiceReactiveOAuth2AuthorizedClientManager(
+            clientRegistrationRepository, authorizedClientService)
+    authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider)
+    return authorizedClientManager
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html">OAuth2 Client</a></span>
+  <span class="next"><a href="authorization-grants.html">OAuth2 Authorization Grants</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../../_/js/site.js"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="6.0.0-M4"></script>
+  </body>
+</html>

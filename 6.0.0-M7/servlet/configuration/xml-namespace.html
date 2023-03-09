@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Security Namespace Configuration :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/servlet/configuration/xml-namespace.html">
+    <link rel="prev" href="kotlin.html">
+    <link rel="next" href="../test/index.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="6.0.0-M7">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="6.0.0-M7">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/persistence.html">Persistence</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/events.html">Authorization Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">6.0.0-M7</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Spring Security</a></li>
+    <li><a href="../index.html">Servlet Applications</a></li>
+    <li>Configuration</li>
+    <li><a href="xml-namespace.html">Namespace Configuration</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">6.0.0-M7</button>
+  <div class="version-menu">
+    <a class="version" href="../../../6.1/servlet/configuration/xml-namespace.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../6.1.0-M1/servlet/configuration/xml-namespace.html">6.1.0-M1</a>
+    <a class="version" href="../../../6.0.3/servlet/configuration/xml-namespace.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../servlet/configuration/xml-namespace.html">6.0.2</a>
+    <a class="version" href="../../../6.0.1/servlet/configuration/xml-namespace.html">6.0.1</a>
+    <a class="version" href="../../../6.0.0/servlet/configuration/xml-namespace.html">6.0.0</a>
+    <a class="version" href="../../../6.0.0-RC2/servlet/configuration/xml-namespace.html">6.0.0-RC2</a>
+    <a class="version" href="../../../6.0.0-RC1/servlet/configuration/xml-namespace.html">6.0.0-RC1</a>
+    <a class="version is-current" href="xml-namespace.html">6.0.0-M7</a>
+    <a class="version" href="../../../6.0.0-M6/servlet/configuration/xml-namespace.html">6.0.0-M6</a>
+    <a class="version" href="../../../6.0.0-M5/servlet/configuration/xml-namespace.html">6.0.0-M5</a>
+    <a class="version" href="../../../6.0.0-M4/servlet/configuration/xml-namespace.html">6.0.0-M4</a>
+    <a class="version" href="../../../6.0.0-M3/servlet/configuration/xml-namespace.html">6.0.0-M3</a>
+    <a class="version" href="../../../6.0.0-M2/servlet/configuration/xml-namespace.html">6.0.0-M2</a>
+    <a class="version" href="../../../6.0.0-M1/servlet/configuration/xml-namespace.html">6.0.0-M1</a>
+    <a class="version" href="../../../5.8.3/servlet/configuration/xml-namespace.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../5.8/servlet/configuration/xml-namespace.html">5.8.2</a>
+    <a class="version" href="../../../5.8.1/servlet/configuration/xml-namespace.html">5.8.1</a>
+    <a class="version" href="../../../5.8.0/servlet/configuration/xml-namespace.html">5.8.0</a>
+    <a class="version" href="../../../5.8.0-RC1/servlet/configuration/xml-namespace.html">5.8.0-RC1</a>
+    <a class="version" href="../../../5.7.8/servlet/configuration/xml-namespace.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../5.7/servlet/configuration/xml-namespace.html">5.7.7</a>
+    <a class="version" href="../../../5.7.6/servlet/configuration/xml-namespace.html">5.7.6</a>
+    <a class="version" href="../../../5.7.5/servlet/configuration/xml-namespace.html">5.7.5</a>
+    <a class="version" href="../../../5.7.4/servlet/configuration/xml-namespace.html">5.7.4</a>
+    <a class="version" href="../../../5.7.3/servlet/configuration/xml-namespace.html">5.7.3</a>
+    <a class="version" href="../../../5.7.2/servlet/configuration/xml-namespace.html">5.7.2</a>
+    <a class="version" href="../../../5.7.1/servlet/configuration/xml-namespace.html">5.7.1</a>
+    <a class="version" href="../../../5.7.0/servlet/configuration/xml-namespace.html">5.7.0</a>
+    <a class="version" href="../../../5.7.0-RC1/servlet/configuration/xml-namespace.html">5.7.0-RC1</a>
+    <a class="version" href="../../../5.6.11/servlet/configuration/xml-namespace.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../5.6/servlet/configuration/xml-namespace.html">5.6.10</a>
+    <a class="version" href="../../../5.6.9/servlet/configuration/xml-namespace.html">5.6.9</a>
+    <a class="version" href="../../../5.6.8/servlet/configuration/xml-namespace.html">5.6.8</a>
+    <a class="version" href="../../../5.6.7/servlet/configuration/xml-namespace.html">5.6.7</a>
+    <a class="version" href="../../../5.6.6/servlet/configuration/xml-namespace.html">5.6.6</a>
+    <a class="version" href="../../../5.6.5/servlet/configuration/xml-namespace.html">5.6.5</a>
+    <a class="version" href="../../../5.6.4/servlet/configuration/xml-namespace.html">5.6.4</a>
+    <a class="version" href="../../../5.6.3/servlet/configuration/xml-namespace.html">5.6.3</a>
+    <a class="version" href="../../../5.6.2/servlet/configuration/xml-namespace.html">5.6.2</a>
+    <a class="version" href="../../../5.6.1/servlet/configuration/xml-namespace.html">5.6.1</a>
+    <a class="version" href="../../../5.6.0/servlet/configuration/xml-namespace.html">5.6.0</a>
+    <a class="version" href="../../../5.6.0-RC1/servlet/configuration/xml-namespace.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.0.0-M7/docs/modules/ROOT/pages/servlet/configuration/xml-namespace.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Security Namespace Configuration" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../../servlet/configuration/xml-namespace.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">Security Namespace Configuration</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Namespace configuration has been available since version 2.0 of the Spring Framework.
+It lets you supplement the traditional Spring beans application context syntax with elements from additional XML schema.
+You can find more information in the Spring <a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/">Reference Documentation</a>.
+You can use a namespace element to more concisely configure an individual bean or, more powerfully, to define an alternative configuration syntax that more closely matches the problem domain and hides the underlying complexity from the user.
+A simple element can conceal the fact that multiple beans and processing steps are being added to the application context.
+For example, adding the following element from the <code>security</code> namespace to an application context starts up an embedded LDAP server for testing use within the application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;security:ldap-server /&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is much simpler than wiring up the equivalent Apache Directory Server beans.
+The most common alternative configuration requirements are supported by attributes on the <code>ldap-server</code> element, and the user is isolated from worrying about which beans they need to create and what the bean property names are.
+You can find out more about the use of the <code>ldap-server</code> element in the chapter on <a href="../authentication/passwords/ldap.html#servlet-authentication-ldap" class="xref page">LDAP Authentication</a>.
+A good XML editor while editing the application context file should provide information on the attributes and elements that are available.
+We recommend that you try the <a href="https://spring.io/tools/sts">Spring Tool Suite</a>, as it has special features for working with standard Spring namespaces.</p>
+</div>
+<div class="paragraph">
+<p>To start using the <code>security</code> namespace in your application context, add the <code>spring-security-config</code> jar to your classpath.
+Then, all you need to do is add the schema declaration to your application context file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:security="http://www.springframework.org/schema/security"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		https://www.springframework.org/schema/security/spring-security.xsd"&gt;
+	...
+&lt;/beans&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In many of the examples you can see (and in the sample applications), we often use <code>security</code> (rather than <code>beans</code>) as the default namespace, which means we can omit the prefix on all the security namespace elements, making the content easier to read.
+You may also want to do this if you have your application context divided up into separate files and have most of your security configuration in one of them.
+Your security application context file would then start like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;beans:beans xmlns="http://www.springframework.org/schema/security"
+xmlns:beans="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+		https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		https://www.springframework.org/schema/security/spring-security.xsd"&gt;
+	...
+&lt;/beans:beans&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We assume this syntax is being used from now on in this chapter.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_design_of_the_namespace"><a class="anchor" href="#_design_of_the_namespace"></a>Design of the Namespace</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The namespace is designed to capture the most common uses of the framework and provide a simplified and concise syntax for enabling them within an application.
+The design is based around the large-scale dependencies within the framework and can be divided up into the following areas:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>Web/HTTP Security</em> is the most complex part.
+It sets up the filters and related service beans used to apply the framework authentication mechanisms, to secure URLs, render login and error pages, and much more.</p>
+</li>
+<li>
+<p><em>Business Object (Method) Security</em> defines options for securing the service layer.</p>
+</li>
+<li>
+<p><em>AuthenticationManager</em> handles authentication requests from other parts of the framework.</p>
+</li>
+<li>
+<p><em>AccessDecisionManager</em> provides access decisions for web and method security.
+A default one is registered, but you can choose to use a custom one, declared with normal Spring bean syntax.</p>
+</li>
+<li>
+<p><em>AuthenticationProvider</em> instances provide mechanisms against which the authentication manager authenticates users.
+The namespace provides supports for several standard options and a means of adding custom beans declared with a traditional syntax.</p>
+</li>
+<li>
+<p><em>UserDetailsService</em> is closely related to authentication providers but is often also required by other beans.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We see how to configure these in the following sections.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-getting-started"><a class="anchor" href="#ns-getting-started"></a>Getting Started with Security Namespace Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section looks at how you can build up a namespace configuration to use some of the main features of the framework.
+We assume that you initially want to get up and running as quickly as possible and add authentication support and access control to an existing web application, with a few test logins.
+Then we look at how to change over to authenticating against a database or other security repository.
+In later sections, we introduce more advanced namespace configuration options.</p>
+</div>
+<div class="sect2">
+<h3 id="ns-web-xml"><a class="anchor" href="#ns-web-xml"></a>web.xml Configuration</h3>
+<div class="paragraph">
+<p>The first thing you need to do is add the following filter declaration to your <code>web.xml</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;filter&gt;
+&lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+&lt;filter-class&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;/filter-class&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+&lt;filter-name&gt;springSecurityFilterChain&lt;/filter-name&gt;
+&lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>DelegatingFilterProxy</code> is a Spring Framework class that delegates to a filter implementation that is defined as a Spring bean in your application context.
+In this case, the bean is named <code>springSecurityFilterChain</code>, which is an internal infrastructure bean created by the namespace to handle web security.
+In this case, the bean is named "springSecurityFilterChain", which is an internal infrastructure bean created by the namespace to handle web security.
+Note that you should not use this bean name yourself.
+Once you have added this bean to your <code>web.xml</code>, you are ready to start editing your application context file.
+Web security services are configured by the <code>&lt;http&gt;</code> element.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ns-minimal"><a class="anchor" href="#ns-minimal"></a>A Minimal &lt;http&gt; Configuration</h3>
+<div class="paragraph">
+<p>To enable web security, you need the following configuration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;intercept-url pattern="/**" access="hasRole('USER')" /&gt;
+&lt;form-login /&gt;
+&lt;logout /&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That listing says that we want:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All URLs within our application to be secured, requiring the role <code>ROLE_USER</code> to access them</p>
+</li>
+<li>
+<p>To log in to the application using a form with username and password</p>
+</li>
+<li>
+<p>A logout URL registered which will allow us to log out of the application</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>&lt;http&gt;</code> element is the parent for all web-related namespace functionality.
+The <code>&lt;intercept-url&gt;</code> element defines a <code>pattern</code>, which is matched against the URLs of incoming requests using Ant path syntax. See the section on <a href="../exploits/firewall.html#servlet-httpfirewall" class="xref page"><code>HttpFirewall</code></a> for more details on how matches are actually performed.
+You can also use regular-expression matching as an alternative (see the namespace appendix for more details).
+The <code>access</code> attribute defines the access requirements for requests that match the given pattern.
+With the default configuration, this is typically a comma-separated list of roles, one of which a user must have to be allowed to make the request.
+The <code>ROLE_</code> prefix is a marker that indicates that a simple comparison with the user&#8217;s authorities should be made.
+In other words, a normal role-based check should be used.
+Access-control in Spring Security is not limited to the use of simple roles (hence the use of the prefix to differentiate between different types of security attributes).
+We see later how the interpretation can vary. The interpretation of the comma-separated values in the <code>access</code> attribute depends on the which implementation of the <a href="#ns-access-manager"><code>AccessDecisionManager</code></a> is used.
+Since Spring Security 3.0, you can also populate the attribute with an  <a href="../authorization/expression-based.html#el-access" class="xref page">EL expression</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can use multiple <code>&lt;intercept-url&gt;</code> elements to define different access requirements for different sets of URLs, but they are evaluated in the order listed and the first match is used.
+So you must put the most specific matches at the top.
+You can also add a <code>method</code> attribute to limit the match to a particular HTTP method (<code>GET</code>, <code>POST</code>, <code>PUT</code>, and so on).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To add users, you can define a set of test data directly in the namespace:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;authentication-manager&gt;
+&lt;authentication-provider&gt;
+	&lt;user-service&gt;
+	&lt;!-- Password is prefixed with {noop} to indicate to DelegatingPasswordEncoder that
+	NoOpPasswordEncoder should be used. This is not safe for production, but makes reading
+	in samples easier. Normally passwords should be hashed using BCrypt --&gt;
+	&lt;user name="jimi" password="{noop}jimispassword" authorities="ROLE_USER, ROLE_ADMIN" /&gt;
+	&lt;user name="bob" password="{noop}bobspassword" authorities="ROLE_USER" /&gt;
+	&lt;/user-service&gt;
+&lt;/authentication-provider&gt;
+&lt;/authentication-manager&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The preceding listing shows an example of a secure way to store the same passwords.
+The password is prefixed with <code>{bcrypt}</code> to instruct <code>DelegatingPasswordEncoder</code>, which supports any configured <code>PasswordEncoder</code> for matching, that the passwords are hashed using BCrypt:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;authentication-manager&gt;
+&lt;authentication-provider&gt;
+	&lt;user-service&gt;
+	&lt;user name="jimi" password="{bcrypt}$2a$10$ddEWZUl8aU0GdZPPpy7wbu82dvEw/pBpbRvDQRqA41y6mK1CoH00m"
+			authorities="ROLE_USER, ROLE_ADMIN" /&gt;
+	&lt;user name="bob" password="{bcrypt}$2a$10$/elFpMBnAYYig6KRR5bvOOYeZr1ie1hSogJryg9qDlhza4oCw1Qka"
+			authorities="ROLE_USER" /&gt;
+	&lt;user name="jimi" password="{noop}jimispassword" authorities="ROLE_USER, ROLE_ADMIN" /&gt;
+	&lt;user name="bob" password="{noop}bobspassword" authorities="ROLE_USER" /&gt;
+	&lt;/user-service&gt;
+&lt;/authentication-provider&gt;
+&lt;/authentication-manager&gt;</code></pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p>The <code>&lt;http&gt;</code> element is responsible for creating a <code>FilterChainProxy</code> and the filter beans that it uses.
+Previously common problems, such as incorrect filter ordering, are no longer an issue, as the filter positions are predefined.</p>
+</div>
+<div class="paragraph">
+<p>The <code>&lt;authentication-provider&gt;</code> element creates a <code>DaoAuthenticationProvider</code> bean, and the <code>&lt;user-service&gt;</code> element creates an <code>InMemoryDaoImpl</code>.
+All <code>authentication-provider</code> elements must be children of the <code>&lt;authentication-manager&gt;</code> element, which creates a <code>ProviderManager</code> and registers the authentication providers with it.
+You can find more detailed information on the beans that are created in the <a href="../appendix/namespace/index.html#appendix-namespace" class="xref page">namespace appendix</a>.
+You should cross-check this appendix if you want to start understanding what the important classes in the framework are and how they are used, particularly if you want to customize things later.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The preceding configuration defines two users, their passwords, and their roles within the application (which are used for access control).
+You can also possible load user information from a standard properties file by setting the <code>properties</code> attribute on the <code>user-service</code> element.
+See the section on <a href="../authentication/passwords/in-memory.html#servlet-authentication-inmemory" class="xref page">in-memory authentication</a> for more details on the file format.
+Using the <code>&lt;authentication-provider&gt;</code> element means that the user information is used by the authentication manager to process authentication requests.
+You can have multiple <code>&lt;authentication-provider&gt;</code> elements to define different authentication sources. Each is consulted in turn.</p>
+</div>
+<div class="paragraph">
+<p>At this point, you should be able to start up your application, and you should be required to log in to proceed.
+Try it out, or try experimenting with the &#8220;tutorial&#8221; sample application that comes with the project.</p>
+</div>
+<div class="sect3">
+<h4 id="ns-form-target"><a class="anchor" href="#ns-form-target"></a>Setting a Default Post-Login Destination</h4>
+<div class="paragraph">
+<p>If a form login is not prompted by an attempt to access a protected resource, the <code>default-target-url</code> option comes into play.
+This is the URL to which the user is taken after successfully logging in. it defaults to <code>/</code>.
+You can also configure things so that the user <em>always</em> ends up at this page (regardless of whether the login was &#8220;on-demand&#8221; or they explicitly chose to log in) by setting the <code>always-use-default-target</code> attribute to <code>true</code>.
+This is useful if your application always requires that the user starts at a &#8220;home&#8221; page, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http pattern="/login.htm*" security="none"/&gt;
+&lt;http use-expressions="false"&gt;
+&lt;intercept-url pattern='/**' access='ROLE_USER' /&gt;
+&lt;form-login login-page='/login.htm' default-target-url='/home.htm'
+		always-use-default-target='true' /&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For even more control over the destination, you can use the <code>authentication-success-handler-ref</code> attribute as an alternative to <code>default-target-url</code>.
+The referenced bean should be an instance of <code>AuthenticationSuccessHandler</code>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-web-advanced"><a class="anchor" href="#ns-web-advanced"></a>Advanced Web Features</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section covers various features that go beyond the basics.</p>
+</div>
+<div class="sect2">
+<h3 id="ns-custom-filters"><a class="anchor" href="#ns-custom-filters"></a>Adding in Your Own Filters</h3>
+<div class="paragraph">
+<p>If you have used Spring Security before, you know that the framework maintains a chain of filters that it uses to apply its services.
+You may want to add your own filters to the stack at particular locations or use a Spring Security filter for which there is not currently a namespace configuration option (CAS, for example).
+Alternatively, you might want to use a customized version of a standard namespace filter, such as the <code>UsernamePasswordAuthenticationFilter</code> (which is created by the <code>&lt;form-login&gt;</code> element) to take advantage of some of the extra configuration options that are available when you use the bean explicitly.
+How can you do this with namespace configuration, since the filter chain is not directly exposed?</p>
+</div>
+<div class="paragraph">
+<p>The order of the filters is always strictly enforced when you use the namespace.
+When the application context is being created, the filter beans are sorted by the namespace handling code, and the standard Spring Security filters each have an alias in the namespace and a well-known position.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In previous versions, the sorting took place after the filter instances had been created, during post-processing of the application context.
+In version 3.0+ the sorting is now done at the bean metadata level, before the classes have been instantiated.
+This has implications for how you add your own filters to the stack as the entire filter list must be known during the parsing of the <code>&lt;http&gt;</code> element, so the syntax has changed slightly in 3.0.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The filters, aliases, and namespace elements and attributes that create the filters are shown in the following table, in the order in which they occur in the filter chain:</p>
+</div>
+<table id="filter-stack" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Standard Filter Aliases and Ordering</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Alias</th>
+<th class="tableblock halign-left valign-top">Filter Class</th>
+<th class="tableblock halign-left valign-top">Namespace Element or Attribute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DISABLE_ENCODE_URL_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DisableEncodeUrlFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http@disable-url-rewriting</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FORCE_EAGER_SESSION_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ForceEagerSessionCreationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http@create-session="ALWAYS"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CHANNEL_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ChannelProcessingFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/intercept-url@requires-channel</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SECURITY_CONTEXT_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SecurityContextPersistenceFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CONCURRENT_SESSION_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ConcurrentSessionFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session-management/concurrency-control</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HEADERS_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>HeaderWriterFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/headers</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CSRF_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CsrfFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/csrf</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LOGOUT_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LogoutFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/logout</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X509_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X509AuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/x509</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PRE_AUTH_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AbstractPreAuthenticatedProcessingFilter</code> Subclasses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CAS_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CasAuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FORM_LOGIN_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UsernamePasswordAuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/form-login</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BASIC_AUTH_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BasicAuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/http-basic</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SERVLET_API_SUPPORT_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SecurityContextHolderAwareRequestFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/@servlet-api-provision</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JAAS_API_SUPPORT_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>JaasApiIntegrationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/@jaas-api-provision</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">REMEMBER_ME_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>RememberMeAuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/remember-me</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ANONYMOUS_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AnonymousAuthenticationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http/anonymous</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SESSION_MANAGEMENT_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SessionManagementFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session-management</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EXCEPTION_TRANSLATION_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ExceptionTranslationFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FILTER_SECURITY_INTERCEPTOR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FilterSecurityInterceptor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>http</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SWITCH_USER_FILTER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SwitchUserFilter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>You can add your own filter to the stack by using the <code>custom-filter</code> element and one of these names to specify the position at which your filter should appear:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;custom-filter position="FORM_LOGIN_FILTER" ref="myFilter" /&gt;
+&lt;/http&gt;
+
+&lt;beans:bean id="myFilter" class="com.mycompany.MySpecialAuthenticationFilter"/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also use the <code>after</code> or <code>before</code> attributes if you want your filter to be inserted before or after another filter in the stack.
+You can use <code>FIRST</code> and <code>LAST</code> with the <code>position</code> attribute to indicate that you want your filter to appear before or after the entire stack, respectively.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Avoiding filter position conflicts</div>
+<div class="paragraph">
+<p>If you insert a custom filter that may occupy the same position as one of the standard filters created by the namespace, you should not include the namespace versions by mistake.
+Remove any elements that create filters whose functionality you want to replace.</p>
+</div>
+<div class="paragraph">
+<p>Note that you cannot replace filters that are created by the use of the <code>&lt;http&gt;</code> element itself: <code>SecurityContextPersistenceFilter</code>, <code>ExceptionTranslationFilter</code>, or <code>FilterSecurityInterceptor</code>.
+By default, an <code>AnonymousAuthenticationFilter</code> is added and unless you have <a href="../authentication/session-management.html#ns-session-fixation" class="xref page">session-fixation protection</a> disabled, a <code>SessionManagementFilter</code> is also added to the filter chain.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you replace a namespace filter that requires an authentication entry point (that is, where the authentication process is triggered by an unauthenticated user&#8217;s attempt to access to a secured resource), you need to add a custom entry-point bean too.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-method-security"><a class="anchor" href="#ns-method-security"></a>Method Security</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Since version 2.0, Spring Security has substantial support for adding security to your service layer methods.
+It provides support for JSR-250 annotation security as well as the framework&#8217;s original <code>@Secured</code> annotation.
+Since version 3.0, you can also make use of <a href="../authorization/expression-based.html#el-access" class="xref page">expression-based annotations</a>.
+You can apply security to a single bean (by using the <code>intercept-methods</code> element to decorate the bean declaration), or you can secure multiple beans across the entire service layer using the AspectJ style pointcuts.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-access-manager"><a class="anchor" href="#ns-access-manager"></a>The Default AccessDecisionManager</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section assumes that you have some knowledge of the underlying architecture for access-control within Spring Security.
+If you do not, you can skip it and come back to it later, as this section is relevant only for people who need to do some customization to use more than simple role-based security.</p>
+</div>
+<div class="paragraph">
+<p>When you use a namespace configuration, a default instance of <code>AccessDecisionManager</code> is automatically registered for you and is used to make access decisions for method invocations and web URL access, based on the access attributes you specify in your <code>intercept-url</code> and <code>protect-pointcut</code> declarations (and in annotations, if you use annotations to secure methods).</p>
+</div>
+<div class="paragraph">
+<p>The default strategy is to use an <code>AffirmativeBased</code> <code>AccessDecisionManager</code> with a <code>RoleVoter</code> and an <code>AuthenticatedVoter</code>.
+You can find out more about these in the chapter on <a href="../authorization/architecture.html#authz-arch" class="xref page">authorization</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="ns-custom-access-mgr"><a class="anchor" href="#ns-custom-access-mgr"></a>Customizing the AccessDecisionManager</h3>
+<div class="paragraph">
+<p>If you need to use a more complicated access control strategy, you can set an alternative for both method and web security.</p>
+</div>
+<div class="paragraph">
+<p>For method security, you do so by setting the <code>access-decision-manager-ref</code> attribute on <code>global-method-security</code> to the <code>id</code> of the appropriate <code>AccessDecisionManager</code> bean in the application context:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;global-method-security access-decision-manager-ref="myAccessDecisionManagerBean"&gt;
+...
+&lt;/global-method-security&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The syntax for web security is the same, but the attribute is on the <code>http</code> element:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http access-decision-manager-ref="myAccessDecisionManagerBean"&gt;
+...
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="kotlin.html">Kotlin Configuration</a></span>
+  <span class="next"><a href="../test/index.html">Testing</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="6.0.0-M7"></script>
+  </body>
+</html>

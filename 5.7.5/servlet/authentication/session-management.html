@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Session Management :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html">
+    <link rel="prev" href="persistence.html">
+    <link rel="next" href="rememberme.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="5.7.5">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="5.7.5">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="persistence.html">Persistence</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="3">
+    <a class="nav-link" href="session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="openid.html">OpenID</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="cas.html">CAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../authorization/events.html">Authorization Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">5.7.5</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">Spring Security</a></li>
+    <li><a href="../index.html">Servlet Applications</a></li>
+    <li><a href="index.html">Authentication</a></li>
+    <li><a href="session-management.html">Session Management</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">5.7.5</button>
+  <div class="version-menu">
+    <a class="version" href="../../../6.1/servlet/authentication/session-management.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../6.1.0-M1/servlet/authentication/session-management.html">6.1.0-M1</a>
+    <a class="version" href="../../../6.0.3/servlet/authentication/session-management.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../servlet/authentication/session-management.html">6.0.2</a>
+    <a class="version" href="../../../6.0.1/servlet/authentication/session-management.html">6.0.1</a>
+    <a class="version" href="../../../6.0.0/servlet/authentication/session-management.html">6.0.0</a>
+    <a class="version" href="../../../6.0.0-RC2/servlet/authentication/session-management.html">6.0.0-RC2</a>
+    <a class="version" href="../../../6.0.0-RC1/servlet/authentication/session-management.html">6.0.0-RC1</a>
+    <a class="version" href="../../../6.0.0-M7/servlet/authentication/session-management.html">6.0.0-M7</a>
+    <a class="version" href="../../../6.0.0-M6/servlet/authentication/session-management.html">6.0.0-M6</a>
+    <a class="version" href="../../../6.0.0-M5/servlet/authentication/session-management.html">6.0.0-M5</a>
+    <a class="version" href="../../../6.0.0-M4/servlet/authentication/session-management.html">6.0.0-M4</a>
+    <a class="version" href="../../../6.0.0-M3/servlet/authentication/session-management.html">6.0.0-M3</a>
+    <a class="version" href="../../../6.0.0-M2/servlet/authentication/session-management.html">6.0.0-M2</a>
+    <a class="version" href="../../../6.0.0-M1/servlet/authentication/session-management.html">6.0.0-M1</a>
+    <a class="version" href="../../../5.8.3/servlet/authentication/session-management.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../5.8/servlet/authentication/session-management.html">5.8.2</a>
+    <a class="version" href="../../../5.8.1/servlet/authentication/session-management.html">5.8.1</a>
+    <a class="version" href="../../../5.8.0/servlet/authentication/session-management.html">5.8.0</a>
+    <a class="version" href="../../../5.8.0-RC1/servlet/authentication/session-management.html">5.8.0-RC1</a>
+    <a class="version" href="../../../5.7.8/servlet/authentication/session-management.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../5.7/servlet/authentication/session-management.html">5.7.7</a>
+    <a class="version" href="../../../5.7.6/servlet/authentication/session-management.html">5.7.6</a>
+    <a class="version is-current" href="session-management.html">5.7.5</a>
+    <a class="version" href="../../../5.7.4/servlet/authentication/session-management.html">5.7.4</a>
+    <a class="version" href="../../../5.7.3/servlet/authentication/session-management.html">5.7.3</a>
+    <a class="version" href="../../../5.7.2/servlet/authentication/session-management.html">5.7.2</a>
+    <a class="version" href="../../../5.7.1/servlet/authentication/session-management.html">5.7.1</a>
+    <a class="version" href="../../../5.7.0/servlet/authentication/session-management.html">5.7.0</a>
+    <a class="version" href="../../../5.7.0-RC1/servlet/authentication/session-management.html">5.7.0-RC1</a>
+    <a class="version" href="../../../5.6.11/servlet/authentication/session-management.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../5.6/servlet/authentication/session-management.html">5.6.10</a>
+    <a class="version" href="../../../5.6.9/servlet/authentication/session-management.html">5.6.9</a>
+    <a class="version" href="../../../5.6.8/servlet/authentication/session-management.html">5.6.8</a>
+    <a class="version" href="../../../5.6.7/servlet/authentication/session-management.html">5.6.7</a>
+    <a class="version" href="../../../5.6.6/servlet/authentication/session-management.html">5.6.6</a>
+    <a class="version" href="../../../5.6.5/servlet/authentication/session-management.html">5.6.5</a>
+    <a class="version" href="../../../5.6.4/servlet/authentication/session-management.html">5.6.4</a>
+    <a class="version" href="../../../5.6.3/servlet/authentication/session-management.html">5.6.3</a>
+    <a class="version" href="../../../5.6.2/servlet/authentication/session-management.html">5.6.2</a>
+    <a class="version" href="../../../5.6.1/servlet/authentication/session-management.html">5.6.1</a>
+    <a class="version" href="../../../5.6.0/servlet/authentication/session-management.html">5.6.0</a>
+    <a class="version" href="../../../5.6.0-RC1/servlet/authentication/session-management.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.7.5/docs/modules/ROOT/pages/servlet/authentication/session-management.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Session Management" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p> For the latest stable version, please use <a href="../../../servlet/authentication/session-management.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">Session Management</h1>
+<div class="sect1">
+<h2 id="session-mgmt-force-session-creation"><a class="anchor" href="#session-mgmt-force-session-creation"></a>Force Eager Session Creation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At times it can be valuable to eagerly create sessions.
+This can be done by using the <a href="https://docs.spring.io/spring-security/site/docs/5.7.5/api/org/springframework/security/web/session/ForceEagerSessionCreationFilter.html"><code>ForceEagerSessionCreationFilter</code></a> which can be configured using:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
+        .sessionManagement(session -&gt; session
+            .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_xml--panel" class="tabpanel" aria-labelledby="_tabs_1_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http create-session="ALWAYS"&gt;
+
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_detecting_timeouts"><a class="anchor" href="#_detecting_timeouts"></a>Detecting Timeouts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can configure Spring Security to detect the submission of an invalid session ID and redirect the user to an appropriate URL.
+This is achieved through the <code>session-management</code> element:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
+        .sessionManagement(session -&gt; session
+            .invalidSessionUrl("/invalidSession.htm")
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_xml--panel" class="tabpanel" aria-labelledby="_tabs_2_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+...
+&lt;session-management invalid-session-url="/invalidSession.htm" /&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that if you use this mechanism to detect session timeouts, it may falsely report an error if the user logs out and then logs back in without closing the browser.
+This is because the session cookie is not cleared when you invalidate the session and will be resubmitted even if the user has logged out.
+You may be able to explicitly delete the JSESSIONID cookie on logging out, for example by using the following syntax in the logout handler:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
+        .logout(logout -&gt; logout
+            .deleteCookies("JSESSIONID")
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_xml--panel" class="tabpanel" aria-labelledby="_tabs_3_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;logout delete-cookies="JSESSIONID" /&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Unfortunately this can&#8217;t be guaranteed to work with every servlet container, so you will need to test it in your environment</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you are running your application behind a proxy, you may also be able to remove the session cookie by configuring the proxy server.
+For example, using Apache HTTPD&#8217;s mod_headers, the following directive would delete the <code>JSESSIONID</code> cookie by expiring it in the response to a logout request (assuming the application is deployed under the path <code>/tutorial</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;LocationMatch "/tutorial/logout"&gt;
+Header always set Set-Cookie "JSESSIONID=;Path=/tutorial;Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+&lt;/LocationMatch&gt;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-concurrent-sessions"><a class="anchor" href="#ns-concurrent-sessions"></a>Concurrent Session Control</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you wish to place constraints on a single user&#8217;s ability to log in to your application, Spring Security supports this out of the box with the following simple additions.
+First, you need to add the following listener to your configuration to keep Spring Security updated about session lifecycle events:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public HttpSessionEventPublisher httpSessionEventPublisher() {
+    return new HttpSessionEventPublisher();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_4_xml--panel" class="tabpanel" aria-labelledby="_tabs_4_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;listener&gt;
+&lt;listener-class&gt;
+	org.springframework.security.web.session.HttpSessionEventPublisher
+&lt;/listener-class&gt;
+&lt;/listener&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Then add the following lines to your application context:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_5_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
+        .sessionManagement(session -&gt; session
+            .maximumSessions(1)
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_5_xml--panel" class="tabpanel" aria-labelledby="_tabs_5_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+...
+&lt;session-management&gt;
+	&lt;concurrency-control max-sessions="1" /&gt;
+&lt;/session-management&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This will prevent a user from logging in multiple times - a second login will cause the first to be invalidated.
+Often you would prefer to prevent a second login, in which case you can use</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
+        .sessionManagement(session -&gt; session
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(true)
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_xml--panel" class="tabpanel" aria-labelledby="_tabs_6_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;session-management&gt;
+	&lt;concurrency-control max-sessions="1" error-if-maximum-exceeded="true" /&gt;
+&lt;/session-management&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The second login will then be rejected.
+By "rejected", we mean that the user will be sent to the <code>authentication-failure-url</code> if form-based login is being used.
+If the second authentication takes place through another non-interactive mechanism, such as "remember-me", an "unauthorized" (401) error will be sent to the client.
+If instead you want to use an error page, you can add the attribute <code>session-authentication-error-url</code> to the <code>session-management</code> element.</p>
+</div>
+<div class="paragraph">
+<p>If you are using a customized authentication filter for form-based login, then you have to configure concurrent session control support explicitly.
+More details can be found in the <a href="#session-mgmt">Session Management chapter</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ns-session-fixation"><a class="anchor" href="#ns-session-fixation"></a>Session Fixation Attack Protection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://en.wikipedia.org/wiki/Session_fixation">Session fixation</a> attacks are a potential risk where it is possible for a malicious attacker to create a session by accessing a site, then persuade another user to log in with the same session (by sending them a link containing the session identifier as a parameter, for example).
+Spring Security protects against this automatically by creating a new session or otherwise changing the session ID when a user logs in.
+If you don&#8217;t require this protection, or it conflicts with some other requirement, you can control the behavior using the <code>session-fixation-protection</code> attribute on <code>&lt;session-management&gt;</code>, which has four options</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>none</code> - Don&#8217;t do anything.
+The original session will be retained.</p>
+</li>
+<li>
+<p><code>newSession</code> - Create a new "clean" session, without copying the existing session data (Spring Security-related attributes will still be copied).</p>
+</li>
+<li>
+<p><code>migrateSession</code> - Create a new session and copy all existing session attributes to the new session.
+This is the default in Servlet 3.0 or older containers.</p>
+</li>
+<li>
+<p><code>changeSessionId</code> - Do not create a new session.
+Instead, use the session fixation protection provided by the Servlet container (<code>HttpServletRequest#changeSessionId()</code>).
+This option is only available in Servlet 3.1 (Java EE 7) and newer containers.
+Specifying it in older containers will result in an exception.
+This is the default in Servlet 3.1 and newer containers.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>When session fixation protection occurs, it results in a <code>SessionFixationProtectionEvent</code> being published in the application context.
+If you use <code>changeSessionId</code>, this protection will <em>also</em> result in any  <code>javax.servlet.http.HttpSessionIdListener</code>s being notified, so use caution if your code listens for both events.
+See the <a href="#session-mgmt">Session Management</a> chapter for additional information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessionmanagementfilter"><a class="anchor" href="#_sessionmanagementfilter"></a>SessionManagementFilter</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>SessionManagementFilter</code> checks the contents of the <code>SecurityContextRepository</code> against the current contents of the <code>SecurityContextHolder</code> to determine whether a user has been authenticated during the current request, typically by a non-interactive authentication mechanism, such as pre-authentication or remember-me  <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>.
+If the repository contains a security context, the filter does nothing.
+If it doesn&#8217;t, and the thread-local <code>SecurityContext</code> contains a (non-anonymous) <code>Authentication</code> object, the filter assumes they have been authenticated by a previous filter in the stack.
+It will then invoke the configured <code>SessionAuthenticationStrategy</code>.</p>
+</div>
+<div class="paragraph">
+<p>If the user is not currently authenticated, the filter will check whether an invalid session ID has been requested (because of a timeout, for example) and will invoke the configured <code>InvalidSessionStrategy</code>, if one is set.
+The most common behaviour is just to redirect to a fixed URL and this is encapsulated in the standard implementation <code>SimpleRedirectInvalidSessionStrategy</code>.
+The latter is also used when configuring an invalid session URL through the namespace, <a href="#session-mgmt">as described earlier</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessionauthenticationstrategy"><a class="anchor" href="#_sessionauthenticationstrategy"></a>SessionAuthenticationStrategy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>SessionAuthenticationStrategy</code> is used by both <code>SessionManagementFilter</code> and <code>AbstractAuthenticationProcessingFilter</code>, so if you are using a customized form-login class, for example, you will need to inject it into both of these.
+In this case, a typical configuration, combining the namespace and custom beans might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;custom-filter position="FORM_LOGIN_FILTER" ref="myAuthFilter" /&gt;
+&lt;session-management session-authentication-strategy-ref="sas"/&gt;
+&lt;/http&gt;
+
+&lt;beans:bean id="myAuthFilter" class=
+"org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"&gt;
+	&lt;beans:property name="sessionAuthenticationStrategy" ref="sas" /&gt;
+	...
+&lt;/beans:bean&gt;
+
+&lt;beans:bean id="sas" class=
+"org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" /&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the use of the default, <code>SessionFixationProtectionStrategy</code> may cause issues if you are storing beans in the session which implement <code>HttpSessionBindingListener</code>, including Spring session-scoped beans.
+See the Javadoc for this class for more information.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="concurrent-sessions"><a class="anchor" href="#concurrent-sessions"></a>Concurrency Control</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Security is able to prevent a principal from concurrently authenticating to the same application more than a specified number of times.
+Many ISVs take advantage of this to enforce licensing, whilst network administrators like this feature because it helps prevent people from sharing login names.
+You can, for example, stop user "Batman" from logging onto the web application from two different sessions.
+You can either expire their previous login or you can report an error when they try to log in again, preventing the second login.
+Note that if you are using the second approach, a user who has not explicitly logged out (but who has just closed their browser, for example) will not be able to log in again until their original session expires.</p>
+</div>
+<div class="paragraph">
+<p>Concurrency control is supported by the namespace, so please check the earlier namespace chapter for the simplest configuration.
+Sometimes you need to customize things though.</p>
+</div>
+<div class="paragraph">
+<p>The implementation uses a specialized version of <code>SessionAuthenticationStrategy</code>, called <code>ConcurrentSessionControlAuthenticationStrategy</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Previously the concurrent authentication check was made by the <code>ProviderManager</code>, which could be injected with a <code>ConcurrentSessionController</code>.
+The latter would check if the user was attempting to exceed the number of permitted sessions.
+However, this approach required that an HTTP session be created in advance, which is undesirable.
+In Spring Security 3, the user is first authenticated by the <code>AuthenticationManager</code> and once they are successfully authenticated, a session is created and the check is made whether they are allowed to have another session open.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To use concurrent session support, you&#8217;ll need to add the following to <code>web.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;listener&gt;
+	&lt;listener-class&gt;
+	org.springframework.security.web.session.HttpSessionEventPublisher
+	&lt;/listener-class&gt;
+&lt;/listener&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition, you will need to add the <code>ConcurrentSessionFilter</code> to your <code>FilterChainProxy</code>.
+The <code>ConcurrentSessionFilter</code> requires two constructor arguments, <code>sessionRegistry</code>, which generally points to an instance of <code>SessionRegistryImpl</code>, and <code>sessionInformationExpiredStrategy</code>, which defines the strategy to apply when a session has expired.
+A configuration using the namespace to create the <code>FilterChainProxy</code> and other default beans might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+&lt;custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" /&gt;
+&lt;custom-filter position="FORM_LOGIN_FILTER" ref="myAuthFilter" /&gt;
+
+&lt;session-management session-authentication-strategy-ref="sas"/&gt;
+&lt;/http&gt;
+
+&lt;beans:bean id="redirectSessionInformationExpiredStrategy"
+class="org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy"&gt;
+&lt;beans:constructor-arg name="invalidSessionUrl" value="/session-expired.htm" /&gt;
+&lt;/beans:bean&gt;
+
+&lt;beans:bean id="concurrencyFilter"
+class="org.springframework.security.web.session.ConcurrentSessionFilter"&gt;
+&lt;beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" /&gt;
+&lt;beans:constructor-arg name="sessionInformationExpiredStrategy" ref="redirectSessionInformationExpiredStrategy" /&gt;
+&lt;/beans:bean&gt;
+
+&lt;beans:bean id="myAuthFilter" class=
+"org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"&gt;
+&lt;beans:property name="sessionAuthenticationStrategy" ref="sas" /&gt;
+&lt;beans:property name="authenticationManager" ref="authenticationManager" /&gt;
+&lt;/beans:bean&gt;
+
+&lt;beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy"&gt;
+&lt;beans:constructor-arg&gt;
+	&lt;beans:list&gt;
+	&lt;beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy"&gt;
+		&lt;beans:constructor-arg ref="sessionRegistry"/&gt;
+		&lt;beans:property name="maximumSessions" value="1" /&gt;
+		&lt;beans:property name="exceptionIfMaximumExceeded" value="true" /&gt;
+	&lt;/beans:bean&gt;
+	&lt;beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy"&gt;
+	&lt;/beans:bean&gt;
+	&lt;beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy"&gt;
+		&lt;beans:constructor-arg ref="sessionRegistry"/&gt;
+	&lt;/beans:bean&gt;
+	&lt;/beans:list&gt;
+&lt;/beans:constructor-arg&gt;
+&lt;/beans:bean&gt;
+
+&lt;beans:bean id="sessionRegistry"
+	class="org.springframework.security.core.session.SessionRegistryImpl" /&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Adding the listener to <code>web.xml</code> causes an <code>ApplicationEvent</code> to be published to the Spring <code>ApplicationContext</code> every time a <code>HttpSession</code> commences or ends.
+This is critical, as it allows the <code>SessionRegistryImpl</code> to be notified when a session ends.
+Without it, a user will never be able to log back in again once they have exceeded their session allowance, even if they log out of another session or it times out.</p>
+</div>
+<div class="sect2">
+<h3 id="list-authenticated-principals"><a class="anchor" href="#list-authenticated-principals"></a>Querying the SessionRegistry for currently authenticated users and their sessions</h3>
+<div class="paragraph">
+<p>Setting up concurrency-control, either through the namespace or using plain beans has the useful side effect of providing you with a reference to the <code>SessionRegistry</code> which you can use directly within your application, so even if you don&#8217;t want to restrict the number of sessions a user may have, it may be worth setting up the infrastructure anyway.
+You can set the <code>maximumSession</code> property to -1 to allow unlimited sessions.
+If you&#8217;re using the namespace, you can set an alias for the internally-created <code>SessionRegistry</code> using the <code>session-registry-alias</code> attribute, providing a reference which you can inject into your own beans.</p>
+</div>
+<div class="paragraph">
+<p>The <code>getAllPrincipals()</code> method supplies you with a list of the currently authenticated users.
+You can list a user&#8217;s sessions by calling the <code>getAllSessions(Object principal, boolean includeExpiredSessions)</code> method, which returns a list of <code>SessionInformation</code> objects.
+You can also expire a user&#8217;s session by calling <code>expireNow()</code> on a <code>SessionInformation</code> instance.
+When the user returns to the application, they will be prevented from proceeding.
+You may find these methods useful in an administration application, for example.
+Have a look at the Javadoc for more information.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. Authentication by mechanisms which perform a redirect after authenticating (such as form-login) will not be detected by <code>SessionManagementFilter</code>, as the filter will not be invoked during the authenticating request. Session-management functionality has to be handled separately in these cases.
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="persistence.html">Persistence</a></span>
+  <span class="next"><a href="rememberme.html">Remember Me</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../_/js/site.js"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.7.5"></script>
+  </body>
+</html>

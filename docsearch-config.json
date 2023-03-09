@@ -1,0 +1,92 @@
+{
+  "index_name": "spring-security-docs",
+  "start_urls": [
+    {
+      "url": "https://docs.spring.io/spring-security/reference/6.1/",
+      "extra_attributes": {
+        "component": "security",
+        "version": "6.1.0",
+        "version_rank": 2
+      }
+    },
+    {
+      "url": "https://docs.spring.io/spring-security/reference/(?:$|index.html$|[a-z].*)",
+      "extra_attributes": {
+        "component": "security",
+        "version": "6.0.2",
+        "version_rank": 1
+      }
+    },
+    {
+      "url": "https://docs.spring.io/spring-security/reference/5.8/",
+      "extra_attributes": {
+        "component": "security",
+        "version": "5.8.2",
+        "version_rank": 2
+      }
+    },
+    {
+      "url": "https://docs.spring.io/spring-security/reference/5.7/",
+      "extra_attributes": {
+        "component": "security",
+        "version": "5.7.7",
+        "version_rank": 2
+      }
+    },
+    {
+      "url": "https://docs.spring.io/spring-security/reference/5.6/",
+      "extra_attributes": {
+        "component": "security",
+        "version": "5.6.10",
+        "version_rank": 2
+      }
+    }
+  ],
+  "sitemap_urls": [
+    "https://docs.spring.io/spring-security/reference/sitemap.xml"
+  ],
+  "scrape_start_urls": true,
+  "stop_urls": [
+  ],
+  "selectors": {
+    "default": {
+      "lvl0": {
+        "global": true,
+        "selector": ".nav-panel-explore .context .title, .nav-panel-explore .context .version"
+      },
+      "lvl1": ".doc > h1.page",
+      "lvl2": ".doc .sect1 > h2:first-child",
+      "lvl3": ".doc .sect2 > h3:first-child",
+      "lvl4": ".doc .sect3 > h4:first-child",
+      "text": ".doc p, .doc dt, .doc td.content, .doc th.tableblock"
+    }
+  },
+  "selectors_exclude": [
+    "#section-summary"
+  ],
+  "min_indexed_level": 1,
+  "custom_settings": {
+    "advancedSyntax": true,
+    "attributesForFaceting": [
+      "component",
+      "version"
+    ],
+    "attributesToRetrieve": [
+      "anchor",
+      "content",
+      "hierarchy",
+      "url",
+      "component",
+      "version"
+    ],
+    "attributesToSnippet": [
+      "content:25"
+    ],
+    "customRanking": [
+      "desc(weight.page_rank)",
+      "asc(version_rank)",
+      "desc(weight.level)",
+      "asc(weight.position)"
+    ]
+  }
+}

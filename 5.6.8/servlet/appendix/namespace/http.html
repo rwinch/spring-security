@@ -1,0 +1,3901 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Web Application Security :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/servlet/appendix/namespace/http.html">
+    <link rel="prev" href="authentication-manager.html">
+    <link rel="next" href="method-security.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="5.6.8">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="5.6.8">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/openid.html">OpenID</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/cas.html">CAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">5.6.8</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">Spring Security</a></li>
+    <li><a href="../../index.html">Servlet Applications</a></li>
+    <li><a href="../index.html">Appendix</a></li>
+    <li><a href="index.html">XML Namespace</a></li>
+    <li><a href="http.html">Web Security</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">5.6.8</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../6.1/servlet/appendix/namespace/http.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../../6.1.0-M1/servlet/appendix/namespace/http.html">6.1.0-M1</a>
+    <a class="version" href="../../../../6.0.3/servlet/appendix/namespace/http.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../../servlet/appendix/namespace/http.html">6.0.2</a>
+    <a class="version" href="../../../../6.0.1/servlet/appendix/namespace/http.html">6.0.1</a>
+    <a class="version" href="../../../../6.0.0/servlet/appendix/namespace/http.html">6.0.0</a>
+    <a class="version" href="../../../../6.0.0-RC2/servlet/appendix/namespace/http.html">6.0.0-RC2</a>
+    <a class="version" href="../../../../6.0.0-RC1/servlet/appendix/namespace/http.html">6.0.0-RC1</a>
+    <a class="version" href="../../../../6.0.0-M7/servlet/appendix/namespace/http.html">6.0.0-M7</a>
+    <a class="version" href="../../../../6.0.0-M6/servlet/appendix/namespace/http.html">6.0.0-M6</a>
+    <a class="version" href="../../../../6.0.0-M5/servlet/appendix/namespace/http.html">6.0.0-M5</a>
+    <a class="version" href="../../../../6.0.0-M4/servlet/appendix/namespace/http.html">6.0.0-M4</a>
+    <a class="version" href="../../../../6.0.0-M3/servlet/appendix/namespace/http.html">6.0.0-M3</a>
+    <a class="version" href="../../../../6.0.0-M2/servlet/appendix/namespace/http.html">6.0.0-M2</a>
+    <a class="version" href="../../../../6.0.0-M1/servlet/appendix/namespace/http.html">6.0.0-M1</a>
+    <a class="version" href="../../../../5.8.3/servlet/appendix/namespace/http.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/servlet/appendix/namespace/http.html">5.8.2</a>
+    <a class="version" href="../../../../5.8.1/servlet/appendix/namespace/http.html">5.8.1</a>
+    <a class="version" href="../../../../5.8.0/servlet/appendix/namespace/http.html">5.8.0</a>
+    <a class="version" href="../../../../5.8.0-RC1/servlet/appendix/namespace/http.html">5.8.0-RC1</a>
+    <a class="version" href="../../../../5.7.8/servlet/appendix/namespace/http.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../../5.7/servlet/appendix/namespace/http.html">5.7.7</a>
+    <a class="version" href="../../../../5.7.6/servlet/appendix/namespace/http.html">5.7.6</a>
+    <a class="version" href="../../../../5.7.5/servlet/appendix/namespace/http.html">5.7.5</a>
+    <a class="version" href="../../../../5.7.4/servlet/appendix/namespace/http.html">5.7.4</a>
+    <a class="version" href="../../../../5.7.3/servlet/appendix/namespace/http.html">5.7.3</a>
+    <a class="version" href="../../../../5.7.2/servlet/appendix/namespace/http.html">5.7.2</a>
+    <a class="version" href="../../../../5.7.1/servlet/appendix/namespace/http.html">5.7.1</a>
+    <a class="version" href="../../../../5.7.0/servlet/appendix/namespace/http.html">5.7.0</a>
+    <a class="version" href="../../../../5.7.0-RC1/servlet/appendix/namespace/http.html">5.7.0-RC1</a>
+    <a class="version" href="../../../../5.6.11/servlet/appendix/namespace/http.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../../5.6/servlet/appendix/namespace/http.html">5.6.10</a>
+    <a class="version" href="../../../../5.6.9/servlet/appendix/namespace/http.html">5.6.9</a>
+    <a class="version is-current" href="http.html">5.6.8</a>
+    <a class="version" href="../../../../5.6.7/servlet/appendix/namespace/http.html">5.6.7</a>
+    <a class="version" href="../../../../5.6.6/servlet/appendix/namespace/http.html">5.6.6</a>
+    <a class="version" href="../../../../5.6.5/servlet/appendix/namespace/http.html">5.6.5</a>
+    <a class="version" href="../../../../5.6.4/servlet/appendix/namespace/http.html">5.6.4</a>
+    <a class="version" href="../../../../5.6.3/servlet/appendix/namespace/http.html">5.6.3</a>
+    <a class="version" href="../../../../5.6.2/servlet/appendix/namespace/http.html">5.6.2</a>
+    <a class="version" href="../../../../5.6.1/servlet/appendix/namespace/http.html">5.6.1</a>
+    <a class="version" href="../../../../5.6.0/servlet/appendix/namespace/http.html">5.6.0</a>
+    <a class="version is-missing" href="../../../../5.6.0-RC1/index.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.6.8/docs/modules/ROOT/pages/servlet/appendix/namespace/http.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Web Application Security" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p> For the latest stable version, please use <a href="../../../../servlet/appendix/namespace/http.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">Web Application Security</h1>
+<div class="sect1">
+<h2 id="nsa-debug"><a class="anchor" href="#nsa-debug"></a>&lt;debug&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enables Spring Security debugging infrastructure.
+This will provide human-readable (multi-line) debugging information to monitor requests coming into the security filters.
+This may include sensitive information, such as request parameters or headers, and should only be used in a development environment.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-http"><a class="anchor" href="#nsa-http"></a>&lt;http&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you use an <code>&lt;http&gt;</code> element within your application, a <code>FilterChainProxy</code> bean named "springSecurityFilterChain" is created and the configuration within the element is used to build a filter chain within
+<code>FilterChainProxy</code>.
+As of Spring Security 3.1, additional <code>http</code> elements can be used to add extra filter chains <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup> for how to set up the mapping from your <code>web.xml</code> ].
+Some core filters are always created in a filter chain and others will be added to the stack depending on the attributes and child elements which are present.
+The positions of the standard filters are fixed (see
+<a href="../../configuration/xml-namespace.html#filter-stack" class="xref page">the filter order table</a> in the namespace introduction), removing a common source of errors with previous versions of the framework when users had to configure the filter chain explicitly in the
+<code>FilterChainProxy</code> bean.
+You can, of course, still do this if you need full control of the configuration.</p>
+</div>
+<div class="paragraph">
+<p>All filters which require a reference to the <a href="../../authentication/architecture.html#servlet-authentication-authenticationmanager" class="xref page"><code>AuthenticationManager</code></a> will be automatically injected with the internal instance created by the namespace configuration.</p>
+</div>
+<div class="paragraph">
+<p>Each <code>&lt;http&gt;</code> namespace block always creates an <code>SecurityContextPersistenceFilter</code>, an <code>ExceptionTranslationFilter</code> and a <code>FilterSecurityInterceptor</code>.
+These are fixed and cannot be replaced with alternatives.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-http-attributes"><a class="anchor" href="#nsa-http-attributes"></a>&lt;http&gt; Attributes</h3>
+<div class="paragraph">
+<p>The attributes on the <code>&lt;http&gt;</code> element control some of the properties on the core filters.</p>
+</div>
+<div id="nsa-http-access-decision-manager-ref" class="ulist">
+<ul>
+<li>
+<p><strong>access-decision-manager-ref</strong>
+Optional attribute specifying the ID of the <code>AccessDecisionManager</code> implementation which should be used for authorizing HTTP requests.
+By default an <code>AffirmativeBased</code> implementation is used for with a <code>RoleVoter</code> and an <code>AuthenticatedVoter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-authentication-manager-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-manager-ref</strong>
+A reference to the <code>AuthenticationManager</code> used for the <code>FilterChain</code> created by this http element.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-auto-config" class="ulist">
+<ul>
+<li>
+<p><strong>auto-config</strong>
+Automatically registers a login form, BASIC authentication, logout services.
+If set to "true", all of these capabilities are added (although you can still customize the configuration of each by providing the respective element).
+If unspecified, defaults to "false".
+Use of this attribute is not recommended.
+Use explicit configuration elements instead to avoid confusion.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-create-session" class="ulist">
+<ul>
+<li>
+<p><strong>create-session</strong>
+Controls the eagerness with which an HTTP session is created by Spring Security classes.
+Options include:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>always</code> - Spring Security will proactively create a session if one does not exist.</p>
+</li>
+<li>
+<p><code>ifRequired</code> - Spring Security will only create a session only if one is required (default value).</p>
+</li>
+<li>
+<p><code>never</code> - Spring Security will never create a session, but will make use of one if the application does.</p>
+</li>
+<li>
+<p><code>stateless</code> - Spring Security will not create a session and ignore the session for obtaining a Spring <code>Authentication</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div id="nsa-http-disable-url-rewriting" class="ulist">
+<ul>
+<li>
+<p><strong>disable-url-rewriting</strong>
+Prevents session IDs from being appended to URLs in the application.
+Clients must use cookies if this attribute is set to <code>true</code>.
+The default is <code>true</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-entry-point-ref" class="ulist">
+<ul>
+<li>
+<p><strong>entry-point-ref</strong>
+Normally the <code>AuthenticationEntryPoint</code> used will be set depending on which authentication mechanisms have been configured.
+This attribute allows this behaviour to be overridden by defining a customized <code>AuthenticationEntryPoint</code> bean which will start the authentication process.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-jaas-api-provision" class="ulist">
+<ul>
+<li>
+<p><strong>jaas-api-provision</strong>
+If available, runs the request as the <code>Subject</code> acquired from the <code>JaasAuthenticationToken</code> which is implemented by adding a <code>JaasApiIntegrationFilter</code> bean to the stack.
+Defaults to <code>false</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-name" class="ulist">
+<ul>
+<li>
+<p><strong>name</strong>
+A bean identifier, used for referring to the bean elsewhere in the context.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-once-per-request" class="ulist">
+<ul>
+<li>
+<p><strong>once-per-request</strong>
+Corresponds to the <code>observeOncePerRequest</code> property of <code>FilterSecurityInterceptor</code>.
+Defaults to <code>true</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-pattern" class="ulist">
+<ul>
+<li>
+<p><strong>pattern</strong>
+Defining a pattern for the <a href="#nsa-http">http</a> element controls the requests which will be filtered through the list of filters which it defines.
+The interpretation is dependent on the configured <a href="#nsa-http-request-matcher">request-matcher</a>.
+If no pattern is defined, all requests will be matched, so the most specific patterns should be declared first.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-realm" class="ulist">
+<ul>
+<li>
+<p><strong>realm</strong>
+Sets the realm name used for basic authentication (if enabled).
+Corresponds to the <code>realmName</code> property on <code>BasicAuthenticationEntryPoint</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-request-matcher" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher</strong>
+Defines the <code>RequestMatcher</code> strategy used in the <code>FilterChainProxy</code> and the beans created by the <code>intercept-url</code> to match incoming requests.
+Options are currently <code>mvc</code>, <code>ant</code>, <code>regex</code> and <code>ciRegex</code>, for Spring MVC, ant, regular-expression and case-insensitive regular-expression respectively.
+A separate instance is created for each <a href="#nsa-intercept-url">intercept-url</a> element using its <a href="#nsa-intercept-url-pattern">pattern</a>, <a href="#nsa-intercept-url-method">method</a> and <a href="#nsa-intercept-url-servlet-path">servlet-path</a> attributes.
+Ant paths are matched using an <code>AntPathRequestMatcher</code>, regular expressions are matched using a <code>RegexRequestMatcher</code> and for Spring MVC path matching the <code>MvcRequestMatcher</code> is used.
+See the Javadoc for these classes for more details on exactly how the matching is performed.
+Ant paths are the default strategy.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-request-matcher-ref" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher-ref</strong>
+A reference to a bean that implements <code>RequestMatcher</code> that will determine if this <code>FilterChain</code> should be used.
+This is a more powerful alternative to <a href="#nsa-http-pattern">pattern</a>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-security" class="ulist">
+<ul>
+<li>
+<p><strong>security</strong>
+A request pattern can be mapped to an empty filter chain, by setting this attribute to <code>none</code>.
+No security will be applied and none of Spring Security&#8217;s features will be available.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-security-context-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>security-context-repository-ref</strong>
+Allows injection of a custom <code>SecurityContextRepository</code> into the <code>SecurityContextPersistenceFilter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-servlet-api-provision" class="ulist">
+<ul>
+<li>
+<p><strong>servlet-api-provision</strong>
+Provides versions of <code>HttpServletRequest</code> security methods such as <code>isUserInRole()</code> and <code>getPrincipal()</code> which are implemented by adding a <code>SecurityContextHolderAwareRequestFilter</code> bean to the stack.
+Defaults to <code>true</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-use-expressions" class="ulist">
+<ul>
+<li>
+<p><strong>use-expressions</strong>
+Enables EL-expressions in the <code>access</code> attribute, as described in the chapter on <a href="../../authorization/expression-based.html#el-access-web" class="xref page">expression-based access-control</a>.
+The default value is true.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-http-children"><a class="anchor" href="#nsa-http-children"></a>Child Elements of &lt;http&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-access-denied-handler">access-denied-handler</a></p>
+</li>
+<li>
+<p><a href="#nsa-anonymous">anonymous</a></p>
+</li>
+<li>
+<p><a href="#nsa-cors">cors</a></p>
+</li>
+<li>
+<p><a href="#nsa-csrf">csrf</a></p>
+</li>
+<li>
+<p><a href="#nsa-custom-filter">custom-filter</a></p>
+</li>
+<li>
+<p><a href="#nsa-expression-handler">expression-handler</a></p>
+</li>
+<li>
+<p><a href="#nsa-form-login">form-login</a></p>
+</li>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+<li>
+<p><a href="#nsa-http-basic">http-basic</a></p>
+</li>
+<li>
+<p><a href="#nsa-intercept-url">intercept-url</a></p>
+</li>
+<li>
+<p><a href="#nsa-jee">jee</a></p>
+</li>
+<li>
+<p><a href="#nsa-logout">logout</a></p>
+</li>
+<li>
+<p><a href="#nsa-oauth2-client">oauth2-client</a></p>
+</li>
+<li>
+<p><a href="#nsa-oauth2-login">oauth2-login</a></p>
+</li>
+<li>
+<p><a href="#nsa-oauth2-resource-server">oauth2-resource-server</a></p>
+</li>
+<li>
+<p><a href="#nsa-openid-login">openid-login</a></p>
+</li>
+<li>
+<p><a href="#nsa-password-management">password-management</a></p>
+</li>
+<li>
+<p><a href="#nsa-port-mappings">port-mappings</a></p>
+</li>
+<li>
+<p><a href="#nsa-remember-me">remember-me</a></p>
+</li>
+<li>
+<p><a href="#nsa-request-cache">request-cache</a></p>
+</li>
+<li>
+<p><a href="#nsa-session-management">session-management</a></p>
+</li>
+<li>
+<p><a href="#nsa-x509">x509</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-access-denied-handler"><a class="anchor" href="#nsa-access-denied-handler"></a>&lt;access-denied-handler&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element allows you to set the <code>errorPage</code> property for the default <code>AccessDeniedHandler</code> used by the <code>ExceptionTranslationFilter</code>, using the <a href="#nsa-access-denied-handler-error-page">error-page</a> attribute, or to supply your own implementation using the <a href="#nsa-access-denied-handler-ref">ref</a> attribute.
+This is discussed in more detail in the section on the <a href="../../architecture.html#servlet-exceptiontranslationfilter" class="xref page">ExceptionTranslationFilter</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-access-denied-handler-parents"><a class="anchor" href="#nsa-access-denied-handler-parents"></a>Parent Elements of &lt;access-denied-handler&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-access-denied-handler-attributes"><a class="anchor" href="#nsa-access-denied-handler-attributes"></a>&lt;access-denied-handler&gt; Attributes</h3>
+<div id="nsa-access-denied-handler-error-page" class="ulist">
+<ul>
+<li>
+<p><strong>error-page</strong>
+The access denied page that an authenticated user will be redirected to if they request a page which they don&#8217;t have the authority to access.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-access-denied-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Defines a reference to a Spring bean of type <code>AccessDeniedHandler</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-cors"><a class="anchor" href="#nsa-cors"></a>&lt;cors&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element allows for configuring a <code>CorsFilter</code>.
+If no <code>CorsFilter</code> or <code>CorsConfigurationSource</code> is specified and Spring MVC is on the classpath, a <code>HandlerMappingIntrospector</code> is used as the <code>CorsConfigurationSource</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-cors-attributes"><a class="anchor" href="#nsa-cors-attributes"></a>&lt;cors&gt; Attributes</h3>
+<div class="paragraph">
+<p>The attributes on the <code>&lt;cors&gt;</code> element control the headers element.</p>
+</div>
+<div id="nsa-cors-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Optional attribute that specifies the bean name of a <code>CorsFilter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-cors-configuration-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>cors-configuration-source-ref</strong>
+Optional attribute that specifies the bean name of a <code>CorsConfigurationSource</code> to be injected into a <code>CorsFilter</code> created by the XML namespace.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-cors-parents"><a class="anchor" href="#nsa-cors-parents"></a>Parent Elements of &lt;cors&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-headers"><a class="anchor" href="#nsa-headers"></a>&lt;headers&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element allows for configuring additional (security) headers to be send with the response.
+It enables easy configuration for several headers and also allows for setting custom headers through the <a href="#nsa-header">header</a> element.
+Additional information, can be found in the <a href="../../../features/exploits/headers.html#headers" class="xref page">Security Headers</a> section of the reference.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Cache-Control</code>, <code>Pragma</code>, and <code>Expires</code> - Can be set using the <a href="#nsa-cache-control">cache-control</a> element.
+This ensures that the browser does not cache your secured pages.</p>
+</li>
+<li>
+<p><code>Strict-Transport-Security</code> - Can be set using the <a href="#nsa-hsts">hsts</a> element.
+This ensures that the browser automatically requests HTTPS for future requests.</p>
+</li>
+<li>
+<p><code>X-Frame-Options</code> - Can be set using the <a href="#nsa-frame-options">frame-options</a> element.
+The <a href="https://en.wikipedia.org/wiki/Clickjacking#X-Frame-Options">X-Frame-Options</a> header can be used to prevent clickjacking attacks.</p>
+</li>
+<li>
+<p><code>X-XSS-Protection</code> - Can be set using the <a href="#nsa-xss-protection">xss-protection</a> element.
+The <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">X-XSS-Protection </a> header can be used by browser to do basic control.</p>
+</li>
+<li>
+<p><code>X-Content-Type-Options</code> - Can be set using the <a href="#nsa-content-type-options">content-type-options</a> element.
+The <a href="https://blogs.msdn.com/b/ie/archive/2008/09/02/ie8-security-part-vi-beta-2-update.aspx">X-Content-Type-Options</a> header prevents Internet Explorer from MIME-sniffing a response away from the declared content-type.
+This also applies to Google Chrome, when downloading extensions.</p>
+</li>
+<li>
+<p><code>Public-Key-Pinning</code> or <code>Public-Key-Pinning-Report-Only</code> - Can be set using the <a href="#nsa-hpkp">hpkp</a> element.
+This allows HTTPS websites to resist impersonation by attackers using mis-issued or otherwise fraudulent certificates.</p>
+</li>
+<li>
+<p><code>Content-Security-Policy</code> or <code>Content-Security-Policy-Report-Only</code> - Can be set using the <a href="#nsa-content-security-policy">content-security-policy</a> element.
+<a href="https://www.w3.org/TR/CSP2/">Content Security Policy (CSP)</a> is a mechanism that web applications can leverage to mitigate content injection vulnerabilities, such as cross-site scripting (XSS).</p>
+</li>
+<li>
+<p><code>Referrer-Policy</code> - Can be set using the <a href="#nsa-referrer-policy">referrer-policy</a> element, <a href="https://www.w3.org/TR/referrer-policy/">Referrer-Policy</a> is a mechanism that web applications can leverage to manage the referrer field, which contains the last page the user was on.</p>
+</li>
+<li>
+<p><code>Feature-Policy</code> - Can be set using the <a href="#nsa-feature-policy">feature-policy</a> element, <a href="https://wicg.github.io/feature-policy/">Feature-Policy</a> is a mechanism that allows web developers to selectively enable, disable, and modify the behavior of certain APIs and web features in the browser.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="nsa-headers-attributes"><a class="anchor" href="#nsa-headers-attributes"></a>&lt;headers&gt; Attributes</h3>
+<div class="paragraph">
+<p>The attributes on the <code>&lt;headers&gt;</code> element control the headers element.</p>
+</div>
+<div id="nsa-headers-defaults-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>defaults-disabled</strong>
+Optional attribute that specifies to disable the default Spring Security&#8217;s HTTP response headers.
+The default is false (the default headers are included).</p>
+</li>
+</ul>
+</div>
+<div id="nsa-headers-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Optional attribute that specifies to disable Spring Security&#8217;s HTTP response headers.
+The default is false (the headers are enabled).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-headers-parents"><a class="anchor" href="#nsa-headers-parents"></a>Parent Elements of &lt;headers&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-headers-children"><a class="anchor" href="#nsa-headers-children"></a>Child Elements of &lt;headers&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-cache-control">cache-control</a></p>
+</li>
+<li>
+<p><a href="#nsa-content-security-policy">content-security-policy</a></p>
+</li>
+<li>
+<p><a href="#nsa-content-type-options">content-type-options</a></p>
+</li>
+<li>
+<p><a href="#nsa-feature-policy">feature-policy</a></p>
+</li>
+<li>
+<p><a href="#nsa-frame-options">frame-options</a></p>
+</li>
+<li>
+<p><a href="#nsa-header">header</a></p>
+</li>
+<li>
+<p><a href="#nsa-hpkp">hpkp</a></p>
+</li>
+<li>
+<p><a href="#nsa-hsts">hsts</a></p>
+</li>
+<li>
+<p><a href="#nsa-permissions-policy">permission-policy</a></p>
+</li>
+<li>
+<p><a href="#nsa-referrer-policy">referrer-policy</a></p>
+</li>
+<li>
+<p><a href="#nsa-xss-protection">xss-protection</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-cache-control"><a class="anchor" href="#nsa-cache-control"></a>&lt;cache-control&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds <code>Cache-Control</code>, <code>Pragma</code>, and <code>Expires</code> headers to ensure that the browser does not cache your secured pages.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-cache-control-attributes"><a class="anchor" href="#nsa-cache-control-attributes"></a>&lt;cache-control&gt; Attributes</h3>
+<div id="nsa-cache-control-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Specifies if Cache Control should be disabled.
+Default false.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-cache-control-parents"><a class="anchor" href="#nsa-cache-control-parents"></a>Parent Elements of &lt;cache-control&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-hsts"><a class="anchor" href="#nsa-hsts"></a>&lt;hsts&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://tools.ietf.org/html/rfc6797">Strict-Transport-Security</a> header to the response for any secure request.
+This allows the server to instruct browsers to automatically use HTTPS for future requests.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-hsts-attributes"><a class="anchor" href="#nsa-hsts-attributes"></a>&lt;hsts&gt; Attributes</h3>
+<div id="nsa-hsts-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Specifies if Strict-Transport-Security should be disabled.
+Default false.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hsts-include-subdomains" class="ulist">
+<ul>
+<li>
+<p><strong>include-sub-domains</strong>
+Specifies if subdomains should be included.
+Default true.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hsts-max-age-seconds" class="ulist">
+<ul>
+<li>
+<p><strong>max-age-seconds</strong>
+Specifies the maximum amount of time the host should be considered a Known HSTS Host.
+Default one year.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hsts-request-matcher-ref" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher-ref</strong>
+The RequestMatcher instance to be used to determine if the header should be set.
+Default is if HttpServletRequest.isSecure() is true.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hsts-preload" class="ulist">
+<ul>
+<li>
+<p><strong>preload</strong>
+Specifies if preload should be included.
+Default false.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-hsts-parents"><a class="anchor" href="#nsa-hsts-parents"></a>Parent Elements of &lt;hsts&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-hpkp"><a class="anchor" href="#nsa-hpkp"></a>&lt;hpkp&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://tools.ietf.org/html/rfc7469">Public Key Pinning Extension for HTTP</a> header to the response for any secure request.
+This allows HTTPS websites to resist impersonation by attackers using mis-issued or otherwise fraudulent certificates.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-hpkp-attributes"><a class="anchor" href="#nsa-hpkp-attributes"></a>&lt;hpkp&gt; Attributes</h3>
+<div id="nsa-hpkp-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Specifies if HTTP Public Key Pinning (HPKP) should be disabled.
+Default true.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hpkp-include-subdomains" class="ulist">
+<ul>
+<li>
+<p><strong>include-sub-domains</strong>
+Specifies if subdomains should be included.
+Default false.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hpkp-max-age-seconds" class="ulist">
+<ul>
+<li>
+<p><strong>max-age-seconds</strong>
+Sets the value for the max-age directive of the Public-Key-Pins header.
+Default 60 days.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hpkp-report-only" class="ulist">
+<ul>
+<li>
+<p><strong>report-only</strong>
+Specifies if the browser should only report pin validation failures.
+Default true.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-hpkp-report-uri" class="ulist">
+<ul>
+<li>
+<p><strong>report-uri</strong>
+Specifies the URI to which the browser should report pin validation failures.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-hpkp-parents"><a class="anchor" href="#nsa-hpkp-parents"></a>Parent Elements of &lt;hpkp&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-pins"><a class="anchor" href="#nsa-pins"></a>&lt;pins&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The list of pins</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-pins-children"><a class="anchor" href="#nsa-pins-children"></a>Child Elements of &lt;pins&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-pin">pin</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-pin"><a class="anchor" href="#nsa-pin"></a>&lt;pin&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A pin is specified using the base64-encoded SPKI fingerprint as value and the cryptographic hash algorithm as attribute</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-pin-attributes"><a class="anchor" href="#nsa-pin-attributes"></a>&lt;pin&gt; Attributes</h3>
+<div id="nsa-pin-algorithm" class="ulist">
+<ul>
+<li>
+<p><strong>algorithm</strong>
+The cryptographic hash algorithm.
+Default is SHA256.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-pin-parents"><a class="anchor" href="#nsa-pin-parents"></a>Parent Elements of &lt;pin&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-pins">pins</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-content-security-policy"><a class="anchor" href="#nsa-content-security-policy"></a>&lt;content-security-policy&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://www.w3.org/TR/CSP2/">Content Security Policy (CSP)</a> header to the response.
+CSP is a mechanism that web applications can leverage to mitigate content injection vulnerabilities, such as cross-site scripting (XSS).</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-content-security-policy-attributes"><a class="anchor" href="#nsa-content-security-policy-attributes"></a>&lt;content-security-policy&gt; Attributes</h3>
+<div id="nsa-content-security-policy-policy-directives" class="ulist">
+<ul>
+<li>
+<p><strong>policy-directives</strong>
+The security policy directive(s) for the Content-Security-Policy header or if report-only is set to true, then the Content-Security-Policy-Report-Only header is used.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-content-security-policy-report-only" class="ulist">
+<ul>
+<li>
+<p><strong>report-only</strong>
+Set to true, to enable the Content-Security-Policy-Report-Only header for reporting policy violations only.
+Defaults to false.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-content-security-policy-parents"><a class="anchor" href="#nsa-content-security-policy-parents"></a>Parent Elements of &lt;content-security-policy&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-referrer-policy"><a class="anchor" href="#nsa-referrer-policy"></a>&lt;referrer-policy&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://www.w3.org/TR/referrer-policy/">Referrer Policy</a> header to the response.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-referrer-policy-attributes"><a class="anchor" href="#nsa-referrer-policy-attributes"></a>&lt;referrer-policy&gt; Attributes</h3>
+<div id="nsa-referrer-policy-policy" class="ulist">
+<ul>
+<li>
+<p><strong>policy</strong>
+The policy for the Referrer-Policy header.
+Default "no-referrer".</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-referrer-policy-parents"><a class="anchor" href="#nsa-referrer-policy-parents"></a>Parent Elements of &lt;referrer-policy&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-feature-policy"><a class="anchor" href="#nsa-feature-policy"></a>&lt;feature-policy&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://wicg.github.io/feature-policy/">Feature Policy</a> header to the response.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-feature-policy-attributes"><a class="anchor" href="#nsa-feature-policy-attributes"></a>&lt;feature-policy&gt; Attributes</h3>
+<div id="nsa-feature-policy-policy-directives" class="ulist">
+<ul>
+<li>
+<p><strong>policy-directives</strong>
+The security policy directive(s) for the Feature-Policy header.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-feature-policy-parents"><a class="anchor" href="#nsa-feature-policy-parents"></a>Parent Elements of &lt;feature-policy&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-frame-options"><a class="anchor" href="#nsa-frame-options"></a>&lt;frame-options&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When enabled adds the <a href="https://tools.ietf.org/html/draft-ietf-websec-x-frame-options">X-Frame-Options header</a> to the response, this allows newer browsers to do some security checks and prevent <a href="https://en.wikipedia.org/wiki/Clickjacking">clickjacking</a> attacks.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-frame-options-attributes"><a class="anchor" href="#nsa-frame-options-attributes"></a>&lt;frame-options&gt; Attributes</h3>
+<div id="nsa-frame-options-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+If disabled, the X-Frame-Options header will not be included.
+Default false.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-frame-options-policy" class="ulist">
+<ul>
+<li>
+<p><strong>policy</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DENY</code> The page cannot be displayed in a frame, regardless of the site attempting to do so.
+This is the default when frame-options-policy is specified.</p>
+</li>
+<li>
+<p><code>SAMEORIGIN</code> The page can only be displayed in a frame on the same origin as the page itself</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In other words, if you specify DENY, not only will attempts to load the page in a frame fail when loaded from other sites, attempts to do so will fail when loaded from the same site.
+On the other hand, if you specify SAMEORIGIN, you can still use the page in a frame as long as the site including it in a frame it is the same as the one serving the page.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-frame-options-parents"><a class="anchor" href="#nsa-frame-options-parents"></a>Parent Elements of &lt;frame-options&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-permissions-policy"><a class="anchor" href="#nsa-permissions-policy"></a>&lt;permissions-policy&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds the <a href="https://w3c.github.io/webappsec-permissions-policy/">Permissions-Policy header</a> to the response.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-permissions-policy-attributes"><a class="anchor" href="#nsa-permissions-policy-attributes"></a>&lt;permissions-policy&gt; Attributes</h3>
+<div id="nsa-permissions-policy-policy" class="ulist">
+<ul>
+<li>
+<p><strong>policy</strong>
+The policy value to write for the <code>Permissions-Policy</code> header</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-permissions-policy-parents"><a class="anchor" href="#nsa-permissions-policy-parents"></a>Parent Elements of &lt;permissions-policy&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-xss-protection"><a class="anchor" href="#nsa-xss-protection"></a>&lt;xss-protection&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds the <a href="https://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-iv-the-xss-filter.aspx">X-XSS-Protection header</a> to the response to assist in protecting against <a href="https://en.wikipedia.org/wiki/Cross-site_scripting#Non-Persistent">reflected / Type-1 Cross-Site Scripting (XSS)</a> attacks.
+This is in no-way a full protection to XSS attacks!</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-xss-protection-attributes"><a class="anchor" href="#nsa-xss-protection-attributes"></a>&lt;xss-protection&gt; Attributes</h3>
+<div id="nsa-xss-protection-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>xss-protection-disabled</strong>
+Do not include the header for <a href="https://en.wikipedia.org/wiki/Cross-site_scripting#Non-Persistent">reflected / Type-1 Cross-Site Scripting (XSS)</a> protection.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-xss-protection-enabled" class="ulist">
+<ul>
+<li>
+<p><strong>xss-protection-enabled</strong>
+Explicitly enable or disable <a href="https://en.wikipedia.org/wiki/Cross-site_scripting#Non-Persistent">reflected / Type-1 Cross-Site Scripting (XSS)</a> protection.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-xss-protection-block" class="ulist">
+<ul>
+<li>
+<p><strong>xss-protection-block</strong>
+When true and xss-protection-enabled is true, adds mode=block to the header.
+This indicates to the browser that the page should not be loaded at all.
+When false and xss-protection-enabled is true, the page will still be rendered when an reflected attack is detected but the response will be modified to protect against the attack.
+Note that there are sometimes ways of bypassing this mode which can often times make blocking the page more desirable.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-xss-protection-parents"><a class="anchor" href="#nsa-xss-protection-parents"></a>Parent Elements of &lt;xss-protection&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-content-type-options"><a class="anchor" href="#nsa-content-type-options"></a>&lt;content-type-options&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add the X-Content-Type-Options header with the value of nosniff to the response.
+This <a href="https://blogs.msdn.com/b/ie/archive/2008/09/02/ie8-security-part-vi-beta-2-update.aspx">disables MIME-sniffing</a> for IE8+ and Chrome extensions.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-content-type-options-attributes"><a class="anchor" href="#nsa-content-type-options-attributes"></a>&lt;content-type-options&gt; Attributes</h3>
+<div id="nsa-content-type-options-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Specifies if Content Type Options should be disabled.
+Default false.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-content-type-options-parents"><a class="anchor" href="#nsa-content-type-options-parents"></a>Parent Elements of &lt;content-type-options&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-header"><a class="anchor" href="#nsa-header"></a>&lt;header&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add additional headers to the response, both the name and value need to be specified.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-header-attributes"><a class="anchor" href="#nsa-header-attributes"></a>&lt;header-attributes&gt; Attributes</h3>
+<div id="nsa-header-name" class="ulist">
+<ul>
+<li>
+<p><strong>header-name</strong>
+The <code>name</code> of the header.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-header-value" class="ulist">
+<ul>
+<li>
+<p><strong>value</strong>
+The <code>value</code> of the header to add.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-header-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Reference to a custom implementation of the <code>HeaderWriter</code> interface.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-header-parents"><a class="anchor" href="#nsa-header-parents"></a>Parent Elements of &lt;header&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-headers">headers</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-anonymous"><a class="anchor" href="#nsa-anonymous"></a>&lt;anonymous&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds an <code>AnonymousAuthenticationFilter</code> to the stack and an <code>AnonymousAuthenticationProvider</code>.
+Required if you are using the <code>IS_AUTHENTICATED_ANONYMOUSLY</code> attribute.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-anonymous-parents"><a class="anchor" href="#nsa-anonymous-parents"></a>Parent Elements of &lt;anonymous&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-anonymous-attributes"><a class="anchor" href="#nsa-anonymous-attributes"></a>&lt;anonymous&gt; Attributes</h3>
+<div id="nsa-anonymous-enabled" class="ulist">
+<ul>
+<li>
+<p><strong>enabled</strong>
+With the default namespace setup, the anonymous "authentication" facility is automatically enabled.
+You can disable it using this property.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-anonymous-granted-authority" class="ulist">
+<ul>
+<li>
+<p><strong>granted-authority</strong>
+The granted authority that should be assigned to the anonymous request.
+Commonly this is used to assign the anonymous request particular roles, which can subsequently be used in authorization decisions.
+If unset, defaults to <code>ROLE_ANONYMOUS</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-anonymous-key" class="ulist">
+<ul>
+<li>
+<p><strong>key</strong>
+The key shared between the provider and filter.
+This generally does not need to be set.
+If unset, it will default to a secure randomly generated value.
+This means setting this value can improve startup time when using the anonymous functionality since secure random values can take a while to be generated.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-anonymous-username" class="ulist">
+<ul>
+<li>
+<p><strong>username</strong>
+The username that should be assigned to the anonymous request.
+This allows the principal to be identified, which may be important for logging and auditing.
+if unset, defaults to <code>anonymousUser</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-csrf"><a class="anchor" href="#nsa-csrf"></a>&lt;csrf&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element will add <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross Site Request Forger (CSRF)</a> protection to the application.
+It also updates the default RequestCache to only replay "GET" requests upon successful authentication.
+Additional information can be found in the <a href="../../../features/exploits/csrf.html#csrf" class="xref page">Cross Site Request Forgery (CSRF)</a> section of the reference.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-csrf-parents"><a class="anchor" href="#nsa-csrf-parents"></a>Parent Elements of &lt;csrf&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-csrf-attributes"><a class="anchor" href="#nsa-csrf-attributes"></a>&lt;csrf&gt; Attributes</h3>
+<div id="nsa-csrf-disabled" class="ulist">
+<ul>
+<li>
+<p><strong>disabled</strong>
+Optional attribute that specifies to disable Spring Security&#8217;s CSRF protection.
+The default is false (CSRF protection is enabled).
+It is highly recommended to leave CSRF protection enabled.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-csrf-token-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>token-repository-ref</strong>
+The CsrfTokenRepository to use.
+The default is <code>HttpSessionCsrfTokenRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-csrf-request-matcher-ref" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher-ref</strong>
+The RequestMatcher instance to be used to determine if CSRF should be applied.
+Default is any HTTP method except "GET", "TRACE", "HEAD", "OPTIONS".</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-custom-filter"><a class="anchor" href="#nsa-custom-filter"></a>&lt;custom-filter&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element is used to add a filter to the filter chain.
+It doesn&#8217;t create any additional beans but is used to select a bean of type <code>javax.servlet.Filter</code> which is already defined in the application context and add that at a particular position in the filter chain maintained by Spring Security.
+Full details can be found in the <a href="../../configuration/xml-namespace.html#ns-custom-filters" class="xref page"> namespace chapter</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-custom-filter-parents"><a class="anchor" href="#nsa-custom-filter-parents"></a>Parent Elements of &lt;custom-filter&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-custom-filter-attributes"><a class="anchor" href="#nsa-custom-filter-attributes"></a>&lt;custom-filter&gt; Attributes</h3>
+<div id="nsa-custom-filter-after" class="ulist">
+<ul>
+<li>
+<p><strong>after</strong>
+The filter immediately after which the custom-filter should be placed in the chain.
+This feature will only be needed by advanced users who wish to mix their own filters into the security filter chain and have some knowledge of the standard Spring Security filters.
+The filter names map to specific Spring Security implementation filters.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-custom-filter-before" class="ulist">
+<ul>
+<li>
+<p><strong>before</strong>
+The filter immediately before which the custom-filter should be placed in the chain</p>
+</li>
+</ul>
+</div>
+<div id="nsa-custom-filter-position" class="ulist">
+<ul>
+<li>
+<p><strong>position</strong>
+The explicit position at which the custom-filter should be placed in the chain.
+Use if you are replacing a standard filter.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-custom-filter-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Defines a reference to a Spring bean that implements <code>Filter</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-expression-handler"><a class="anchor" href="#nsa-expression-handler"></a>&lt;expression-handler&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Defines the <code>SecurityExpressionHandler</code> instance which will be used if expression-based access-control is enabled.
+A default implementation (with no ACL support) will be used if not supplied.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-expression-handler-parents"><a class="anchor" href="#nsa-expression-handler-parents"></a>Parent Elements of &lt;expression-handler&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="method-security.html#nsa-global-method-security" class="xref page">global-method-security</a></p>
+</li>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+<li>
+<p><a href="method-security.html#nsa-method-security" class="xref page">method-security</a></p>
+</li>
+<li>
+<p><a href="websocket.html#nsa-websocket-message-broker" class="xref page">websocket-message-broker</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-expression-handler-attributes"><a class="anchor" href="#nsa-expression-handler-attributes"></a>&lt;expression-handler&gt; Attributes</h3>
+<div id="nsa-expression-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Defines a reference to a Spring bean that implements <code>SecurityExpressionHandler</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-form-login"><a class="anchor" href="#nsa-form-login"></a>&lt;form-login&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Used to add an <code>UsernamePasswordAuthenticationFilter</code> to the filter stack and an <code>LoginUrlAuthenticationEntryPoint</code> to the application context to provide authentication on demand.
+This will always take precedence over other namespace-created entry points.
+If no attributes are supplied, a login page will be generated automatically at the URL "/login" <sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup> The behaviour can be customized using the <a href="#nsa-form-login-attributes"><code>&lt;form-login&gt;</code> Attributes</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-form-login-parents"><a class="anchor" href="#nsa-form-login-parents"></a>Parent Elements of &lt;form-login&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-form-login-attributes"><a class="anchor" href="#nsa-form-login-attributes"></a>&lt;form-login&gt; Attributes</h3>
+<div id="nsa-form-login-always-use-default-target" class="ulist">
+<ul>
+<li>
+<p><strong>always-use-default-target</strong>
+If set to <code>true</code>, the user will always start at the value given by <a href="#nsa-form-login-default-target-url">default-target-url</a>, regardless of how they arrived at the login page.
+Maps to the <code>alwaysUseDefaultTargetUrl</code> property of <code>UsernamePasswordAuthenticationFilter</code>.
+Default value is <code>false</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-details-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-details-source-ref</strong>
+Reference to an <code>AuthenticationDetailsSource</code> which will be used by the authentication filter</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-failure-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-handler-ref</strong>
+Can be used as an alternative to <a href="#nsa-form-login-authentication-failure-url">authentication-failure-url</a>, giving you full control over the navigation flow after an authentication failure.
+The value should be the name of an <code>AuthenticationFailureHandler</code> bean in the application context.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-failure-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-url</strong>
+Maps to the <code>authenticationFailureUrl</code> property of <code>UsernamePasswordAuthenticationFilter</code>.
+Defines the URL the browser will be redirected to on login failure.
+Defaults to <code>/login?error</code>, which will be automatically handled by the automatic login page generator, re-rendering the login page with an error message.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-success-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-handler-ref</strong>
+This can be used as an alternative to <a href="#nsa-form-login-default-target-url">default-target-url</a> and <a href="#nsa-form-login-always-use-default-target">always-use-default-target</a>, giving you full control over the navigation flow after a successful authentication.
+The value should be the name of an <code>AuthenticationSuccessHandler</code> bean in the application context.
+By default, an implementation of <code>SavedRequestAwareAuthenticationSuccessHandler</code> is used and injected with the <a href="#nsa-form-login-default-target-url">default-target-url </a>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-default-target-url" class="ulist">
+<ul>
+<li>
+<p><strong>default-target-url</strong>
+Maps to the <code>defaultTargetUrl</code> property of <code>UsernamePasswordAuthenticationFilter</code>.
+If not set, the default value is "/" (the application root).
+A user will be taken to this URL after logging in, provided they were not asked to login while attempting to access a secured resource, when they will be taken to the originally requested URL.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-login-page" class="ulist">
+<ul>
+<li>
+<p><strong>login-page</strong>
+The URL that should be used to render the login page.
+Maps to the <code>loginFormUrl</code> property of the <code>LoginUrlAuthenticationEntryPoint</code>.
+Defaults to "/login".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-login-processing-url" class="ulist">
+<ul>
+<li>
+<p><strong>login-processing-url</strong>
+Maps to the <code>filterProcessesUrl</code> property of <code>UsernamePasswordAuthenticationFilter</code>.
+The default value is "/login".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-password-parameter" class="ulist">
+<ul>
+<li>
+<p><strong>password-parameter</strong>
+The name of the request parameter which contains the password.
+Defaults to "password".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-username-parameter" class="ulist">
+<ul>
+<li>
+<p><strong>username-parameter</strong>
+The name of the request parameter which contains the username.
+Defaults to "username".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-success-forward-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-forward-url</strong>
+Maps a <code>ForwardAuthenticationSuccessHandler</code> to <code>authenticationSuccessHandler</code> property of <code>UsernamePasswordAuthenticationFilter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-form-login-authentication-failure-forward-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-forward-url</strong>
+Maps a <code>ForwardAuthenticationFailureHandler</code> to <code>authenticationFailureHandler</code> property of <code>UsernamePasswordAuthenticationFilter</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-oauth2-login"><a class="anchor" href="#nsa-oauth2-login"></a>&lt;oauth2-login&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="../../oauth2/login/index.html#oauth2login" class="xref page">OAuth 2.0 Login</a> feature configures authentication support using an OAuth 2.0 and/or OpenID Connect 1.0 Provider.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-login-parents"><a class="anchor" href="#nsa-oauth2-login-parents"></a>Parent Elements of &lt;oauth2-login&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-login-attributes"><a class="anchor" href="#nsa-oauth2-login-attributes"></a>&lt;oauth2-login&gt; Attributes</h3>
+<div id="nsa-oauth2-login-client-registration-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>client-registration-repository-ref</strong>
+Reference to the <code>ClientRegistrationRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authorized-client-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorized-client-repository-ref</strong>
+Reference to the <code>OAuth2AuthorizedClientRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authorized-client-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorized-client-service-ref</strong>
+Reference to the <code>OAuth2AuthorizedClientService</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authorization-request-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-request-repository-ref</strong>
+Reference to the <code>AuthorizationRequestRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authorization-request-resolver-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-request-resolver-ref</strong>
+Reference to the <code>OAuth2AuthorizationRequestResolver</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-access-token-response-client-ref" class="ulist">
+<ul>
+<li>
+<p><strong>access-token-response-client-ref</strong>
+Reference to the <code>OAuth2AccessTokenResponseClient</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-user-authorities-mapper-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-authorities-mapper-ref</strong>
+Reference to the <code>GrantedAuthoritiesMapper</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-service-ref</strong>
+Reference to the <code>OAuth2UserService</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-oidc-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>oidc-user-service-ref</strong>
+Reference to the OpenID Connect <code>OAuth2UserService</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-login-processing-url" class="ulist">
+<ul>
+<li>
+<p><strong>login-processing-url</strong>
+The URI where the filter processes authentication requests.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-login-page" class="ulist">
+<ul>
+<li>
+<p><strong>login-page</strong>
+The URI to send users to login.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authentication-success-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-handler-ref</strong>
+Reference to the <code>AuthenticationSuccessHandler</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-authentication-failure-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-handler-ref</strong>
+Reference to the <code>AuthenticationFailureHandler</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-login-jwt-decoder-factory-ref" class="ulist">
+<ul>
+<li>
+<p><strong>jwt-decoder-factory-ref</strong>
+Reference to the <code>JwtDecoderFactory</code> used by <code>OidcAuthorizationCodeAuthenticationProvider</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-oauth2-client"><a class="anchor" href="#nsa-oauth2-client"></a>&lt;oauth2-client&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Configures <a href="../../oauth2/client/index.html#oauth2client" class="xref page">OAuth 2.0 Client</a> support.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-client-parents"><a class="anchor" href="#nsa-oauth2-client-parents"></a>Parent Elements of &lt;oauth2-client&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-client-attributes"><a class="anchor" href="#nsa-oauth2-client-attributes"></a>&lt;oauth2-client&gt; Attributes</h3>
+<div id="nsa-oauth2-client-client-registration-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>client-registration-repository-ref</strong>
+Reference to the <code>ClientRegistrationRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-client-authorized-client-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorized-client-repository-ref</strong>
+Reference to the <code>OAuth2AuthorizedClientRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-client-authorized-client-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorized-client-service-ref</strong>
+Reference to the <code>OAuth2AuthorizedClientService</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-client-children"><a class="anchor" href="#nsa-oauth2-client-children"></a>Child Elements of &lt;oauth2-client&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-authorization-code-grant">authorization-code-grant</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-authorization-code-grant"><a class="anchor" href="#nsa-authorization-code-grant"></a>&lt;authorization-code-grant&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Configures <a href="../../oauth2/client/authorization-grants.html#oauth2Client-auth-grant-support" class="xref page">OAuth 2.0 Authorization Code Grant</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-authorization-code-grant-parents"><a class="anchor" href="#nsa-authorization-code-grant-parents"></a>Parent Elements of &lt;authorization-code-grant&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-oauth2-client">oauth2-client</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-authorization-code-grant-attributes"><a class="anchor" href="#nsa-authorization-code-grant-attributes"></a>&lt;authorization-code-grant&gt; Attributes</h3>
+<div id="nsa-authorization-code-grant-authorization-request-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-request-repository-ref</strong>
+Reference to the <code>AuthorizationRequestRepository</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-authorization-code-grant-authorization-request-resolver-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-request-resolver-ref</strong>
+Reference to the <code>OAuth2AuthorizationRequestResolver</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-authorization-code-grant-access-token-response-client-ref" class="ulist">
+<ul>
+<li>
+<p><strong>access-token-response-client-ref</strong>
+Reference to the <code>OAuth2AccessTokenResponseClient</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-client-registrations"><a class="anchor" href="#nsa-client-registrations"></a>&lt;client-registrations&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A container element for client(s) registered (<a href="../../oauth2/client/index.html#oauth2Client-client-registration" class="xref page">ClientRegistration</a>) with an OAuth 2.0 or OpenID Connect 1.0 Provider.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-client-registrations-children"><a class="anchor" href="#nsa-client-registrations-children"></a>Child Elements of &lt;client-registrations&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-client-registration">client-registration</a></p>
+</li>
+<li>
+<p><a href="#nsa-provider">provider</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-client-registration"><a class="anchor" href="#nsa-client-registration"></a>&lt;client-registration&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Represents a client registered with an OAuth 2.0 or OpenID Connect 1.0 Provider.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-client-registration-parents"><a class="anchor" href="#nsa-client-registration-parents"></a>Parent Elements of &lt;client-registration&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-client-registrations">client-registrations</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-client-registration-attributes"><a class="anchor" href="#nsa-client-registration-attributes"></a>&lt;client-registration&gt; Attributes</h3>
+<div id="nsa-client-registration-registration-id" class="ulist">
+<ul>
+<li>
+<p><strong>registration-id</strong>
+The ID that uniquely identifies the <code>ClientRegistration</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-client-id" class="ulist">
+<ul>
+<li>
+<p><strong>client-id</strong>
+The client identifier.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-client-secret" class="ulist">
+<ul>
+<li>
+<p><strong>client-secret</strong>
+The client secret.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-client-authentication-method" class="ulist">
+<ul>
+<li>
+<p><strong>client-authentication-method</strong>
+The method used to authenticate the Client with the Provider.
+The supported values are <strong>client_secret_basic</strong>, <strong>client_secret_post</strong>, <strong>private_key_jwt</strong>, <strong>client_secret_jwt</strong> and <strong>none</strong> <a href="https://tools.ietf.org/html/rfc6749#section-2.1">(public clients)</a>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-authorization-grant-type" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-grant-type</strong>
+The OAuth 2.0 Authorization Framework defines four <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a> types.
+The supported values are <code>authorization_code</code>, <code>client_credentials</code>, <code>password</code>, as well as, extension grant type <code>urn:ietf:params:oauth:grant-type:jwt-bearer</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-redirect-uri" class="ulist">
+<ul>
+<li>
+<p><strong>redirect-uri</strong>
+The client&#8217;s registered redirect URI that the <em>Authorization Server</em> redirects the end-user&#8217;s user-agent to after the end-user has authenticated and authorized access to the client.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-scope" class="ulist">
+<ul>
+<li>
+<p><strong>scope</strong>
+The scope(s) requested by the client during the Authorization Request flow, such as openid, email, or profile.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-client-name" class="ulist">
+<ul>
+<li>
+<p><strong>client-name</strong>
+A descriptive name used for the client.
+The name may be used in certain scenarios, such as when displaying the name of the client in the auto-generated login page.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-client-registration-provider-id" class="ulist">
+<ul>
+<li>
+<p><strong>provider-id</strong>
+A reference to the associated provider. May reference a <code>&lt;provider&gt;</code> element or use one of the common providers (google, github, facebook, okta).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-provider"><a class="anchor" href="#nsa-provider"></a>&lt;provider&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The configuration information for an OAuth 2.0 or OpenID Connect 1.0 Provider.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-provider-parents"><a class="anchor" href="#nsa-provider-parents"></a>Parent Elements of &lt;provider&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-client-registrations">client-registrations</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-provider-attributes"><a class="anchor" href="#nsa-provider-attributes"></a>&lt;provider&gt; Attributes</h3>
+<div id="nsa-provider-provider-id" class="ulist">
+<ul>
+<li>
+<p><strong>provider-id</strong>
+The ID that uniquely identifies the provider.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-authorization-uri" class="ulist">
+<ul>
+<li>
+<p><strong>authorization-uri</strong>
+The Authorization Endpoint URI for the Authorization Server.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-token-uri" class="ulist">
+<ul>
+<li>
+<p><strong>token-uri</strong>
+The Token Endpoint URI for the Authorization Server.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-user-info-uri" class="ulist">
+<ul>
+<li>
+<p><strong>user-info-uri</strong>
+The UserInfo Endpoint URI used to access the claims/attributes of the authenticated end-user.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-user-info-authentication-method" class="ulist">
+<ul>
+<li>
+<p><strong>user-info-authentication-method</strong>
+The authentication method used when sending the access token to the UserInfo Endpoint.
+The supported values are <strong>header</strong>, <strong>form</strong> and <strong>query</strong>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-user-info-user-name-attribute" class="ulist">
+<ul>
+<li>
+<p><strong>user-info-user-name-attribute</strong>
+The name of the attribute returned in the UserInfo Response that references the Name or Identifier of the end-user.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-jwk-set-uri" class="ulist">
+<ul>
+<li>
+<p><strong>jwk-set-uri</strong>
+The URI used to retrieve the <a href="https://tools.ietf.org/html/rfc7517">JSON Web Key (JWK)</a> Set from the Authorization Server, which contains the cryptographic key(s) used to verify the <a href="https://tools.ietf.org/html/rfc7515">JSON Web Signature (JWS)</a> of the ID Token and optionally the UserInfo Response.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-provider-issuer-uri" class="ulist">
+<ul>
+<li>
+<p><strong>issuer-uri</strong>
+The URI used to initially configure a <code>ClientRegistration</code> using discovery of an OpenID Connect Provider&#8217;s <a href="https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig">Configuration endpoint</a> or an Authorization Server&#8217;s <a href="https://tools.ietf.org/html/rfc8414#section-3">Metadata endpoint</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-oauth2-resource-server"><a class="anchor" href="#nsa-oauth2-resource-server"></a>&lt;oauth2-resource-server&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds a <code>BearerTokenAuthenticationFilter</code>, <code>BearerTokenAuthenticationEntryPoint</code>, and <code>BearerTokenAccessDeniedHandler</code> to the configuration.
+In addition, either <code>&lt;jwt&gt;</code> or <code>&lt;opaque-token&gt;</code> must be specified.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-resource-server-parents"><a class="anchor" href="#nsa-oauth2-resource-server-parents"></a>Parents Elements of &lt;oauth2-resource-server&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-resource-server-children"><a class="anchor" href="#nsa-oauth2-resource-server-children"></a>Child Elements of &lt;oauth2-resource-server&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-jwt">jwt</a></p>
+</li>
+<li>
+<p><a href="#nsa-opaque-token">opaque-token</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-oauth2-resource-server-attributes"><a class="anchor" href="#nsa-oauth2-resource-server-attributes"></a>&lt;oauth2-resource-server&gt; Attributes</h3>
+<div id="nsa-oauth2-resource-server-authentication-manager-resolver-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-manager-resolver-ref</strong>
+Reference to an <code>AuthenticationManagerResolver</code> which will resolve the <code>AuthenticationManager</code> at request time</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-resource-server-bearer-token-resolver-ref" class="ulist">
+<ul>
+<li>
+<p><strong>bearer-token-resolver-ref</strong>
+Reference to a <code>BearerTokenResolver</code> which will retrieve the bearer token from the request</p>
+</li>
+</ul>
+</div>
+<div id="nsa-oauth2-resource-server-entry-point-ref" class="ulist">
+<ul>
+<li>
+<p><strong>entry-point-ref</strong>
+Reference to a <code>AuthenticationEntryPoint</code> which will handle unauthorized requests</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-jwt"><a class="anchor" href="#nsa-jwt"></a>&lt;jwt&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Represents an OAuth 2.0 Resource Server that will authorize JWTs</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-jwt-parents"><a class="anchor" href="#nsa-jwt-parents"></a>Parent Elements of &lt;jwt&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-oauth2-resource-server">oauth2-resource-server</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-jwt-attributes"><a class="anchor" href="#nsa-jwt-attributes"></a>&lt;jwt&gt; Attributes</h3>
+<div id="nsa-jwt-jwt-authentication-converter-ref" class="ulist">
+<ul>
+<li>
+<p><strong>jwt-authentication-converter-ref</strong>
+Reference to a <code>Converter&lt;Jwt, AbstractAuthenticationToken&gt;</code></p>
+</li>
+</ul>
+</div>
+<div id="nsa-jwt-decoder-ref" class="ulist">
+<ul>
+<li>
+<p><strong>jwt-decoder-ref</strong>
+Reference to a <code>JwtDecoder</code>. This is a larger component that overrides <code>jwk-set-uri</code></p>
+</li>
+</ul>
+</div>
+<div id="nsa-jwt-jwk-set-uri" class="ulist">
+<ul>
+<li>
+<p><strong>jwk-set-uri</strong>
+The JWK Set Uri used to load signing verification keys from an OAuth 2.0 Authorization Server</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-opaque-token"><a class="anchor" href="#nsa-opaque-token"></a>&lt;opaque-token&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Represents an OAuth 2.0 Resource Server that will authorize opaque tokens</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-opaque-token-parents"><a class="anchor" href="#nsa-opaque-token-parents"></a>Parent Elements of &lt;opaque-token&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-oauth2-resource-server">oauth2-resource-server</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-opaque-token-attributes"><a class="anchor" href="#nsa-opaque-token-attributes"></a>&lt;opaque-token&gt; Attributes</h3>
+<div id="nsa-opaque-token-introspector-ref" class="ulist">
+<ul>
+<li>
+<p><strong>introspector-ref</strong>
+Reference to an <code>OpaqueTokenIntrospector</code>. This is a larger component that overrides <code>introspection-uri</code>, <code>client-id</code>, and <code>client-secret</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-opaque-token-introspection-uri" class="ulist">
+<ul>
+<li>
+<p><strong>introspection-uri</strong>
+The Introspection Uri used to introspect the details of an opaque token. Should be accompanied with a <code>client-id</code> and <code>client-secret</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-opaque-token-client-id" class="ulist">
+<ul>
+<li>
+<p><strong>client-id</strong>
+The Client Id to use for client authentication against the provided <code>introspection-uri</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-opaque-token-client-secret" class="ulist">
+<ul>
+<li>
+<p><strong>client-secret</strong>
+The Client Secret to use for client authentication against the provided <code>introspection-uri</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-http-basic"><a class="anchor" href="#nsa-http-basic"></a>&lt;http-basic&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds a <code>BasicAuthenticationFilter</code> and <code>BasicAuthenticationEntryPoint</code> to the configuration.
+The latter will only be used as the configuration entry point if form-based login is not enabled.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-http-basic-parents"><a class="anchor" href="#nsa-http-basic-parents"></a>Parent Elements of &lt;http-basic&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-http-basic-attributes"><a class="anchor" href="#nsa-http-basic-attributes"></a>&lt;http-basic&gt; Attributes</h3>
+<div id="nsa-http-basic-authentication-details-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-details-source-ref</strong>
+Reference to an <code>AuthenticationDetailsSource</code> which will be used by the authentication filter</p>
+</li>
+</ul>
+</div>
+<div id="nsa-http-basic-entry-point-ref" class="ulist">
+<ul>
+<li>
+<p><strong>entry-point-ref</strong>
+Sets the <code>AuthenticationEntryPoint</code> which is used by the <code>BasicAuthenticationFilter</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-http-firewall"><a class="anchor" href="#nsa-http-firewall"></a>&lt;http-firewall&gt; Element</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is a top-level element which can be used to inject a custom implementation of <code>HttpFirewall</code> into the <code>FilterChainProxy</code> created by the namespace.
+The default implementation should be suitable for most applications.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-http-firewall-attributes"><a class="anchor" href="#nsa-http-firewall-attributes"></a>&lt;http-firewall&gt; Attributes</h3>
+<div id="nsa-http-firewall-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Defines a reference to a Spring bean that implements <code>HttpFirewall</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-intercept-url"><a class="anchor" href="#nsa-intercept-url"></a>&lt;intercept-url&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element is used to define the set of URL patterns that the application is interested in and to configure how they should be handled.
+It is used to construct the <code>FilterInvocationSecurityMetadataSource</code> used by the <code>FilterSecurityInterceptor</code>.
+It is also responsible for configuring a <code>ChannelProcessingFilter</code> if particular URLs need to be accessed by HTTPS, for example.
+When matching the specified patterns against an incoming request, the matching is done in the order in which the elements are declared.
+So the most specific patterns should come first and the most general should come last.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-intercept-url-parents"><a class="anchor" href="#nsa-intercept-url-parents"></a>Parent Elements of &lt;intercept-url&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-filter-security-metadata-source">filter-security-metadata-source</a></p>
+</li>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-intercept-url-attributes"><a class="anchor" href="#nsa-intercept-url-attributes"></a>&lt;intercept-url&gt; Attributes</h3>
+<div id="nsa-intercept-url-access" class="ulist">
+<ul>
+<li>
+<p><strong>access</strong>
+Lists the access attributes which will be stored in the <code>FilterInvocationSecurityMetadataSource</code> for the defined URL pattern/method combination.
+This should be a comma-separated list of the security configuration attributes (such as role names).</p>
+</li>
+</ul>
+</div>
+<div id="nsa-intercept-url-method" class="ulist">
+<ul>
+<li>
+<p><strong>method</strong>
+The HTTP Method which will be used in combination with the pattern and servlet path (optional) to match an incoming request.
+If omitted, any method will match.
+If an identical pattern is specified with and without a method, the method-specific match will take precedence.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-intercept-url-pattern" class="ulist">
+<ul>
+<li>
+<p><strong>pattern</strong>
+The pattern which defines the URL path.
+The content will depend on the <code>request-matcher</code> attribute from the containing http element, so will default to ant path syntax.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-intercept-url-request-matcher-ref" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher-ref</strong>
+A reference to a <code>RequestMatcher</code> that will be used to determine if this <code>&lt;intercept-url&gt;</code> is used.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-intercept-url-requires-channel" class="ulist">
+<ul>
+<li>
+<p><strong>requires-channel</strong>
+Can be "http" or "https" depending on whether a particular URL pattern should be accessed over HTTP or HTTPS respectively.
+Alternatively the value "any" can be used when there is no preference.
+If this attribute is present on any <code>&lt;intercept-url&gt;</code> element, then a <code>ChannelProcessingFilter</code> will be added to the filter stack and its additional dependencies added to the application context.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If a <code>&lt;port-mappings&gt;</code> configuration is added, this will be used to by the <code>SecureChannelProcessor</code> and <code>InsecureChannelProcessor</code> beans to determine the ports used for redirecting to HTTP/HTTPS.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This property is invalid for <a href="#nsa-filter-security-metadata-source">filter-security-metadata-source</a>
+</td>
+</tr>
+</table>
+</div>
+<div id="nsa-intercept-url-servlet-path" class="ulist">
+<ul>
+<li>
+<p><strong>servlet-path</strong>
+The servlet path which will be used in combination with the pattern and HTTP method to match an incoming request.
+This attribute is only applicable when <a href="#nsa-http-request-matcher">request-matcher</a> is 'mvc'.
+In addition, the value is only required in the following 2 use cases: 1) There are 2 or more <code>HttpServlet</code> 's registered in the <code>ServletContext</code> that have mappings starting with <code>'/'</code> and are different; 2) The pattern starts with the same value of a registered <code>HttpServlet</code> path, excluding the default (root) <code>HttpServlet</code> <code>'/'</code>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This property is invalid for <a href="#nsa-filter-security-metadata-source">filter-security-metadata-source</a>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-jee"><a class="anchor" href="#nsa-jee"></a>&lt;jee&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds a J2eePreAuthenticatedProcessingFilter to the filter chain to provide integration with container authentication.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-jee-parents"><a class="anchor" href="#nsa-jee-parents"></a>Parent Elements of &lt;jee&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-jee-attributes"><a class="anchor" href="#nsa-jee-attributes"></a>&lt;jee&gt; Attributes</h3>
+<div id="nsa-jee-mappable-roles" class="ulist">
+<ul>
+<li>
+<p><strong>mappable-roles</strong>
+A comma-separate list of roles to look for in the incoming HttpServletRequest.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-jee-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-service-ref</strong>
+A reference to a user-service (or UserDetailsService bean) Id</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-logout"><a class="anchor" href="#nsa-logout"></a>&lt;logout&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds a <code>LogoutFilter</code> to the filter stack.
+This is configured with a <code>SecurityContextLogoutHandler</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-logout-parents"><a class="anchor" href="#nsa-logout-parents"></a>Parent Elements of &lt;logout&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-logout-attributes"><a class="anchor" href="#nsa-logout-attributes"></a>&lt;logout&gt; Attributes</h3>
+<div id="nsa-logout-delete-cookies" class="ulist">
+<ul>
+<li>
+<p><strong>delete-cookies</strong>
+A comma-separated list of the names of cookies which should be deleted when the user logs out.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-logout-invalidate-session" class="ulist">
+<ul>
+<li>
+<p><strong>invalidate-session</strong>
+Maps to the <code>invalidateHttpSession</code> of the <code>SecurityContextLogoutHandler</code>.
+Defaults to "true", so the session will be invalidated on logout.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-logout-logout-success-url" class="ulist">
+<ul>
+<li>
+<p><strong>logout-success-url</strong>
+The destination URL which the user will be taken to after logging out.
+Defaults to &lt;form-login-login-page&gt;/?logout (i.e. /login?logout)</p>
+<div class="paragraph">
+<p>Setting this attribute will inject the <code>SessionManagementFilter</code> with a <code>SimpleRedirectInvalidSessionStrategy</code> configured with the attribute value.
+When an invalid session ID is submitted, the strategy will be invoked, redirecting to the configured URL.</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="nsa-logout-logout-url" class="ulist">
+<ul>
+<li>
+<p><strong>logout-url</strong>
+The URL which will cause a logout (i.e. which will be processed by the filter).
+Defaults to "/logout".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-logout-success-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>success-handler-ref</strong>
+May be used to supply an instance of <code>LogoutSuccessHandler</code> which will be invoked to control the navigation after logging out.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-openid-login"><a class="anchor" href="#nsa-openid-login"></a>&lt;openid-login&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Similar to <code>&lt;form-login&gt;</code> and has the same attributes.
+The default value for <code>login-processing-url</code> is "/login/openid".
+An <code>OpenIDAuthenticationFilter</code> and <code>OpenIDAuthenticationProvider</code> will be registered.
+The latter requires a reference to a <code>UserDetailsService</code>.
+Again, this can be specified by <code>id</code>, using the <code>user-service-ref</code> attribute, or will be located automatically in the application context.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-openid-login-parents"><a class="anchor" href="#nsa-openid-login-parents"></a>Parent Elements of &lt;openid-login&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-openid-login-attributes"><a class="anchor" href="#nsa-openid-login-attributes"></a>&lt;openid-login&gt; Attributes</h3>
+<div id="nsa-openid-login-always-use-default-target" class="ulist">
+<ul>
+<li>
+<p><strong>always-use-default-target</strong>
+Whether the user should always be redirected to the default-target-url after login.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-details-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-details-source-ref</strong>
+Reference to an AuthenticationDetailsSource which will be used by the authentication filter</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-failure-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-handler-ref</strong>
+Reference to an AuthenticationFailureHandler bean which should be used to handle a failed authentication request.
+Should not be used in combination with authentication-failure-url as the implementation should always deal with navigation to the subsequent destination</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-failure-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-url</strong>
+The URL for the login failure page.
+If no login failure URL is specified, Spring Security will automatically create a failure login URL at /login?login_error and a corresponding filter to render that login failure URL when requested.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-success-forward-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-forward-url</strong>
+Maps a <code>ForwardAuthenticationSuccessHandler</code> to <code>authenticationSuccessHandler</code> property of <code>UsernamePasswordAuthenticationFilter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-failure-forward-url" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-failure-forward-url</strong>
+Maps a <code>ForwardAuthenticationFailureHandler</code> to <code>authenticationFailureHandler</code> property of <code>UsernamePasswordAuthenticationFilter</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-authentication-success-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-handler-ref</strong>
+Reference to an AuthenticationSuccessHandler bean which should be used to handle a successful authentication request.
+Should not be used in combination with <a href="#nsa-openid-login-default-target-url">default-target-url</a> (or <a href="#nsa-openid-login-always-use-default-target">always-use-default-target</a>) as the implementation should always deal with navigation to the subsequent destination</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-default-target-url" class="ulist">
+<ul>
+<li>
+<p><strong>default-target-url</strong>
+The URL that will be redirected to after successful authentication, if the user&#8217;s previous action could not be resumed.
+This generally happens if the user visits a login page without having first requested a secured operation that triggers authentication.
+If unspecified, defaults to the root of the application.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-login-page" class="ulist">
+<ul>
+<li>
+<p><strong>login-page</strong>
+The URL for the login page.
+If no login URL is specified, Spring Security will automatically create a login URL at /login and a corresponding filter to render that login URL when requested.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-login-processing-url" class="ulist">
+<ul>
+<li>
+<p><strong>login-processing-url</strong>
+The URL that the login form is posted to.
+If unspecified, it defaults to /login.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-password-parameter" class="ulist">
+<ul>
+<li>
+<p><strong>password-parameter</strong>
+The name of the request parameter which contains the password.
+Defaults to "password".</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-service-ref</strong>
+A reference to a user-service (or UserDetailsService bean) Id</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-login-username-parameter" class="ulist">
+<ul>
+<li>
+<p><strong>username-parameter</strong>
+The name of the request parameter which contains the username.
+Defaults to "username".</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-openid-login-children"><a class="anchor" href="#nsa-openid-login-children"></a>Child Elements of &lt;openid-login&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-attribute-exchange">attribute-exchange</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-attribute-exchange"><a class="anchor" href="#nsa-attribute-exchange"></a>&lt;attribute-exchange&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>attribute-exchange</code> element defines the list of attributes which should be requested from the identity provider.
+An example can be found in the <a href="../../authentication/openid.html#servlet-openid" class="xref page">OpenID Support</a> section of the namespace configuration chapter.
+More than one can be used, in which case each must have an <code>identifier-match</code> attribute, containing a regular expression which is matched against the supplied OpenID identifier.
+This allows different attribute lists to be fetched from different providers (Google, Yahoo etc).</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-attribute-exchange-parents"><a class="anchor" href="#nsa-attribute-exchange-parents"></a>Parent Elements of &lt;attribute-exchange&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-openid-login">openid-login</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-attribute-exchange-attributes"><a class="anchor" href="#nsa-attribute-exchange-attributes"></a>&lt;attribute-exchange&gt; Attributes</h3>
+<div id="nsa-attribute-exchange-identifier-match" class="ulist">
+<ul>
+<li>
+<p><strong>identifier-match</strong>
+A regular expression which will be compared against the claimed identity, when deciding which attribute-exchange configuration to use during authentication.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-attribute-exchange-children"><a class="anchor" href="#nsa-attribute-exchange-children"></a>Child Elements of &lt;attribute-exchange&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-openid-attribute">openid-attribute</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-openid-attribute"><a class="anchor" href="#nsa-openid-attribute"></a>&lt;openid-attribute&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Attributes used when making an OpenID AX <a href="https://openid.net/specs/openid-attribute-exchange-1_0.html#fetch_request"> Fetch Request</a></p>
+</div>
+<div class="sect2">
+<h3 id="nsa-openid-attribute-parents"><a class="anchor" href="#nsa-openid-attribute-parents"></a>Parent Elements of &lt;openid-attribute&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-attribute-exchange">attribute-exchange</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-openid-attribute-attributes"><a class="anchor" href="#nsa-openid-attribute-attributes"></a>&lt;openid-attribute&gt; Attributes</h3>
+<div id="nsa-openid-attribute-count" class="ulist">
+<ul>
+<li>
+<p><strong>count</strong>
+Specifies the number of attributes that you wish to get back.
+For example, return 3 emails.
+The default value is 1.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-attribute-name" class="ulist">
+<ul>
+<li>
+<p><strong>name</strong>
+Specifies the name of the attribute that you wish to get back.
+For example, email.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-attribute-required" class="ulist">
+<ul>
+<li>
+<p><strong>required</strong>
+Specifies if this attribute is required to the OP, but does not error out if the OP does not return the attribute.
+Default is false.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-openid-attribute-type" class="ulist">
+<ul>
+<li>
+<p><strong>type</strong>
+Specifies the attribute type.
+For example, <a href="https://axschema.org/contact/email" class="bare">axschema.org/contact/email</a>.
+See your OP&#8217;s documentation for valid attribute types.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-password-management"><a class="anchor" href="#nsa-password-management"></a>&lt;password-management&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This element configures password management.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-password-management-parents"><a class="anchor" href="#nsa-password-management-parents"></a>Parent Elements of &lt;password-management&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-password-management-attributes"><a class="anchor" href="#nsa-password-management-attributes"></a>&lt;password-management&gt; Attributes</h3>
+<div id="nsa-password-management-change-password-page" class="ulist">
+<ul>
+<li>
+<p><strong>change-password-page</strong>
+The change password page. Defaults to "/change-password".</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-port-mappings"><a class="anchor" href="#nsa-port-mappings"></a>&lt;port-mappings&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, an instance of <code>PortMapperImpl</code> will be added to the configuration for use in redirecting to secure and insecure URLs.
+This element can optionally be used to override the default mappings which that class defines.
+Each child <code>&lt;port-mapping&gt;</code> element defines a pair of HTTP:HTTPS ports.
+The default mappings are 80:443 and 8080:8443.
+An example of overriding these can be found in <a href="../../exploits/http.html#servlet-http-redirect" class="xref page">Redirect to HTTPS</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-port-mappings-parents"><a class="anchor" href="#nsa-port-mappings-parents"></a>Parent Elements of &lt;port-mappings&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-port-mappings-children"><a class="anchor" href="#nsa-port-mappings-children"></a>Child Elements of &lt;port-mappings&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-port-mapping">port-mapping</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-port-mapping"><a class="anchor" href="#nsa-port-mapping"></a>&lt;port-mapping&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Provides a method to map http ports to https ports when forcing a redirect.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-port-mapping-parents"><a class="anchor" href="#nsa-port-mapping-parents"></a>Parent Elements of &lt;port-mapping&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-port-mappings">port-mappings</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-port-mapping-attributes"><a class="anchor" href="#nsa-port-mapping-attributes"></a>&lt;port-mapping&gt; Attributes</h3>
+<div id="nsa-port-mapping-http" class="ulist">
+<ul>
+<li>
+<p><strong>http</strong>
+The http port to use.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-port-mapping-https" class="ulist">
+<ul>
+<li>
+<p><strong>https</strong>
+The https port to use.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-remember-me"><a class="anchor" href="#nsa-remember-me"></a>&lt;remember-me&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds the <code>RememberMeAuthenticationFilter</code> to the stack.
+This in turn will be configured with either a <code>TokenBasedRememberMeServices</code>, a <code>PersistentTokenBasedRememberMeServices</code> or a user-specified bean implementing <code>RememberMeServices</code> depending on the attribute settings.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-remember-me-parents"><a class="anchor" href="#nsa-remember-me-parents"></a>Parent Elements of &lt;remember-me&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-remember-me-attributes"><a class="anchor" href="#nsa-remember-me-attributes"></a>&lt;remember-me&gt; Attributes</h3>
+<div id="nsa-remember-me-authentication-success-handler-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-success-handler-ref</strong>
+Sets the <code>authenticationSuccessHandler</code> property on the <code>RememberMeAuthenticationFilter</code> if custom navigation is required.
+The value should be the name of a <code>AuthenticationSuccessHandler</code> bean in the application context.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-data-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>data-source-ref</strong>
+A reference to a <code>DataSource</code> bean.
+If this is set, <code>PersistentTokenBasedRememberMeServices</code> will be used and configured with a <code>JdbcTokenRepositoryImpl</code> instance.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-remember-me-parameter" class="ulist">
+<ul>
+<li>
+<p><strong>remember-me-parameter</strong>
+The name of the request parameter which toggles remember-me authentication.
+Defaults to "remember-me".
+Maps to the "parameter" property of <code>AbstractRememberMeServices</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-remember-me-cookie" class="ulist">
+<ul>
+<li>
+<p><strong>remember-me-cookie</strong>
+The name of cookie which store the token for remember-me authentication.
+Defaults to "remember-me".
+Maps to the "cookieName" property of <code>AbstractRememberMeServices</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-key" class="ulist">
+<ul>
+<li>
+<p><strong>key</strong>
+Maps to the "key" property of <code>AbstractRememberMeServices</code>.
+Should be set to a unique value to ensure that remember-me cookies are only valid within the one application <sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup>.
+If this is not set a secure random value will be generated.
+Since generating secure random values can take a while, setting this value explicitly can help improve startup times when using the remember-me functionality.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-services-alias" class="ulist">
+<ul>
+<li>
+<p><strong>services-alias</strong>
+Exports the internally defined <code>RememberMeServices</code> as a bean alias, allowing it to be used by other beans in the application context.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-services-ref" class="ulist">
+<ul>
+<li>
+<p><strong>services-ref</strong>
+Allows complete control of the <code>RememberMeServices</code> implementation that will be used by the filter.
+The value should be the <code>id</code> of a bean in the application context which implements this interface.
+Should also implement <code>LogoutHandler</code> if a logout filter is in use.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-token-repository-ref" class="ulist">
+<ul>
+<li>
+<p><strong>token-repository-ref</strong>
+Configures a <code>PersistentTokenBasedRememberMeServices</code> but allows the use of a custom <code>PersistentTokenRepository</code> bean.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-token-validity-seconds" class="ulist">
+<ul>
+<li>
+<p><strong>token-validity-seconds</strong>
+Maps to the <code>tokenValiditySeconds</code> property of <code>AbstractRememberMeServices</code>.
+Specifies the period in seconds for which the remember-me cookie should be valid.
+By default it will be valid for 14 days.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-use-secure-cookie" class="ulist">
+<ul>
+<li>
+<p><strong>use-secure-cookie</strong>
+It is recommended that remember-me cookies are only submitted over HTTPS and thus should be flagged as "secure".
+By default, a secure cookie will be used if the connection over which the login request is made is secure (as it should be).
+If you set this property to <code>false</code>, secure cookies will not be used.
+Setting it to <code>true</code> will always set the secure flag on the cookie.
+This attribute maps to the <code>useSecureCookie</code> property of <code>AbstractRememberMeServices</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-remember-me-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-service-ref</strong>
+The remember-me services implementations require access to a <code>UserDetailsService</code>, so there has to be one defined in the application context.
+If there is only one, it will be selected and used automatically by the namespace configuration.
+If there are multiple instances, you can specify a bean <code>id</code> explicitly using this attribute.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-request-cache"><a class="anchor" href="#nsa-request-cache"></a>&lt;request-cache&gt; Element</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sets the <code>RequestCache</code> instance which will be used by the <code>ExceptionTranslationFilter</code> to store request information before invoking an <code>AuthenticationEntryPoint</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-request-cache-parents"><a class="anchor" href="#nsa-request-cache-parents"></a>Parent Elements of &lt;request-cache&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-request-cache-attributes"><a class="anchor" href="#nsa-request-cache-attributes"></a>&lt;request-cache&gt; Attributes</h3>
+<div id="nsa-request-cache-ref" class="ulist">
+<ul>
+<li>
+<p><strong>ref</strong>
+Defines a reference to a Spring bean that is a <code>RequestCache</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-session-management"><a class="anchor" href="#nsa-session-management"></a>&lt;session-management&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Session-management related functionality is implemented by the addition of a <code>SessionManagementFilter</code> to the filter stack.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-session-management-parents"><a class="anchor" href="#nsa-session-management-parents"></a>Parent Elements of &lt;session-management&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-session-management-attributes"><a class="anchor" href="#nsa-session-management-attributes"></a>&lt;session-management&gt; Attributes</h3>
+<div id="nsa-session-management-invalid-session-url" class="ulist">
+<ul>
+<li>
+<p><strong>invalid-session-url</strong>
+Setting this attribute will inject the <code>SessionManagementFilter</code> with a <code>SimpleRedirectInvalidSessionStrategy</code> configured with the attribute value.
+When an invalid session ID is submitted, the strategy will be invoked, redirecting to the configured URL.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-session-management-invalid-session-strategy-ref" class="ulist">
+<ul>
+<li>
+<p><strong>invalid-session-url</strong>
+Allows injection of the InvalidSessionStrategy instance used by the SessionManagementFilter.
+Use either this or the <code>invalid-session-url</code> attribute but not both.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-session-management-session-authentication-error-url" class="ulist">
+<ul>
+<li>
+<p><strong>session-authentication-error-url</strong>
+Defines the URL of the error page which should be shown when the SessionAuthenticationStrategy raises an exception.
+If not set, an unauthorized (401) error code will be returned to the client.
+Note that this attribute doesn&#8217;t apply if the error occurs during a form-based login, where the URL for authentication failure will take precedence.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-session-management-session-authentication-strategy-ref" class="ulist">
+<ul>
+<li>
+<p><strong>session-authentication-strategy-ref</strong>
+Allows injection of the SessionAuthenticationStrategy instance used by the SessionManagementFilter</p>
+</li>
+</ul>
+</div>
+<div id="nsa-session-management-session-fixation-protection" class="ulist">
+<ul>
+<li>
+<p><strong>session-fixation-protection</strong>
+Indicates how session fixation protection will be applied when a user authenticates.
+If set to "none", no protection will be applied.
+"newSession" will create a new empty session, with only Spring Security-related attributes migrated.
+"migrateSession" will create a new session and copy all session attributes to the new session.
+In Servlet 3.1 (Java EE 7) and newer containers, specifying "changeSessionId" will keep the existing session and use the container-supplied session fixation protection (HttpServletRequest#changeSessionId()).
+Defaults to "changeSessionId" in Servlet 3.1 and newer containers, "migrateSession" in older containers.
+Throws an exception if "changeSessionId" is used in older containers.</p>
+<div class="paragraph">
+<p>If session fixation protection is enabled, the <code>SessionManagementFilter</code> is injected with an appropriately configured <code>DefaultSessionAuthenticationStrategy</code>.
+See the Javadoc for this class for more details.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-session-management-children"><a class="anchor" href="#nsa-session-management-children"></a>Child Elements of &lt;session-management&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-concurrency-control">concurrency-control</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-concurrency-control"><a class="anchor" href="#nsa-concurrency-control"></a>&lt;concurrency-control&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds support for concurrent session control, allowing limits to be placed on the number of active sessions a user can have.
+A <code>ConcurrentSessionFilter</code> will be created, and a <code>ConcurrentSessionControlAuthenticationStrategy</code> will be used with the <code>SessionManagementFilter</code>.
+If a <code>form-login</code> element has been declared, the strategy object will also be injected into the created authentication filter.
+An instance of <code>SessionRegistry</code> (a <code>SessionRegistryImpl</code> instance unless the user wishes to use a custom bean) will be created for use by the strategy.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-concurrency-control-parents"><a class="anchor" href="#nsa-concurrency-control-parents"></a>Parent Elements of &lt;concurrency-control&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-session-management">session-management</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-concurrency-control-attributes"><a class="anchor" href="#nsa-concurrency-control-attributes"></a>&lt;concurrency-control&gt; Attributes</h3>
+<div id="nsa-concurrency-control-error-if-maximum-exceeded" class="ulist">
+<ul>
+<li>
+<p><strong>error-if-maximum-exceeded</strong>
+If set to "true" a <code>SessionAuthenticationException</code> will be raised when a user attempts to exceed the maximum allowed number of sessions.
+The default behaviour is to expire the original session.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-concurrency-control-expired-url" class="ulist">
+<ul>
+<li>
+<p><strong>expired-url</strong>
+The URL a user will be redirected to if they attempt to use a session which has been "expired" by the concurrent session controller because the user has exceeded the number of allowed sessions and has logged in again elsewhere.
+Should be set unless <code>exception-if-maximum-exceeded</code> is set.
+If no value is supplied, an expiry message will just be written directly back to the response.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-concurrency-control-expired-session-strategy-ref" class="ulist">
+<ul>
+<li>
+<p><strong>expired-url</strong>
+Allows injection of the ExpiredSessionStrategy instance used by the ConcurrentSessionFilter</p>
+</li>
+</ul>
+</div>
+<div id="nsa-concurrency-control-max-sessions" class="ulist">
+<ul>
+<li>
+<p><strong>max-sessions</strong>
+Maps to the <code>maximumSessions</code> property of <code>ConcurrentSessionControlAuthenticationStrategy</code>.
+Specify <code>-1</code> as the value to support unlimited sessions.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-concurrency-control-session-registry-alias" class="ulist">
+<ul>
+<li>
+<p><strong>session-registry-alias</strong>
+It can also be useful to have a reference to the internal session registry for use in your own beans or an admin interface.
+You can expose the internal bean using the <code>session-registry-alias</code> attribute, giving it a name that you can use elsewhere in your configuration.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-concurrency-control-session-registry-ref" class="ulist">
+<ul>
+<li>
+<p><strong>session-registry-ref</strong>
+The user can supply their own <code>SessionRegistry</code> implementation using the <code>session-registry-ref</code> attribute.
+The other concurrent session control beans will be wired up to use it.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-x509"><a class="anchor" href="#nsa-x509"></a>&lt;x509&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Adds support for X.509 authentication.
+An <code>X509AuthenticationFilter</code> will be added to the stack and an <code>Http403ForbiddenEntryPoint</code> bean will be created.
+The latter will only be used if no other authentication mechanisms are in use (its only functionality is to return an HTTP 403 error code).
+A <code>PreAuthenticatedAuthenticationProvider</code> will also be created which delegates the loading of user authorities to a <code>UserDetailsService</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-x509-parents"><a class="anchor" href="#nsa-x509-parents"></a>Parent Elements of &lt;x509&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-http">http</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-x509-attributes"><a class="anchor" href="#nsa-x509-attributes"></a>&lt;x509&gt; Attributes</h3>
+<div id="nsa-x509-authentication-details-source-ref" class="ulist">
+<ul>
+<li>
+<p><strong>authentication-details-source-ref</strong>
+A reference to an <code>AuthenticationDetailsSource</code></p>
+</li>
+</ul>
+</div>
+<div id="nsa-x509-subject-principal-regex" class="ulist">
+<ul>
+<li>
+<p><strong>subject-principal-regex</strong>
+Defines a regular expression which will be used to extract the username from the certificate (for use with the <code>UserDetailsService</code>).</p>
+</li>
+</ul>
+</div>
+<div id="nsa-x509-user-service-ref" class="ulist">
+<ul>
+<li>
+<p><strong>user-service-ref</strong>
+Allows a specific <code>UserDetailsService</code> to be used with X.509 in the case where multiple instances are configured.
+If not set, an attempt will be made to locate a suitable instance automatically and use that.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-filter-chain-map"><a class="anchor" href="#nsa-filter-chain-map"></a>&lt;filter-chain-map&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Used to explicitly configure a FilterChainProxy instance with a FilterChainMap</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-chain-map-attributes"><a class="anchor" href="#nsa-filter-chain-map-attributes"></a>&lt;filter-chain-map&gt; Attributes</h3>
+<div id="nsa-filter-chain-map-request-matcher" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher</strong>
+Defines the strategy to use for matching incoming requests.
+Currently the options are 'ant' (for ant path patterns), 'regex' for regular expressions and 'ciRegex' for case-insensitive regular expressions.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-chain-map-children"><a class="anchor" href="#nsa-filter-chain-map-children"></a>Child Elements of &lt;filter-chain-map&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-filter-chain">filter-chain</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-filter-chain"><a class="anchor" href="#nsa-filter-chain"></a>&lt;filter-chain&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Used within to define a specific URL pattern and the list of filters which apply to the URLs matching that pattern.
+When multiple filter-chain elements are assembled in a list in order to configure a FilterChainProxy, the most specific patterns must be placed at the top of the list, with most general ones at the bottom.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-chain-parents"><a class="anchor" href="#nsa-filter-chain-parents"></a>Parent Elements of &lt;filter-chain&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-filter-chain-map">filter-chain-map</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-chain-attributes"><a class="anchor" href="#nsa-filter-chain-attributes"></a>&lt;filter-chain&gt; Attributes</h3>
+<div id="nsa-filter-chain-filters" class="ulist">
+<ul>
+<li>
+<p><strong>filters</strong>
+A comma separated list of references to Spring beans that implement <code>Filter</code>.
+The value "none" means that no <code>Filter</code> should be used for this <code>FilterChain</code>.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-filter-chain-pattern" class="ulist">
+<ul>
+<li>
+<p><strong>pattern</strong>
+A pattern that creates RequestMatcher in combination with the <a href="#nsa-filter-chain-map-request-matcher">request-matcher</a></p>
+</li>
+</ul>
+</div>
+<div id="nsa-filter-chain-request-matcher-ref" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher-ref</strong>
+A reference to a <code>RequestMatcher</code> that will be used to determine if any <code>Filter</code> from the <code>filters</code> attribute should be invoked.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="nsa-filter-security-metadata-source"><a class="anchor" href="#nsa-filter-security-metadata-source"></a>&lt;filter-security-metadata-source&gt;</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Used to explicitly configure a FilterSecurityMetadataSource bean for use with a FilterSecurityInterceptor.
+Usually only needed if you are configuring a FilterChainProxy explicitly, rather than using the&lt;http&gt; element.
+The intercept-url elements used should only contain pattern, method and access attributes.
+Any others will result in a configuration error.</p>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-security-metadata-source-attributes"><a class="anchor" href="#nsa-filter-security-metadata-source-attributes"></a>&lt;filter-security-metadata-source&gt; Attributes</h3>
+<div id="nsa-filter-security-metadata-source-id" class="ulist">
+<ul>
+<li>
+<p><strong>id</strong>
+A bean identifier, used for referring to the bean elsewhere in the context.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-filter-security-metadata-source-request-matcher" class="ulist">
+<ul>
+<li>
+<p><strong>request-matcher</strong>
+Defines the strategy use for matching incoming requests.
+Currently the options are 'ant' (for ant path patterns), 'regex' for regular expressions and 'ciRegex' for case-insensitive regular expressions.</p>
+</li>
+</ul>
+</div>
+<div id="nsa-filter-security-metadata-source-use-expressions" class="ulist">
+<ul>
+<li>
+<p><strong>use-expressions</strong>
+Enables the use of expressions in the 'access' attributes in &lt;intercept-url&gt; elements rather than the traditional list of configuration attributes.
+Defaults to 'true'.
+If enabled, each attribute should contain a single Boolean expression.
+If the expression evaluates to 'true', access will be granted.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="nsa-filter-security-metadata-source-children"><a class="anchor" href="#nsa-filter-security-metadata-source-children"></a>Child Elements of &lt;filter-security-metadata-source&gt;</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#nsa-intercept-url">intercept-url</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. See the xref:servlet/configuration/xml-namespace.adoc#ns-web-xml[introductory chapter
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. This feature is really just provided for convenience and is not intended for production (where a view technology will have been chosen and can be used to render a customized login page). The class <code>DefaultLoginPageGeneratingFilter</code> is responsible for rendering the login page and will provide login forms for both normal form login and/or OpenID if required.
+</div>
+<div class="footnote" id="_footnotedef_3">
+<a href="#_footnoteref_3">3</a>. This doesn&#8217;t affect the use of <code>PersistentTokenBasedRememberMeServices</code>, where the tokens are stored on the server side.
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="authentication-manager.html">Authentication Services</a></span>
+  <span class="next"><a href="method-security.html">Method Security</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../../_/js/site.js"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="5.6.8"></script>
+  </body>
+</html>

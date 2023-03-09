@@ -1,0 +1,2929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>OAuth 2.0 Resource Server JWT :: Spring Security</title>
+    <link rel="canonical" href="https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="opaque-token.html">
+    <meta name="generator" content="Antora 3.2.0-alpha.2">
+    <script>
+!function (theme) {
+  if (theme === 'dark') document.documentElement.classList.add('dark-theme')
+}(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
+    </script>
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
+    <meta name="version" content="5.6.2">
+    <meta name="component" content="ROOT">
+    <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://spring.io">
+        <img id="springlogo" class="block" src="../../../../_/img/spring-logo.svg" alt="Spring">
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Why Spring</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/why-spring">Overview</a>
+            <a class="navbar-item" href="https://spring.io/microservices">Microservices</a>
+            <a class="navbar-item" href="https://spring.io/reactive">Reactive</a>
+            <a class="navbar-item" href="https://spring.io/event-driven">Event Driven</a>
+            <a class="navbar-item" href="https://spring.io/cloud">Cloud</a>
+            <a class="navbar-item" href="https://spring.io/web-applications">Web Applications</a>
+            <a class="navbar-item" href="https://spring.io/serverless">Serverless</a>
+            <a class="navbar-item" href="https://spring.io/batch">Batch</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Learn</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/learn">Overview</a>
+            <a class="navbar-item" href="https://spring.io/quickstart">Quickstart</a>
+            <a class="navbar-item" href="https://spring.io/guides">Guides</a>
+            <a class="navbar-item" href="https://spring.io/blog">Blog</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Projects</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/projects">Overview</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-boot">Spring Boot</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-framework">Spring Framework</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud">Spring Cloud</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-cloud-dataflow">Spring Cloud Data Flow</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-data">Spring Data</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-integration">Spring Integration</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-batch">Spring Batch</a>
+            <a class="navbar-item" href="https://spring.io/projects/spring-security">Spring Security</a>
+            <a class="navbar-item navbar-item-special" href="https://spring.io/projects">View all projects</a>
+            <a class="navbar-item" href="https://spring.io/tools">Spring Tools 4</a>
+            <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
+          </div>
+        </div>
+
+        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <a class="navbar-item" href="https://spring.io/support">Support</a>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Community</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/community">Overview</a>
+            <a class="navbar-item" href="https://spring.io/events">Events</a>
+            <a class="navbar-item" href="https://spring.io/team">Team</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="switch-theme">
+      <input type="checkbox" id="switch-theme-checkbox" />
+      <label for="switch-theme-checkbox">Dark Theme</label>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="5.6.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../../../index.html">Spring Security</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../prerequisites.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../community.html">Community</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../getting-spring-security.html">Getting Spring Security</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/index.html">Features</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/authentication/password-storage.html">Password Storage</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/headers.html">HTTP Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../features/integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/cryptography.html">Cryptography</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/concurrency.html">Java&#8217;s Concurrency APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../features/integrations/localization.html">Localization</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../modules.html">Project Modules</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../samples.html">Samples</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Servlet Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../architecture.html">Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/index.html">Authentication</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/architecture.html">Authentication Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/index.html">Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/input.html">Reading Username/Password</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/form.html">Form</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/basic.html">Basic</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/digest.html">Digest</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authentication/passwords/storage.html">Password Storage</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/in-memory.html">In Memory</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/jdbc.html">JDBC</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details.html">UserDetails</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/user-details-service.html">UserDetailsService</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/password-encoder.html">PasswordEncoder</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/dao-authentication-provider.html">DaoAuthenticationProvider</a>
+  </li>
+  <li class="nav-item" data-depth="5">
+    <a class="nav-link" href="../../authentication/passwords/ldap.html">LDAP</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/session-management.html">Session Management</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/rememberme.html">Remember Me</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/openid.html">OpenID</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/anonymous.html">Anonymous</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/preauth.html">Pre-Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/jaas.html">JAAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/cas.html">CAS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/x509.html">X509</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/runas.html">Run-As</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/logout.html">Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authentication/events.html">Authentication Events</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../authorization/index.html">Authorization</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/architecture.html">Authorization Architecture</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/authorize-requests.html">Authorize HTTP Requests with FilterSecurityInterceptor</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/expression-based.html">Expression-Based Access Control</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/secure-objects.html">Secure Object Implementations</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../authorization/acls.html">Domain Object Security ACLs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../saml2/index.html">SAML2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../saml2/login/index.html">SAML2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/overview.html">SAML2 Log In Overview</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/authentication-requests.html">SAML2 Authentication Requests</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../saml2/login/authentication.html">SAML2 Authentication Responses</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../saml2/logout.html">SAML2 Logout</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../saml2/metadata.html">SAML2 Metadata</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/csrf.html">Cross Site Request Forgery (CSRF) for Servlet Environments</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/headers.html">Security HTTP Response Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/http.html">HTTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../exploits/firewall.html">HttpFirewall</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../integrations/index.html">Integrations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/concurrency.html">Concurrency</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jackson.html">Jackson</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/localization.html">Localization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/servlet-api.html">Servlet APIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/data.html">Spring Data</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/mvc.html">Spring MVC</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/websocket.html">WebSocket</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/cors.html">Spring&#8217;s CORS Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../integrations/jsp-taglibs.html">JSP Taglib</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Configuration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/java.html">Java Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/kotlin.html">Kotlin Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../configuration/xml-namespace.html">Namespace Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/method.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/index.html">MockMvc Support</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/setup.html">MockMvc Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../test/mockmvc/request-post-processors.html">Security RequestPostProcessors</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/authentication.html">Mocking Users</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/csrf.html">Mocking CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/form-login.html">Mocking Form Login</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/http-basic.html">Mocking HTTP Basic</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/oauth2.html">Mocking OAuth2</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../test/mockmvc/logout.html">Mocking Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/request-builders.html">Security RequestBuilders</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-matchers.html">Security ResultMatchers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../test/mockmvc/result-handlers.html">Security ResultHandlers</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../appendix/index.html">Appendix</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../appendix/database-schema.html">Database Schemas</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../appendix/namespace/index.html">XML Namespace</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/authentication-manager.html">Authentication Services</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/http.html">Web Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/method-security.html">Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/ldap.html">LDAP Security</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../appendix/namespace/websocket.html">WebSocket Security</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../appendix/faq.html">FAQ</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/index.html">Reactive Applications</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authentication</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/x509.html">X.509 Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authentication/logout.html">Logout</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Authorization</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authorization/authorize-http-requests.html">Authorize HTTP Requests</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/authorization/method.html">EnableReactiveMethodSecurity</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/index.html">OAuth2</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/login/index.html">OAuth2 Log In</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/core.html">Core Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/login/advanced.html">Advanced Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/client/index.html">OAuth2 Client</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/core.html">Core Interfaces and Classes</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorization-grants.html">OAuth2 Authorization Grants</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/client-authentication.html">OAuth2 Client Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/client/authorized-clients.html">OAuth2 Authorized Clients</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/index.html">OAuth2 Resource Server</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/jwt.html">JWT</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/opaque-token.html">Opaque Token</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/multitenancy.html">Multitenancy</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/oauth2/resource-server/bearer-tokens.html">Bearer Tokens</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/exploits/index.html">Protection Against Exploits</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/csrf.html">CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/headers.html">Headers</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/exploits/http.html">HTTP Requests</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Integrations</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/cors.html">CORS</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/integrations/rsocket.html">RSocket</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/index.html">Testing</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../reactive/test/method.html">Testing Method Security</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../reactive/test/web/index.html">Testing Web Security</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/setup.html">WebTestClient Setup</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/authentication.html">Testing Authentication</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/csrf.html">Testing CSRF</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../../reactive/test/web/oauth2.html">Testing OAuth 2.0</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../reactive/configuration/webflux.html">WebFlux Security</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Documentation</span>
+    <span class="version">5.6.2</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../../../../index.html">Documentation</a>
+      <ul class="versions">
+        <li class="version">
+          <a href="../../../../6.1/index.html">6.1.0-SNAPSHOT</a>
+        </li>
+        <li class="version is-latest">
+          <a href="../../../../index.html">6.0.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.8/index.html">5.8.2</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.7/index.html">5.7.7</a>
+        </li>
+        <li class="version">
+          <a href="../../../../5.6/index.html">5.6.10</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">Spring Security</a></li>
+    <li><a href="../../index.html">Servlet Applications</a></li>
+    <li><a href="../index.html">OAuth2</a></li>
+    <li><a href="index.html">OAuth2 Resource Server</a></li>
+    <li><a href="jwt.html">JWT</a></li>
+  </ul>
+</nav>
+<div class="search">
+  <div id="search" class="field has-filter">
+    <input class="query" type="text" placeholder="Search docs">
+  </div>
+</div>
+
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">5.6.2</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../6.1/servlet/oauth2/resource-server/jwt.html">6.1.0-SNAPSHOT</a>
+    <a class="version" href="../../../../6.1.0-M1/servlet/oauth2/resource-server/jwt.html">6.1.0-M1</a>
+    <a class="version" href="../../../../6.0.3/servlet/oauth2/resource-server/jwt.html">6.0.3-SNAPSHOT</a>
+    <a class="version" href="../../../../servlet/oauth2/resource-server/jwt.html">6.0.2</a>
+    <a class="version" href="../../../../6.0.1/servlet/oauth2/resource-server/jwt.html">6.0.1</a>
+    <a class="version" href="../../../../6.0.0/servlet/oauth2/resource-server/jwt.html">6.0.0</a>
+    <a class="version" href="../../../../6.0.0-RC2/servlet/oauth2/resource-server/jwt.html">6.0.0-RC2</a>
+    <a class="version" href="../../../../6.0.0-RC1/servlet/oauth2/resource-server/jwt.html">6.0.0-RC1</a>
+    <a class="version" href="../../../../6.0.0-M7/servlet/oauth2/resource-server/jwt.html">6.0.0-M7</a>
+    <a class="version" href="../../../../6.0.0-M6/servlet/oauth2/resource-server/jwt.html">6.0.0-M6</a>
+    <a class="version" href="../../../../6.0.0-M5/servlet/oauth2/resource-server/jwt.html">6.0.0-M5</a>
+    <a class="version" href="../../../../6.0.0-M4/servlet/oauth2/resource-server/jwt.html">6.0.0-M4</a>
+    <a class="version" href="../../../../6.0.0-M3/servlet/oauth2/resource-server/jwt.html">6.0.0-M3</a>
+    <a class="version" href="../../../../6.0.0-M2/servlet/oauth2/resource-server/jwt.html">6.0.0-M2</a>
+    <a class="version" href="../../../../6.0.0-M1/servlet/oauth2/resource-server/jwt.html">6.0.0-M1</a>
+    <a class="version" href="../../../../5.8.3/servlet/oauth2/resource-server/jwt.html">5.8.3-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/servlet/oauth2/resource-server/jwt.html">5.8.2</a>
+    <a class="version" href="../../../../5.8.1/servlet/oauth2/resource-server/jwt.html">5.8.1</a>
+    <a class="version" href="../../../../5.8.0/servlet/oauth2/resource-server/jwt.html">5.8.0</a>
+    <a class="version" href="../../../../5.8.0-RC1/servlet/oauth2/resource-server/jwt.html">5.8.0-RC1</a>
+    <a class="version" href="../../../../5.7.8/servlet/oauth2/resource-server/jwt.html">5.7.8-SNAPSHOT</a>
+    <a class="version" href="../../../../5.7/servlet/oauth2/resource-server/jwt.html">5.7.7</a>
+    <a class="version" href="../../../../5.7.6/servlet/oauth2/resource-server/jwt.html">5.7.6</a>
+    <a class="version" href="../../../../5.7.5/servlet/oauth2/resource-server/jwt.html">5.7.5</a>
+    <a class="version" href="../../../../5.7.4/servlet/oauth2/resource-server/jwt.html">5.7.4</a>
+    <a class="version" href="../../../../5.7.3/servlet/oauth2/resource-server/jwt.html">5.7.3</a>
+    <a class="version" href="../../../../5.7.2/servlet/oauth2/resource-server/jwt.html">5.7.2</a>
+    <a class="version" href="../../../../5.7.1/servlet/oauth2/resource-server/jwt.html">5.7.1</a>
+    <a class="version" href="../../../../5.7.0/servlet/oauth2/resource-server/jwt.html">5.7.0</a>
+    <a class="version" href="../../../../5.7.0-RC1/servlet/oauth2/resource-server/jwt.html">5.7.0-RC1</a>
+    <a class="version" href="../../../../5.6.11/servlet/oauth2/resource-server/jwt.html">5.6.11-SNAPSHOT</a>
+    <a class="version" href="../../../../5.6/servlet/oauth2/resource-server/jwt.html">5.6.10</a>
+    <a class="version" href="../../../../5.6.9/servlet/oauth2/resource-server/jwt.html">5.6.9</a>
+    <a class="version" href="../../../../5.6.8/servlet/oauth2/resource-server/jwt.html">5.6.8</a>
+    <a class="version" href="../../../../5.6.7/servlet/oauth2/resource-server/jwt.html">5.6.7</a>
+    <a class="version" href="../../../../5.6.6/servlet/oauth2/resource-server/jwt.html">5.6.6</a>
+    <a class="version" href="../../../../5.6.5/servlet/oauth2/resource-server/jwt.html">5.6.5</a>
+    <a class="version" href="../../../../5.6.4/servlet/oauth2/resource-server/jwt.html">5.6.4</a>
+    <a class="version" href="../../../../5.6.3/servlet/oauth2/resource-server/jwt.html">5.6.3</a>
+    <a class="version is-current" href="jwt.html">5.6.2</a>
+    <a class="version" href="../../../../5.6.1/servlet/oauth2/resource-server/jwt.html">5.6.1</a>
+    <a class="version" href="../../../../5.6.0/servlet/oauth2/resource-server/jwt.html">5.6.0</a>
+    <a class="version is-missing" href="../../../../5.6.0-RC1/index.html">5.6.0-RC1</a>
+  </div>
+</div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.6.2/docs/modules/ROOT/pages/servlet/oauth2/resource-server/jwt.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="OAuth 2.0 Resource Server JWT" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<div class="admonitionblock important">
+  <table>
+    <tbody><tr>
+      <td class="icon">
+        <i class="fa icon-important" title="Important"></i>
+      </td>
+      <td class="content">
+        <div class="paragraph">
+          <p> For the latest stable version, please use <a href="../../../../servlet/oauth2/resource-server/jwt.html">Documentation 6.0.2</a>!</p>
+        </div>
+      </td>
+    </tr></tbody>
+  </table>
+</div>
+<h1 id="page-title" class="page">OAuth 2.0 Resource Server JWT</h1>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-minimaldependencies"><a class="anchor" href="#oauth2resourceserver-jwt-minimaldependencies"></a>Minimal Dependencies for JWT</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most Resource Server support is collected into <code>spring-security-oauth2-resource-server</code>.
+However, the support for decoding and verifying JWTs is in <code>spring-security-oauth2-jose</code>, meaning that both are necessary in order to have a working resource server that supports JWT-encoded Bearer Tokens.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-minimalconfiguration"><a class="anchor" href="#oauth2resourceserver-jwt-minimalconfiguration"></a>Minimal Configuration for JWTs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using <a href="https://spring.io/projects/spring-boot">Spring Boot</a>, configuring an application as a resource server consists of two basic steps.
+First, include the needed dependencies and second, indicate the location of the authorization server.</p>
+</div>
+<div class="sect2">
+<h3 id="_specifying_the_authorization_server"><a class="anchor" href="#_specifying_the_authorization_server"></a>Specifying the Authorization Server</h3>
+<div class="paragraph">
+<p>In a Spring Boot application, to specify which authorization server to use, simply do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yml hljs" data-lang="yml">spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.example.com/issuer</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <code><a href="https://idp.example.com/issuer" class="bare">idp.example.com/issuer</a></code> is the value contained in the <code>iss</code> claim for JWT tokens that the authorization server will issue.
+Resource Server will use this property to further self-configure, discover the authorization server&#8217;s public keys, and subsequently validate incoming JWTs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To use the <code>issuer-uri</code> property, it must also be true that one of <code><a href="https://idp.example.com/issuer/.well-known/openid-configuration" class="bare">idp.example.com/issuer/.well-known/openid-configuration</a></code>, <code><a href="https://idp.example.com/.well-known/openid-configuration/issuer" class="bare">idp.example.com/.well-known/openid-configuration/issuer</a></code>, or <code><a href="https://idp.example.com/.well-known/oauth-authorization-server/issuer" class="bare">idp.example.com/.well-known/oauth-authorization-server/issuer</a></code> is a supported endpoint for the authorization server.
+This endpoint is referred to as a <a href="https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig">Provider Configuration</a> endpoint or a <a href="https://tools.ietf.org/html/rfc8414#section-3">Authorization Server Metadata</a> endpoint.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>And that&#8217;s it!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_startup_expectations"><a class="anchor" href="#_startup_expectations"></a>Startup Expectations</h3>
+<div class="paragraph">
+<p>When this property and these dependencies are used, Resource Server will automatically configure itself to validate JWT-encoded Bearer Tokens.</p>
+</div>
+<div class="paragraph">
+<p>It achieves this through a deterministic startup process:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Query the Provider Configuration or Authorization Server Metadata endpoint for the <code>jwks_url</code> property</p>
+</li>
+<li>
+<p>Query the <code>jwks_url</code> endpoint for supported algorithms</p>
+</li>
+<li>
+<p>Configure the validation strategy to query <code>jwks_url</code> for valid public keys of the algorithms found</p>
+</li>
+<li>
+<p>Configure the validation strategy to validate each JWTs <code>iss</code> claim against <code><a href="https://idp.example.com" class="bare">idp.example.com</a></code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>A consequence of this process is that the authorization server must be up and receiving requests in order for Resource Server to successfully start up.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the authorization server is down when Resource Server queries it (given appropriate timeouts), then startup will fail.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runtime_expectations"><a class="anchor" href="#_runtime_expectations"></a>Runtime Expectations</h3>
+<div class="paragraph">
+<p>Once the application is started up, Resource Server will attempt to process any request containing an <code>Authorization: Bearer</code> header:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-html hljs" data-lang="html">GET / HTTP/1.1
+Authorization: Bearer some-token-value # Resource Server will process this</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So long as this scheme is indicated, Resource Server will attempt to process the request according to the Bearer Token specification.</p>
+</div>
+<div class="paragraph">
+<p>Given a well-formed JWT, Resource Server will:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Validate its signature against a public key obtained from the <code>jwks_url</code> endpoint during startup and matched against the JWT</p>
+</li>
+<li>
+<p>Validate the JWT&#8217;s <code>exp</code> and <code>nbf</code> timestamps and the JWT&#8217;s <code>iss</code> claim, and</p>
+</li>
+<li>
+<p>Map each scope to an authority with the prefix <code>SCOPE_</code>.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As the authorization server makes available new keys, Spring Security will automatically rotate the keys used to validate JWTs.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The resulting <code>Authentication#getPrincipal</code>, by default, is a Spring Security <code>Jwt</code> object, and <code>Authentication#getName</code> maps to the JWT&#8217;s <code>sub</code> property, if one is present.</p>
+</div>
+<div class="paragraph">
+<p>From here, consider jumping to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#oauth2resourceserver-jwt-architecture">How JWT Authentication Works</a></p>
+</li>
+<li>
+<p><a href="#oauth2resourceserver-jwt-jwkseturi">How to Configure without tying Resource Server startup to an authorization server&#8217;s availability</a></p>
+</li>
+<li>
+<p><a href="#oauth2resourceserver-jwt-sansboot">How to Configure without Spring Boot</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-architecture"><a class="anchor" href="#oauth2resourceserver-jwt-architecture"></a>How JWT Authentication Works</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Next, let&#8217;s see the architectural components that Spring Security uses to support <a href="https://tools.ietf.org/html/rfc7519">JWT</a> Authentication in servlet-based applications, like the one we just saw.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.6.2/api/org/springframework/security/oauth2/server/resource/authentication/JwtAuthenticationProvider.html"><code>JwtAuthenticationProvider</code></a> is an <a href="../../authentication/architecture.html#servlet-authentication-authenticationprovider" class="xref page"><code>AuthenticationProvider</code></a> implementation that leverages a <a href="#oauth2resourceserver-jwt-decoder"><code>JwtDecoder</code></a> and <a href="#oauth2resourceserver-jwt-authorization-extraction"><code>JwtAuthenticationConverter</code></a> to authenticate a JWT.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s take a look at how <code>JwtAuthenticationProvider</code> works within Spring Security.
+The figure explains details of how the <a href="../../authentication/architecture.html#servlet-authentication-authenticationmanager" class="xref page"><code>AuthenticationManager</code></a> in figures from <a href="#oauth2resourceserver-authentication-bearertokenauthenticationfilter">Reading the Bearer Token</a> works.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../../_images/servlet/oauth2/jwtauthenticationprovider.png" alt="jwtauthenticationprovider">
+</div>
+<div class="title">Figure 1. <code>JwtAuthenticationProvider</code> Usage</div>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_1.png" alt="number 1"></span> The authentication <code>Filter</code> from <a href="#oauth2resourceserver-authentication-bearertokenauthenticationfilter">Reading the Bearer Token</a> passes a <code>BearerTokenAuthenticationToken</code> to the <code>AuthenticationManager</code> which is implemented by <a href="../../authentication/architecture.html#servlet-authentication-providermanager" class="xref page"><code>ProviderManager</code></a>.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_2.png" alt="number 2"></span> The <code>ProviderManager</code> is configured to use an <a href="../../authentication/architecture.html#servlet-authentication-authenticationprovider" class="xref page">AuthenticationProvider</a> of type <code>JwtAuthenticationProvider</code>.</p>
+</div>
+<div id="oauth2resourceserver-jwt-architecture-jwtdecoder" class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_3.png" alt="number 3"></span> <code>JwtAuthenticationProvider</code> decodes, verifies, and validates the <code>Jwt</code> using a <a href="#oauth2resourceserver-jwt-decoder"><code>JwtDecoder</code></a>.</p>
+</div>
+<div id="oauth2resourceserver-jwt-architecture-jwtauthenticationconverter" class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_4.png" alt="number 4"></span> <code>JwtAuthenticationProvider</code> then uses the <a href="#oauth2resourceserver-jwt-authorization-extraction"><code>JwtAuthenticationConverter</code></a> to convert the <code>Jwt</code> into a <code>Collection</code> of granted authorities.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../../../_images/icons/number_5.png" alt="number 5"></span> When authentication is successful, the <a href="../../authentication/architecture.html#servlet-authentication-authentication" class="xref page"><code>Authentication</code></a> that is returned is of type <code>JwtAuthenticationToken</code> and has a principal that is the <code>Jwt</code> returned by the configured <code>JwtDecoder</code>.
+Ultimately, the returned <code>JwtAuthenticationToken</code> will be set on the <a href="../../authentication/architecture.html#servlet-authentication-securitycontextholder" class="xref page"><code>SecurityContextHolder</code></a> by the authentication <code>Filter</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-jwkseturi"><a class="anchor" href="#oauth2resourceserver-jwt-jwkseturi"></a>Specifying the Authorization Server JWK Set Uri Directly</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If the authorization server doesn&#8217;t support any configuration endpoints, or if Resource Server must be able to start up independently from the authorization server, then the <code>jwk-set-uri</code> can be supplied as well:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.example.com
+          jwk-set-uri: https://idp.example.com/.well-known/jwks.json</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The JWK Set uri is not standardized, but can typically be found in the authorization server&#8217;s documentation
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Consequently, Resource Server will not ping the authorization server at startup.
+We still specify the <code>issuer-uri</code> so that Resource Server still validates the <code>iss</code> claim on incoming JWTs.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This property can also be supplied directly on the <a href="#oauth2resourceserver-jwt-jwkseturi-dsl">DSL</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-sansboot"><a class="anchor" href="#oauth2resourceserver-jwt-sansboot"></a>Overriding or Replacing Boot Auto Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two <code>@Bean</code>s that Spring Boot generates on Resource Server&#8217;s behalf.</p>
+</div>
+<div class="paragraph">
+<p>The first is a <code>WebSecurityConfigurerAdapter</code> that configures the app as a resource server. When including <code>spring-security-oauth2-jose</code>, this <code>WebSecurityConfigurerAdapter</code> looks like:</p>
+</div>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="title">Default JWT Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">protected void configure(HttpSecurity http) {
+    http
+        .authorizeHttpRequests(authorize -&gt; authorize
+            .anyRequest().authenticated()
+        )
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">fun configure(http: HttpSecurity) {
+    http {
+        authorizeRequests {
+            authorize(anyRequest, authenticated)
+        }
+        oauth2ResourceServer {
+            jwt { }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>If the application doesn&#8217;t expose a <code>WebSecurityConfigurerAdapter</code> bean, then Spring Boot will expose the above default one.</p>
+</div>
+<div class="paragraph">
+<p>Replacing this is as simple as exposing the bean within the application:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="title">Custom JWT Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class MyCustomSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .mvcMatchers("/messages/**").hasAuthority("SCOPE_message:read")
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -&gt; oauth2
+                .jwt(jwt -&gt; jwt
+                    .jwtAuthenticationConverter(myConverter())
+                )
+            );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class MyCustomSecurityConfiguration : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize("/messages/**", hasAuthority("SCOPE_message:read"))
+                authorize(anyRequest, authenticated)
+            }
+            oauth2ResourceServer {
+                jwt {
+                    jwtAuthenticationConverter = myConverter()
+                }
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The above requires the scope of <code>message:read</code> for any URL that starts with <code>/messages/</code>.</p>
+</div>
+<div class="paragraph">
+<p>Methods on the <code>oauth2ResourceServer</code> DSL will also override or replace auto configuration.</p>
+</div>
+<div id="oauth2resourceserver-jwt-decoder" class="paragraph">
+<p>For example, the second <code>@Bean</code> Spring Boot creates is a <code>JwtDecoder</code>, which <a href="#oauth2resourceserver-jwt-architecture-jwtdecoder">decodes <code>String</code> tokens into validated instances of <code>Jwt</code></a>:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="title">JWT Decoder</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder() {
+    return JwtDecoders.fromIssuerLocation(issuerUri);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return JwtDecoders.fromIssuerLocation(issuerUri)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Calling <code><a href="https://docs.spring.io/spring-security/site/docs/5.6.2/api/org/springframework/security/oauth2/jwt/JwtDecoders.html#fromIssuerLocation-java.lang.String-">JwtDecoders#fromIssuerLocation</a></code> is what invokes the Provider Configuration or Authorization Server Metadata endpoint in order to derive the JWK Set Uri.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If the application doesn&#8217;t expose a <code>JwtDecoder</code> bean, then Spring Boot will expose the above default one.</p>
+</div>
+<div class="paragraph">
+<p>And its configuration can be overridden using <code>jwkSetUri()</code> or replaced using <code>decoder()</code>.</p>
+</div>
+<div class="paragraph">
+<p>Or, if you&#8217;re not using Spring Boot at all, then both of these components - the filter chain and a <code>JwtDecoder</code> can be specified in XML.</p>
+</div>
+<div class="paragraph">
+<p>The filter chain is specified like so:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="title">Default JWT Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_xml--panel" class="tabpanel" aria-labelledby="_tabs_4_xml">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/**" access="authenticated"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt decoder-ref="jwtDecoder"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>And the <code>JwtDecoder</code> like so:</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="title">JWT Decoder</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_xml--panel" class="tabpanel" aria-labelledby="_tabs_5_xml">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bean id="jwtDecoder"
+        class="org.springframework.security.oauth2.jwt.JwtDecoders"
+        factory-method="fromIssuerLocation"&gt;
+    &lt;constructor-arg value="${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}"/&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-jwkseturi-dsl"><a class="anchor" href="#oauth2resourceserver-jwt-jwkseturi-dsl"></a>Using <code>jwkSetUri()</code></h3>
+<div class="paragraph">
+<p>An authorization server&#8217;s JWK Set Uri can be configured <a href="#oauth2resourceserver-jwt-jwkseturi">as a configuration property</a> or it can be supplied in the DSL:</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="title">JWK Set Uri Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_6_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class DirectlyConfiguredJwkSetUri extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -&gt; oauth2
+                .jwt(jwt -&gt; jwt
+                    .jwkSetUri("https://idp.example.com/.well-known/jwks.json")
+                )
+            );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class DirectlyConfiguredJwkSetUri : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize(anyRequest, authenticated)
+            }
+            oauth2ResourceServer {
+                jwt {
+                    jwkSetUri = "https://idp.example.com/.well-known/jwks.json"
+                }
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_xml--panel" class="tabpanel" aria-labelledby="_tabs_6_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/**" access="authenticated"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt jwk-set-uri="https://idp.example.com/.well-known/jwks.json"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Using <code>jwkSetUri()</code> takes precedence over any configuration property.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-dsl"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-dsl"></a>Using <code>decoder()</code></h3>
+<div class="paragraph">
+<p>More powerful than <code>jwkSetUri()</code> is <code>decoder()</code>, which will completely replace any Boot auto configuration of <a href="#oauth2resourceserver-jwt-architecture-jwtdecoder"><code>JwtDecoder</code></a>:</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="title">JWT Decoder Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_7_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class DirectlyConfiguredJwtDecoder extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -&gt; oauth2
+                .jwt(jwt -&gt; jwt
+                    .decoder(myCustomDecoder())
+                )
+            );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class DirectlyConfiguredJwtDecoder : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize(anyRequest, authenticated)
+            }
+            oauth2ResourceServer {
+                jwt {
+                    jwtDecoder = myCustomDecoder()
+                }
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_xml--panel" class="tabpanel" aria-labelledby="_tabs_7_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/**" access="authenticated"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt decoder-ref="myCustomDecoder"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This is handy when deeper configuration, like <a href="#oauth2resourceserver-jwt-validation">validation</a>, <a href="#oauth2resourceserver-jwt-claimsetmapping">mapping</a>, or <a href="#oauth2resourceserver-jwt-timeouts">request timeouts</a>, is necessary.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-bean"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-bean"></a>Exposing a <code>JwtDecoder</code> <code>@Bean</code></h3>
+<div class="paragraph">
+<p>Or, exposing a <a href="#oauth2resourceserver-jwt-architecture-jwtdecoder"><code>JwtDecoder</code></a> <code>@Bean</code> has the same effect as <code>decoder()</code>:</p>
+</div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_8_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-decoder-algorithm"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-algorithm"></a>Configuring Trusted Algorithms</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, <code>NimbusJwtDecoder</code>, and hence Resource Server, will only trust and verify tokens using <code>RS256</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can customize this via <a href="#oauth2resourceserver-jwt-boot-algorithm">Spring Boot</a>, <a href="#oauth2resourceserver-jwt-decoder-builder">the NimbusJwtDecoder builder</a>, or from the <a href="#oauth2resourceserver-jwt-decoder-jwk-response">JWK Set response</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-boot-algorithm"><a class="anchor" href="#oauth2resourceserver-jwt-boot-algorithm"></a>Via Spring Boot</h3>
+<div class="paragraph">
+<p>The simplest way to set the algorithm is as a property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jws-algorithm: RS512
+          jwk-set-uri: https://idp.example.org/.well-known/jwks.json</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-builder"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-builder"></a>Using a Builder</h3>
+<div class="paragraph">
+<p>For greater power, though, we can use a builder that ships with <code>NimbusJwtDecoder</code>:</p>
+</div>
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_9_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_9_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithm(RS512).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_9_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_9_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithm(RS512).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Calling <code>jwsAlgorithm</code> more than once will configure <code>NimbusJwtDecoder</code> to trust more than one algorithm, like so:</p>
+</div>
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_10_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_10_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, you can call <code>jwsAlgorithms</code>:</p>
+</div>
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_11_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_11_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithms(algorithms -&gt; {
+                    algorithms.add(RS512);
+                    algorithms.add(ES512);
+            }).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithms {
+                it.add(RS512)
+                it.add(ES512)
+            }.build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-jwk-response"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-jwk-response"></a>From JWK Set response</h3>
+<div class="paragraph">
+<p>Since Spring Security&#8217;s JWT support is based off of Nimbus, you can use all it&#8217;s great features as well.</p>
+</div>
+<div class="paragraph">
+<p>For example, Nimbus has a <code>JWSKeySelector</code> implementation that will select the set of algorithms based on the JWK Set URI response.
+You can use it to generate a <code>NimbusJwtDecoder</code> like so:</p>
+</div>
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_12_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_12_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder() {
+    // makes a request to the JWK Set endpoint
+    JWSKeySelector&lt;SecurityContext&gt; jwsKeySelector =
+            JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL(this.jwkSetUrl);
+
+    DefaultJWTProcessor&lt;SecurityContext&gt; jwtProcessor =
+            new DefaultJWTProcessor&lt;&gt;();
+    jwtProcessor.setJWSKeySelector(jwsKeySelector);
+
+    return new NimbusJwtDecoder(jwtProcessor);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    // makes a request to the JWK Set endpoint
+    val jwsKeySelector: JWSKeySelector&lt;SecurityContext&gt; = JWSAlgorithmFamilyJWSKeySelector.fromJWKSetURL&lt;SecurityContext&gt;(this.jwkSetUrl)
+    val jwtProcessor: DefaultJWTProcessor&lt;SecurityContext&gt; = DefaultJWTProcessor()
+    jwtProcessor.jwsKeySelector = jwsKeySelector
+    return NimbusJwtDecoder(jwtProcessor)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-decoder-public-key"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-public-key"></a>Trusting a Single Asymmetric Key</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Simpler than backing a Resource Server with a JWK Set endpoint is to hard-code an RSA public key.
+The public key can be provided via <a href="#oauth2resourceserver-jwt-decoder-public-key-boot">Spring Boot</a> or by <a href="#oauth2resourceserver-jwt-decoder-public-key-builder">Using a Builder</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-public-key-boot"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-public-key-boot"></a>Via Spring Boot</h3>
+<div class="paragraph">
+<p>Specifying a key via Spring Boot is quite simple.
+The key&#8217;s location can be specified like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:my-key.pub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, to allow for a more sophisticated lookup, you can post-process the <code>RsaKeyConversionServicePostProcessor</code>:</p>
+</div>
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_13_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_13_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+BeanFactoryPostProcessor conversionServiceCustomizer() {
+    return beanFactory -&gt;
+        beanFactory.getBean(RsaKeyConversionServicePostProcessor.class)
+                .setResourceLoader(new CustomResourceLoader());
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun conversionServiceCustomizer(): BeanFactoryPostProcessor {
+    return BeanFactoryPostProcessor { beanFactory -&gt;
+        beanFactory.getBean&lt;RsaKeyConversionServicePostProcessor&gt;()
+                .setResourceLoader(CustomResourceLoader())
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Specify your key&#8217;s location:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">key.location: hfds://my-key.pub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then autowire the value:</p>
+</div>
+<div id="_tabs_14" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_14_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_14_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Value("${key.location}")
+RSAPublicKey key;</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Value("\${key.location}")
+val key: RSAPublicKey? = null</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-decoder-public-key-builder"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-public-key-builder"></a>Using a Builder</h3>
+<div class="paragraph">
+<p>To wire an <code>RSAPublicKey</code> directly, you can simply use the appropriate <code>NimbusJwtDecoder</code> builder, like so:</p>
+</div>
+<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_15_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_15_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withPublicKey(this.key).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withPublicKey(this.key).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-decoder-secret-key"><a class="anchor" href="#oauth2resourceserver-jwt-decoder-secret-key"></a>Trusting a Single Symmetric Key</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using a single symmetric key is also simple.
+You can simply load in your <code>SecretKey</code> and use the appropriate <code>NimbusJwtDecoder</code> builder, like so:</p>
+</div>
+<div id="_tabs_16" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_16_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_16_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder() {
+    return NimbusJwtDecoder.withSecretKey(this.key).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    return NimbusJwtDecoder.withSecretKey(key).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-authorization"><a class="anchor" href="#oauth2resourceserver-jwt-authorization"></a>Configuring Authorization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A JWT that is issued from an OAuth 2.0 Authorization Server will typically either have a <code>scope</code> or <code>scp</code> attribute, indicating the scopes (or authorities) it&#8217;s been granted, for example:</p>
+</div>
+<div class="paragraph">
+<p><code>{ &#8230;&#8203;, "scope" : "messages contacts"}</code></p>
+</div>
+<div class="paragraph">
+<p>When this is the case, Resource Server will attempt to coerce these scopes into a list of granted authorities, prefixing each scope with the string "SCOPE_".</p>
+</div>
+<div class="paragraph">
+<p>This means that to protect an endpoint or method with a scope derived from a JWT, the corresponding expressions should include this prefix:</p>
+</div>
+<div id="_tabs_17" class="openblock tabs is-sync is-loading">
+<div class="title">Authorization Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_17_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_17_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_17_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
+public class DirectlyConfiguredJwkSetUri extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .mvcMatchers("/contacts/**").hasAuthority("SCOPE_contacts")
+                .mvcMatchers("/messages/**").hasAuthority("SCOPE_messages")
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
+class DirectlyConfiguredJwkSetUri : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+        http {
+            authorizeRequests {
+                authorize("/contacts/**", hasAuthority("SCOPE_contacts"))
+                authorize("/messages/**", hasAuthority("SCOPE_messages"))
+                authorize(anyRequest, authenticated)
+            }
+            oauth2ResourceServer {
+                jwt { }
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_xml--panel" class="tabpanel" aria-labelledby="_tabs_17_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/contacts/**" access="hasAuthority('SCOPE_contacts')"/&gt;
+    &lt;intercept-uri pattern="/messages/**" access="hasAuthority('SCOPE_messages')"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt jwk-set-uri="https://idp.example.org/.well-known/jwks.json"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or similarly with method security:</p>
+</div>
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_18_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_18_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@PreAuthorize("hasAuthority('SCOPE_messages')")
+public List&lt;Message&gt; getMessages(...) {}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@PreAuthorize("hasAuthority('SCOPE_messages')")
+fun getMessages(): List&lt;Message&gt; { }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-authorization-extraction"><a class="anchor" href="#oauth2resourceserver-jwt-authorization-extraction"></a>Extracting Authorities Manually</h3>
+<div class="paragraph">
+<p>However, there are a number of circumstances where this default is insufficient.
+For example, some authorization servers don&#8217;t use the <code>scope</code> attribute, but instead have their own custom attribute.
+Or, at other times, the resource server may need to adapt the attribute or a composition of attributes into internalized authorities.</p>
+</div>
+<div class="paragraph">
+<p>To this end, Spring Security ships with <code>JwtAuthenticationConverter</code>, which is responsible for <a href="#oauth2resourceserver-jwt-architecture-jwtauthenticationconverter">converting a <code>Jwt</code> into an <code>Authentication</code></a>.
+By default, Spring Security will wire the <code>JwtAuthenticationProvider</code> with a default instance of <code>JwtAuthenticationConverter</code>.</p>
+</div>
+<div class="paragraph">
+<p>As part of configuring a <code>JwtAuthenticationConverter</code>, you can supply a subsidiary converter to go from <code>Jwt</code> to a <code>Collection</code> of granted authorities.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s say that that your authorization server communicates authorities in a custom claim called <code>authorities</code>.
+In that case, you can configure the claim that <a href="#oauth2resourceserver-jwt-architecture-jwtauthenticationconverter"><code>JwtAuthenticationConverter</code></a> should inspect, like so:</p>
+</div>
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div class="title">Authorities Claim Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_19_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_19_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_19_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
+
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+    return jwtAuthenticationConverter;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
+    val grantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
+    grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities")
+
+    val jwtAuthenticationConverter = JwtAuthenticationConverter()
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter)
+    return jwtAuthenticationConverter
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_xml--panel" class="tabpanel" aria-labelledby="_tabs_19_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/contacts/**" access="hasAuthority('SCOPE_contacts')"/&gt;
+    &lt;intercept-uri pattern="/messages/**" access="hasAuthority('SCOPE_messages')"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt jwk-set-uri="https://idp.example.org/.well-known/jwks.json"
+                jwt-authentication-converter-ref="jwtAuthenticationConverter"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;
+
+&lt;bean id="jwtAuthenticationConverter"
+        class="org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter"&gt;
+    &lt;property name="jwtGrantedAuthoritiesConverter" ref="jwtGrantedAuthoritiesConverter"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="jwtGrantedAuthoritiesConverter"
+        class="org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter"&gt;
+    &lt;property name="authoritiesClaimName" value="authorities"/&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also configure the authority prefix to be different as well.
+Instead of prefixing each authority with <code>SCOPE_</code>, you can change it to <code>ROLE_</code> like so:</p>
+</div>
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div class="title">Authorities Prefix Configuration</div>
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_20_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_20_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_20_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
+    return jwtAuthenticationConverter;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtAuthenticationConverter(): JwtAuthenticationConverter {
+    val grantedAuthoritiesConverter = JwtGrantedAuthoritiesConverter()
+    grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_")
+
+    val jwtAuthenticationConverter = JwtAuthenticationConverter()
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter)
+    return jwtAuthenticationConverter
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_20_xml--panel" class="tabpanel" aria-labelledby="_tabs_20_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+    &lt;intercept-uri pattern="/contacts/**" access="hasAuthority('SCOPE_contacts')"/&gt;
+    &lt;intercept-uri pattern="/messages/**" access="hasAuthority('SCOPE_messages')"/&gt;
+    &lt;oauth2-resource-server&gt;
+        &lt;jwt jwk-set-uri="https://idp.example.org/.well-known/jwks.json"
+                jwt-authentication-converter-ref="jwtAuthenticationConverter"/&gt;
+    &lt;/oauth2-resource-server&gt;
+&lt;/http&gt;
+
+&lt;bean id="jwtAuthenticationConverter"
+        class="org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter"&gt;
+    &lt;property name="jwtGrantedAuthoritiesConverter" ref="jwtGrantedAuthoritiesConverter"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="jwtGrantedAuthoritiesConverter"
+        class="org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter"&gt;
+    &lt;property name="authorityPrefix" value="ROLE_"/&gt;
+&lt;/bean&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, you can remove the prefix altogether by calling <code>JwtGrantedAuthoritiesConverter#setAuthorityPrefix("")</code>.</p>
+</div>
+<div class="paragraph">
+<p>For more flexibility, the DSL supports entirely replacing the converter with any class that implements <code>Converter&lt;Jwt, AbstractAuthenticationToken&gt;</code>:</p>
+</div>
+<div id="_tabs_21" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_21_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_21_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static class CustomAuthenticationConverter implements Converter&lt;Jwt, AbstractAuthenticationToken&gt; {
+    public AbstractAuthenticationToken convert(Jwt jwt) {
+        return new CustomAuthenticationToken(jwt);
+    }
+}
+
+// ...
+
+@EnableWebSecurity
+public class CustomAuthenticationConverterConfig extends WebSecurityConfigurerAdapter {
+    protected void configure(HttpSecurity http) {
+        http
+            .authorizeHttpRequests(authorize -&gt; authorize
+                .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -&gt; oauth2
+                .jwt(jwt -&gt; jwt
+                    .jwtAuthenticationConverter(new CustomAuthenticationConverter())
+                )
+            );
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">internal class CustomAuthenticationConverter : Converter&lt;Jwt, AbstractAuthenticationToken&gt; {
+    override fun convert(jwt: Jwt): AbstractAuthenticationToken {
+        return CustomAuthenticationToken(jwt)
+    }
+}
+
+// ...
+
+@EnableWebSecurity
+class CustomAuthenticationConverterConfig : WebSecurityConfigurerAdapter() {
+    override fun configure(http: HttpSecurity) {
+       http {
+            authorizeRequests {
+                authorize(anyRequest, authenticated)
+            }
+           oauth2ResourceServer {
+               jwt {
+                   jwtAuthenticationConverter = CustomAuthenticationConverter()
+               }
+           }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-validation"><a class="anchor" href="#oauth2resourceserver-jwt-validation"></a>Configuring Validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Using <a href="#oauth2resourceserver-jwt-minimalconfiguration">minimal Spring Boot configuration</a>, indicating the authorization server&#8217;s issuer uri, Resource Server will default to verifying the <code>iss</code> claim as well as the <code>exp</code> and <code>nbf</code> timestamp claims.</p>
+</div>
+<div class="paragraph">
+<p>In circumstances where validation needs to be customized, Resource Server ships with two standard validators and also accepts custom <code>OAuth2TokenValidator</code> instances.</p>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-validation-clockskew"><a class="anchor" href="#oauth2resourceserver-jwt-validation-clockskew"></a>Customizing Timestamp Validation</h3>
+<div class="paragraph">
+<p>JWT&#8217;s typically have a window of validity, with the start of the window indicated in the <code>nbf</code> claim and the end indicated in the <code>exp</code> claim.</p>
+</div>
+<div class="paragraph">
+<p>However, every server can experience clock drift, which can cause tokens to appear expired to one server, but not to another.
+This can cause some implementation heartburn as the number of collaborating servers increases in a distributed system.</p>
+</div>
+<div class="paragraph">
+<p>Resource Server uses <code>JwtTimestampValidator</code> to verify a token&#8217;s validity window, and it can be configured with a <code>clockSkew</code> to alleviate the above problem:</p>
+</div>
+<div id="_tabs_22" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_22_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_22_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_22_java--panel" class="tabpanel" aria-labelledby="_tabs_22_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+     NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
+             JwtDecoders.fromIssuerLocation(issuerUri);
+
+     OAuth2TokenValidator&lt;Jwt&gt; withClockSkew = new DelegatingOAuth2TokenValidator&lt;&gt;(
+            new JwtTimestampValidator(Duration.ofSeconds(60)),
+            new JwtIssuerValidator(issuerUri));
+
+     jwtDecoder.setJwtValidator(withClockSkew);
+
+     return jwtDecoder;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_22_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_22_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    val jwtDecoder: NimbusJwtDecoder = JwtDecoders.fromIssuerLocation(issuerUri) as NimbusJwtDecoder
+
+    val withClockSkew: OAuth2TokenValidator&lt;Jwt&gt; = DelegatingOAuth2TokenValidator(
+            JwtTimestampValidator(Duration.ofSeconds(60)),
+            JwtIssuerValidator(issuerUri))
+
+    jwtDecoder.setJwtValidator(withClockSkew)
+
+    return jwtDecoder
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+By default, Resource Server configures a clock skew of 60 seconds.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-validation-custom"><a class="anchor" href="#oauth2resourceserver-jwt-validation-custom"></a>Configuring a Custom Validator</h3>
+<div class="paragraph">
+<p>Adding a check for the <code>aud</code> claim is simple with the <code>OAuth2TokenValidator</code> API:</p>
+</div>
+<div id="_tabs_23" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_23_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_23_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_23_java--panel" class="tabpanel" aria-labelledby="_tabs_23_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">OAuth2TokenValidator&lt;Jwt&gt; audienceValidator() {
+    return new JwtClaimValidator&lt;List&lt;String&gt;&gt;(AUD, aud -&gt; aud.contains("messaging"));
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_23_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_23_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">fun audienceValidator(): OAuth2TokenValidator&lt;Jwt?&gt; {
+    return JwtClaimValidator&lt;List&lt;String&gt;&gt;(AUD) { aud -&gt; aud.contains("messaging") }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, for more control you can implement your own <code>OAuth2TokenValidator</code>:</p>
+</div>
+<div id="_tabs_24" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_24_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_24_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_24_java--panel" class="tabpanel" aria-labelledby="_tabs_24_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static class AudienceValidator implements OAuth2TokenValidator&lt;Jwt&gt; {
+    OAuth2Error error = new OAuth2Error("custom_code", "Custom error message", null);
+
+    @Override
+    public OAuth2TokenValidatorResult validate(Jwt jwt) {
+        if (jwt.getAudience().contains("messaging")) {
+            return OAuth2TokenValidatorResult.success();
+        } else {
+            return OAuth2TokenValidatorResult.failure(error);
+        }
+    }
+}
+
+// ...
+
+OAuth2TokenValidator&lt;Jwt&gt; audienceValidator() {
+    return new AudienceValidator();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_24_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_24_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">internal class AudienceValidator : OAuth2TokenValidator&lt;Jwt&gt; {
+    var error: OAuth2Error = OAuth2Error("custom_code", "Custom error message", null)
+
+    override fun validate(jwt: Jwt): OAuth2TokenValidatorResult {
+        return if (jwt.audience.contains("messaging")) {
+            OAuth2TokenValidatorResult.success()
+        } else {
+            OAuth2TokenValidatorResult.failure(error)
+        }
+    }
+}
+
+// ...
+
+fun audienceValidator(): OAuth2TokenValidator&lt;Jwt&gt; {
+    return AudienceValidator()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, to add into a resource server, it&#8217;s a matter of specifying the <a href="#oauth2resourceserver-jwt-architecture-jwtdecoder"><code>JwtDecoder</code></a> instance:</p>
+</div>
+<div id="_tabs_25" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_25_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_25_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_25_java--panel" class="tabpanel" aria-labelledby="_tabs_25_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
+        JwtDecoders.fromIssuerLocation(issuerUri);
+
+    OAuth2TokenValidator&lt;Jwt&gt; audienceValidator = audienceValidator();
+    OAuth2TokenValidator&lt;Jwt&gt; withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri);
+    OAuth2TokenValidator&lt;Jwt&gt; withAudience = new DelegatingOAuth2TokenValidator&lt;&gt;(withIssuer, audienceValidator);
+
+    jwtDecoder.setJwtValidator(withAudience);
+
+    return jwtDecoder;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_25_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_25_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    val jwtDecoder: NimbusJwtDecoder = JwtDecoders.fromIssuerLocation(issuerUri) as NimbusJwtDecoder
+
+    val audienceValidator = audienceValidator()
+    val withIssuer: OAuth2TokenValidator&lt;Jwt&gt; = JwtValidators.createDefaultWithIssuer(issuerUri)
+    val withAudience: OAuth2TokenValidator&lt;Jwt&gt; = DelegatingOAuth2TokenValidator(withIssuer, audienceValidator)
+
+    jwtDecoder.setJwtValidator(withAudience)
+
+    return jwtDecoder
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-claimsetmapping"><a class="anchor" href="#oauth2resourceserver-jwt-claimsetmapping"></a>Configuring Claim Set Mapping</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Security uses the <a href="https://bitbucket.org/connect2id/nimbus-jose-jwt/wiki/Home">Nimbus</a> library for parsing JWTs and validating their signatures.
+Consequently, Spring Security is subject to Nimbus&#8217;s interpretation of each field value and how to coerce each into a Java type.</p>
+</div>
+<div class="paragraph">
+<p>For example, because Nimbus remains Java 7 compatible, it doesn&#8217;t use <code>Instant</code> to represent timestamp fields.</p>
+</div>
+<div class="paragraph">
+<p>And it&#8217;s entirely possible to use a different library or for JWT processing, which may make its own coercion decisions that need adjustment.</p>
+</div>
+<div class="paragraph">
+<p>Or, quite simply, a resource server may want to add or remove claims from a JWT for domain-specific reasons.</p>
+</div>
+<div class="paragraph">
+<p>For these purposes, Resource Server supports mapping the JWT claim set with <code>MappedJwtClaimSetConverter</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-claimsetmapping-singleclaim"><a class="anchor" href="#oauth2resourceserver-jwt-claimsetmapping-singleclaim"></a>Customizing the Conversion of a Single Claim</h3>
+<div class="paragraph">
+<p>By default, <code>MappedJwtClaimSetConverter</code> will attempt to coerce claims into the following types:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Claim</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java Type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aud</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Collection&lt;String&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>exp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Instant</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>iat</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Instant</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>iss</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>jti</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nbf</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Instant</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sub</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>An individual claim&#8217;s conversion strategy can be configured using <code>MappedJwtClaimSetConverter.withDefaults</code>:</p>
+</div>
+<div id="_tabs_26" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_26_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_26_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_26_java--panel" class="tabpanel" aria-labelledby="_tabs_26_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+
+    MappedJwtClaimSetConverter converter = MappedJwtClaimSetConverter
+            .withDefaults(Collections.singletonMap("sub", this::lookupUserIdBySub));
+    jwtDecoder.setClaimSetConverter(converter);
+
+    return jwtDecoder;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_26_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_26_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    val jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
+
+    val converter = MappedJwtClaimSetConverter
+            .withDefaults(mapOf("sub" to this::lookupUserIdBySub))
+    jwtDecoder.setClaimSetConverter(converter)
+
+    return jwtDecoder
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This will keep all the defaults, except it will override the default claim converter for <code>sub</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-claimsetmapping-add"><a class="anchor" href="#oauth2resourceserver-jwt-claimsetmapping-add"></a>Adding a Claim</h3>
+<div class="paragraph">
+<p><code>MappedJwtClaimSetConverter</code> can also be used to add a custom claim, for example, to adapt to an existing system:</p>
+</div>
+<div id="_tabs_27" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_27_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_27_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_27_java--panel" class="tabpanel" aria-labelledby="_tabs_27_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MappedJwtClaimSetConverter.withDefaults(Collections.singletonMap("custom", custom -&gt; "value"));</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_27_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_27_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">MappedJwtClaimSetConverter.withDefaults(mapOf("custom" to Converter&lt;Any, String&gt; { "value" }))</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-claimsetmapping-remove"><a class="anchor" href="#oauth2resourceserver-jwt-claimsetmapping-remove"></a>Removing a Claim</h3>
+<div class="paragraph">
+<p>And removing a claim is also simple, using the same API:</p>
+</div>
+<div id="_tabs_28" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_28_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_28_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_28_java--panel" class="tabpanel" aria-labelledby="_tabs_28_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MappedJwtClaimSetConverter.withDefaults(Collections.singletonMap("legacyclaim", legacy -&gt; null));</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_28_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_28_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">MappedJwtClaimSetConverter.withDefaults(mapOf("legacyclaim" to Converter&lt;Any, Any&gt; { null }))</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="oauth2resourceserver-jwt-claimsetmapping-rename"><a class="anchor" href="#oauth2resourceserver-jwt-claimsetmapping-rename"></a>Renaming a Claim</h3>
+<div class="paragraph">
+<p>In more sophisticated scenarios, like consulting multiple claims at once or renaming a claim, Resource Server accepts any class that implements <code>Converter&lt;Map&lt;String, Object&gt;, Map&lt;String,Object&gt;&gt;</code>:</p>
+</div>
+<div id="_tabs_29" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_29_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_29_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_29_java--panel" class="tabpanel" aria-labelledby="_tabs_29_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class UsernameSubClaimAdapter implements Converter&lt;Map&lt;String, Object&gt;, Map&lt;String, Object&gt;&gt; {
+    private final MappedJwtClaimSetConverter delegate =
+            MappedJwtClaimSetConverter.withDefaults(Collections.emptyMap());
+
+    public Map&lt;String, Object&gt; convert(Map&lt;String, Object&gt; claims) {
+        Map&lt;String, Object&gt; convertedClaims = this.delegate.convert(claims);
+
+        String username = (String) convertedClaims.get("user_name");
+        convertedClaims.put("sub", username);
+
+        return convertedClaims;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_29_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_29_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">class UsernameSubClaimAdapter : Converter&lt;Map&lt;String, Any?&gt;, Map&lt;String, Any?&gt;&gt; {
+    private val delegate = MappedJwtClaimSetConverter.withDefaults(Collections.emptyMap())
+    override fun convert(claims: Map&lt;String, Any?&gt;): Map&lt;String, Any?&gt; {
+        val convertedClaims = delegate.convert(claims)
+        val username = convertedClaims["user_name"] as String
+        convertedClaims["sub"] = username
+        return convertedClaims
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>And then, the instance can be supplied like normal:</p>
+</div>
+<div id="_tabs_30" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_30_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_30_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_30_java--panel" class="tabpanel" aria-labelledby="_tabs_30_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+JwtDecoder jwtDecoder() {
+    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
+    jwtDecoder.setClaimSetConverter(new UsernameSubClaimAdapter());
+    return jwtDecoder;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_30_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_30_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): JwtDecoder {
+    val jwtDecoder: NimbusJwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build()
+    jwtDecoder.setClaimSetConverter(UsernameSubClaimAdapter())
+    return jwtDecoder
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oauth2resourceserver-jwt-timeouts"><a class="anchor" href="#oauth2resourceserver-jwt-timeouts"></a>Configuring Timeouts</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, Resource Server uses connection and socket timeouts of 30 seconds each for coordinating with the authorization server.</p>
+</div>
+<div class="paragraph">
+<p>This may be too short in some scenarios.
+Further, it doesn&#8217;t take into account more sophisticated patterns like back-off and discovery.</p>
+</div>
+<div class="paragraph">
+<p>To adjust the way in which Resource Server connects to the authorization server, <code>NimbusJwtDecoder</code> accepts an instance of <code>RestOperations</code>:</p>
+</div>
+<div id="_tabs_31" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_31_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_31_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_31_java--panel" class="tabpanel" aria-labelledby="_tabs_31_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder(RestTemplateBuilder builder) {
+    RestOperations rest = builder
+            .setConnectTimeout(Duration.ofSeconds(60))
+            .setReadTimeout(Duration.ofSeconds(60))
+            .build();
+
+    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).restOperations(rest).build();
+    return jwtDecoder;
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_31_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_31_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(builder: RestTemplateBuilder): JwtDecoder {
+    val rest: RestOperations = builder
+            .setConnectTimeout(Duration.ofSeconds(60))
+            .setReadTimeout(Duration.ofSeconds(60))
+            .build()
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).restOperations(rest).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Also by default, Resource Server caches in-memory the authorization server&#8217;s JWK set for 5 minutes, which you may want to adjust.
+Further, it doesn&#8217;t take into account more sophisticated caching patterns like eviction or using a shared cache.</p>
+</div>
+<div class="paragraph">
+<p>To adjust the way in which Resource Server caches the JWK set, <code>NimbusJwtDecoder</code> accepts an instance of <code>Cache</code>:</p>
+</div>
+<div id="_tabs_32" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_32_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_32_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_32_java--panel" class="tabpanel" aria-labelledby="_tabs_32_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public JwtDecoder jwtDecoder(CacheManager cacheManager) {
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri)
+            .cache(cacheManager.getCache("jwks"))
+            .build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_32_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_32_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(cacheManager: CacheManager): JwtDecoder {
+    return NimbusJwtDecoder.withJwkSetUri(jwkSetUri)
+            .cache(cacheManager.getCache("jwks"))
+            .build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>When given a <code>Cache</code>, Resource Server will use the JWK Set Uri as the key and the JWK Set JSON as the value.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Spring isn&#8217;t a cache provider, so you&#8217;ll need to make sure to include the appropriate dependencies, like <code>spring-boot-starter-cache</code> and your favorite caching provider.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Whether it&#8217;s socket or cache timeouts, you may instead want to work with Nimbus directly.
+To do so, remember that <code>NimbusJwtDecoder</code> ships with a constructor that takes Nimbus&#8217;s <code>JWTProcessor</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="index.html">OAuth2 Resource Server</a></span>
+  <span class="next"><a href="opaque-token.html">Opaque Token</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer flex">
+    <div id="spring-links flex">
+        <img id="springlogo" src="../../../../_/img/spring-logo.svg" alt="Spring">
+        <p class="smallest antialiased">© <script>var d = new Date();
+        document.write(d.getFullYear());</script> <a href="https://www.vmware.com/">VMware</a>, Inc. or its affiliates. <a href="https://www.vmware.com/help/legal.html">Terms of Use</a> • <a href="https://www.vmware.com/help/privacy.html" rel="noopener noreferrer">Privacy</a> • <a href="https://spring.io/trademarks">Trademark Guidelines</a> <span id="thank-you-mobile">• <a href="https://spring.io/thank-you">Thank you</a></span> • <a href="https://www.vmware.com/help/privacy/california-privacy-rights.html">Your California Privacy Rights</a> • <a class="ot-sdk-show-settings">Cookie Settings</a> <span id="teconsent"></span></p>
+        <p class="smallest antialiased">Apache®, Apache Tomcat®, Apache Kafka®, Apache Cassandra&trade;, and Apache Geode&trade; are trademarks or registered trademarks of the Apache Software Foundation in the United States and/or other countries. Java&trade;, Java&trade; SE, Java&trade; EE, and OpenJDK&trade; are trademarks of Oracle and/or its affiliates. Kubernetes® is a registered trademark of the Linux Foundation in the United States and other countries. Linux® is the registered trademark of Linus Torvalds in the United States and other countries. Windows® and Microsoft® Azure are registered trademarks of Microsoft Corporation. “AWS” and “Amazon Web Services” are trademarks or registered trademarks of Amazon.com Inc. or its affiliates. All other trademarks and copyrights are property of their respective owners and are only mentioned for informative purposes. Other names may be trademarks of their respective owners.</p>
+    </div>
+    <div id="social-icons" class="flex jc-between">
+        <a href="https://www.youtube.com/user/SpringSourceDev" title="Youtube"><svg id="youtube-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle class="cls-1" cx="20" cy="20" r="20"/><path class="cls-2" d="M30.91,14.53a2.89,2.89,0,0,0-2-2C27.12,12,20,12,20,12s-7.12,0-8.9.47a2.9,2.9,0,0,0-2,2A30.56,30.56,0,0,0,8.63,20a30.44,30.44,0,0,0,.46,5.47,2.89,2.89,0,0,0,2,2C12.9,28,20,28,20,28s7.12,0,8.9-.47a2.87,2.87,0,0,0,2-2A30.56,30.56,0,0,0,31.37,20,28.88,28.88,0,0,0,30.91,14.53ZM17.73,23.41V16.59L23.65,20Z"/></svg></a>
+        <a href="https://github.com/spring-projects" title="Github"><svg id="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><path class="cls-1" d="M38,0a38,38,0,1,0,38,38A38,38,0,0,0,38,0Z"/></g><path class="cls-2" d="M38,15.59A22.95,22.95,0,0,0,30.71,60.3c1.15.21,1.57-.5,1.57-1.11s0-2,0-3.9c-6.38,1.39-7.73-3.07-7.73-3.07A6.09,6.09,0,0,0,22,48.86c-2.09-1.42.15-1.39.15-1.39a4.81,4.81,0,0,1,3.52,2.36c2,3.5,5.37,2.49,6.67,1.91a4.87,4.87,0,0,1,1.46-3.07c-5.09-.58-10.45-2.55-10.45-11.34a8.84,8.84,0,0,1,2.36-6.15,8.29,8.29,0,0,1,.23-6.07s1.92-.62,6.3,2.35a21.82,21.82,0,0,1,11.49,0c4.38-3,6.3-2.35,6.3-2.35a8.29,8.29,0,0,1,.23,6.07,8.84,8.84,0,0,1,2.36,6.15c0,8.81-5.37,10.75-10.48,11.32a5.46,5.46,0,0,1,1.56,4.25c0,3.07,0,5.54,0,6.29s.42,1.33,1.58,1.1A22.94,22.94,0,0,0,38,15.59Z"/></svg></a>
+        <a href="https://twitter.com/springcentral" title="Twitter"><svg id="twitter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75.93 75.93"><circle class="cls-1" cx="37.97" cy="37.97" r="37.97"/><path id="Twitter-2" data-name="Twitter" class="cls-2" d="M55.2,22.73a15.43,15.43,0,0,1-4.88,1.91,7.56,7.56,0,0,0-5.61-2.49A7.78,7.78,0,0,0,37,30a7.56,7.56,0,0,0,.2,1.79,21.63,21.63,0,0,1-15.84-8.23,8,8,0,0,0,2.37,10.52,7.66,7.66,0,0,1-3.48-1v.09A7.84,7.84,0,0,0,26.45,41a7.54,7.54,0,0,1-2,.28A7.64,7.64,0,0,1,23,41.09a7.71,7.71,0,0,0,7.18,5.47,15.21,15.21,0,0,1-9.55,3.37,15.78,15.78,0,0,1-1.83-.11,21.41,21.41,0,0,0,11.78,3.54c14.13,0,21.86-12,21.86-22.42,0-.34,0-.68,0-1a15.67,15.67,0,0,0,3.83-4.08,14.9,14.9,0,0,1-4.41,1.24A7.8,7.8,0,0,0,55.2,22.73Z"/></svg></a>
+    </div>
+</footer>
+<script src="../../../../_/js/site.js"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
+<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="244V8V9FGG" data-api-key="82c7ead946afbac3cf98c32446154691" data-index-name="spring-security-docs" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="5.6.2"></script>
+  </body>
+</html>
