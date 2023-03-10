@@ -1,7 +1,7 @@
 {
   "$id": "https://schemas.antora.org/site-manifest/1-0-0/draft-01",
-  "generated": "2023-03-09T20:59:03.048Z",
-  "url": "https://docs.spring.io/spring-security/reference",
+  "generated": "2023-03-10T02:53:46.581Z",
+  "url": "https://rwinch.github.io/spring-security",
   "components": {
     "ROOT": {
       "title": "Documentation",
