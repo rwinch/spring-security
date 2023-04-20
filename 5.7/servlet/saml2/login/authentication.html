@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.7.7">
+
+    <meta name="version" content="5.7.8">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.7.7">
+<div class="nav-container" data-component="ROOT" data-version="5.7.8">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -689,7 +703,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.7.7</span>
+    <span class="version">5.7.8</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -699,25 +713,25 @@
           <a href="../../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../../index.html">6.0.2</a>
+          <a href="../../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../../5.8/index.html">5.8.2</a>
+          <a href="../../../../5.8/index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../../index.html">5.7.7</a>
+          <a href="../../../index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -746,27 +760,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.7.7</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.7.8</button>
   <div class="version-menu">
     <a class="version" href="../../../../6.1-SNAPSHOT/servlet/saml2/login/authentication.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../../../6.1/servlet/saml2/login/authentication.html">6.1.0-M2</a>
-    <a class="version" href="../../../../6.0-SNAPSHOT/servlet/saml2/login/authentication.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../../servlet/saml2/login/authentication.html">6.0.2</a>
-    <a class="version" href="../../../../5.8-SNAPSHOT/servlet/saml2/login/authentication.html">5.8.3-SNAPSHOT</a>
-    <a class="version" href="../../../../5.8/servlet/saml2/login/authentication.html">5.8.2</a>
-    <a class="version" href="../../../../5.7-SNAPSHOT/servlet/saml2/login/authentication.html">5.7.8-SNAPSHOT</a>
-    <a class="version is-current" href="authentication.html">5.7.7</a>
+    <a class="version" href="../../../../6.1/servlet/saml2/login/authentication.html">6.1.0-RC1</a>
+    <a class="version" href="../../../../6.0-SNAPSHOT/servlet/saml2/login/authentication.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../../servlet/saml2/login/authentication.html">6.0.3</a>
+    <a class="version" href="../../../../5.8-SNAPSHOT/servlet/saml2/login/authentication.html">5.8.4-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/servlet/saml2/login/authentication.html">5.8.3</a>
+    <a class="version" href="../../../../5.7-SNAPSHOT/servlet/saml2/login/authentication.html">5.7.9-SNAPSHOT</a>
+    <a class="version is-current" href="authentication.html">5.7.8</a>
     <a class="version" href="../../../../5.6-SNAPSHOT/servlet/saml2/login/authentication.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../../../5.6/servlet/saml2/login/authentication.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.7.7/docs/modules/ROOT/pages/servlet/saml2/login/authentication.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.7.8/docs/modules/ROOT/pages/servlet/saml2/login/authentication.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Authenticating &lt;saml2:Response&gt;s" data-levels="2">
@@ -781,7 +794,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../../servlet/saml2/login/authentication.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../../servlet/saml2/login/authentication.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -791,13 +804,16 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>To verify SAML 2.0 Responses, Spring Security uses <a href="overview.html#servlet-saml2login-architecture" class="xref page"><code>OpenSaml4AuthenticationProvider</code></a> by default.</p>
+<p>To verify SAML 2.0 Responses, Spring Security uses <a href="overview.html#servlet-saml2login-authentication-saml2authenticationtokenconverter" class="xref page"><code>Saml2AuthenticationTokenConverter</code></a> to populate the <code>Authentication</code> request and <a href="overview.html#servlet-saml2login-architecture" class="xref page"><code>OpenSaml4AuthenticationProvider</code></a> to authenticate it.</p>
 </div>
 <div class="paragraph">
 <p>You can configure this in a number of ways including:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
+<li>
+<p>Changing the way the <code>RelyingPartyRegistration</code> is Looked Up</p>
+</li>
 <li>
 <p>Setting a clock skew to timestamp validation</p>
 </li>
@@ -818,11 +834,13 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="servlet-saml2login-opensamlauthenticationprovider-clockskew"><a class="anchor" href="#servlet-saml2login-opensamlauthenticationprovider-clockskew"></a>Setting a Clock Skew</h2>
+<h2 id="relyingpartyregistrationresolver-apply"><a class="anchor" href="#relyingpartyregistrationresolver-apply"></a>Changing <code>RelyingPartyRegistration</code> Lookup</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>It&#8217;s not uncommon for the asserting and relying parties to have system clocks that aren&#8217;t perfectly synchronized.
-For that reason, you can configure <code>OpenSaml4AuthenticationProvider</code> 's default assertion validator with some tolerance:</p>
+<p><code>RelyingPartyRegistration</code> lookup is customized <a href="overview.html#servlet-saml2login-rpr-relyingpartyregistrationresolver" class="xref page">in a <code>RelyingPartyRegistrationResolver</code></a>.</p>
+</div>
+<div class="paragraph">
+<p>To apply a <code>RelyingPartyRegistrationResolver</code> when processing <code>&lt;saml2:Response&gt;</code> payloads, you should first publish a <code>Saml2AuthenticationTokenConverter</code> bean like so:</p>
 </div>
 <div id="_tabs_1" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -837,6 +855,131 @@ For that reason, you can configure <code>OpenSaml4AuthenticationProvider</code> 
 </ul>
 </div>
 <div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+Saml2AuthenticationTokenConverter authenticationConverter(InMemoryRelyingPartyRegistrationRepository registrations) {
+	return new Saml2AuthenticationTokenConverter(new MyRelyingPartyRegistrationResolver(registrations));
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun authenticationConverter(val registrations: InMemoryRelyingPartyRegistrationRepository): Saml2AuthenticationTokenConverter {
+	return Saml2AuthenticationTokenConverter(MyRelyingPartyRegistrationResolver(registrations));
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Recall that the Assertion Consumer Service URL is <code>/saml2/login/sso/{registrationId}</code> by default.
+If you are no longer wanting the <code>registrationId</code> in the URL, change it in the filter chain and in your relying party metadata:</p>
+</div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+SecurityFilterChain securityFilters(HttpSecurity http) throws Exception {
+	http
+        // ...
+        .saml2Login((saml2) -&gt; saml2.filterProcessingUrl("/saml2/login/sso"))
+        // ...
+
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun securityFilters(val http: HttpSecurity): SecurityFilterChain {
+	http {
+        // ...
+        .saml2Login {
+            filterProcessingUrl = "/saml2/login/sso"
+        }
+        // ...
+    }
+
+    return http.build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>and:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">relyingPartyRegistrationBuilder.assertionConsumerServiceLocation("/saml2/login/sso")</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">relyingPartyRegistrationBuilder.assertionConsumerServiceLocation("/saml2/login/sso")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlet-saml2login-opensamlauthenticationprovider-clockskew"><a class="anchor" href="#servlet-saml2login-opensamlauthenticationprovider-clockskew"></a>Setting a Clock Skew</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It&#8217;s not uncommon for the asserting and relying parties to have system clocks that aren&#8217;t perfectly synchronized.
+For that reason, you can configure <code>OpenSaml4AuthenticationProvider</code> 's default assertion validator with some tolerance:</p>
+</div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
@@ -867,7 +1010,7 @@ public class SecurityConfig {
 </div>
 </div>
 </div>
-<div id="_tabs_1_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_1_kotlin">
+<div id="_tabs_4_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_4_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
@@ -909,19 +1052,19 @@ open class SecurityConfig {
 <p>Or, perhaps you would like to include user details from a legacy <code>UserDetailsService</code>.
 In that case, the response authentication converter can come in handy, as can be seen below:</p>
 </div>
-<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_2_java" class="tab">
+<li id="_tabs_5_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_2_kotlin" class="tab">
+<li id="_tabs_5_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
@@ -955,7 +1098,7 @@ public class SecurityConfig {
 </div>
 </div>
 </div>
-<div id="_tabs_2_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_2_kotlin">
+<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
@@ -1073,19 +1216,19 @@ After verifying the signature, it will:</p>
 <div id="servlet-saml2login-opensamlauthenticationprovider-onetimeuse" class="paragraph">
 <p>For example, you can use OpenSAML&#8217;s <code>OneTimeUseConditionValidator</code> to also validate a <code>&lt;OneTimeUse&gt;</code> condition, like so:</p>
 </div>
-<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_3_java" class="tab">
+<li id="_tabs_6_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_3_kotlin" class="tab">
+<li id="_tabs_6_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">OpenSaml4AuthenticationProvider provider = new OpenSaml4AuthenticationProvider();
@@ -1109,7 +1252,7 @@ provider.setAssertionValidator(assertionToken -&gt; {
 </div>
 </div>
 </div>
-<div id="_tabs_3_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_3_kotlin">
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">var provider = OpenSaml4AuthenticationProvider()
@@ -1165,19 +1308,19 @@ The assertion decrypter is for decrypting encrypted elements of the <code>&lt;sa
 <p>You can replace <code>OpenSaml4AuthenticationProvider&#8217;s default decryption strategy with your own.
 For example, if you have a separate service that decrypts the assertions in a `&lt;saml2:Response&gt;</code>, you can use it instead like so:</p>
 </div>
-<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_4_java" class="tab">
+<li id="_tabs_7_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_4_kotlin" class="tab">
+<li id="_tabs_7_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">MyDecryptionService decryptionService = ...;
@@ -1186,7 +1329,7 @@ provider.setResponseElementsDecrypter((responseToken) -&gt; decryptionService.de
 </div>
 </div>
 </div>
-<div id="_tabs_4_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_4_kotlin">
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val decryptionService: MyDecryptionService = ...
@@ -1200,26 +1343,26 @@ provider.setResponseElementsDecrypter { responseToken -&gt; decryptionService.de
 <div class="paragraph">
 <p>If you are also decrypting individual elements in a <code>&lt;saml2:Assertion&gt;</code>, you can customize the assertion decrypter, too:</p>
 </div>
-<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_5_java" class="tab">
+<li id="_tabs_8_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_5_kotlin" class="tab">
+<li id="_tabs_8_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">provider.setAssertionElementsDecrypter((assertionToken) -&gt; decryptionService.decrypt(assertionToken.getAssertion()));</code></pre>
 </div>
 </div>
 </div>
-<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">provider.setAssertionElementsDecrypter { assertionToken -&gt; decryptionService.decrypt(assertionToken.assertion) }</code></pre>
@@ -1251,19 +1394,19 @@ If your asserting party signs the response only, then it&#8217;s safe to decrypt
 <p>Of course, the <code>authenticationManager</code> DSL method can be also used to perform a completely custom SAML 2.0 authentication.
 This authentication manager should expect a <code>Saml2AuthenticationToken</code> object containing the SAML 2.0 Response XML data.</p>
 </div>
-<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_6_java" class="tab">
+<li id="_tabs_9_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_6_kotlin" class="tab">
+<li id="_tabs_9_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSecurity
@@ -1286,7 +1429,7 @@ public class SecurityConfig {
 </div>
 </div>
 </div>
-<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div id="_tabs_9_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_9_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSecurity
@@ -1322,19 +1465,19 @@ Once the relying party validates an assertion, the result is a <code>Saml2Authen
 <div class="paragraph">
 <p>This means that you can access the principal in your controller like so:</p>
 </div>
-<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_7_java" class="tab">
+<li id="_tabs_10_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_7_kotlin" class="tab">
+<li id="_tabs_10_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
@@ -1349,7 +1492,7 @@ public class MainController {
 </div>
 </div>
 </div>
-<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Controller
@@ -1405,6 +1548,5 @@ Because the SAML 2.0 specification allows for each attribute to have multiple va
 <script src="../../../../_/js/site.js"></script>
 <script async src="../../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="5.7.7"></script>
   </body>
 </html>

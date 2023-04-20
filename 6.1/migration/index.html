@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Migrating to 6.0 :: Spring Security</title>
     <link rel="canonical" href="https://rwinch.github.io/spring-security/migration/index.html">
-    <link rel="prev" href="../whats-new.html">
+    <link rel="prev" href="../migration-7/configuration.html">
     <link rel="next" href="servlet/index.html">
     <meta name="generator" content="Antora 3.2.0-alpha.2">
     <script>
@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="6.1.0-M2">
+
+    <meta name="version" content="6.1.0-RC1">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="6.1.0-M2">
+<div class="nav-container" data-component="ROOT" data-version="6.1.0-RC1">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -113,6 +127,15 @@
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../migration-7/index.html">Preparing for 7.0</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../migration-7/configuration.html">Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -719,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">6.1.0-M2</span>
+    <span class="version">6.1.0-RC1</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -729,25 +752,25 @@
           <a href="../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../index.html">6.1.0-M2</a>
+          <a href="../index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../index.html">6.0.2</a>
+          <a href="../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../5.8/index.html">5.8.2</a>
+          <a href="../../5.8/index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../5.7/index.html">5.7.7</a>
+          <a href="../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -773,27 +796,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">6.1.0-M2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">6.1.0-RC1</button>
   <div class="version-menu">
     <a class="version" href="../../6.1-SNAPSHOT/migration/index.html">6.1.0-SNAPSHOT</a>
-    <a class="version is-current" href="index.html">6.1.0-M2</a>
-    <a class="version" href="../../6.0-SNAPSHOT/migration/index.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../migration/index.html">6.0.2</a>
-    <a class="version" href="../../5.8-SNAPSHOT/migration/index.html">5.8.3-SNAPSHOT</a>
-    <a class="version" href="../../5.8/migration/index.html">5.8.2</a>
-    <a class="version is-missing" href="../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
-    <a class="version is-missing" href="../../5.7/index.html">5.7.7</a>
+    <a class="version is-current" href="index.html">6.1.0-RC1</a>
+    <a class="version" href="../../6.0-SNAPSHOT/migration/index.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../migration/index.html">6.0.3</a>
+    <a class="version" href="../../5.8-SNAPSHOT/migration/index.html">5.8.4-SNAPSHOT</a>
+    <a class="version" href="../../5.8/migration/index.html">5.8.3</a>
+    <a class="version is-missing" href="../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
+    <a class="version is-missing" href="../../5.7/index.html">5.7.8</a>
     <a class="version is-missing" href="../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
     <a class="version is-missing" href="../../5.6/index.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.1.0-M2/docs/modules/ROOT/pages/migration/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.1.0-RC1/docs/modules/ROOT/pages/migration/index.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Migrating to 6.0" data-levels="2">
@@ -808,7 +830,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../migration/index.html">Documentation 6.0.2</a>!</p>
+          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../migration/index.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -820,7 +842,7 @@
 <div class="paragraph">
 <p>The Spring Security team has prepared the 5.8 release to simplify upgrading to Spring Security 6.0.
 Use 5.8 and
-<a href="../../5.8/migration/index.html" class="xref page">its preparation steps</a>
+<a href="#5.8.2@migration/index.adoc" class="xref unresolved">its preparation steps</a>
 to simplify updating to 6.0.</p>
 </div>
 <div class="paragraph">
@@ -858,7 +880,7 @@ For directions, on how to update to Spring Security 6.0 visit the <a href="../ge
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="../whats-new.html">What&#8217;s New</a></span>
+  <span class="prev"><a href="../migration-7/configuration.html">Configuration</a></span>
   <span class="next"><a href="servlet/index.html">Servlet Migrations</a></span>
 </nav>
 </article>
@@ -881,6 +903,5 @@ For directions, on how to update to Spring Security 6.0 visit the <a href="../ge
 <script src="../../_/js/site.js"></script>
 <script async src="../../_/js/vendor/highlight.js"></script>
 <script async src="../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../_/css/vendor/docsearch.css" data-page-version="6.1.0-M2"></script>
   </body>
 </html>

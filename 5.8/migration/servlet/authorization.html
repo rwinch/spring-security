@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -728,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -738,25 +752,25 @@
           <a href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../index.html">6.0.2</a>
+          <a href="../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../index.html">5.8.2</a>
+          <a href="../../index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../5.7/index.html">5.7.7</a>
+          <a href="../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -784,27 +798,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version" href="../../../6.1-SNAPSHOT/migration/servlet/authorization.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../../6.1/migration/servlet/authorization.html">6.1.0-M2</a>
-    <a class="version" href="../../../6.0-SNAPSHOT/migration/servlet/authorization.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../migration/servlet/authorization.html">6.0.2</a>
-    <a class="version" href="../../../5.8-SNAPSHOT/migration/servlet/authorization.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="authorization.html">5.8.2</a>
-    <a class="version is-missing" href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
-    <a class="version is-missing" href="../../../5.7/index.html">5.7.7</a>
+    <a class="version" href="../../../6.1/migration/servlet/authorization.html">6.1.0-RC1</a>
+    <a class="version" href="../../../6.0-SNAPSHOT/migration/servlet/authorization.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../migration/servlet/authorization.html">6.0.3</a>
+    <a class="version" href="../../../5.8-SNAPSHOT/migration/servlet/authorization.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="authorization.html">5.8.3</a>
+    <a class="version is-missing" href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
+    <a class="version is-missing" href="../../../5.7/index.html">5.7.8</a>
     <a class="version is-missing" href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
     <a class="version is-missing" href="../../../5.6/index.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/migration/servlet/authorization.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/migration/servlet/authorization.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Authorization Migrations" data-levels="2">
@@ -819,7 +832,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../migration/servlet/authorization.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../migration/servlet/authorization.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -837,7 +850,7 @@
 <h2 id="_use_authorizationmanager_for_method_security"><a class="anchor" href="#_use_authorizationmanager_for_method_security"></a>Use <code>AuthorizationManager</code> for Method Security</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="../../servlet/authorization/method-security.html" class="xref page">Method Security</a> has been <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
+<p><a href="../../servlet/authorization/method-security.html" class="xref page">Method Security</a> has been <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
 </div>
 <div class="paragraph">
 <p>Should you run into trouble with making these changes, note that <code>@EnableGlobalMethodSecurity</code>, while deprecated, will not be removed in 6.0, allowing you to opt out by sticking with the old annotation.</p>
@@ -845,7 +858,7 @@
 <div class="sect2">
 <h3 id="servlet-replace-globalmethodsecurity-with-methodsecurity"><a class="anchor" href="#servlet-replace-globalmethodsecurity-with-methodsecurity"></a>Replace <a href="../../servlet/authorization/method-security.html#jc-enable-global-method-security" class="xref page">global method security</a> with <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">method security</a></h3>
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html"><code>@EnableGlobalMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-global-method-security" class="xref page"><code>&lt;global-method-security&gt;</code></a> are deprecated in favor of <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-method-security" class="xref page"><code>&lt;method-security&gt;</code></a>, respectively.
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html"><code>@EnableGlobalMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-global-method-security" class="xref page"><code>&lt;global-method-security&gt;</code></a> are deprecated in favor of <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a> and <a href="../../servlet/appendix/namespace/method-security.html#nsa-method-security" class="xref page"><code>&lt;method-security&gt;</code></a>, respectively.
 The new annotation and XML element activate Spring&#8217;s <a href="../../servlet/authorization/method-security.html#jc-enable-method-security" class="xref page">pre-post annotations</a> by default and use <code>AuthorizationManager</code> internally.</p>
 </div>
 <div class="paragraph">
@@ -1017,13 +1030,24 @@ The new annotation and XML element activate Spring&#8217;s <a href="../../servle
 </div>
 </div>
 <div class="sect2">
-<h3 id="servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"><a class="anchor" href="#servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"></a>Publish a <code>MethodSecurityExpressionHandler</code> instead of a <code>PermissionEvaluator</code></h3>
+<h3 id="_use_a_custom_bean_instead_of_subclassing_defaultmethodsecurityexpressionhandler"><a class="anchor" href="#_use_a_custom_bean_instead_of_subclassing_defaultmethodsecurityexpressionhandler"></a>Use a Custom <code>@Bean</code> instead of subclassing <code>DefaultMethodSecurityExpressionHandler</code></h3>
 <div class="paragraph">
-<p><code>@EnableMethodSecurity</code> does not pick up a <code>PermissionEvaluator</code>.
-This helps keep its API simple.</p>
+<p>As a performance optimization, a new method was introduced to <code>MethodSecurityExpressionHandler</code> that takes a <code>Supplier&lt;Authentication&gt;</code> instead of an <code>Authentication</code>.</p>
 </div>
 <div class="paragraph">
-<p>If you have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/PermissionEvaluator.html"><code>PermissionEvaluator</code></a> <code>@Bean</code>, please change it from:</p>
+<p>This allows Spring Security to defer the lookup of the <code>Authentication</code>, and is taken advantage of automatically when you use <code>@EnableMethodSecurity</code> instead of <code>@EnableGlobalMethodSecurity</code>.</p>
+</div>
+<div class="paragraph">
+<p>However, let&#8217;s say that your code extends <code>DefaultMethodSecurityExpressionHandler</code> and overrides <code>createSecurityExpressionRoot(Authentication, MethodInvocation)</code> to return a custom <code>SecurityExpressionRoot</code> instance.
+This will no longer work because the arrangement that <code>@EnableMethodSecurity</code> sets up calls <code>createEvaluationContext(Supplier&lt;Authentication&gt;, MethodInvocation)</code> instead.</p>
+</div>
+<div class="paragraph">
+<p>Happily, such a level of customization is often unnecessary.
+Instead, you can create a custom bean with the authorization methods that you need.</p>
+</div>
+<div class="paragraph">
+<p>For example, let&#8217;s say you are wanting a custom evaluation of <code>@PostAuthorize("hasAuthority('ADMIN')")</code>.
+You can create a custom <code>@Bean</code> like this one:</p>
 </div>
 <div id="_tabs_5" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1040,9 +1064,12 @@ This helps keep its API simple.</p>
 <div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
 <div class="listingblock primary">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
-static PermissionEvaluator permissionEvaluator() {
-	// ... your evaluator
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class MyAuthorizer {
+	boolean isAdmin(MethodSecurityExpressionOperations root) {
+		boolean decision = root.hasAuthority("ADMIN");
+		// custom work ...
+        return decision;
+	}
 }</code></pre>
 </div>
 </div>
@@ -1050,10 +1077,11 @@ static PermissionEvaluator permissionEvaluator() {
 <div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
 <div class="listingblock secondary">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
-	@Bean
-	fun permissionEvaluator(): PermissionEvaluator {
-		// ... your evaluator
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">class MyAuthorizer {
+	fun isAdmin(val root: MethodSecurityExpressionOperations): boolean {
+		val decision = root.hasAuthority("ADMIN");
+		// custom work ...
+        return decision;
 	}
 }</code></pre>
 </div>
@@ -1062,7 +1090,7 @@ static PermissionEvaluator permissionEvaluator() {
 </div>
 </div>
 <div class="paragraph">
-<p>to:</p>
+<p>and then refer to it in the annotation like so:</p>
 </div>
 <div id="_tabs_6" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1079,6 +1107,149 @@ static PermissionEvaluator permissionEvaluator() {
 <div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
 <div class="listingblock primary">
 <div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@PreAuthorize("@authz.isAdmin(#root)")</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@PreAuthorize("@authz.isAdmin(#root)")</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_id_still_prefer_to_subclass_defaultmethodsecurityexpressionhandler"><a class="anchor" href="#_id_still_prefer_to_subclass_defaultmethodsecurityexpressionhandler"></a>I&#8217;d still prefer to subclass <code>DefaultMethodSecurityExpressionHandler</code></h4>
+<div class="paragraph">
+<p>If you must continue subclassing <code>DefaultMethodSecurityExpressionHandler</code>, you can still do so.
+Instead, override the <code>createEvaluationContext(Supplier&lt;Authentication&gt;, MethodInvocation)</code> method like so:</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+class MyExpressionHandler extends DefaultMethodSecurityExpressionHandler {
+    @Override
+    public EvaluationContext createEvaluationContext(
+            Supplier&lt;Authentication&gt; authentication, MethodInvocation mi) {
+		StandardEvaluationContext context = (StandardEvaluationContext) super.createEvaluationContext(authentication, mi);
+        MySecurityExpressionRoot root = new MySecurityExpressionRoot(authentication, invocation);
+	    root.setPermissionEvaluator(getPermissionEvaluator());
+	    root.setTrustResolver(new AuthenticationTrustResolverImpl());
+        root.setRoleHierarchy(getRoleHierarchy());
+        context.setRootObject(root);
+        return context;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Component
+class MyExpressionHandler: DefaultMethodSecurityExpressionHandler {
+    override fun createEvaluationContext(val authentication: Supplier&lt;Authentication&gt;,
+        val mi: MethodInvocation): EvaluationContext {
+		val context = super.createEvaluationContext(authentication, mi) as StandardEvaluationContext;
+        val root = new MySecurityExpressionRoot(authentication, invocation);
+	    root.setPermissionEvaluator(getPermissionEvaluator());
+	    root.setTrustResolver(new AuthenticationTrustResolverImpl());
+        root.setRoleHierarchy(getRoleHierarchy());
+        context.setRootObject(root);
+        return context;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_opt_out_steps"><a class="anchor" href="#_opt_out_steps"></a>Opt-out Steps</h4>
+<div class="paragraph">
+<p>If you need to opt-out of these changes, you can use <code>@EnableGlobalMethodSecurity</code> instead of <code>@EnableMethodSecurity</code></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"><a class="anchor" href="#servlet-replace-permissionevaluator-bean-with-methodsecurityexpression-handler"></a>Publish a <code>MethodSecurityExpressionHandler</code> instead of a <code>PermissionEvaluator</code></h3>
+<div class="paragraph">
+<p><code>@EnableMethodSecurity</code> does not pick up a <code>PermissionEvaluator</code>.
+This helps keep its API simple.</p>
+</div>
+<div class="paragraph">
+<p>If you have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/PermissionEvaluator.html"><code>PermissionEvaluator</code></a> <code>@Bean</code>, please change it from:</p>
+</div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_8_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+static PermissionEvaluator permissionEvaluator() {
+	// ... your evaluator
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
+	@Bean
+	fun permissionEvaluator(): PermissionEvaluator {
+		// ... your evaluator
+	}
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>to:</p>
+</div>
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_9_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_9_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div class="listingblock primary">
+<div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 static MethodSecurityExpressionHandler expressionHandler() {
 	var expressionHandler = new DefaultMethodSecurityExpressionHandler();
@@ -1088,7 +1259,7 @@ static MethodSecurityExpressionHandler expressionHandler() {
 </div>
 </div>
 </div>
-<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
+<div id="_tabs_9_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_9_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">companion object {
@@ -1108,14 +1279,14 @@ static MethodSecurityExpressionHandler expressionHandler() {
 <div class="sect2">
 <h3 id="_replace_any_custom_method_security_accessdecisionmanagers"><a class="anchor" href="#_replace_any_custom_method_security_accessdecisionmanagers"></a>Replace any custom method-security <code>AccessDecisionManager</code>s</h3>
 <div class="paragraph">
-<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
+<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
 The preparation strategy will depend on your reason for each arrangement.
 Read on to find the best match for your situation.</p>
 </div>
 <div class="sect3">
 <h4 id="_i_use_unanimousbased"><a class="anchor" href="#_i_use_unanimousbased"></a>I use <code>UnanimousBased</code></h4>
 <div class="paragraph">
-<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a> with the default voters, you likely need do nothing since unanimous-based is the default behavior with <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a>.</p>
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a> with the default voters, you likely need do nothing since unanimous-based is the default behavior with <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/method/configuration/EnableMethodSecurity.html"><code>@EnableMethodSecurity</code></a>.</p>
 </div>
 <div class="paragraph">
 <p>However, if you do discover that you cannot accept the default authorization managers, you can use <code>AuthorizationManagers.allOf</code> to compose your own arrangement.
@@ -1125,21 +1296,21 @@ Having done that, please follow the details in the reference manual for <a href=
 <div class="sect3">
 <h4 id="_i_use_affirmativebased"><a class="anchor" href="#_i_use_affirmativebased"></a>I use <code>AffirmativeBased</code></h4>
 <div class="paragraph">
-<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
 </div>
-<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_7_java" class="tab">
+<li id="_tabs_10_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_7_kotlin" class="tab">
+<li id="_tabs_10_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AuthorizationManager&lt;MethodInvocation&gt; authorization = AuthorizationManagers.anyOf(
@@ -1148,7 +1319,7 @@ Having done that, please follow the details in the reference manual for <a href=
 </div>
 </div>
 </div>
-<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">val authorization = AuthorizationManagers.anyOf(
@@ -1166,8 +1337,8 @@ Having done that, please follow the details in the reference manual for <a href=
 <div class="sect3">
 <h4 id="_i_use_consensusbased"><a class="anchor" href="#_i_use_consensusbased"></a>I use <code>ConsensusBased</code></h4>
 <div class="paragraph">
-<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
-In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
+<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
+In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
 </div>
 <div class="paragraph">
 <p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/method-security.html#jc-method-security-custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
@@ -1176,22 +1347,22 @@ In that case, please implement a composite <a href="https://docs.spring.io/sprin
 <div class="sect3">
 <h4 id="_i_use_a_custom_accessdecisionvoter"><a class="anchor" href="#_i_use_a_custom_accessdecisionvoter"></a>I use a custom <code>AccessDecisionVoter</code></h4>
 <div class="paragraph">
-<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
+<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
 </div>
 <div class="paragraph">
 <p>Without knowing what your custom voter is doing, it is impossible to recommend a general-purpose solution.
-By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>@PreAuthorize</code> would look like:</p>
+By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>@PreAuthorize</code> would look like:</p>
 </div>
-<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_8_java" class="tab">
+<li id="_tabs_11_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class PreAuthorizeAuthorizationManagerAdapter implements AuthorizationManager&lt;MethodInvocation&gt; {
@@ -1229,13 +1400,26 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 <div class="sect3">
-<h4 id="_i_use_a_custom_afterinvocationmanager"><a class="anchor" href="#_i_use_a_custom_afterinvocationmanager"></a>I use a custom <code>AfterInvocationManager</code></h4>
+<h4 id="_i_use_afterinvocationmanager_or_afterinvocationprovider"><a class="anchor" href="#_i_use_afterinvocationmanager_or_afterinvocationprovider"></a>I use <code>AfterInvocationManager</code> or <code>AfterInvocationProvider</code></h4>
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> replaces both <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> and  <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/intercept/AfterInvocationManager.html"><code>AfterInvocationManager</code></a>.
-The difference is that <code>AuthorizationManager&lt;MethodInvocation&gt;</code> replaces <code>AccessDecisionManager</code> and <code>AuthorizationManager&lt;MethodInvocationResult&gt;</code> replaces <code>AfterInvocationManager</code>.</p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/intercept/AfterInvocationManager.html;"><code>AfterInvocationManager</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/intercept/AfterInvocationProvider.html"><code>AfterInvocationProvider</code></a> make an authorization decision about an invocation&#8217;s result.
+For example, in the case of method invocation, these make an authorization decision about a method&#8217;s return value.</p>
 </div>
 <div class="paragraph">
-<p>Given that, <a href="#_i_use_a_custom_accessdecisionvoter">the same rules apply for adaptation</a>, where the goal this time is to implement <code>AuthorizationManager&lt;MethodInvocationResult&gt;</code> instead of <code>AuthorizationManager&lt;MethodInvocation&gt;</code> and use <code>AuthorizationManagerAfterMethodInterceptor</code> instead of <code>AuthorizationManagerBeforeMethodInterceptor</code>.</p>
+<p>In Spring Security 3.0, authorization decision-making was standardized into the <a href="../../servlet/authorization/method-security.html" class="xref page"><code>@PostAuthorize</code> and <code>@PostFilter</code> annotations</a>.
+<code>@PostAuthorize</code> is for deciding whether the return value as a whole was permitted to be returned.
+<code>@PostFilter</code> is for filtering individual entries from a returned collection, array, or stream.</p>
+</div>
+<div class="paragraph">
+<p>These two annotations should serve most needs, and you are encouraged to migrate to one or both of them since <code>AfterInvocationProvider</code> and <code>AfterInvocationManager</code> are now deprecated.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;ve implemented your own <code>AfterInvocationManager</code> or <code>AfterInvocationProvider</code>, you should first ask yourself what it is trying to do.
+If it is trying to authorize the return type, <a href="#_i_use_a_custom_accessdecisionvoter">consider implementing <code>AuthorizationManager&lt;MethodInvocationResult&gt;</code> and using <code>AfterMethodAuthorizationManagerInterceptor</code></a>. Or publishing a custom bean and using <code>@PostAuthorize("@myBean.authorize(#root)")</code>.</p>
+</div>
+<div class="paragraph">
+<p>If it is trying to filter, then consider publishing a custom bean and using <code>@PostFilter("@mybean.authorize(#root)")</code>.
+Or, if needed, you can implement your own <code>MethodInterceptor</code>, taking a look at <code>PostFilterAuthorizationMethodInterceptor</code> and <code>PrePostMethodSecurityConfiguration</code> for an example.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1249,16 +1433,16 @@ The difference is that <code>AuthorizationManager&lt;MethodInvocation&gt;</code>
 <div class="paragraph">
 <p>Here is some pseudocode to get you started:</p>
 </div>
-<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_9_java" class="tab">
+<li id="_tabs_12_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class RunAsAuthorizationManagerAdapter&lt;T&gt; implements AuthorizationManager&lt;T&gt; {
@@ -1299,7 +1483,7 @@ If after moving to either you see <code>AnnotationConfigurationException</code>s
 <h2 id="_use_authorizationmanager_for_message_security"><a class="anchor" href="#_use_authorizationmanager_for_message_security"></a>Use <code>AuthorizationManager</code> for Message Security</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="../../servlet/integrations/websocket.html" class="xref page">Message Security</a> has been <a href="../../servlet/integrations/websocket.html#websocket-configuration" class="xref page">improved</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
+<p><a href="../../servlet/integrations/websocket.html" class="xref page">Message Security</a> has been <a href="../../servlet/integrations/websocket.html#websocket-configuration" class="xref page">improved</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a> and direct use of Spring AOP.</p>
 </div>
 <div class="paragraph">
 <p>Should you run into trouble with making these changes, you can follow the <a href="#servlet-authorizationmanager-messages-opt-out">opt out steps</a> at the end of this section.</p>
@@ -1307,7 +1491,7 @@ If after moving to either you see <code>AnnotationConfigurationException</code>s
 <div class="sect2">
 <h3 id="_ensure_all_messages_have_defined_authorization_rules"><a class="anchor" href="#_ensure_all_messages_have_defined_authorization_rules"></a>Ensure all messages have defined authorization rules</h3>
 <div class="paragraph">
-<p>The now-deprecated <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/socket/AbstractSecurityWebSocketMessageBrokerConfigurer.html">message security support</a> permits all messages by default.
+<p>The now-deprecated <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/socket/AbstractSecurityWebSocketMessageBrokerConfigurer.html">message security support</a> permits all messages by default.
 <a href="../../servlet/integrations/websocket.html" class="xref page">The new support</a> has the stronger default of denying all messages.</p>
 </div>
 <div class="paragraph">
@@ -1316,22 +1500,22 @@ If after moving to either you see <code>AnnotationConfigurationException</code>s
 <div class="paragraph">
 <p>For example, an application configuration like:</p>
 </div>
-<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_10_java" class="tab">
+<li id="_tabs_13_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_10_kotlin" class="tab">
+<li id="_tabs_13_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_10_xml" class="tab">
+<li id="_tabs_13_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
@@ -1343,7 +1527,7 @@ protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) 
 </div>
 </div>
 </div>
-<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
@@ -1354,7 +1538,7 @@ protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) 
 </div>
 </div>
 </div>
-<div id="_tabs_10_xml--panel" class="tabpanel" aria-labelledby="_tabs_10_xml">
+<div id="_tabs_13_xml--panel" class="tabpanel" aria-labelledby="_tabs_13_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
@@ -1369,22 +1553,22 @@ protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) 
 <div class="paragraph">
 <p>should change to:</p>
 </div>
-<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div id="_tabs_14" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_11_java" class="tab">
+<li id="_tabs_14_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_11_kotlin" class="tab">
+<li id="_tabs_14_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_11_xml" class="tab">
+<li id="_tabs_14_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
@@ -1398,7 +1582,7 @@ protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) 
 </div>
 </div>
 </div>
-<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
@@ -1411,7 +1595,7 @@ protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) 
 </div>
 </div>
 </div>
-<div id="_tabs_11_xml--panel" class="tabpanel" aria-labelledby="_tabs_11_xml">
+<div id="_tabs_14_xml--panel" class="tabpanel" aria-labelledby="_tabs_14_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
@@ -1447,189 +1631,10 @@ Please see <a href="../../servlet/integrations/websocket.html#websocket-sameorig
 </table>
 </div>
 <div class="paragraph">
-<p>If you are using Java Configuration, add <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/socket/EnableWebSocketSecurity.html"><code>@EnableWebSocketSecurity</code></a> to your application.</p>
+<p>If you are using Java Configuration, add <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/socket/EnableWebSocketSecurity.html"><code>@EnableWebSocketSecurity</code></a> to your application.</p>
 </div>
 <div class="paragraph">
 <p>For example, you can add it to your websocket security configuration class, like so:</p>
-</div>
-<div id="_tabs_12" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_12_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_12_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
-@Configuration
-public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
-	// ...
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
-@Configuration
-class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer() {
-	// ...
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>This will make a prototype instance of <code>MessageMatcherDelegatingAuthorizationManager.Builder</code> available to encourage configuration by composition instead of extension.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_use_an_authorizationmanagermessage_instance"><a class="anchor" href="#_use_an_authorizationmanagermessage_instance"></a>Use an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> instance</h3>
-<div class="paragraph">
-<p>To start using <code>AuthorizationManager</code>, you can set the <code>use-authorization-manager</code> attribute in XML or you can publish an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> <code>@Bean</code> in Java.</p>
-</div>
-<div class="paragraph">
-<p>For example, the following application configuration:</p>
-</div>
-<div id="_tabs_13" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_13_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_13_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-<li id="_tabs_13_xml" class="tab">
-<p>Xml</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
-protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
-    messages
-        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
-        .simpDestMatchers("/user/queue/errors").permitAll()
-        .simpDestMatchers("/admin/**").hasRole("ADMIN")
-        .anyMessage().denyAll();
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
-    messages
-        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
-        .simpDestMatchers("/user/queue/errors").permitAll()
-        .simpDestMatchers("/admin/**").hasRole("ADMIN")
-        .anyMessage().denyAll()
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_13_xml--panel" class="tabpanel" aria-labelledby="_tabs_13_xml">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
-    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
-    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
-    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
-    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
-    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
-    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
-&lt;/websocket-message-broker&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>changes to:</p>
-</div>
-<div id="_tabs_14" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_14_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_14_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-<li id="_tabs_14_xml" class="tab">
-<p>Xml</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
-AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-    messages
-        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
-        .simpDestMatchers("/user/queue/errors").permitAll()
-        .simpDestMatchers("/admin/**").hasRole("ADMIN")
-        .anyMessage().denyAll();
-	return messages.build();
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
-fun messageSecurity(val messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager&lt;Message&lt;?&gt;&gt; {
-    messages
-        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
-        .simpDestMatchers("/user/queue/errors").permitAll()
-        .simpDestMatchers("/admin/**").hasRole("ADMIN")
-        .anyMessage().denyAll()
-    return messages.build()
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_14_xml--panel" class="tabpanel" aria-labelledby="_tabs_14_xml">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="true"&gt;
-    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
-    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
-    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
-    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
-    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
-    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
-&lt;/websocket-message-broker&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"><a class="anchor" href="#_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"></a>Stop Implementing <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code></h3>
-<div class="paragraph">
-<p>If you are using Java configuration, you can now simply extend <code>WebSocketMessageBrokerConfigurer</code>.</p>
-</div>
-<div class="paragraph">
-<p>For example, if your class that extends <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code> is called <code>WebSocketSecurityConfig</code>, then:</p>
 </div>
 <div id="_tabs_15" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1668,7 +1673,16 @@ class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer(
 </div>
 </div>
 <div class="paragraph">
-<p>changes to:</p>
+<p>This will make a prototype instance of <code>MessageMatcherDelegatingAuthorizationManager.Builder</code> available to encourage configuration by composition instead of extension.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_an_authorizationmanagermessage_instance"><a class="anchor" href="#_use_an_authorizationmanagermessage_instance"></a>Use an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> instance</h3>
+<div class="paragraph">
+<p>To start using <code>AuthorizationManager</code>, you can set the <code>use-authorization-manager</code> attribute in XML or you can publish an <code>AuthorizationManager&lt;Message&lt;?&gt;&gt;</code> <code>@Bean</code> in Java.</p>
+</div>
+<div class="paragraph">
+<p>For example, the following application configuration:</p>
 </div>
 <div id="_tabs_16" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1680,15 +1694,21 @@ class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer(
 <li id="_tabs_16_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
+<li id="_tabs_16_xml" class="tab">
+<p>Xml</p>
+</li>
 </ul>
 </div>
 <div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
 <div class="listingblock primary">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
-@Configuration
-public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer {
-	// ...
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
+protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll();
 }</code></pre>
 </div>
 </div>
@@ -1696,26 +1716,34 @@ public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer
 <div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
 <div class="listingblock secondary">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
-@Configuration
-class WebSocketSecurityConfig: WebSocketMessageBrokerConfigurer {
-	// ...
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry) {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll()
 }</code></pre>
 </div>
 </div>
 </div>
+<div id="_tabs_16_xml--panel" class="tabpanel" aria-labelledby="_tabs_16_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker&gt;
+    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="servlet-authorizationmanager-messages-opt-out"><a class="anchor" href="#servlet-authorizationmanager-messages-opt-out"></a>Opt-out Steps</h3>
+</div>
+</div>
 <div class="paragraph">
-<p>In case you had trouble, take a look at these scenarios for optimal opt out behavior:</p>
-</div>
-<div class="sect3">
-<h4 id="_i_cannot_declare_an_authorization_rule_for_all_requests"><a class="anchor" href="#_i_cannot_declare_an_authorization_rule_for_all_requests"></a>I cannot declare an authorization rule for all requests</h4>
-<div class="paragraph">
-<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/messaging/access/intercept/MessageMatcherDelegatingAuthorizationManager.Builder.Constraint.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
+<p>changes to:</p>
 </div>
 <div id="_tabs_17" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1738,6 +1766,162 @@ class WebSocketSecurityConfig: WebSocketMessageBrokerConfigurer {
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
     messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll();
+	return messages.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun messageSecurity(val messages: MessageMatcherDelegatingAuthorizationManager.Builder): AuthorizationManager&lt;Message&lt;?&gt;&gt; {
+    messages
+        .simpTypeMatchers(CONNECT, DISCONNECT, UNSUBSCRIBE).permitAll()
+        .simpDestMatchers("/user/queue/errors").permitAll()
+        .simpDestMatchers("/admin/**").hasRole("ADMIN")
+        .anyMessage().denyAll()
+    return messages.build()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_17_xml--panel" class="tabpanel" aria-labelledby="_tabs_17_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="true"&gt;
+    &lt;intercept-message type="CONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="DISCONNECT" access="permitAll"/&gt;
+    &lt;intercept-message type="UNSUBSCRIBE" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/user/queue/errors" access="permitAll"/&gt;
+    &lt;intercept-message pattern="/admin/**" access="hasRole('ADMIN')"/&gt;
+    &lt;intercept-message pattern="/**" access="denyAll"/&gt;
+&lt;/websocket-message-broker&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"><a class="anchor" href="#_stop_implementing_abstractsecuritywebsocketmessagebrokerconfigurer"></a>Stop Implementing <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code></h3>
+<div class="paragraph">
+<p>If you are using Java configuration, you can now simply extend <code>WebSocketMessageBrokerConfigurer</code>.</p>
+</div>
+<div class="paragraph">
+<p>For example, if your class that extends <code>AbstractSecurityWebSocketMessageBrokerConfigurer</code> is called <code>WebSocketSecurityConfig</code>, then:</p>
+</div>
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_18_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_18_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
+@Configuration
+public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
+@Configuration
+class WebSocketSecurityConfig: AbstractSecurityWebSocketMessageBrokerConfigurer() {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>changes to:</p>
+</div>
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_19_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_19_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@EnableWebSocketSecurity
+@Configuration
+public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@EnableWebSocketSecurity
+@Configuration
+class WebSocketSecurityConfig: WebSocketMessageBrokerConfigurer {
+	// ...
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="servlet-authorizationmanager-messages-opt-out"><a class="anchor" href="#servlet-authorizationmanager-messages-opt-out"></a>Opt-out Steps</h3>
+<div class="paragraph">
+<p>In case you had trouble, take a look at these scenarios for optimal opt out behavior:</p>
+</div>
+<div class="sect3">
+<h4 id="_i_cannot_declare_an_authorization_rule_for_all_requests"><a class="anchor" href="#_i_cannot_declare_an_authorization_rule_for_all_requests"></a>I cannot declare an authorization rule for all requests</h4>
+<div class="paragraph">
+<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/messaging/access/intercept/MessageMatcherDelegatingAuthorizationManager.Builder.Constraint.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
+</div>
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_20_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_20_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_20_xml" class="tab">
+<p>Xml</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
+    messages
         .simpDestMatchers("/user/queue/errors").permitAll()
         .simpDestMatchers("/admin/**").hasRole("ADMIN")
         // ...
@@ -1747,7 +1931,7 @@ AuthorizationManager&lt;Message&lt;?&gt;&gt; messageSecurity(MessageMatcherDeleg
 </div>
 </div>
 </div>
-<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
+<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1762,7 +1946,7 @@ fun messageSecurity(val messages: MessageMatcherDelegatingAuthorizationManager.B
 </div>
 </div>
 </div>
-<div id="_tabs_17_xml--panel" class="tabpanel" aria-labelledby="_tabs_17_xml">
+<div id="_tabs_20_xml--panel" class="tabpanel" aria-labelledby="_tabs_20_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;websocket-message-broker use-authorization-manager="true"&gt;
@@ -1815,7 +1999,7 @@ Even though it is deprecated, it will not be removed in 6.0.</p>
 <h2 id="_use_authorizationmanager_for_request_security"><a class="anchor" href="#_use_authorizationmanager_for_request_security"></a>Use <code>AuthorizationManager</code> for Request Security</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="../../servlet/authorization/authorize-requests.html" class="xref page">HTTP Request Security</a> has been <a href="../../servlet/authorization/authorize-http-requests.html" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a>.</p>
+<p><a href="../../servlet/authorization/authorize-requests.html" class="xref page">HTTP Request Security</a> has been <a href="../../servlet/authorization/authorize-http-requests.html" class="xref page">simplified</a> through <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html">the <code>AuthorizationManager</code> API</a>.</p>
 </div>
 <div class="paragraph">
 <p>Should you run into trouble with making these changes, you can follow the <a href="#servlet-authorizationmanager-requests-opt-out">opt out steps</a> at the end of this section.</p>
@@ -1828,8 +2012,8 @@ It is a stronger security position to deny by default, thus requiring that autho
 As such, in 6.0, Spring Security by default denies any request that is missing an authorization rule.</p>
 </div>
 <div class="paragraph">
-<p>The simplest way to prepare for this change is to introduce an appropriate <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#anyRequest()"><code>anyRequest</code></a> rule as the last authorization rule.
-The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#denyAll()"><code>denyAll</code></a> since that is the implied 6.0 default.</p>
+<p>The simplest way to prepare for this change is to introduce an appropriate <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#anyRequest()"><code>anyRequest</code></a> rule as the last authorization rule.
+The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#denyAll()"><code>denyAll</code></a> since that is the implied 6.0 default.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1848,22 +2032,22 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 <div class="paragraph">
 <p>Adding <code>denyAll</code> to the end looks like changing:</p>
 </div>
-<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div id="_tabs_21" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_18_java" class="tab">
+<li id="_tabs_21_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_18_kotlin" class="tab">
+<li id="_tabs_21_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_18_xml" class="tab">
+<li id="_tabs_21_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -1876,7 +2060,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
+<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -1889,7 +2073,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_18_xml--panel" class="tabpanel" aria-labelledby="_tabs_18_xml">
+<div id="_tabs_21_xml--panel" class="tabpanel" aria-labelledby="_tabs_21_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
@@ -1904,22 +2088,22 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 <div class="paragraph">
 <p>to:</p>
 </div>
-<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div id="_tabs_22" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_19_java" class="tab">
+<li id="_tabs_22_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_19_kotlin" class="tab">
+<li id="_tabs_22_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_19_xml" class="tab">
+<li id="_tabs_22_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div id="_tabs_22_java--panel" class="tabpanel" aria-labelledby="_tabs_22_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -1933,7 +2117,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div id="_tabs_22_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_22_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -1947,7 +2131,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_19_xml--panel" class="tabpanel" aria-labelledby="_tabs_19_xml">
+<div id="_tabs_22_xml--panel" class="tabpanel" aria-labelledby="_tabs_22_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
@@ -1972,22 +2156,22 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 <div class="paragraph">
 <p>Change:</p>
 </div>
-<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div id="_tabs_23" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_20_java" class="tab">
+<li id="_tabs_23_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_20_kotlin" class="tab">
+<li id="_tabs_23_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_20_xml" class="tab">
+<li id="_tabs_23_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div id="_tabs_23_java--panel" class="tabpanel" aria-labelledby="_tabs_23_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2001,7 +2185,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
+<div id="_tabs_23_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_23_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2015,7 +2199,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_20_xml--panel" class="tabpanel" aria-labelledby="_tabs_20_xml">
+<div id="_tabs_23_xml--panel" class="tabpanel" aria-labelledby="_tabs_23_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true"&gt;
@@ -2031,22 +2215,22 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 <div class="paragraph">
 <p>to:</p>
 </div>
-<div id="_tabs_21" class="openblock tabs is-sync is-loading">
+<div id="_tabs_24" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_21_java" class="tab">
+<li id="_tabs_24_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_21_kotlin" class="tab">
+<li id="_tabs_24_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_21_xml" class="tab">
+<li id="_tabs_24_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
+<div id="_tabs_24_java--panel" class="tabpanel" aria-labelledby="_tabs_24_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2060,7 +2244,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
+<div id="_tabs_24_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_24_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2074,7 +2258,7 @@ The recommendation is <a href="https://docs.spring.io/spring-security/site/docs/
 </div>
 </div>
 </div>
-<div id="_tabs_21_xml--panel" class="tabpanel" aria-labelledby="_tabs_21_xml">
+<div id="_tabs_24_xml--panel" class="tabpanel" aria-labelledby="_tabs_24_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
@@ -2103,19 +2287,19 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 <div class="paragraph">
 <p>First, if you have the following SpEL:</p>
 </div>
-<div id="_tabs_22" class="openblock tabs is-sync is-loading">
+<div id="_tabs_25" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_22_java" class="tab">
+<li id="_tabs_25_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_22_kotlin" class="tab">
+<li id="_tabs_25_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_22_java--panel" class="tabpanel" aria-labelledby="_tabs_22_java">
+<div id="_tabs_25_java--panel" class="tabpanel" aria-labelledby="_tabs_25_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2129,7 +2313,7 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 </div>
 </div>
 </div>
-<div id="_tabs_22_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_22_kotlin">
+<div id="_tabs_25_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_25_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2148,19 +2332,19 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 <div class="paragraph">
 <p>Then you can compose your own <code>AuthorizationManager</code> with Spring Security authorization primitives like so:</p>
 </div>
-<div id="_tabs_23" class="openblock tabs is-sync is-loading">
+<div id="_tabs_26" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_23_java" class="tab">
+<li id="_tabs_26_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_23_kotlin" class="tab">
+<li id="_tabs_26_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_23_java--panel" class="tabpanel" aria-labelledby="_tabs_23_java">
+<div id="_tabs_26_java--panel" class="tabpanel" aria-labelledby="_tabs_26_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2174,7 +2358,7 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 </div>
 </div>
 </div>
-<div id="_tabs_23_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_23_kotlin">
+<div id="_tabs_26_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_26_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2193,19 +2377,19 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 <div class="paragraph">
 <p>Or you can use <code>WebExpressionAuthorizationManager</code> in the following way:</p>
 </div>
-<div id="_tabs_24" class="openblock tabs is-sync is-loading">
+<div id="_tabs_27" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_24_java" class="tab">
+<li id="_tabs_27_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_24_kotlin" class="tab">
+<li id="_tabs_27_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_24_java--panel" class="tabpanel" aria-labelledby="_tabs_24_java">
+<div id="_tabs_27_java--panel" class="tabpanel" aria-labelledby="_tabs_27_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2221,7 +2405,7 @@ As such, <code>authorizeHttpRequests</code> does not have a method for declaring
 </div>
 </div>
 </div>
-<div id="_tabs_24_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_24_kotlin">
+<div id="_tabs_27_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_27_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2256,22 +2440,22 @@ As such, in 6.0, Spring Security changes this default.</p>
 <div class="paragraph">
 <p>To do this, you should change:</p>
 </div>
-<div id="_tabs_25" class="openblock tabs is-sync is-loading">
+<div id="_tabs_28" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_25_java" class="tab">
+<li id="_tabs_28_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_25_kotlin" class="tab">
+<li id="_tabs_28_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_25_xml" class="tab">
+<li id="_tabs_28_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_25_java--panel" class="tabpanel" aria-labelledby="_tabs_25_java">
+<div id="_tabs_28_java--panel" class="tabpanel" aria-labelledby="_tabs_28_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2285,7 +2469,7 @@ As such, in 6.0, Spring Security changes this default.</p>
 </div>
 </div>
 </div>
-<div id="_tabs_25_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_25_kotlin">
+<div id="_tabs_28_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_28_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2299,7 +2483,7 @@ As such, in 6.0, Spring Security changes this default.</p>
 </div>
 </div>
 </div>
-<div id="_tabs_25_xml--panel" class="tabpanel" aria-labelledby="_tabs_25_xml">
+<div id="_tabs_28_xml--panel" class="tabpanel" aria-labelledby="_tabs_28_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
@@ -2315,22 +2499,22 @@ As such, in 6.0, Spring Security changes this default.</p>
 <div class="paragraph">
 <p>to:</p>
 </div>
-<div id="_tabs_26" class="openblock tabs is-sync is-loading">
+<div id="_tabs_29" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_26_java" class="tab">
+<li id="_tabs_29_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_26_kotlin" class="tab">
+<li id="_tabs_29_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_26_xml" class="tab">
+<li id="_tabs_29_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_26_java--panel" class="tabpanel" aria-labelledby="_tabs_26_java">
+<div id="_tabs_29_java--panel" class="tabpanel" aria-labelledby="_tabs_29_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2344,7 +2528,7 @@ As such, in 6.0, Spring Security changes this default.</p>
 </div>
 </div>
 </div>
-<div id="_tabs_26_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_26_kotlin">
+<div id="_tabs_29_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_29_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2358,7 +2542,7 @@ As such, in 6.0, Spring Security changes this default.</p>
 </div>
 </div>
 </div>
-<div id="_tabs_26_xml--panel" class="tabpanel" aria-labelledby="_tabs_26_xml">
+<div id="_tabs_29_xml--panel" class="tabpanel" aria-labelledby="_tabs_29_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
@@ -2375,16 +2559,16 @@ As such, in 6.0, Spring Security changes this default.</p>
 <p>And, the <code>FilterChainProxy</code> should be registered for all dispatcher types as well.
 If you are using Spring Boot, <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.security.spring.security.filter.dispatcher-types">you have to change the <code>spring.security.filter.dispatcher-types</code> property</a> to include all dispatcher types:</p>
 </div>
-<div id="_tabs_27" class="openblock tabs is-sync is-loading">
+<div id="_tabs_30" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_27_application_properties" class="tab">
+<li id="_tabs_30_application_properties" class="tab">
 <p>application.properties</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_27_application_properties--panel" class="tabpanel" aria-labelledby="_tabs_27_application_properties">
+<div id="_tabs_30_application_properties--panel" class="tabpanel" aria-labelledby="_tabs_30_application_properties">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">spring.security.filter.dispatcher-types=request,async,error,forward,include</code></pre>
@@ -2396,16 +2580,16 @@ If you are using Spring Boot, <a href="https://docs.spring.io/spring-boot/docs/c
 <div class="paragraph">
 <p>If you are <a href="../../servlet/configuration/java.html#_abstractsecuritywebapplicationinitializer" class="xref page">using the <code>AbstractSecurityWebApplicationInitializer</code></a> you should override the <code>getSecurityDispatcherTypes</code> method and return all dispatcher types:</p>
 </div>
-<div id="_tabs_28" class="openblock tabs is-sync is-loading">
+<div id="_tabs_31" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_28_java" class="tab">
+<li id="_tabs_31_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_28_java--panel" class="tabpanel" aria-labelledby="_tabs_28_java">
+<div id="_tabs_31_java--panel" class="tabpanel" aria-labelledby="_tabs_31_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java"><span class="fold-block is-hidden-folded">import org.springframework.security.web.context.*;
@@ -2414,7 +2598,7 @@ If you are using Spring Boot, <a href="https://docs.spring.io/spring-boot/docs/c
 
     @Override
     protected EnumSet&lt;DispatcherType&gt; getSecurityDispatcherTypes() {
-        return EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR, DispatcherType.FORWARD,
+        return EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR, DispatcherType.ASYNC,
                 DispatcherType.FORWARD, DispatcherType.INCLUDE);
     }
 
@@ -2427,23 +2611,23 @@ If you are using Spring Boot, <a href="https://docs.spring.io/spring-boot/docs/c
 <div class="sect3">
 <h4 id="_permit_forward_when_using_spring_mvc"><a class="anchor" href="#_permit_forward_when_using_spring_mvc"></a>Permit <code>FORWARD</code> when using Spring MVC</h4>
 <div class="paragraph">
-<p>If you are using <a href="https://docs.spring.io/spring-framework/docs/5.3.25/reference/html//web.html#mvc-viewresolver">Spring MVC to resolve view names</a>, you will need to permit <code>FORWARD</code> requests.
+<p>If you are using <a href="https://docs.spring.io/spring-framework/docs/5.3.27/reference/html//web.html#mvc-viewresolver">Spring MVC to resolve view names</a>, you will need to permit <code>FORWARD</code> requests.
 This is because when Spring MVC detects a mapping between view name and the actual views, it will perform a forward to the view.
 As we saw on the <a href="#switch-filter-all-dispatcher-types">previous section</a>, Spring Security 6.0 will apply authorization to <code>FORWARD</code> requests by default.</p>
 </div>
 <div class="paragraph">
 <p>Consider the following common configuration:</p>
 </div>
-<div id="_tabs_29" class="openblock tabs is-sync is-loading">
+<div id="_tabs_32" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_29_java" class="tab">
+<li id="_tabs_32_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_29_java--panel" class="tabpanel" aria-labelledby="_tabs_29_java">
+<div id="_tabs_32_java--panel" class="tabpanel" aria-labelledby="_tabs_32_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2468,16 +2652,16 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 <div class="paragraph">
 <p>and one of the following equivalents MVC view mapping configurations:</p>
 </div>
-<div id="_tabs_30" class="openblock tabs is-sync is-loading">
+<div id="_tabs_33" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_30_java" class="tab">
+<li id="_tabs_33_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_30_java--panel" class="tabpanel" aria-labelledby="_tabs_30_java">
+<div id="_tabs_33_java--panel" class="tabpanel" aria-labelledby="_tabs_33_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Controller
@@ -2494,16 +2678,16 @@ public class MyController {
 </div>
 </div>
 </div>
-<div id="_tabs_31" class="openblock tabs is-sync is-loading">
+<div id="_tabs_34" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_31_java" class="tab">
+<li id="_tabs_34_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_31_java--panel" class="tabpanel" aria-labelledby="_tabs_31_java">
+<div id="_tabs_34_java--panel" class="tabpanel" aria-labelledby="_tabs_34_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
@@ -2527,22 +2711,22 @@ The security configuration permits requests to <code>/login</code> but every oth
 <div class="paragraph">
 <p>To fix this, you should configure Spring Security to permit <code>FORWARD</code> requests:</p>
 </div>
-<div id="_tabs_32" class="openblock tabs is-sync is-loading">
+<div id="_tabs_35" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_32_java" class="tab">
+<li id="_tabs_35_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_32_kotlin" class="tab">
+<li id="_tabs_35_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_32_xml" class="tab">
+<li id="_tabs_35_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_32_java--panel" class="tabpanel" aria-labelledby="_tabs_32_java">
+<div id="_tabs_35_java--panel" class="tabpanel" aria-labelledby="_tabs_35_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2555,7 +2739,7 @@ The security configuration permits requests to <code>/login</code> but every oth
 </div>
 </div>
 </div>
-<div id="_tabs_32_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_32_kotlin">
+<div id="_tabs_35_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_35_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2568,7 +2752,7 @@ The security configuration permits requests to <code>/login</code> but every oth
 </div>
 </div>
 </div>
-<div id="_tabs_32_xml--panel" class="tabpanel" aria-labelledby="_tabs_32_xml">
+<div id="_tabs_35_xml--panel" class="tabpanel" aria-labelledby="_tabs_35_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
@@ -2590,31 +2774,31 @@ The security configuration permits requests to <code>/login</code> but every oth
 <div class="sect2">
 <h3 id="_replace_any_custom_filter_security_accessdecisionmanagers"><a class="anchor" href="#_replace_any_custom_filter_security_accessdecisionmanagers"></a>Replace any custom filter-security <code>AccessDecisionManager</code>s</h3>
 <div class="paragraph">
-<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
+<p>Your application may have a custom <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionManager.html"><code>AccessDecisionManager</code></a> or <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> arrangement.
 The preparation strategy will depend on your reason for each arrangement.
 Read on to find the best match for your situation.</p>
 </div>
 <div class="sect3">
 <h4 id="_i_use_unanimousbased_2"><a class="anchor" href="#_i_use_unanimousbased_2"></a>I use <code>UnanimousBased</code></h4>
 <div class="paragraph">
-<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a>, you should first adapt or replace any <code>AccessDecisionVoter</code>s and then you can construct an <code>AuthorizationManager</code> like so:</p>
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/UnanimousBased.html"><code>UnanimousBased</code></a>, you should first adapt or replace any <code>AccessDecisionVoter</code>s and then you can construct an <code>AuthorizationManager</code> like so:</p>
 </div>
-<div id="_tabs_33" class="openblock tabs is-sync is-loading">
+<div id="_tabs_36" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_33_java" class="tab">
+<li id="_tabs_36_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_33_kotlin" class="tab">
+<li id="_tabs_36_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_33_xml" class="tab">
+<li id="_tabs_36_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_33_java--panel" class="tabpanel" aria-labelledby="_tabs_33_java">
+<div id="_tabs_36_java--panel" class="tabpanel" aria-labelledby="_tabs_36_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2626,7 +2810,7 @@ AuthorizationManager&lt;RequestAuthorizationContext&gt; requestAuthorization() {
 </div>
 </div>
 </div>
-<div id="_tabs_33_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_33_kotlin">
+<div id="_tabs_36_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_36_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2638,7 +2822,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_33_xml--panel" class="tabpanel" aria-labelledby="_tabs_33_xml">
+<div id="_tabs_36_xml--panel" class="tabpanel" aria-labelledby="_tabs_36_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bean id="requestAuthorization" class="org.springframework.security.authorization.AuthorizationManagers"
@@ -2658,22 +2842,22 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 <div class="paragraph">
 <p>then, wire it into the DSL like so:</p>
 </div>
-<div id="_tabs_34" class="openblock tabs is-sync is-loading">
+<div id="_tabs_37" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_34_java" class="tab">
+<li id="_tabs_37_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_34_kotlin" class="tab">
+<li id="_tabs_37_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_34_xml" class="tab">
+<li id="_tabs_37_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_34_java--panel" class="tabpanel" aria-labelledby="_tabs_34_java">
+<div id="_tabs_37_java--panel" class="tabpanel" aria-labelledby="_tabs_37_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2682,7 +2866,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_34_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_34_kotlin">
+<div id="_tabs_37_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_37_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2694,7 +2878,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_34_xml--panel" class="tabpanel" aria-labelledby="_tabs_34_xml">
+<div id="_tabs_37_xml--panel" class="tabpanel" aria-labelledby="_tabs_37_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http authorization-manager-ref="requestAuthorization"/&gt;</code></pre>
@@ -2722,24 +2906,24 @@ See <a href="../../servlet/authorization/authorize-http-requests.html#custom-aut
 <div class="sect3">
 <h4 id="_i_use_affirmativebased_2"><a class="anchor" href="#_i_use_affirmativebased_2"></a>I use <code>AffirmativeBased</code></h4>
 <div class="paragraph">
-<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
+<p>If your application uses <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/AffirmativeBased.html"><code>AffirmativeBased</code></a>, then you can construct an equivalent <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a>, like so:</p>
 </div>
-<div id="_tabs_35" class="openblock tabs is-sync is-loading">
+<div id="_tabs_38" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_35_java" class="tab">
+<li id="_tabs_38_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_35_kotlin" class="tab">
+<li id="_tabs_38_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_35_xml" class="tab">
+<li id="_tabs_38_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_35_java--panel" class="tabpanel" aria-labelledby="_tabs_35_java">
+<div id="_tabs_38_java--panel" class="tabpanel" aria-labelledby="_tabs_38_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2751,7 +2935,7 @@ AuthorizationManager&lt;RequestAuthorizationContext&gt; requestAuthorization() {
 </div>
 </div>
 </div>
-<div id="_tabs_35_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_35_kotlin">
+<div id="_tabs_38_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_38_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2763,7 +2947,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_35_xml--panel" class="tabpanel" aria-labelledby="_tabs_35_xml">
+<div id="_tabs_38_xml--panel" class="tabpanel" aria-labelledby="_tabs_38_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;bean id="requestAuthorization" class="org.springframework.security.authorization.AuthorizationManagers"
@@ -2783,22 +2967,22 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 <div class="paragraph">
 <p>then, wire it into the DSL like so:</p>
 </div>
-<div id="_tabs_36" class="openblock tabs is-sync is-loading">
+<div id="_tabs_39" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_36_java" class="tab">
+<li id="_tabs_39_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_36_kotlin" class="tab">
+<li id="_tabs_39_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_36_xml" class="tab">
+<li id="_tabs_39_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_36_java--panel" class="tabpanel" aria-labelledby="_tabs_36_java">
+<div id="_tabs_39_java--panel" class="tabpanel" aria-labelledby="_tabs_39_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2807,7 +2991,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_36_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_36_kotlin">
+<div id="_tabs_39_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_39_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2819,7 +3003,7 @@ fun requestAuthorization(): AuthorizationManager&lt;RequestAuthorizationContext&
 </div>
 </div>
 </div>
-<div id="_tabs_36_xml--panel" class="tabpanel" aria-labelledby="_tabs_36_xml">
+<div id="_tabs_39_xml--panel" class="tabpanel" aria-labelledby="_tabs_39_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http authorization-manager-ref="requestAuthorization"/&gt;</code></pre>
@@ -2847,8 +3031,8 @@ See <a href="../../servlet/authorization/authorize-http-requests.html#custom-aut
 <div class="sect3">
 <h4 id="_i_use_consensusbased_2"><a class="anchor" href="#_i_use_consensusbased_2"></a>I use <code>ConsensusBased</code></h4>
 <div class="paragraph">
-<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
-In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
+<p>There is no framework-provided equivalent for <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/vote/ConsensusBased.html"><code>ConsensusBased</code></a>.
+In that case, please implement a composite <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> that takes the set of delegate <code>AuthorizationManager</code>s into account.</p>
 </div>
 <div class="paragraph">
 <p>Once you have implemented <code>AuthorizationManager</code>, please follow the details in the reference manual for <a href="../../servlet/authorization/authorize-http-requests.html#custom-authorization-manager" class="xref page">adding a custom <code>AuthorizationManager</code></a>.</p>
@@ -2857,22 +3041,22 @@ In that case, please implement a composite <a href="https://docs.spring.io/sprin
 <div class="sect3">
 <h4 id="_i_use_a_custom_accessdecisionvoter_2"><a class="anchor" href="#_i_use_a_custom_accessdecisionvoter_2"></a>I use a custom <code>AccessDecisionVoter</code></h4>
 <div class="paragraph">
-<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
+<p>You should either change the class to implement <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authorization/AuthorizationManager.html"><code>AuthorizationManager</code></a> or create an adapter.</p>
 </div>
 <div class="paragraph">
 <p>Without knowing what your custom voter is doing, it is impossible to recommend a general-purpose solution.
-By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>anyRequest().authenticated()</code> would look like:</p>
+By way of example, though, here is what adapting <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/SecurityMetadataSource.html"><code>SecurityMetadataSource</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/access/AccessDecisionVoter.html"><code>AccessDecisionVoter</code></a> for <code>anyRequest().authenticated()</code> would look like:</p>
 </div>
-<div id="_tabs_37" class="openblock tabs is-sync is-loading">
+<div id="_tabs_40" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_37_java" class="tab">
+<li id="_tabs_40_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_37_java--panel" class="tabpanel" aria-labelledby="_tabs_37_java">
+<div id="_tabs_40_java--panel" class="tabpanel" aria-labelledby="_tabs_40_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public final class AnyRequestAuthenticatedAuthorizationManagerAdapter implements AuthorizationManager&lt;RequestAuthorizationContext&gt; {
@@ -2920,22 +3104,22 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 <div class="paragraph">
 <p>If you cannot secure all dispatcher types, first try and declare which dispatcher types should not require authorization like so:</p>
 </div>
-<div id="_tabs_38" class="openblock tabs is-sync is-loading">
+<div id="_tabs_41" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_38_java" class="tab">
+<li id="_tabs_41_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_38_kotlin" class="tab">
+<li id="_tabs_41_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_38_xml" class="tab">
+<li id="_tabs_41_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_38_java--panel" class="tabpanel" aria-labelledby="_tabs_38_java">
+<div id="_tabs_41_java--panel" class="tabpanel" aria-labelledby="_tabs_41_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -2950,7 +3134,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_38_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_38_kotlin">
+<div id="_tabs_41_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_41_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -2965,7 +3149,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_38_xml--panel" class="tabpanel" aria-labelledby="_tabs_38_xml">
+<div id="_tabs_41_xml--panel" class="tabpanel" aria-labelledby="_tabs_41_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="true" use-authorization-manager="true"&gt;
@@ -2991,22 +3175,22 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 <div class="paragraph">
 <p>Or, if that doesn&#8217;t work, then you can explicitly opt out of the behavior by setting <code>filter-all-dispatcher-types</code> and <code>filterAllDispatcherTypes</code> to <code>false</code>:</p>
 </div>
-<div id="_tabs_39" class="openblock tabs is-sync is-loading">
+<div id="_tabs_42" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_39_java" class="tab">
+<li id="_tabs_42_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_39_kotlin" class="tab">
+<li id="_tabs_42_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_39_xml" class="tab">
+<li id="_tabs_42_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_39_java--panel" class="tabpanel" aria-labelledby="_tabs_39_java">
+<div id="_tabs_42_java--panel" class="tabpanel" aria-labelledby="_tabs_42_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -3019,7 +3203,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_39_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_39_kotlin">
+<div id="_tabs_42_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_42_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -3032,7 +3216,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_39_xml--panel" class="tabpanel" aria-labelledby="_tabs_39_xml">
+<div id="_tabs_42_xml--panel" class="tabpanel" aria-labelledby="_tabs_42_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http filter-all-dispatcher-types="false" use-authorization-manager="true"&gt;
@@ -3047,22 +3231,22 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 <div class="paragraph">
 <p>or, if you are still using <code>authorizeRequests</code> or <code>use-authorization-manager="false"</code>, set <code>oncePerRequest</code> to <code>true</code>:</p>
 </div>
-<div id="_tabs_40" class="openblock tabs is-sync is-loading">
+<div id="_tabs_43" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_40_java" class="tab">
+<li id="_tabs_43_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_40_kotlin" class="tab">
+<li id="_tabs_43_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_40_xml" class="tab">
+<li id="_tabs_43_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_40_java--panel" class="tabpanel" aria-labelledby="_tabs_40_java">
+<div id="_tabs_43_java--panel" class="tabpanel" aria-labelledby="_tabs_43_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -3075,7 +3259,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_40_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_40_kotlin">
+<div id="_tabs_43_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_43_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -3088,7 +3272,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_40_xml--panel" class="tabpanel" aria-labelledby="_tabs_40_xml">
+<div id="_tabs_43_xml--panel" class="tabpanel" aria-labelledby="_tabs_43_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http once-per-request="true" use-authorization-manager="false"&gt;
@@ -3104,24 +3288,24 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 <div class="sect3">
 <h4 id="_i_cannot_declare_an_authorization_rule_for_all_requests_2"><a class="anchor" href="#_i_cannot_declare_an_authorization_rule_for_all_requests_2"></a>I cannot declare an authorization rule for all requests</h4>
 <div class="paragraph">
-<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
+<p>If you are having trouble setting an <code>anyRequest</code> authorization rule of <code>denyAll</code>, please use <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/ExpressionUrlAuthorizationConfigurer.AuthorizedUrl.html#permitAll()"><code>permitAll</code></a> instead, like so:</p>
 </div>
-<div id="_tabs_41" class="openblock tabs is-sync is-loading">
+<div id="_tabs_44" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_41_java" class="tab">
+<li id="_tabs_44_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_41_kotlin" class="tab">
+<li id="_tabs_44_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_41_xml" class="tab">
+<li id="_tabs_44_xml" class="tab">
 <p>Xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_41_java--panel" class="tabpanel" aria-labelledby="_tabs_41_java">
+<div id="_tabs_44_java--panel" class="tabpanel" aria-labelledby="_tabs_44_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">http
@@ -3133,7 +3317,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_41_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_41_kotlin">
+<div id="_tabs_44_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_44_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">http {
@@ -3146,7 +3330,7 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 </div>
 </div>
 </div>
-<div id="_tabs_41_xml--panel" class="tabpanel" aria-labelledby="_tabs_41_xml">
+<div id="_tabs_44_xml--panel" class="tabpanel" aria-labelledby="_tabs_44_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -3208,6 +3392,5 @@ By way of example, though, here is what adapting <a href="https://docs.spring.io
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>

@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -728,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -738,25 +752,25 @@
           <a href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../index.html">6.0.2</a>
+          <a href="../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../index.html">5.8.2</a>
+          <a href="../../index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../5.7/index.html">5.7.7</a>
+          <a href="../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -784,27 +798,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version" href="../../../6.1-SNAPSHOT/servlet/authentication/logout.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../../6.1/servlet/authentication/logout.html">6.1.0-M2</a>
-    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/logout.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../servlet/authentication/logout.html">6.0.2</a>
-    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/logout.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="logout.html">5.8.2</a>
-    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/logout.html">5.7.8-SNAPSHOT</a>
-    <a class="version" href="../../../5.7/servlet/authentication/logout.html">5.7.7</a>
+    <a class="version" href="../../../6.1/servlet/authentication/logout.html">6.1.0-RC1</a>
+    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/logout.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../servlet/authentication/logout.html">6.0.3</a>
+    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/logout.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="logout.html">5.8.3</a>
+    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/logout.html">5.7.9-SNAPSHOT</a>
+    <a class="version" href="../../../5.7/servlet/authentication/logout.html">5.7.8</a>
     <a class="version" href="../../../5.6-SNAPSHOT/servlet/authentication/logout.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../../5.6/servlet/authentication/logout.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/servlet/authentication/logout.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/servlet/authentication/logout.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Handling Logouts" data-levels="2">
@@ -819,7 +832,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../servlet/authentication/logout.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../servlet/authentication/logout.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -830,7 +843,7 @@
 <h2 id="logout-java-configuration"><a class="anchor" href="#logout-java-configuration"></a>Logout Java/Kotlin Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When injecting the <code><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html">HttpSecurity</a></code> bean, logout capabilities are automatically applied.
+<p>When injecting the <code><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html">HttpSecurity</a></code> bean, logout capabilities are automatically applied.
 The default is that accessing the URL <code>/logout</code> will log the user out by:</p>
 </div>
 <div class="ulist">
@@ -843,6 +856,9 @@ The default is that accessing the URL <code>/logout</code> will log the user out
 </li>
 <li>
 <p>Clearing the <code>SecurityContextHolder</code></p>
+</li>
+<li>
+<p>Clearing the <code>SecurityContextRepository</code></p>
 </li>
 <li>
 <p>Redirect to <code>/login?logout</code></p>
@@ -914,26 +930,26 @@ The default is that accessing the URL <code>/logout</code> will log the user out
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>The URL that triggers log out to occur (default is <code>/logout</code>).
 If CSRF protection is enabled (default), then the request must also be a POST.
-For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutUrl-java.lang.String-">Javadoc</a>.</td>
+For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutUrl-java.lang.String-">Javadoc</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>The URL to redirect to after logout has occurred.
 The default is <code>/login?logout</code>.
-For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutSuccessUrl-java.lang.String-">Javadoc</a>.</td>
+For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutSuccessUrl-java.lang.String-">Javadoc</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>Let&#8217;s you specify a custom <code>LogoutSuccessHandler</code>.
 If this is specified, <code>logoutSuccessUrl()</code> is ignored.
-For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutSuccessHandler-org.springframework.security.web.authentication.logout.LogoutSuccessHandler-">Javadoc</a>.</td>
+For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#logoutSuccessHandler-org.springframework.security.web.authentication.logout.LogoutSuccessHandler-">Javadoc</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Specify whether to invalidate the <code>HttpSession</code> at the time of logout.
 This is <strong>true</strong> by default.
 Configures the <code>SecurityContextLogoutHandler</code> under the covers.
-For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#invalidateHttpSession-boolean-">Javadoc</a>.</td>
+For more information, please consult the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html#invalidateHttpSession-boolean-">Javadoc</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
@@ -964,9 +980,9 @@ Please see the documentation for the <a href="../appendix/namespace/http.html#ns
 </div>
 <div class="paragraph">
 <p>Generally, in order to customize logout functionality, you can add
-<code><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a></code>
+<code><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a></code>
 and/or
-<code><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/LogoutSuccessHandler.html">LogoutSuccessHandler</a></code>
+<code><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/LogoutSuccessHandler.html">LogoutSuccessHandler</a></code>
 implementations.
 For many common scenarios, these handlers are applied under the
 covers when using the fluent API.</p>
@@ -987,7 +1003,7 @@ More information on other available attributes may be found in the namespace app
 <h2 id="jc-logout-handler"><a class="anchor" href="#jc-logout-handler"></a>LogoutHandler</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Generally, <code><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a></code>
+<p>Generally, <code><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/LogoutHandler.html">LogoutHandler</a></code>
 implementations indicate classes that are able to participate in logout handling.
 They are expected to be invoked to perform necessary clean-up.
 As such they should
@@ -997,22 +1013,22 @@ Various implementations are provided:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/rememberme/PersistentTokenBasedRememberMeServices.html">PersistentTokenBasedRememberMeServices</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/rememberme/PersistentTokenBasedRememberMeServices.html">PersistentTokenBasedRememberMeServices</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/rememberme/TokenBasedRememberMeServices.html">TokenBasedRememberMeServices</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/rememberme/TokenBasedRememberMeServices.html">TokenBasedRememberMeServices</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/CookieClearingLogoutHandler.html">CookieClearingLogoutHandler</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/CookieClearingLogoutHandler.html">CookieClearingLogoutHandler</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/csrf/CsrfLogoutHandler.html">CsrfLogoutHandler</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/csrf/CsrfLogoutHandler.html">CsrfLogoutHandler</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html">SecurityContextLogoutHandler</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html">SecurityContextLogoutHandler</a></p>
 </li>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/HeaderWriterLogoutHandler.html">HeaderWriterLogoutHandler</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/HeaderWriterLogoutHandler.html">HeaderWriterLogoutHandler</a></p>
 </li>
 </ul>
 </div>
@@ -1040,7 +1056,7 @@ Note that the interface is almost the same as the <code>LogoutHandler</code> but
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/logout/SimpleUrlLogoutSuccessHandler.html">SimpleUrlLogoutSuccessHandler</a></p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/logout/SimpleUrlLogoutSuccessHandler.html">SimpleUrlLogoutSuccessHandler</a></p>
 </li>
 <li>
 <p>HttpStatusReturningLogoutSuccessHandler</p>
@@ -1066,6 +1082,9 @@ If not configured a status code 200 will be returned by default.</p>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
+<li>
+<p><a href="session-management.html#properly-clearing-authentication" class="xref page">Properly Clearing Authentication When Explicit Save Is Enabled</a></p>
+</li>
 <li>
 <p><a href="#ns-logout">Logout Handling</a></p>
 </li>
@@ -1115,6 +1134,5 @@ If not configured a status code 200 will be returned by default.</p>
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>

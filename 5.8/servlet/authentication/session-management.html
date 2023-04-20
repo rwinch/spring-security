@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -728,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -738,25 +752,25 @@
           <a href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../index.html">6.0.2</a>
+          <a href="../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../index.html">5.8.2</a>
+          <a href="../../index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../5.7/index.html">5.7.7</a>
+          <a href="../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -784,27 +798,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version" href="../../../6.1-SNAPSHOT/servlet/authentication/session-management.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../../6.1/servlet/authentication/session-management.html">6.1.0-M2</a>
-    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/session-management.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../servlet/authentication/session-management.html">6.0.2</a>
-    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/session-management.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="session-management.html">5.8.2</a>
-    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/session-management.html">5.7.8-SNAPSHOT</a>
-    <a class="version" href="../../../5.7/servlet/authentication/session-management.html">5.7.7</a>
+    <a class="version" href="../../../6.1/servlet/authentication/session-management.html">6.1.0-RC1</a>
+    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/session-management.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../servlet/authentication/session-management.html">6.0.3</a>
+    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/session-management.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="session-management.html">5.8.3</a>
+    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/session-management.html">5.7.9-SNAPSHOT</a>
+    <a class="version" href="../../../5.7/servlet/authentication/session-management.html">5.7.8</a>
     <a class="version" href="../../../5.6-SNAPSHOT/servlet/authentication/session-management.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../../5.6/servlet/authentication/session-management.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/servlet/authentication/session-management.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/servlet/authentication/session-management.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Authentication Persistence and Session Management" data-levels="2">
@@ -819,7 +832,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../servlet/authentication/session-management.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../servlet/authentication/session-management.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -913,6 +926,9 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <p>I want <a href="#store-authentication-manually">to store the authentication directly</a> myself instead of Spring Security doing it for me</p>
 </li>
 <li>
+<p>I am storing the authentication manually and I want <a href="#properly-clearing-authentication">to remove it</a></p>
+</li>
+<li>
 <p>I am using <a href="#the-sessionmanagementfilter"><code>SessionManagementFilter</code></a> and I need <a href="#moving-away-from-sessionmanagementfilter">guidance on moving away from that</a></p>
 </li>
 <li>
@@ -966,7 +982,7 @@ The latter is also used when configuring an invalid session URL through the name
 <div class="sect3">
 <h4 id="moving-away-from-sessionmanagementfilter"><a class="anchor" href="#moving-away-from-sessionmanagementfilter"></a>Moving Away From <code>SessionManagementFilter</code></h4>
 <div class="paragraph">
-<p>In Spring Security 5, the default configuration relies on <code>SessionManagementFilter</code> to detect if a user just authenticated and invoke <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/session/SessionAuthenticationStrategy.html">the <code>SessionAuthenticationStrategy</code></a>.
+<p>In Spring Security 5, the default configuration relies on <code>SessionManagementFilter</code> to detect if a user just authenticated and invoke <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/session/SessionAuthenticationStrategy.html">the <code>SessionAuthenticationStrategy</code></a>.
 The problem with this is that it means that in a typical setup, the <code>HttpSession</code> must be read for every request.</p>
 </div>
 <div class="paragraph">
@@ -1054,11 +1070,11 @@ open fun springSecurity(http: HttpSecurity): SecurityFilterChain {
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sessionAuthenticationErrorUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configure an <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api//org/springframework/security/web/authentication/AuthenticationFailureHandler.html"><code>AuthenticationFailureHandler</code></a> in your authentication mechanism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configure an <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api//org/springframework/security/web/authentication/AuthenticationFailureHandler.html"><code>AuthenticationFailureHandler</code></a> in your authentication mechanism</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sessionAuthenticationFailureHandler</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configure an <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api//org/springframework/security/web/authentication/AuthenticationFailureHandler.html"><code>AuthenticationFailureHandler</code></a> in your authentication mechanism</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configure an <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api//org/springframework/security/web/authentication/AuthenticationFailureHandler.html"><code>AuthenticationFailureHandler</code></a> in your authentication mechanism</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sessionAuthenticationStrategy</code></p></td>
@@ -1091,21 +1107,6 @@ open fun springSecurity(http: HttpSecurity): SecurityFilterChain {
 </div>
 <div class="paragraph">
 <p>First, you need to create an implementation of <code>SecurityContextRepository</code> or use an existing implementation like <code>HttpSessionSecurityContextRepository</code>, then you can set it in <code>HttpSecurity</code>.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>The above configuration sets the <code>SecurityContextRepository</code> on the <code>SecurityContextHolderFilter</code> and <strong>participating</strong> authentication filters, like <code>UsernamePasswordAuthenticationFilter</code>.
-To also set it in stateless filters, please see <a href="#storing-stateless-authentication-in-the-session">how to customize the <code>SecurityContextRepository</code> for Stateless Authentication</a>.</p>
-</div>
-</td>
-</tr>
-</table>
 </div>
 <div id="customizing-the-securitycontextrepository" class="openblock tabs is-sync is-loading">
 <div class="title">Customizing the <code>SecurityContextRepository</code></div>
@@ -1170,6 +1171,21 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The above configuration sets the <code>SecurityContextRepository</code> on the <code>SecurityContextHolderFilter</code> and <strong>participating</strong> authentication filters, like <code>UsernamePasswordAuthenticationFilter</code>.
+To also set it in stateless filters, please see <a href="#storing-stateless-authentication-in-the-session">how to customize the <code>SecurityContextRepository</code> for Stateless Authentication</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>If you are using a custom authentication mechanism, you might want to <a href="#store-authentication-manually">store the <code>Authentication</code> by yourself</a>.</p>
 </div>
@@ -1177,7 +1193,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <h3 id="store-authentication-manually"><a class="anchor" href="#store-authentication-manually"></a>Storing the <code>Authentication</code> manually</h3>
 <div class="paragraph">
 <p>In some cases, for example, you might be authenticating a user manually instead of relying on Spring Security filters.
-You can use a custom filters or a <a href="https://docs.spring.io/spring-framework/docs/5.3.25/reference/html//web.html#mvc-controller">Spring MVC controller</a> endpoint to do that.
+You can use a custom filters or a <a href="https://docs.spring.io/spring-framework/docs/5.3.27/reference/html//web.html#mvc-controller">Spring MVC controller</a> endpoint to do that.
 If you want to save the authentication between requests, in the <code>HttpSession</code>, for example, you have to do so:</p>
 </div>
 <div id="_tabs_4" class="openblock tabs is-sync is-loading">
@@ -1202,7 +1218,7 @@ public void login(@RequestBody LoginRequest loginRequest, HttpServletRequest req
     Authentication authentication = authenticationManager.authenticate(token); <i class="conum" data-value="4"></i><b>(4)</b>
     SecurityContext context = securityContextHolderStrategy.createEmptyContext();
     context.setAuthentication(authentication); <i class="conum" data-value="5"></i><b>(5)</b>
-    securityContextHolderStrategy.setContext(authentication);
+    securityContextHolderStrategy.setContext(context);
     securityContextRepository.saveContext(context, request, response); <i class="conum" data-value="6"></i><b>(6)</b>
 }
 
@@ -1252,13 +1268,18 @@ If you are not sure what <code>securityContextHolderStrategy</code> is in the ab
 </div>
 </div>
 <div class="sect2">
-<h3 id="stateless-authentication"><a class="anchor" href="#stateless-authentication"></a>Configuring Persistence for Stateless Authentication</h3>
+<h3 id="properly-clearing-authentication"><a class="anchor" href="#properly-clearing-authentication"></a>Properly Clearing an Authentication</h3>
 <div class="paragraph">
-<p>Sometimes there is no need to create and maintain a <code>HttpSession</code> for example, to persist the authentication across requests.
-Some authentication mechanisms like <a href="passwords/basic.html" class="xref page">HTTP Basic</a> are stateless and, therefore, re-authenticates the user on every request.</p>
+<p>If you are using Spring Security&#8217;s <a href="logout.html" class="xref page">Logout Support</a> then it handles a lot of stuff for you including clearing and saving the context.
+But, let&#8217;s say you need to manually log users out of your app. In that case, you&#8217;ll need to make sure you&#8217;re clearing and saving the context properly.</p>
 </div>
 <div class="paragraph">
-<p>If you do not wish to create sessions, you can use <code>SessionCreationPolicy.STATELESS</code>, like so:</p>
+<p>Now, you might already be familiar with clearing the <code>SecurityContextHolder</code> by doing <code>SecurityContextHolderStrategy#clearContext()</code>.
+That&#8217;s great, but if your app requires an <a href="../../migration/servlet/session-management.html#_require_explicit_saving_of_securitycontextrepository" class="xref page">explicit save of the context</a>, simply clearing it isn&#8217;t enough.
+The reason is that it doesn&#8217;t remove it from the <code>SecurityContextRepository</code>, which means the <code>SecurityContext</code> could still be available for the next requests, and we definitely don&#8217;t want that.</p>
+</div>
+<div class="paragraph">
+<p>To make sure the authentication is properly cleared and saved, you can invoke <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api//org/springframework/security/web/authentication/logout/SecurityContextLogoutHandler.html">the <code>SecurityContextLogoutHandler</code></a> which does that for us, like so:</p>
 </div>
 <div id="_tabs_5" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1267,15 +1288,59 @@ Some authentication mechanisms like <a href="passwords/basic.html" class="xref p
 <li id="_tabs_5_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_5_kotlin" class="tab">
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">SecurityContextLogoutHandler handler = new SecurityContextLogoutHandler(); <i class="conum" data-value="1"></i><b>(1)</b>
+handler.logout(httpServletRequest, httpServletResponse, null); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Create a new instance of <code>SecurityContextLogoutHandler</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Call the <code>logout</code> method passing in the <code>HttpServletRequest</code>, <code>HttpServletResponse</code> and a <code>null</code> authentication because it is not required for this handler.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It&#8217;s important to remember that clearing and saving the context is just one piece of the logout process, therefore we recommend having Spring Security take care of it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="stateless-authentication"><a class="anchor" href="#stateless-authentication"></a>Configuring Persistence for Stateless Authentication</h3>
+<div class="paragraph">
+<p>Sometimes there is no need to create and maintain a <code>HttpSession</code> for example, to persist the authentication across requests.
+Some authentication mechanisms like <a href="passwords/basic.html" class="xref page">HTTP Basic</a> are stateless and, therefore, re-authenticates the user on every request.</p>
+</div>
+<div class="paragraph">
+<p>If you do not wish to create sessions, you can use <code>SessionCreationPolicy.STATELESS</code>, like so:</p>
+</div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_5_xml" class="tab">
+<li id="_tabs_6_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1290,7 +1355,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_5_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_5_kotlin">
+<div id="_tabs_6_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_6_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1306,7 +1371,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_5_xml--panel" class="tabpanel" aria-labelledby="_tabs_5_xml">
+<div id="_tabs_6_xml--panel" class="tabpanel" aria-labelledby="_tabs_6_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http create-session="stateless"&gt;
@@ -1333,17 +1398,17 @@ To avoid that, please refer to <a href="../architecture.html#requestcache-preven
 <div class="paragraph">
 <p>For the <a href="passwords/basic.html" class="xref page">HTTP Basic</a>, you can add <a href="../configuration/java.html#post-processing-configured-objects" class="xref page">a <code>ObjectPostProcessor</code></a> that changes the <code>SecurityContextRepository</code> used by the <code>BasicAuthenticationFilter</code>:</p>
 </div>
-<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
 <div class="title">Store HTTP Basic authentication in the <code>HttpSession</code></div>
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_6_java" class="tab">
+<li id="_tabs_7_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1404,22 +1469,22 @@ This removes ambiguity and improves performance by only requiring writing to the
 <p>If you wish to place constraints on a single user&#8217;s ability to log in to your application, Spring Security supports this out of the box with the following simple additions.
 First, you need to add the following listener to your configuration to keep Spring Security updated about session lifecycle events:</p>
 </div>
-<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_7_java" class="tab">
+<li id="_tabs_8_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_7_kotlin" class="tab">
+<li id="_tabs_8_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_7_web_xml" class="tab">
+<li id="_tabs_8_web_xml" class="tab">
 <p>web.xml</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1429,7 +1494,7 @@ public HttpSessionEventPublisher httpSessionEventPublisher() {
 </div>
 </div>
 </div>
-<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1439,7 +1504,7 @@ open fun httpSessionEventPublisher(): HttpSessionEventPublisher {
 </div>
 </div>
 </div>
-<div id="_tabs_7_web_xml--panel" class="tabpanel" aria-labelledby="_tabs_7_web_xml">
+<div id="_tabs_8_web_xml--panel" class="tabpanel" aria-labelledby="_tabs_8_web_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;listener&gt;
@@ -1455,22 +1520,22 @@ open fun httpSessionEventPublisher(): HttpSessionEventPublisher {
 <div class="paragraph">
 <p>Then add the following lines to your security configuration:</p>
 </div>
-<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_8_java" class="tab">
+<li id="_tabs_9_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_8_kotlin" class="tab">
+<li id="_tabs_9_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_8_xml" class="tab">
+<li id="_tabs_9_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1484,7 +1549,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
+<div id="_tabs_9_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_9_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1501,7 +1566,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_8_xml--panel" class="tabpanel" aria-labelledby="_tabs_8_xml">
+<div id="_tabs_9_xml--panel" class="tabpanel" aria-labelledby="_tabs_9_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -1521,16 +1586,16 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <div class="paragraph">
 <p>Using Spring Boot, you can test the above configuration scenario the following way:</p>
 </div>
-<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_9_java" class="tab">
+<li id="_tabs_10_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -1570,22 +1635,22 @@ public class MaximumSessionsTests {
 <div class="paragraph">
 <p>It is also common that you would prefer to prevent a second login, in which case you can use:</p>
 </div>
-<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_10_java" class="tab">
+<li id="_tabs_11_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_10_kotlin" class="tab">
+<li id="_tabs_11_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_10_xml" class="tab">
+<li id="_tabs_11_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1600,7 +1665,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1618,7 +1683,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_10_xml--panel" class="tabpanel" aria-labelledby="_tabs_10_xml">
+<div id="_tabs_11_xml--panel" class="tabpanel" aria-labelledby="_tabs_11_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -1640,16 +1705,16 @@ If instead you want to use an error page, you can add the attribute <code>sessio
 <div class="paragraph">
 <p>Using Spring Boot, you can test the above configuration the following way:</p>
 </div>
-<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_11_java" class="tab">
+<li id="_tabs_12_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -1699,73 +1764,6 @@ That said, Spring Security can detect when a session has expired and take specif
 For example, you may want to redirect to a specific endpoint when a user makes a request with an already-expired session.
 This is achieved through the <code>invalidSessionUrl</code> in <code>HttpSecurity</code>:</p>
 </div>
-<div id="_tabs_12" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_12_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_12_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-<li id="_tabs_12_xml" class="tab">
-<p>XML</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) {
-    http
-        .sessionManagement(session -&gt; session
-            .invalidSessionUrl("/invalidSession")
-        );
-    return http.build();
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
-open fun filterChain(http: HttpSecurity): SecurityFilterChain {
-    http {
-        sessionManagement {
-            invalidSessionUrl = "/invalidSession"
-        }
-    }
-    return http.build()
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_12_xml--panel" class="tabpanel" aria-labelledby="_tabs_12_xml">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
-...
-&lt;session-management invalid-session-url="/invalidSession" /&gt;
-&lt;/http&gt;</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that if you use this mechanism to detect session timeouts, it may falsely report an error if the user logs out and then logs back in without closing the browser.
-This is because the session cookie is not cleared when you invalidate the session and will be resubmitted even if the user has logged out.
-If that is your case, you might want to <a href="#clearing-session-cookie-on-logout">configure logout to clear the session cookie</a>.</p>
-</div>
-<div class="sect2">
-<h3 id="_customizing_the_invalid_session_strategy"><a class="anchor" href="#_customizing_the_invalid_session_strategy"></a>Customizing the Invalid Session Strategy</h3>
-<div class="paragraph">
-<p>The <code>invalidSessionUrl</code> is a convenience method for setting the <code>InvalidSessionStrategy</code> using the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api//org/springframework/security/web/session/SimpleRedirectInvalidSessionStrategy.html"><code>SimpleRedirectInvalidSessionStrategy</code> implementation</a>.
-If you want to customize the behavior, you can implement the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api//org/springframework/security/web/session/InvalidSessionStrategy.html"><code>InvalidSessionStrategy</code></a> interface and configure it using the <code>invalidSessionStrategy</code> method:</p>
-</div>
 <div id="_tabs_13" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
@@ -1788,7 +1786,7 @@ If you want to customize the behavior, you can implement the <a href="https://do
 public SecurityFilterChain filterChain(HttpSecurity http) {
     http
         .sessionManagement(session -&gt; session
-            .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
+            .invalidSessionUrl("/invalidSession")
         );
     return http.build();
 }</code></pre>
@@ -1802,7 +1800,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 open fun filterChain(http: HttpSecurity): SecurityFilterChain {
     http {
         sessionManagement {
-            invalidSessionStrategy = MyCustomInvalidSessionStrategy()
+            invalidSessionUrl = "/invalidSession"
         }
     }
     return http.build()
@@ -1815,22 +1813,23 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
 ...
-&lt;session-management invalid-session-strategy-ref="myCustomInvalidSessionStrategy" /&gt;
-&lt;bean name="myCustomInvalidSessionStrategy" class="com.example.MyCustomInvalidSessionStrategy" /&gt;
+&lt;session-management invalid-session-url="/invalidSession" /&gt;
 &lt;/http&gt;</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="clearing-session-cookie-on-logout"><a class="anchor" href="#clearing-session-cookie-on-logout"></a>Clearing Session Cookies on Logout</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>You can explicitly delete the JSESSIONID cookie on logging out, for example by using the <a href="https://w3c.github.io/webappsec-clear-site-data/"><code>Clear-Site-Data</code> header</a> in the logout handler:</p>
+<p>Note that if you use this mechanism to detect session timeouts, it may falsely report an error if the user logs out and then logs back in without closing the browser.
+This is because the session cookie is not cleared when you invalidate the session and will be resubmitted even if the user has logged out.
+If that is your case, you might want to <a href="#clearing-session-cookie-on-logout">configure logout to clear the session cookie</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_customizing_the_invalid_session_strategy"><a class="anchor" href="#_customizing_the_invalid_session_strategy"></a>Customizing the Invalid Session Strategy</h3>
+<div class="paragraph">
+<p>The <code>invalidSessionUrl</code> is a convenience method for setting the <code>InvalidSessionStrategy</code> using the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api//org/springframework/security/web/session/SimpleRedirectInvalidSessionStrategy.html"><code>SimpleRedirectInvalidSessionStrategy</code> implementation</a>.
+If you want to customize the behavior, you can implement the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api//org/springframework/security/web/session/InvalidSessionStrategy.html"><code>InvalidSessionStrategy</code></a> interface and configure it using the <code>invalidSessionStrategy</code> method:</p>
 </div>
 <div id="_tabs_14" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1853,6 +1852,72 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 public SecurityFilterChain filterChain(HttpSecurity http) {
     http
+        .sessionManagement(session -&gt; session
+            .invalidSessionStrategy(new MyCustomInvalidSessionStrategy())
+        );
+    return http.build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+open fun filterChain(http: HttpSecurity): SecurityFilterChain {
+    http {
+        sessionManagement {
+            invalidSessionStrategy = MyCustomInvalidSessionStrategy()
+        }
+    }
+    return http.build()
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_xml--panel" class="tabpanel" aria-labelledby="_tabs_14_xml">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
+...
+&lt;session-management invalid-session-strategy-ref="myCustomInvalidSessionStrategy" /&gt;
+&lt;bean name="myCustomInvalidSessionStrategy" class="com.example.MyCustomInvalidSessionStrategy" /&gt;
+&lt;/http&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="clearing-session-cookie-on-logout"><a class="anchor" href="#clearing-session-cookie-on-logout"></a>Clearing Session Cookies on Logout</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can explicitly delete the JSESSIONID cookie on logging out, for example by using the <a href="https://w3c.github.io/webappsec-clear-site-data/"><code>Clear-Site-Data</code> header</a> in the logout handler:</p>
+</div>
+<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_15_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_15_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+<li id="_tabs_15_xml" class="tab">
+<p>XML</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) {
+    http
         .logout((logout) -&gt; logout
             .addLogoutHandler(new HeaderWriterLogoutHandler(new ClearSiteDataHeaderWriter(COOKIES)))
         );
@@ -1861,7 +1926,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
+<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1876,7 +1941,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_14_xml--panel" class="tabpanel" aria-labelledby="_tabs_14_xml">
+<div id="_tabs_15_xml--panel" class="tabpanel" aria-labelledby="_tabs_15_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -1904,22 +1969,22 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <div class="paragraph">
 <p>As an alternative, you can also use the following syntax in the logout handler:</p>
 </div>
-<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div id="_tabs_16" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_15_java" class="tab">
+<li id="_tabs_16_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_15_kotlin" class="tab">
+<li id="_tabs_16_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_15_xml" class="tab">
+<li id="_tabs_16_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
+<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1933,7 +1998,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
+<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1948,7 +2013,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_15_xml--panel" class="tabpanel" aria-labelledby="_tabs_15_xml">
+<div id="_tabs_16_xml--panel" class="tabpanel" aria-labelledby="_tabs_16_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -2022,22 +2087,22 @@ This is the default in Servlet 3.0 or older containers.</p>
 <div class="paragraph">
 <p>You can configure the session fixation protection by doing:</p>
 </div>
-<div id="_tabs_16" class="openblock tabs is-sync is-loading">
+<div id="_tabs_17" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_16_java" class="tab">
+<li id="_tabs_17_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_16_kotlin" class="tab">
+<li id="_tabs_17_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_16_xml" class="tab">
+<li id="_tabs_17_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
+<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2053,7 +2118,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
+<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2070,7 +2135,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_16_xml--panel" class="tabpanel" aria-labelledby="_tabs_16_xml">
+<div id="_tabs_17_xml--panel" class="tabpanel" aria-labelledby="_tabs_17_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http&gt;
@@ -2097,16 +2162,16 @@ If you use <code>changeSessionId</code>, this protection will <em>also</em> resu
 <div class="paragraph">
 <p>Consider the following block of code:</p>
 </div>
-<div id="_tabs_17" class="openblock tabs is-sync is-loading">
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_17_java" class="tab">
+<li id="_tabs_18_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -2146,16 +2211,16 @@ By default, they will still look up the strategy from <code>SecurityContextHolde
 <p>These changes are largely internal, but they present the opportunity for applications to autowire the <code>SecurityContextHolderStrategy</code> instead of accessing the <code>SecurityContext</code> statically.
 To do so, you should change the code to the following:</p>
 </div>
-<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_18_java" class="tab">
+<li id="_tabs_19_java" class="tab">
 <p>Java</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SomeClass {
@@ -2169,7 +2234,7 @@ To do so, you should change the code to the following:</p>
         // ...
         SecurityContext context = this.securityContextHolderStrategy.createEmptyContext(); <i class="conum" data-value="1"></i><b>(1)</b>
         context.setAuthentication(authentication); <i class="conum" data-value="2"></i><b>(2)</b>
-        this.securityContextHolderStrategy.setContext(authentication); <i class="conum" data-value="3"></i><b>(3)</b>
+        this.securityContextHolderStrategy.setContext(context); <i class="conum" data-value="3"></i><b>(3)</b>
     }
 
 }</code></pre>
@@ -2198,24 +2263,24 @@ To do so, you should change the code to the following:</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>At times, it can be valuable to eagerly create sessions.
-This can be done by using the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/session/ForceEagerSessionCreationFilter.html"><code>ForceEagerSessionCreationFilter</code></a> which can be configured using:</p>
+This can be done by using the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/session/ForceEagerSessionCreationFilter.html"><code>ForceEagerSessionCreationFilter</code></a> which can be configured using:</p>
 </div>
-<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_19_java" class="tab">
+<li id="_tabs_20_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_19_kotlin" class="tab">
+<li id="_tabs_20_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
-<li id="_tabs_19_xml" class="tab">
+<li id="_tabs_20_xml" class="tab">
 <p>XML</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2229,7 +2294,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2244,7 +2309,7 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 </div>
 </div>
 </div>
-<div id="_tabs_19_xml--panel" class="tabpanel" aria-labelledby="_tabs_19_xml">
+<div id="_tabs_20_xml--panel" class="tabpanel" aria-labelledby="_tabs_20_xml">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;http create-session="ALWAYS"&gt;
@@ -2299,6 +2364,5 @@ open fun filterChain(http: HttpSecurity): SecurityFilterChain {
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>

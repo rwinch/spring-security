@@ -1,11 +1,11 @@
 {
   "$id": "https://schemas.antora.org/site-manifest/1-0-0/draft-01",
-  "generated": "2023-04-14T22:42:45.978Z",
+  "generated": "2023-04-20T23:06:16.410Z",
   "url": "https://rwinch.github.io/spring-security",
   "components": {
     "ROOT": {
       "title": "Documentation",
-      "latest": "6.0.2",
+      "latest": "6.0.3",
       "versions": {
         "6.1.0": {
           "prerelease": true,
@@ -846,7 +846,7 @@
             }
           ]
         },
-        "6.1.0-M2": {
+        "6.1.0-RC1": {
           "prerelease": true,
           "url": "/6.1/index.html",
           "pages": [
@@ -934,6 +934,16 @@
               "path": "getting-spring-security.adoc",
               "url": "/6.1/getting-spring-security.html",
               "title": "Getting Spring Security"
+            },
+            {
+              "path": "migration-7/index.adoc",
+              "url": "/6.1/migration-7/index.html",
+              "title": "Preparing for 7.0"
+            },
+            {
+              "path": "migration-7/configuration.adoc",
+              "url": "/6.1/migration-7/configuration.html",
+              "title": "Configuration Migrations"
             },
             {
               "path": "migration/index.adoc",
@@ -1674,9 +1684,9 @@
             }
           ]
         },
-        "6.0.3": {
+        "6.0.4": {
           "prerelease": true,
-          "displayVersion": "6.0.3-SNAPSHOT",
+          "displayVersion": "6.0.4-SNAPSHOT",
           "url": "/6.0-SNAPSHOT/index.html",
           "pages": [
             {
@@ -2498,7 +2508,7 @@
             }
           ]
         },
-        "6.0.2": {
+        "6.0.3": {
           "url": "/index.html",
           "pages": [
             {
@@ -3244,7 +3254,7 @@
             {
               "path": "servlet/saml2/metadata.adoc",
               "url": "/servlet/saml2/metadata.html",
-              "title": "Producing <code>&lt;saml2:SPSSODescriptor&gt;</code> Metadata"
+              "title": "Saml 2.0 Metadata"
             },
             {
               "path": "servlet/test/index.adoc",
@@ -3320,9 +3330,9 @@
             }
           ]
         },
-        "5.8.3": {
+        "5.8.4": {
           "prerelease": true,
-          "displayVersion": "5.8.3-SNAPSHOT",
+          "displayVersion": "5.8.4-SNAPSHOT",
           "url": "/5.8-SNAPSHOT/index.html",
           "pages": [
             {
@@ -4164,7 +4174,7 @@
             }
           ]
         },
-        "5.8.2": {
+        "5.8.3": {
           "url": "/5.8/index.html",
           "pages": [
             {
@@ -5006,9 +5016,9 @@
             }
           ]
         },
-        "5.7.8": {
+        "5.7.9": {
           "prerelease": true,
-          "displayVersion": "5.7.8-SNAPSHOT",
+          "displayVersion": "5.7.9-SNAPSHOT",
           "url": "/5.7-SNAPSHOT/index.html",
           "pages": [
             {
@@ -5795,7 +5805,7 @@
             }
           ]
         },
-        "5.7.7": {
+        "5.7.8": {
           "url": "/5.7/index.html",
           "pages": [
             {

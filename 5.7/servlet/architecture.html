@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.7.7">
+
+    <meta name="version" content="5.7.8">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.7.7">
+<div class="nav-container" data-component="ROOT" data-version="5.7.8">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -689,7 +703,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.7.7</span>
+    <span class="version">5.7.8</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -699,25 +713,25 @@
           <a href="../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../index.html">6.0.2</a>
+          <a href="../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../5.8/index.html">5.8.2</a>
+          <a href="../../5.8/index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../index.html">5.7.7</a>
+          <a href="../index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -744,27 +758,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.7.7</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.7.8</button>
   <div class="version-menu">
     <a class="version" href="../../6.1-SNAPSHOT/servlet/architecture.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../6.1/servlet/architecture.html">6.1.0-M2</a>
-    <a class="version" href="../../6.0-SNAPSHOT/servlet/architecture.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../servlet/architecture.html">6.0.2</a>
-    <a class="version" href="../../5.8-SNAPSHOT/servlet/architecture.html">5.8.3-SNAPSHOT</a>
-    <a class="version" href="../../5.8/servlet/architecture.html">5.8.2</a>
-    <a class="version" href="../../5.7-SNAPSHOT/servlet/architecture.html">5.7.8-SNAPSHOT</a>
-    <a class="version is-current" href="architecture.html">5.7.7</a>
+    <a class="version" href="../../6.1/servlet/architecture.html">6.1.0-RC1</a>
+    <a class="version" href="../../6.0-SNAPSHOT/servlet/architecture.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../servlet/architecture.html">6.0.3</a>
+    <a class="version" href="../../5.8-SNAPSHOT/servlet/architecture.html">5.8.4-SNAPSHOT</a>
+    <a class="version" href="../../5.8/servlet/architecture.html">5.8.3</a>
+    <a class="version" href="../../5.7-SNAPSHOT/servlet/architecture.html">5.7.9-SNAPSHOT</a>
+    <a class="version is-current" href="architecture.html">5.7.8</a>
     <a class="version" href="../../5.6-SNAPSHOT/servlet/architecture.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../5.6/servlet/architecture.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.7.7/docs/modules/ROOT/pages/servlet/architecture.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.7.8/docs/modules/ROOT/pages/servlet/architecture.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Architecture" data-levels="2">
@@ -779,7 +792,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../servlet/architecture.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../servlet/architecture.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -809,7 +822,7 @@ The picture below shows the typical layering of the handlers for a single HTTP r
 </div>
 <div class="paragraph">
 <p>The client sends a request to the application, and the container creates a <code>FilterChain</code> which contains the <code>Filter</code>s and <code>Servlet</code> that should process the <code>HttpServletRequest</code> based on the path of the request URI.
-In a Spring MVC application the <code>Servlet</code> is an instance of <a href="https://docs.spring.io/spring-framework/docs/5.3.25/reference/html/web.html#mvc-servlet"><code>DispatcherServlet</code></a>.
+In a Spring MVC application the <code>Servlet</code> is an instance of <a href="https://docs.spring.io/spring-framework/docs/5.3.27/reference/html/web.html#mvc-servlet"><code>DispatcherServlet</code></a>.
 At most one <code>Servlet</code> can handle a single <code>HttpServletRequest</code> and <code>HttpServletResponse</code>.
 However, more than one <code>Filter</code> can be used to:</p>
 </div>
@@ -873,7 +886,7 @@ In this instance the <code>Filter</code> will typically write the <code>HttpServ
 <h2 id="servlet-delegatingfilterproxy"><a class="anchor" href="#servlet-delegatingfilterproxy"></a>DelegatingFilterProxy</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Spring provides a <code>Filter</code> implementation named <a href="https://docs.spring.io/spring-framework/docs/5.3.25/javadoc-api/org/springframework/web/filter/DelegatingFilterProxy.html"><code>DelegatingFilterProxy</code></a> that allows bridging between the Servlet container&#8217;s lifecycle and Spring&#8217;s <code>ApplicationContext</code>.
+<p>Spring provides a <code>Filter</code> implementation named <a href="https://docs.spring.io/spring-framework/docs/5.3.27/javadoc-api/org/springframework/web/filter/DelegatingFilterProxy.html"><code>DelegatingFilterProxy</code></a> that allows bridging between the Servlet container&#8217;s lifecycle and Spring&#8217;s <code>ApplicationContext</code>.
 The Servlet container allows registering <code>Filter</code>s using its own standards, but it is not aware of Spring defined Beans.
 <code>DelegatingFilterProxy</code> can be registered via standard Servlet container mechanisms, but delegate all the work to a Spring Bean that implements <code>Filter</code>.</p>
 </div>
@@ -958,7 +971,7 @@ Since <code>FilterChainProxy</code> is a Bean, it is typically wrapped in a <a h
 <h2 id="servlet-securityfilterchain"><a class="anchor" href="#servlet-securityfilterchain"></a>SecurityFilterChain</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.7.7/api/org/springframework/security/web/SecurityFilterChain.html"><code>SecurityFilterChain</code></a> is used by <a href="#servlet-filterchainproxy">FilterChainProxy</a> to determine which Spring Security <code>Filter</code>s should be invoked for this request.</p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.7.8/api/org/springframework/security/web/SecurityFilterChain.html"><code>SecurityFilterChain</code></a> is used by <a href="#servlet-filterchainproxy">FilterChainProxy</a> to determine which Spring Security <code>Filter</code>s should be invoked for this request.</p>
 </div>
 <div id="servlet-securityfilterchain-figure" class="imageblock">
 <div class="content">
@@ -1128,7 +1141,7 @@ However, there are times that it is beneficial to know the ordering</p>
 <h2 id="servlet-exceptiontranslationfilter"><a class="anchor" href="#servlet-exceptiontranslationfilter"></a>Handling Security Exceptions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.7.7/api/org/springframework/security/web/access/ExceptionTranslationFilter.html"><code>ExceptionTranslationFilter</code></a> allows translation of <a href="https://docs.spring.io/spring-security/site/docs/5.7.7/api/org/springframework/security/access/AccessDeniedException.html"><code>AccessDeniedException</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.7.7/api//org/springframework/security/core/AuthenticationException.html"><code>AuthenticationException</code></a> into HTTP responses.</p>
+<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.7.8/api/org/springframework/security/web/access/ExceptionTranslationFilter.html"><code>ExceptionTranslationFilter</code></a> allows translation of <a href="https://docs.spring.io/spring-security/site/docs/5.7.8/api/org/springframework/security/access/AccessDeniedException.html"><code>AccessDeniedException</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.7.8/api//org/springframework/security/core/AuthenticationException.html"><code>AuthenticationException</code></a> into HTTP responses.</p>
 </div>
 <div class="paragraph">
 <p><code>ExceptionTranslationFilter</code> is inserted into the <a href="#servlet-filterchainproxy">FilterChainProxy</a> as one of the <a href="#servlet-security-filters">Security Filters</a>.</p>
@@ -1151,7 +1164,7 @@ However, there are times that it is beneficial to know the ordering</p>
 <p>The <a href="authentication/architecture.html#servlet-authentication-securitycontextholder" class="xref page">SecurityContextHolder</a> is cleared out</p>
 </li>
 <li>
-<p>The <code>HttpServletRequest</code> is saved in the <a href="https://docs.spring.io/spring-security/site/docs/5.7.7/api/org/springframework/security/web/savedrequest/RequestCache.html"><code>RequestCache</code></a>.
+<p>The <code>HttpServletRequest</code> is saved in the <a href="https://docs.spring.io/spring-security/site/docs/5.7.8/api/org/springframework/security/web/savedrequest/RequestCache.html"><code>RequestCache</code></a>.
 When the user successfully authenticates, the <code>RequestCache</code> is used to replay the original request.</p>
 </li>
 <li>
@@ -1241,6 +1254,5 @@ This means that if another part of the application, (i.e. <a href="authorization
 <script src="../../_/js/site.js"></script>
 <script async src="../../_/js/vendor/highlight.js"></script>
 <script async src="../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../_/css/vendor/docsearch.css" data-page-version="5.7.7"></script>
   </body>
 </html>

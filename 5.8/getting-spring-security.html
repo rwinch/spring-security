@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -728,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -738,25 +752,25 @@
           <a href="../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../6.1/index.html">6.1.0-M2</a>
+          <a href="../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../index.html">6.0.2</a>
+          <a href="../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="index.html">5.8.2</a>
+          <a href="index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../5.7/index.html">5.7.7</a>
+          <a href="../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -782,27 +796,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version" href="../6.1-SNAPSHOT/getting-spring-security.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../6.1/getting-spring-security.html">6.1.0-M2</a>
-    <a class="version" href="../6.0-SNAPSHOT/getting-spring-security.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../getting-spring-security.html">6.0.2</a>
-    <a class="version" href="../5.8-SNAPSHOT/getting-spring-security.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="getting-spring-security.html">5.8.2</a>
-    <a class="version" href="../5.7-SNAPSHOT/getting-spring-security.html">5.7.8-SNAPSHOT</a>
-    <a class="version" href="../5.7/getting-spring-security.html">5.7.7</a>
+    <a class="version" href="../6.1/getting-spring-security.html">6.1.0-RC1</a>
+    <a class="version" href="../6.0-SNAPSHOT/getting-spring-security.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../getting-spring-security.html">6.0.3</a>
+    <a class="version" href="../5.8-SNAPSHOT/getting-spring-security.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="getting-spring-security.html">5.8.3</a>
+    <a class="version" href="../5.7-SNAPSHOT/getting-spring-security.html">5.7.9-SNAPSHOT</a>
+    <a class="version" href="../5.7/getting-spring-security.html">5.7.8</a>
     <a class="version" href="../5.6-SNAPSHOT/getting-spring-security.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../5.6/getting-spring-security.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/getting-spring-security.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/getting-spring-security.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Getting Spring Security" data-levels="2">
@@ -817,7 +830,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../getting-spring-security.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../getting-spring-security.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -891,7 +904,7 @@ If you wish to override the Spring Security version, you may do so by providing 
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;properties&gt;
 	&lt;!-- ... --&gt;
-	&lt;spring-security.version&gt;5.8.2&lt;/spring-security.version&gt;
+	&lt;spring-security.version&gt;5.8.3&lt;/spring-security.version&gt;
 &lt;/properties&gt;</code></pre>
 </div>
 </div>
@@ -905,7 +918,7 @@ You can do so by adding a Maven property, as the following example shows:</p>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;properties&gt;
 	&lt;!-- ... --&gt;
-	&lt;spring.version&gt;5.3.25&lt;/spring.version&gt;
+	&lt;spring.version&gt;5.3.27&lt;/spring.version&gt;
 &lt;/properties&gt;</code></pre>
 </div>
 </div>
@@ -958,8 +971,8 @@ You can do so by adding a Maven property, as the following example shows:</p>
 <p>If you use additional features (such as LDAP, OpenID, and others), you need to also include the appropriate <a href="modules.html#modules" class="xref page">Project Modules and Dependencies</a>.</p>
 </div>
 <div class="paragraph">
-<p>Spring Security builds against Spring Framework 5.3.25 but should generally work with any newer version of Spring Framework 5.x.
-Many users are likely to run afoul of the fact that Spring Security&#8217;s transitive dependencies resolve Spring Framework 5.3.25, which can cause strange classpath problems.
+<p>Spring Security builds against Spring Framework 5.3.27 but should generally work with any newer version of Spring Framework 5.x.
+Many users are likely to run afoul of the fact that Spring Security&#8217;s transitive dependencies resolve Spring Framework 5.3.27, which can cause strange classpath problems.
 The easiest way to resolve this is to use the <code>spring-framework-bom</code> within the <code>&lt;dependencyManagement&gt;</code> section of your <code>pom.xml</code> as the following example shows:</p>
 </div>
 <div class="listingblock">
@@ -971,7 +984,7 @@ The easiest way to resolve this is to use the <code>spring-framework-bom</code> 
 		&lt;dependency&gt;
 			&lt;groupId&gt;org.springframework&lt;/groupId&gt;
 			&lt;artifactId&gt;spring-framework-bom&lt;/artifactId&gt;
-			&lt;version&gt;5.3.25&lt;/version&gt;
+			&lt;version&gt;5.3.27&lt;/version&gt;
 			&lt;type&gt;pom&lt;/type&gt;
 			&lt;scope&gt;import&lt;/scope&gt;
 		&lt;/dependency&gt;
@@ -980,7 +993,7 @@ The easiest way to resolve this is to use the <code>spring-framework-bom</code> 
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding example ensures that all the transitive dependencies of Spring Security use the Spring 5.3.25 modules.</p>
+<p>The preceding example ensures that all the transitive dependencies of Spring Security use the Spring 5.3.27 modules.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1067,7 +1080,7 @@ If you wish to override the Spring Security version, you may do so by providing 
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">ext['spring-security.version']='5.8.2'</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">ext['spring-security.version']='5.8.3'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1078,7 +1091,7 @@ You can do so by adding a Gradle property, as the following example shows:</p>
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">ext['spring.version']='5.3.25'</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">ext['spring.version']='5.3.27'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1100,7 +1113,7 @@ You can do so by using the <a href="https://github.com/spring-gradle-plugins/dep
 
 dependencyManagement {
 	imports {
-		mavenBom 'org.springframework.security:spring-security-bom:5.8.2'
+		mavenBom 'org.springframework.security:spring-security-bom:5.8.3'
 	}
 }</code></pre>
 </div>
@@ -1121,8 +1134,8 @@ dependencyManagement {
 <p>If you use additional features (such as LDAP, OpenID, and others), you need to also include the appropriate <a href="modules.html#modules" class="xref page">Project Modules and Dependencies</a>.</p>
 </div>
 <div class="paragraph">
-<p>Spring Security builds against Spring Framework 5.3.25 but should generally work with any newer version of Spring Framework 5.x.
-Many users are likely to run afoul of the fact that Spring Security&#8217;s transitive dependencies resolve Spring Framework 5.3.25, which can cause strange classpath problems.
+<p>Spring Security builds against Spring Framework 5.3.27 but should generally work with any newer version of Spring Framework 5.x.
+Many users are likely to run afoul of the fact that Spring Security&#8217;s transitive dependencies resolve Spring Framework 5.3.27, which can cause strange classpath problems.
 The easiest way to resolve this is to use the <code>spring-framework-bom</code> within your <code>dependencyManagement</code> section of your <code>build.gradle</code>.
 You can do so by using the <a href="https://github.com/spring-gradle-plugins/dependency-management-plugin">Dependency Management Plugin</a>, as the following example shows:</p>
 </div>
@@ -1135,13 +1148,13 @@ You can do so by using the <a href="https://github.com/spring-gradle-plugins/dep
 
 dependencyManagement {
 	imports {
-		mavenBom 'org.springframework:spring-framework-bom:5.3.25'
+		mavenBom 'org.springframework:spring-framework-bom:5.3.27'
 	}
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The preceding example ensures that all the transitive dependencies of Spring Security use the Spring 5.3.25 modules.</p>
+<p>The preceding example ensures that all the transitive dependencies of Spring Security use the Spring 5.3.27 modules.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1206,6 +1219,5 @@ dependencyManagement {
 <script src="../_/js/site.js"></script>
 <script async src="../_/js/vendor/highlight.js"></script>
 <script async src="../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>

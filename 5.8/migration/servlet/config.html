@@ -13,8 +13,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -72,8 +74,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -92,7 +106,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -727,7 +741,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -737,25 +751,25 @@
           <a href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../index.html">6.0.2</a>
+          <a href="../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../index.html">5.8.2</a>
+          <a href="../../index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../5.7/index.html">5.7.7</a>
+          <a href="../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -783,27 +797,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version is-missing" href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
-    <a class="version is-missing" href="../../../6.1/index.html">6.1.0-M2</a>
-    <a class="version is-missing" href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
-    <a class="version is-missing" href="../../../index.html">6.0.2</a>
-    <a class="version" href="../../../5.8-SNAPSHOT/migration/servlet/config.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="config.html">5.8.2</a>
-    <a class="version is-missing" href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
-    <a class="version is-missing" href="../../../5.7/index.html">5.7.7</a>
+    <a class="version is-missing" href="../../../6.1/index.html">6.1.0-RC1</a>
+    <a class="version is-missing" href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
+    <a class="version is-missing" href="../../../index.html">6.0.3</a>
+    <a class="version" href="../../../5.8-SNAPSHOT/migration/servlet/config.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="config.html">5.8.3</a>
+    <a class="version is-missing" href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
+    <a class="version is-missing" href="../../../5.7/index.html">5.7.8</a>
     <a class="version is-missing" href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
     <a class="version is-missing" href="../../../5.6/index.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/migration/servlet/config.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/migration/servlet/config.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Configuration Migrations" data-levels="2">
@@ -818,7 +831,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../index.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../index.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -937,7 +950,7 @@ open class MyConfiguration {
 <h2 id="use-new-requestmatchers"><a class="anchor" href="#use-new-requestmatchers"></a>Use the new <code>requestMatchers</code> methods</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In Spring Security 5.8, the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#antMatchers(java.lang.String&#8230;&#8203;)"><code>antMatchers</code></a>, <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#mvcMatchers(java.lang.String&#8230;&#8203;)"><code>mvcMatchers</code></a>, and <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#regexMatchers(java.lang.String&#8230;&#8203;)"><code>regexMatchers</code></a> methods were deprecated in favor of new <a href="../../servlet/authorization/authorize-http-requests.html#_request_matchers" class="xref page"><code>requestMatchers</code> methods</a>.</p>
+<p>In Spring Security 5.8, the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#antMatchers(java.lang.String&#8230;&#8203;)"><code>antMatchers</code></a>, <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#mvcMatchers(java.lang.String&#8230;&#8203;)"><code>mvcMatchers</code></a>, and <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/AbstractRequestMatcherRegistry.html#regexMatchers(java.lang.String&#8230;&#8203;)"><code>regexMatchers</code></a> methods were deprecated in favor of new <a href="../../servlet/authorization/authorize-http-requests.html#_request_matchers" class="xref page"><code>requestMatchers</code> methods</a>.</p>
 </div>
 <div class="paragraph">
 <p>The new <code>requestMatchers</code> methods were added <a href="../../servlet/authorization/authorize-http-requests.html" class="xref page">to <code>authorizeHttpRequests</code></a>, <code>authorizeRequests</code>, CSRF configuration, <code>WebSecurityCustomizer</code> and any other places that had the specialized <code>RequestMatcher</code> methods.
@@ -1209,7 +1222,7 @@ public class SecurityConfig {
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the above sample uses static factory methods from <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/util/matcher/AntPathRequestMatcher.html"><code>AntPathRequestMatcher</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/util/matcher/RegexRequestMatcher.html"><code>RegexRequestMatcher</code></a> to improve readability.</p>
+<p>Note that the above sample uses static factory methods from <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/util/matcher/AntPathRequestMatcher.html"><code>AntPathRequestMatcher</code></a> and <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/util/matcher/RegexRequestMatcher.html"><code>RegexRequestMatcher</code></a> to improve readability.</p>
 </div>
 <div class="paragraph">
 <p>If you are using the <code>WebSecurityCustomizer</code> interface, you can replace the deprecated <code>antMatchers</code> methods:</p>
@@ -2260,7 +2273,7 @@ public class SecurityConfig {
 <div class="sect3">
 <h4 id="_other_scenarios"><a class="anchor" href="#_other_scenarios"></a>Other Scenarios</h4>
 <div class="paragraph">
-<p>If you are using <code>AuthenticationManagerBuilder</code> for something more sophisticated, you can <a href="../../servlet/authentication/architecture.html#servlet-authentication-authenticationmanager" class="xref page">publish your own <code>AuthenticationManager</code> <code>@Bean</code></a> or wire an <code>AuthenticationManager</code> instance into the <code>HttpSecurity</code> DSL with <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authenticationManager(org.springframework.security.authentication.AuthenticationManager)"><code>HttpSecurity#authenticationManager</code></a>.</p>
+<p>If you are using <code>AuthenticationManagerBuilder</code> for something more sophisticated, you can <a href="../../servlet/authentication/architecture.html#servlet-authentication-authenticationmanager" class="xref page">publish your own <code>AuthenticationManager</code> <code>@Bean</code></a> or wire an <code>AuthenticationManager</code> instance into the <code>HttpSecurity</code> DSL with <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html#authenticationManager(org.springframework.security.authentication.AuthenticationManager)"><code>HttpSecurity#authenticationManager</code></a>.</p>
 </div>
 </div>
 </div>
@@ -2289,6 +2302,5 @@ public class SecurityConfig {
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>

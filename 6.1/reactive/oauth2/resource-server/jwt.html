@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="6.1.0-M2">
+
+    <meta name="version" content="6.1.0-RC1">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="6.1.0-M2">
+<div class="nav-container" data-component="ROOT" data-version="6.1.0-RC1">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -113,6 +127,15 @@
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../../../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../migration-7/index.html">Preparing for 7.0</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../migration-7/configuration.html">Configuration</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -719,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">6.1.0-M2</span>
+    <span class="version">6.1.0-RC1</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -729,25 +752,25 @@
           <a href="../../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../../index.html">6.1.0-M2</a>
+          <a href="../../../index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../../index.html">6.0.2</a>
+          <a href="../../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../../5.8/index.html">5.8.2</a>
+          <a href="../../../../5.8/index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../../5.7/index.html">5.7.7</a>
+          <a href="../../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -776,27 +799,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">6.1.0-M2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">6.1.0-RC1</button>
   <div class="version-menu">
     <a class="version" href="../../../../6.1-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">6.1.0-SNAPSHOT</a>
-    <a class="version is-current" href="jwt.html">6.1.0-M2</a>
-    <a class="version" href="../../../../6.0-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../../reactive/oauth2/resource-server/jwt.html">6.0.2</a>
-    <a class="version" href="../../../../5.8-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">5.8.3-SNAPSHOT</a>
-    <a class="version" href="../../../../5.8/reactive/oauth2/resource-server/jwt.html">5.8.2</a>
-    <a class="version" href="../../../../5.7-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">5.7.8-SNAPSHOT</a>
-    <a class="version" href="../../../../5.7/reactive/oauth2/resource-server/jwt.html">5.7.7</a>
+    <a class="version is-current" href="jwt.html">6.1.0-RC1</a>
+    <a class="version" href="../../../../6.0-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../../reactive/oauth2/resource-server/jwt.html">6.0.3</a>
+    <a class="version" href="../../../../5.8-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">5.8.4-SNAPSHOT</a>
+    <a class="version" href="../../../../5.8/reactive/oauth2/resource-server/jwt.html">5.8.3</a>
+    <a class="version" href="../../../../5.7-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">5.7.9-SNAPSHOT</a>
+    <a class="version" href="../../../../5.7/reactive/oauth2/resource-server/jwt.html">5.7.8</a>
     <a class="version" href="../../../../5.6-SNAPSHOT/reactive/oauth2/resource-server/jwt.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../../../5.6/reactive/oauth2/resource-server/jwt.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.1.0-M2/docs/modules/ROOT/pages/reactive/oauth2/resource-server/jwt.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/6.1.0-RC1/docs/modules/ROOT/pages/reactive/oauth2/resource-server/jwt.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="OAuth 2.0 Resource Server JWT" data-levels="2">
@@ -811,7 +833,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../../../reactive/oauth2/resource-server/jwt.html">Documentation 6.0.2</a>!</p>
+          <p>This version is still in development and is not considered stable yet. For the latest stable version, please use <a href="../../../../reactive/oauth2/resource-server/jwt.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -1182,7 +1204,7 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Calling <code><a href="https://docs.spring.io/spring-security/site/docs/6.1.0-M2/api/org/springframework/security/oauth2/jwt/ReactiveJwtDecoders.html#fromIssuerLocation-java.lang.String-">ReactiveJwtDecoders#fromIssuerLocation</a></code> invokes the Provider Configuration or Authorization Server Metadata endpoint to derive the JWK Set URI.
+<p>Calling <code><a href="https://docs.spring.io/spring-security/site/docs/6.1.0-RC1/api/org/springframework/security/oauth2/jwt/ReactiveJwtDecoders.html#fromIssuerLocation-java.lang.String-">ReactiveJwtDecoders#fromIssuerLocation</a></code> invokes the Provider Configuration or Authorization Server Metadata endpoint to derive the JWK Set URI.
 If the application does not expose a <code>ReactiveJwtDecoder</code> bean, Spring Boot exposes the above default one.</p>
 </div>
 </td>
@@ -1317,7 +1339,8 @@ fun springSecurityFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain 
 <div class="sect3">
 <h4 id="webflux-oauth2resourceserver-decoder-bean"><a class="anchor" href="#webflux-oauth2resourceserver-decoder-bean"></a>Exposing a <code>ReactiveJwtDecoder</code> <code>@Bean</code></h4>
 <div class="paragraph">
-<p>Alternately, exposing a <code>ReactiveJwtDecoder</code> <code>@Bean</code> has the same effect as <code>decoder()</code>:</p>
+<p>Alternately, exposing a <code>ReactiveJwtDecoder</code> <code>@Bean</code> has the same effect as <code>decoder()</code>:
+You can construct one with a <code>jwkSetUri</code> like so:</p>
 </div>
 <div id="_tabs_6" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1346,7 +1369,81 @@ public ReactiveJwtDecoder jwtDecoder() {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
 fun jwtDecoder(): ReactiveJwtDecoder {
-    return ReactiveJwtDecoders.fromIssuerLocation(issuerUri)
+    return NimbusReactiveJwtDecoder.withJwkSetUri(jwkSetUri).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>or you can use the issuer and have <code>NimbusReactiveJwtDecoder</code> look up the <code>jwkSetUri</code> when <code>build()</code> is invoked, like the following:</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public ReactiveJwtDecoder jwtDecoder() {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(issuer).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): ReactiveJwtDecoder {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(issuer).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, if the defaults work for you, you can also use <code>JwtDecoders</code>, which does the above in addition to configuring the decoder&#8217;s validator:</p>
+</div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_8_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+public ReactiveJwtDecoder jwtDecoder() {
+    return ReactiveJwtDecoders.fromIssuerLocation(issuer);
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): ReactiveJwtDecoder {
+    return ReactiveJwtDecoders.fromIssuerLocation(issuer)
 }</code></pre>
 </div>
 </div>
@@ -1388,84 +1485,6 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <div class="paragraph">
 <p>For greater power, though, we can use a builder that ships with <code>NimbusReactiveJwtDecoder</code>:</p>
 </div>
-<div id="_tabs_7" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_7_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_7_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
-ReactiveJwtDecoder jwtDecoder() {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
-            .jwsAlgorithm(RS512).build();
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_7_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_7_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
-fun jwtDecoder(): ReactiveJwtDecoder {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
-            .jwsAlgorithm(RS512).build()
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Calling <code>jwsAlgorithm</code> more than once configures <code>NimbusReactiveJwtDecoder</code> to trust more than one algorithm:</p>
-</div>
-<div id="_tabs_8" class="openblock tabs is-sync is-loading">
-<div class="content">
-<div class="ulist tablist">
-<ul>
-<li id="_tabs_8_java" class="tab">
-<p>Java</p>
-</li>
-<li id="_tabs_8_kotlin" class="tab">
-<p>Kotlin</p>
-</li>
-</ul>
-</div>
-<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
-<div class="listingblock primary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
-ReactiveJwtDecoder jwtDecoder() {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
-            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build();
-}</code></pre>
-</div>
-</div>
-</div>
-<div id="_tabs_8_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_8_kotlin">
-<div class="listingblock secondary">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
-fun jwtDecoder(): ReactiveJwtDecoder {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
-            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build()
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Alternately, you can call <code>jwsAlgorithms</code>:</p>
-</div>
 <div id="_tabs_9" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
@@ -1483,11 +1502,8 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
 ReactiveJwtDecoder jwtDecoder() {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
-            .jwsAlgorithms(algorithms -&gt; {
-                    algorithms.add(RS512);
-                    algorithms.add(ES512);
-            }).build();
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.issuer)
+            .jwsAlgorithm(RS512).build();
 }</code></pre>
 </div>
 </div>
@@ -1497,7 +1513,88 @@ ReactiveJwtDecoder jwtDecoder() {
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
 fun jwtDecoder(): ReactiveJwtDecoder {
-    return NimbusReactiveJwtDecoder.withJwkSetUri(this.jwkSetUri)
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.issuer)
+            .jwsAlgorithm(RS512).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Calling <code>jwsAlgorithm</code> more than once configures <code>NimbusReactiveJwtDecoder</code> to trust more than one algorithm:</p>
+</div>
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_10_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_10_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ReactiveJwtDecoder jwtDecoder() {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.issuer)
+            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): ReactiveJwtDecoder {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.issuer)
+            .jwsAlgorithm(RS512).jwsAlgorithm(ES512).build()
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternately, you can call <code>jwsAlgorithms</code>:</p>
+</div>
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_11_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_11_kotlin" class="tab">
+<p>Kotlin</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div class="listingblock primary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
+ReactiveJwtDecoder jwtDecoder() {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.jwkSetUri)
+            .jwsAlgorithms(algorithms -&gt; {
+                    algorithms.add(RS512);
+                    algorithms.add(ES512);
+            }).build();
+}</code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div class="listingblock secondary">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
+fun jwtDecoder(): ReactiveJwtDecoder {
+    return NimbusReactiveJwtDecoder.withIssuerLocation(this.jwkSetUri)
             .jwsAlgorithms {
                 it.add(RS512)
                 it.add(ES512)
@@ -1534,20 +1631,20 @@ The public key can be provided with <a href="#webflux-oauth2resourceserver-jwt-d
 <div class="paragraph">
 <p>Alternately, to allow for a more sophisticated lookup, you can post-process the <code>RsaKeyConversionServicePostProcessor</code>:</p>
 </div>
-<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
 <div class="title">BeanFactoryPostProcessor</div>
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_10_java" class="tab">
+<li id="_tabs_12_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_10_kotlin" class="tab">
+<li id="_tabs_12_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1559,7 +1656,7 @@ BeanFactoryPostProcessor conversionServiceCustomizer() {
 </div>
 </div>
 </div>
-<div id="_tabs_10_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_10_kotlin">
+<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1585,19 +1682,19 @@ fun conversionServiceCustomizer(): BeanFactoryPostProcessor {
 <div class="paragraph">
 <p>Then autowire the value:</p>
 </div>
-<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_11_java" class="tab">
+<li id="_tabs_13_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_11_kotlin" class="tab">
+<li id="_tabs_13_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Value("${key.location}")
@@ -1605,7 +1702,7 @@ RSAPublicKey key;</code></pre>
 </div>
 </div>
 </div>
-<div id="_tabs_11_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_11_kotlin">
+<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Value("\${key.location}")
@@ -1621,19 +1718,19 @@ val key: RSAPublicKey? = null</code></pre>
 <div class="paragraph">
 <p>To wire an <code>RSAPublicKey</code> directly, use the appropriate <code>NimbusReactiveJwtDecoder</code> builder:</p>
 </div>
-<div id="_tabs_12" class="openblock tabs is-sync is-loading">
+<div id="_tabs_14" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_12_java" class="tab">
+<li id="_tabs_14_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_12_kotlin" class="tab">
+<li id="_tabs_14_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
+<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1643,7 +1740,7 @@ public ReactiveJwtDecoder jwtDecoder() {
 </div>
 </div>
 </div>
-<div id="_tabs_12_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_12_kotlin">
+<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1663,19 +1760,19 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <p>You can also use a single symmetric key.
 You can load in your <code>SecretKey</code> and use the appropriate <code>NimbusReactiveJwtDecoder</code> builder:</p>
 </div>
-<div id="_tabs_13" class="openblock tabs is-sync is-loading">
+<div id="_tabs_15" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_13_java" class="tab">
+<li id="_tabs_15_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_13_kotlin" class="tab">
+<li id="_tabs_15_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
+<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1685,7 +1782,7 @@ public ReactiveJwtDecoder jwtDecoder() {
 </div>
 </div>
 </div>
-<div id="_tabs_13_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_13_kotlin">
+<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1714,19 +1811,19 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <div class="paragraph">
 <p>This means that, to protect an endpoint or method with a scope derived from a JWT, the corresponding expressions should include this prefix:</p>
 </div>
-<div id="_tabs_14" class="openblock tabs is-sync is-loading">
+<div id="_tabs_16" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_14_java" class="tab">
+<li id="_tabs_16_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_14_kotlin" class="tab">
+<li id="_tabs_16_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
+<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1743,7 +1840,7 @@ SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 </div>
 </div>
 </div>
-<div id="_tabs_14_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_14_kotlin">
+<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1767,19 +1864,19 @@ fun springSecurityFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain 
 <div class="paragraph">
 <p>You can do something similar with method security:</p>
 </div>
-<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div id="_tabs_17" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_15_java" class="tab">
+<li id="_tabs_17_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_15_kotlin" class="tab">
+<li id="_tabs_17_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
+<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@PreAuthorize("hasAuthority('SCOPE_messages')")
@@ -1787,7 +1884,7 @@ public Flux&lt;Message&gt; getMessages(...) {}</code></pre>
 </div>
 </div>
 </div>
-<div id="_tabs_15_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_15_kotlin">
+<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@PreAuthorize("hasAuthority('SCOPE_messages')")
@@ -1807,19 +1904,19 @@ At other times, the resource server may need to adapt the attribute or a composi
 <div class="paragraph">
 <p>To this end, the DSL exposes <code>jwtAuthenticationConverter()</code>:</p>
 </div>
-<div id="_tabs_16" class="openblock tabs is-sync is-loading">
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_16_java" class="tab">
+<li id="_tabs_18_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_16_kotlin" class="tab">
+<li id="_tabs_18_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -1846,7 +1943,7 @@ Converter&lt;Jwt, Mono&lt;AbstractAuthenticationToken&gt;&gt; grantedAuthorities
 </div>
 </div>
 </div>
-<div id="_tabs_16_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_16_kotlin">
+<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -1880,19 +1977,19 @@ As part of its configuration, we can supply a subsidiary converter to go from <c
 <div class="paragraph">
 <p>That final converter might be something like the following <code>GrantedAuthoritiesExtractor</code>:</p>
 </div>
-<div id="_tabs_17" class="openblock tabs is-sync is-loading">
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_17_java" class="tab">
+<li id="_tabs_19_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_17_kotlin" class="tab">
+<li id="_tabs_19_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static class GrantedAuthoritiesExtractor
@@ -1911,7 +2008,7 @@ As part of its configuration, we can supply a subsidiary converter to go from <c
 </div>
 </div>
 </div>
-<div id="_tabs_17_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_17_kotlin">
+<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">internal class GrantedAuthoritiesExtractor : Converter&lt;Jwt, Collection&lt;GrantedAuthority&gt;&gt; {
@@ -1931,19 +2028,19 @@ As part of its configuration, we can supply a subsidiary converter to go from <c
 <div class="paragraph">
 <p>For more flexibility, the DSL supports entirely replacing the converter with any class that implements <code>Converter&lt;Jwt, Mono&lt;AbstractAuthenticationToken&gt;&gt;</code>:</p>
 </div>
-<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_18_java" class="tab">
+<li id="_tabs_20_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_18_kotlin" class="tab">
+<li id="_tabs_20_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">static class CustomAuthenticationConverter implements Converter&lt;Jwt, Mono&lt;AbstractAuthenticationToken&gt;&gt; {
@@ -1954,7 +2051,7 @@ As part of its configuration, we can supply a subsidiary converter to go from <c
 </div>
 </div>
 </div>
-<div id="_tabs_18_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_18_kotlin">
+<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">internal class CustomAuthenticationConverter : Converter&lt;Jwt, Mono&lt;AbstractAuthenticationToken&gt;&gt; {
@@ -1989,19 +2086,19 @@ This can cause some implementation heartburn, as the number of collaborating ser
 <div class="paragraph">
 <p>Resource Server uses <code>JwtTimestampValidator</code> to verify a token&#8217;s validity window, and you can configure it with a <code>clockSkew</code> to alleviate the clock drift problem:</p>
 </div>
-<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div id="_tabs_21" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_19_java" class="tab">
+<li id="_tabs_21_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_19_kotlin" class="tab">
+<li id="_tabs_21_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2020,7 +2117,7 @@ ReactiveJwtDecoder jwtDecoder() {
 </div>
 </div>
 </div>
-<div id="_tabs_19_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_19_kotlin">
+<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2057,19 +2154,19 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <div class="paragraph">
 <p>You can Add a check for the <code>aud</code> claim with the <code>OAuth2TokenValidator</code> API:</p>
 </div>
-<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div id="_tabs_22" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_20_java" class="tab">
+<li id="_tabs_22_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_20_kotlin" class="tab">
+<li id="_tabs_22_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div id="_tabs_22_java--panel" class="tabpanel" aria-labelledby="_tabs_22_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class AudienceValidator implements OAuth2TokenValidator&lt;Jwt&gt; {
@@ -2086,7 +2183,7 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 </div>
 </div>
 </div>
-<div id="_tabs_20_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_20_kotlin">
+<div id="_tabs_22_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_22_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">class AudienceValidator : OAuth2TokenValidator&lt;Jwt&gt; {
@@ -2107,19 +2204,19 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <div class="paragraph">
 <p>Then, to add into a resource server, you can specifying the <code>ReactiveJwtDecoder</code> instance:</p>
 </div>
-<div id="_tabs_21" class="openblock tabs is-sync is-loading">
+<div id="_tabs_23" class="openblock tabs is-sync is-loading">
 <div class="content">
 <div class="ulist tablist">
 <ul>
-<li id="_tabs_21_java" class="tab">
+<li id="_tabs_23_java" class="tab">
 <p>Java</p>
 </li>
-<li id="_tabs_21_kotlin" class="tab">
+<li id="_tabs_23_kotlin" class="tab">
 <p>Kotlin</p>
 </li>
 </ul>
 </div>
-<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
+<div id="_tabs_23_java--panel" class="tabpanel" aria-labelledby="_tabs_23_java">
 <div class="listingblock primary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Bean
@@ -2138,7 +2235,7 @@ ReactiveJwtDecoder jwtDecoder() {
 </div>
 </div>
 </div>
-<div id="_tabs_21_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_21_kotlin">
+<div id="_tabs_23_kotlin--panel" class="tabpanel" aria-labelledby="_tabs_23_kotlin">
 <div class="listingblock secondary">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Bean
@@ -2183,6 +2280,5 @@ fun jwtDecoder(): ReactiveJwtDecoder {
 <script src="../../../../_/js/site.js"></script>
 <script async src="../../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../../_/css/vendor/docsearch.css" data-page-version="6.1.0-M2"></script>
   </body>
 </html>

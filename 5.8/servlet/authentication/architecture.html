@@ -14,8 +14,10 @@
 }(localStorage && localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)') && 'dark'))
     </script>
     <link rel="stylesheet" href="../../../_/css/site.css">
+    <link rel="stylesheet" href="../../../_/css/vendor/docsearch.css">
     <link rel="stylesheet" href="../../../_/css/vendor/asciidoctor-tabs.css">
-    <meta name="version" content="5.8.2">
+
+    <meta name="version" content="5.8.3">
     <meta name="component" content="ROOT">
     <link rel="icon" href="../../../_/img/favicon.ico" type="image/vnd.microsoft.icon">
   </head>
@@ -73,8 +75,20 @@
             <a class="navbar-item navbar-item-special-2" href="https://start.spring.io">Spring Initializr <svg class="external-link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polyline points="15 10.94 15 15 1 15 1 1 5.06 1" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><polyline points="8.93 1 15 1 15 7.07" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><line x1="15" y1="1" x2="8" y2="8" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></line></svg></a>
           </div>
         </div>
-
-        <a class="navbar-item" href="https://spring.io/training">Training</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Academy</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.academy/courses">Courses</a>
+            <a class="navbar-item" href="https://spring.academy/learning-path">Get Certified</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable is-community">
+          <a class="navbar-link" href="#">Support</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://spring.io/support">Overview</a>
+            <a class="navbar-item" href="https://spring.io/security">Security Advisories</a>
+          </div>
+        </div>
         <a class="navbar-item" href="https://spring.io/support">Support</a>
         <div class="navbar-item has-dropdown is-hoverable is-community">
           <a class="navbar-link" href="#">Community</a>
@@ -93,7 +107,7 @@
   </nav>
 </header>
 <div class="body">
-<div class="nav-container" data-component="ROOT" data-version="5.8.2">
+<div class="nav-container" data-component="ROOT" data-version="5.8.3">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
@@ -728,7 +742,7 @@
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
     <span class="title">Documentation</span>
-    <span class="version">5.8.2</span>
+    <span class="version">5.8.3</span>
   </div>
   <ul class="components">
     <li class="component is-current">
@@ -738,25 +752,25 @@
           <a href="../../../6.1-SNAPSHOT/index.html">6.1.0-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../6.1/index.html">6.1.0-M2</a>
+          <a href="../../../6.1/index.html">6.1.0-RC1</a>
         </li>
         <li class="version">
-          <a href="../../../6.0-SNAPSHOT/index.html">6.0.3-SNAPSHOT</a>
+          <a href="../../../6.0-SNAPSHOT/index.html">6.0.4-SNAPSHOT</a>
         </li>
         <li class="version is-latest">
-          <a href="../../../index.html">6.0.2</a>
+          <a href="../../../index.html">6.0.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.8-SNAPSHOT/index.html">5.8.3-SNAPSHOT</a>
+          <a href="../../../5.8-SNAPSHOT/index.html">5.8.4-SNAPSHOT</a>
         </li>
         <li class="version is-current">
-          <a href="../../index.html">5.8.2</a>
+          <a href="../../index.html">5.8.3</a>
         </li>
         <li class="version">
-          <a href="../../../5.7-SNAPSHOT/index.html">5.7.8-SNAPSHOT</a>
+          <a href="../../../5.7-SNAPSHOT/index.html">5.7.9-SNAPSHOT</a>
         </li>
         <li class="version">
-          <a href="../../../5.7/index.html">5.7.7</a>
+          <a href="../../../5.7/index.html">5.7.8</a>
         </li>
         <li class="version">
           <a href="../../../5.6-SNAPSHOT/index.html">5.6.11-SNAPSHOT</a>
@@ -784,27 +798,26 @@
   </ul>
 </nav>
 <div class="search">
-  <div id="search" class="field has-filter">
-    <input class="query" type="text" placeholder="Search docs">
+  <div id="search">
   </div>
 </div>
 
 <div class="page-versions">
-  <button class="version-menu-toggle" title="Show other versions of page">5.8.2</button>
+  <button class="version-menu-toggle" title="Show other versions of page">5.8.3</button>
   <div class="version-menu">
     <a class="version" href="../../../6.1-SNAPSHOT/servlet/authentication/architecture.html">6.1.0-SNAPSHOT</a>
-    <a class="version" href="../../../6.1/servlet/authentication/architecture.html">6.1.0-M2</a>
-    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/architecture.html">6.0.3-SNAPSHOT</a>
-    <a class="version" href="../../../servlet/authentication/architecture.html">6.0.2</a>
-    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/architecture.html">5.8.3-SNAPSHOT</a>
-    <a class="version is-current" href="architecture.html">5.8.2</a>
-    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/architecture.html">5.7.8-SNAPSHOT</a>
-    <a class="version" href="../../../5.7/servlet/authentication/architecture.html">5.7.7</a>
+    <a class="version" href="../../../6.1/servlet/authentication/architecture.html">6.1.0-RC1</a>
+    <a class="version" href="../../../6.0-SNAPSHOT/servlet/authentication/architecture.html">6.0.4-SNAPSHOT</a>
+    <a class="version" href="../../../servlet/authentication/architecture.html">6.0.3</a>
+    <a class="version" href="../../../5.8-SNAPSHOT/servlet/authentication/architecture.html">5.8.4-SNAPSHOT</a>
+    <a class="version is-current" href="architecture.html">5.8.3</a>
+    <a class="version" href="../../../5.7-SNAPSHOT/servlet/authentication/architecture.html">5.7.9-SNAPSHOT</a>
+    <a class="version" href="../../../5.7/servlet/authentication/architecture.html">5.7.8</a>
     <a class="version" href="../../../5.6-SNAPSHOT/servlet/authentication/architecture.html">5.6.11-SNAPSHOT</a>
     <a class="version" href="../../../5.6/servlet/authentication/architecture.html">5.6.10</a>
   </div>
 </div>
-  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.2/docs/modules/ROOT/pages/servlet/authentication/architecture.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/spring-projects/spring-security/blob/5.8.3/docs/modules/ROOT/pages/servlet/authentication/architecture.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Servlet Authentication Architecture" data-levels="2">
@@ -819,7 +832,7 @@
       </td>
       <td class="content">
         <div class="paragraph">
-          <p> For the latest stable version, please use <a href="../../../servlet/authentication/architecture.html">Documentation 6.0.2</a>!</p>
+          <p> For the latest stable version, please use <a href="../../../servlet/authentication/architecture.html">Documentation 6.0.3</a>!</p>
         </div>
       </td>
     </tr></tbody>
@@ -1007,7 +1020,7 @@ Most applications won&#8217;t need to change from the default, but if you do, ta
 <h2 id="servlet-authentication-securitycontext"><a class="anchor" href="#servlet-authentication-securitycontext"></a>SecurityContext</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/core/context/SecurityContext.html"><code>SecurityContext</code></a> is obtained from the <a href="#servlet-authentication-securitycontextholder">SecurityContextHolder</a>.
+<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/core/context/SecurityContext.html"><code>SecurityContext</code></a> is obtained from the <a href="#servlet-authentication-securitycontextholder">SecurityContextHolder</a>.
 The <code>SecurityContext</code> contains an <a href="#servlet-authentication-authentication">Authentication</a> object.</p>
 </div>
 </div>
@@ -1016,7 +1029,7 @@ The <code>SecurityContext</code> contains an <a href="#servlet-authentication-au
 <h2 id="servlet-authentication-authentication"><a class="anchor" href="#servlet-authentication-authentication"></a>Authentication</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/core/Authentication.html"><code>Authentication</code></a> serves two main purposes within Spring Security:</p>
+<p>The <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/core/Authentication.html"><code>Authentication</code></a> serves two main purposes within Spring Security:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1055,7 +1068,7 @@ A few examples are roles or scopes.</p>
 <h2 id="servlet-authentication-granted-authority"><a class="anchor" href="#servlet-authentication-granted-authority"></a>GrantedAuthority</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/core/GrantedAuthority.html"><code>GrantedAuthority</code>s</a> are high level permissions the user is granted. A few examples are roles or scopes.</p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/core/GrantedAuthority.html"><code>GrantedAuthority</code>s</a> are high level permissions the user is granted. A few examples are roles or scopes.</p>
 </div>
 <div class="paragraph">
 <p><code>GrantedAuthority</code>s can be obtained from the <a href="#servlet-authentication-authentication"><code>Authentication.getAuthorities()</code></a> method.
@@ -1078,7 +1091,7 @@ Of course, Spring Security is expressly designed to handle this common requireme
 <h2 id="servlet-authentication-authenticationmanager"><a class="anchor" href="#servlet-authentication-authenticationmanager"></a>AuthenticationManager</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authentication/AuthenticationManager.html"><code>AuthenticationManager</code></a> is the API that defines how Spring Security&#8217;s Filters perform  <a href="../../features/authentication/index.html#authentication" class="xref page">authentication</a>.
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authentication/AuthenticationManager.html"><code>AuthenticationManager</code></a> is the API that defines how Spring Security&#8217;s Filters perform  <a href="../../features/authentication/index.html#authentication" class="xref page">authentication</a>.
 The <a href="#servlet-authentication-authentication"><code>Authentication</code></a> that is returned is then set on the <a href="#servlet-authentication-securitycontextholder">SecurityContextHolder</a> by the controller (i.e. <a href="../architecture.html#servlet-security-filters" class="xref page">Spring Security&#8217;s <code>Filters</code>s</a>) that invoked the <code>AuthenticationManager</code>.
 If you are not integrating with <em>Spring Security&#8217;s <code>Filters</code>s</em> you can set the <code>SecurityContextHolder</code> directly and are not required to use an <code>AuthenticationManager</code>.</p>
 </div>
@@ -1091,7 +1104,7 @@ If you are not integrating with <em>Spring Security&#8217;s <code>Filters</code>
 <h2 id="servlet-authentication-providermanager"><a class="anchor" href="#servlet-authentication-providermanager"></a>ProviderManager</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authentication/ProviderManager.html"><code>ProviderManager</code></a> is the most commonly used implementation of <a href="#servlet-authentication-authenticationmanager"><code>AuthenticationManager</code></a>.
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authentication/ProviderManager.html"><code>ProviderManager</code></a> is the most commonly used implementation of <a href="#servlet-authentication-authenticationmanager"><code>AuthenticationManager</code></a>.
 <code>ProviderManager</code> delegates to a <code>List</code> of <a href="#servlet-authentication-authenticationprovider"><code>AuthenticationProvider</code>s</a>.
 Each <code>AuthenticationProvider</code> has an opportunity to indicate that authentication should be successful, fail, or indicate it cannot make a decision and allow a downstream <code>AuthenticationProvider</code> to decide.
 If none of the configured <code>AuthenticationProvider</code>s can authenticate, then authentication will fail with a <code>ProviderNotFoundException</code> which is a special <code>AuthenticationException</code> that indicates the <code>ProviderManager</code> was not configured to support the type of <code>Authentication</code> that was passed into it.</p>
@@ -1134,7 +1147,7 @@ If the <code>Authentication</code> contains a reference to an object in the cach
 You need to take this into account if you are using a cache.
 An obvious solution is to make a copy of the object first, either in the cache implementation or in the <code>AuthenticationProvider</code> which creates the returned <code>Authentication</code> object.
 Alternatively, you can disable the <code>eraseCredentialsAfterAuthentication</code> property on <code>ProviderManager</code>.
-See the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authentication/ProviderManager.html">Javadoc</a> for more information.</p>
+See the <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authentication/ProviderManager.html">Javadoc</a> for more information.</p>
 </div>
 </div>
 </div>
@@ -1142,7 +1155,7 @@ See the <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/
 <h2 id="servlet-authentication-authenticationprovider"><a class="anchor" href="#servlet-authentication-authenticationprovider"></a>AuthenticationProvider</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Multiple <a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/authentication/AuthenticationProvider.html"><code>AuthenticationProvider</code>s</a> can be injected into <a href="#servlet-authentication-providermanager"><code>ProviderManager</code></a>.
+<p>Multiple <a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/authentication/AuthenticationProvider.html"><code>AuthenticationProvider</code>s</a> can be injected into <a href="#servlet-authentication-providermanager"><code>ProviderManager</code></a>.
 Each <code>AuthenticationProvider</code> performs a specific type of authentication.
 For example, <a href="passwords/dao-authentication-provider.html#servlet-authentication-daoauthenticationprovider" class="xref page"><code>DaoAuthenticationProvider</code></a> supports username/password based authentication while <code>JwtAuthenticationProvider</code> supports authenticating a JWT token.</p>
 </div>
@@ -1152,7 +1165,7 @@ For example, <a href="passwords/dao-authentication-provider.html#servlet-authent
 <h2 id="servlet-authentication-authenticationentrypoint"><a class="anchor" href="#servlet-authentication-authenticationentrypoint"></a>Request Credentials with <code>AuthenticationEntryPoint</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/AuthenticationEntryPoint.html"><code>AuthenticationEntryPoint</code></a> is used to send an HTTP response that requests credentials from a client.</p>
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/AuthenticationEntryPoint.html"><code>AuthenticationEntryPoint</code></a> is used to send an HTTP response that requests credentials from a client.</p>
 </div>
 <div class="paragraph">
 <p>Sometimes a client will proactively include credentials such as a username/password to request a resource.
@@ -1169,7 +1182,7 @@ The <code>AuthenticationEntryPoint</code> implementation might perform a <a href
 <h2 id="servlet-authentication-abstractprocessingfilter"><a class="anchor" href="#servlet-authentication-abstractprocessingfilter"></a>AbstractAuthenticationProcessingFilter</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.2/api/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html"><code>AbstractAuthenticationProcessingFilter</code></a> is used as a base <code>Filter</code> for authenticating a user&#8217;s credentials.
+<p><a href="https://docs.spring.io/spring-security/site/docs/5.8.3/api/org/springframework/security/web/authentication/AbstractAuthenticationProcessingFilter.html"><code>AbstractAuthenticationProcessingFilter</code></a> is used as a base <code>Filter</code> for authenticating a user&#8217;s credentials.
 Before the credentials can be authenticated, Spring Security typically requests the credentials using <a href="#servlet-authentication-authenticationentrypoint"><code>AuthenticationEntryPoint</code></a>.</p>
 </div>
 <div class="paragraph">
@@ -1255,6 +1268,5 @@ If remember me is not configured, this is a no-op.</p>
 <script src="../../../_/js/site.js"></script>
 <script async src="../../../_/js/vendor/highlight.js"></script>
 <script async src="../../../_/js/vendor/asciidoctor-tabs.js" data-sync-storage-key="docs:preferred-tab"></script>
-<script async id="search-script" src="../../../_/js/vendor/docsearch.js" data-app-id="WB1FQYI187" data-api-key="9d489079e5ec46dbb238909fee5c9c29" data-index-name="springsecurity" data-stylesheet="../../../_/css/vendor/docsearch.css" data-page-version="5.8.2"></script>
   </body>
 </html>
