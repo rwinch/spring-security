@@ -1,6 +1,6 @@
 {
   "$id": "https://schemas.antora.org/site-manifest/1-0-0/draft-01",
-  "generated": "2023-04-20T23:06:16.410Z",
+  "generated": "2023-04-20T23:25:27.503Z",
   "url": "https://rwinch.github.io/spring-security",
   "components": {
     "ROOT": {
