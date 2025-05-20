@@ -22,10 +22,10 @@ public class OAuth2RestClientHttpServiceGroupConfigurer implements
 
 	@Override
 	public void configureGroups(Groups<RestClient.Builder> groups) {
-		groups.configureClient((client) -> {
+		groups.forEachClient((group, client) -> {
 			client.requestInterceptor(this.interceptor);
 		});
-		groups.configureProxyFactory((group,factory) -> {
+		groups.forEachProxyFactory((group,factory) -> {
 			factory.httpRequestValuesProcessor(this.processor);
 		});
 	}
