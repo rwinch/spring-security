@@ -3,3 +3,7 @@
 
 Spring Security 7.0 provides a number of new features.
 Below are the highlights of the release, or you can view https://github.com/spring-projects/spring-security/releases[the release notes] for a detailed listing of each feature and bug fix.
+
+== Web
+
+* Added OAuth2 Support for {spring-framework-reference-url}/integration/rest-clients.html[HTTP Interface based REST Clients].

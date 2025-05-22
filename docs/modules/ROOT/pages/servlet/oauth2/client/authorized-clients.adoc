@@ -495,6 +495,11 @@ class RestClientConfig {
 ----
 =====
 
+=== HTTP Interface Integration
+
+Spring Security's OAuth Support can integrate with {spring-framework-reference-url}/integration/rest-clients.html[HTTP Interface based REST Clients].
+To simplify configuration, use javadoc:org.springframework.security.oauth2.client.web.client.support.OAuth2RestClientHttpServiceGroupConfigurer[].
+
 [[oauth2-client-web-client]]
 == [[oauth2Client-webclient-servlet]]WebClient Integration for Servlet Environments
 
