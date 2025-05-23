@@ -32,6 +32,7 @@ import static org.springframework.security.oauth2.client.web.client.ClientRegist
 
 /**
  * Unit tests for {@link ClientRegistrationIdProcessor}.
+ *
  * @author Rob Winch
  * @since 7.0
  * @see ClientRegistrationIdProcessorWebClientTests

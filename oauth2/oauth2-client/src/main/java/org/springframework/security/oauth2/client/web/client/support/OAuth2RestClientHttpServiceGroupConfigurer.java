@@ -28,6 +28,10 @@ import org.springframework.web.service.invoker.HttpRequestValues;
  * Simplify adding OAuth2 support to interface based rest clients that use
  * {@link RestClient}.
  *
+ * It will add {@link OAuth2ClientHttpRequestInterceptor} to the {@link RestClient} and
+ * {@link ClientRegistrationIdProcessor} to the
+ * {@link org.springframework.web.service.invoker.HttpServiceProxyFactory}.
+ *
  * @author Rob Winch
  * @since 7.0
  */

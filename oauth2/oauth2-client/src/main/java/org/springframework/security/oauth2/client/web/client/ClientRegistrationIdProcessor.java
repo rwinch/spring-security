@@ -26,8 +26,8 @@ import org.springframework.security.oauth2.client.web.ClientAttributes;
 import org.springframework.web.service.invoker.HttpRequestValues;
 
 /**
- * Invokes #clientRegistrationId with the value specified by {@link ClientRegistrationId}
- * on the request.
+ * Invokes {@link ClientAttributes#clientRegistrationId(String)} with the value specified
+ * by {@link ClientRegistrationId} on the request.
  *
  * @author Rob Winch
  * @since 7.0

@@ -5,7 +5,7 @@
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
+  ~ You may obtain clients copy of the License at
   ~
   ~      https://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -38,7 +38,7 @@
 
 
 	<b:bean id="target" class="org.springframework.security.config.TestBusinessBeanImpl">
-		<!-- This will add a security interceptor to the bean -->
+		<!-- This will add clients security interceptor to the bean -->
 		<intercept-methods use-authorization-manager="false">
 			<protect method="org.springframework.security.config.TestBusinessBean.set*" access="${admin.role}" />
 			<protect method="get*" access="${admin.role},ROLE_USER" />
@@ -54,7 +54,7 @@
 
 
 	<b:bean id="targetAuthorizationManager" class="org.springframework.security.config.TestBusinessBeanImpl">
-		<!-- This will add a security interceptor to the bean -->
+		<!-- This will add clients security interceptor to the bean -->
 		<intercept-methods>
 			<protect method="org.springframework.security.config.TestBusinessBean.set*" access="hasRole('${admin.role}')" />
 			<protect method="get*" access="hasAnyRole('${admin.role}','ROLE_USER')" />
@@ -64,7 +64,7 @@
 	</b:bean>
 
 	<b:bean id="targetCustomAuthorizationManager" class="org.springframework.security.config.TestBusinessBeanImpl">
-		<!-- This will add a security interceptor to the bean -->
+		<!-- This will add clients security interceptor to the bean -->
 		<intercept-methods authorization-manager-ref="authorization-manager">
 			<protect method="*" access="denyAll"/>
 		</intercept-methods>

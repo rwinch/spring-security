@@ -39,6 +39,8 @@ dependencies {
 	testImplementation project(':spring-security-config')
 	testImplementation project(path : ':spring-security-config', configuration : 'tests')
 	testImplementation project(':spring-security-test')
+	testImplementation project(':spring-security-oauth2-client')
+	testImplementation 'com.squareup.okhttp3:mockwebserver'
 	testImplementation 'com.unboundid:unboundid-ldapsdk'
 	testImplementation libs.webauthn4j.core
 	testImplementation 'org.jetbrains.kotlin:kotlin-reflect'

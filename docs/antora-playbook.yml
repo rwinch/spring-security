@@ -23,7 +23,7 @@ asciidoc:
     tabs-sync-option: '@'
   extensions:
     - '@asciidoctor/tabs'
-    - '@springio/asciidoctor-extensions'
+    - '/Users/rwinch/code/spring-io/asciidoctor-extensions/main/lib'
     - '@springio/asciidoctor-extensions/javadoc-extension'
 urls:
   latest_version_segment_strategy: redirect:to

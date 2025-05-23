@@ -19,8 +19,10 @@ package org.springframework.security.oauth2.client.web.reactive.function.client.
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.client.ClientRegistrationIdProcessor;
+import org.springframework.security.oauth2.client.web.client.OAuth2ClientHttpRequestInterceptor;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientHttpServiceGroupConfigurer;
@@ -56,6 +58,10 @@ public class OAuth2WebClientHttpServiceGroupConfigurer implements WebClientHttpS
 	/**
 	 * Create an instance for Reactive web applications from the provided
 	 * {@link ReactiveOAuth2AuthorizedClientManager}.
+	 *
+	 * It will add {@link ServerOAuth2AuthorizedClientExchangeFilterFunction} to the
+	 * {@link WebClient} and {@link ClientRegistrationIdProcessor} to the
+	 * {@link org.springframework.web.service.invoker.HttpServiceProxyFactory}.
 	 * @param authorizedClientManager the manager to use.
 	 * @return the {@link OAuth2WebClientHttpServiceGroupConfigurer}.
 	 */
@@ -63,13 +69,16 @@ public class OAuth2WebClientHttpServiceGroupConfigurer implements WebClientHttpS
 			ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
 		ServerOAuth2AuthorizedClientExchangeFilterFunction filter = new ServerOAuth2AuthorizedClientExchangeFilterFunction(
 				authorizedClientManager);
-		ServletOAuth2AuthorizedClientExchangeFilterFunction function = new ServletOAuth2AuthorizedClientExchangeFilterFunction();
 		return new OAuth2WebClientHttpServiceGroupConfigurer(filter);
 	}
 
 	/**
 	 * Create an instance for Servlet based environments from the provided
 	 * {@link OAuth2AuthorizedClientManager}.
+	 *
+	 * It will add {@link ServletOAuth2AuthorizedClientExchangeFilterFunction} to the
+	 * {@link WebClient} and {@link ClientRegistrationIdProcessor} to the
+	 * {@link org.springframework.web.service.invoker.HttpServiceProxyFactory}.
 	 * @param authorizedClientManager the manager to use.
 	 * @return the {@link OAuth2WebClientHttpServiceGroupConfigurer}.
 	 */
