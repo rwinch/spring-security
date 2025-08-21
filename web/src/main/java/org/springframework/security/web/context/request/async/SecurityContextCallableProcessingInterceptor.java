@@ -24,6 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * <p>
@@ -42,7 +44,7 @@ import org.springframework.web.context.request.async.CallableProcessingIntercept
  */
 public final class SecurityContextCallableProcessingInterceptor implements CallableProcessingInterceptor {
 
-	private volatile SecurityContext securityContext;
+	private @Nullable volatile SecurityContext securityContext;
 
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
@@ -75,13 +77,13 @@ public final class SecurityContextCallableProcessingInterceptor implements Calla
 		}
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public <T> void preProcess(NativeWebRequest request, Callable<T> task) {
 		this.securityContextHolderStrategy.setContext(this.securityContext);
 	}
 
 	@Override
-	public <T> void postProcess(NativeWebRequest request, Callable<T> task, Object concurrentResult) {
+	public <T> void postProcess(NativeWebRequest request, Callable<T> task, @Nullable Object concurrentResult) {
 		this.securityContextHolderStrategy.clearContext();
 	}
 

@@ -21,6 +21,8 @@ import org.springframework.expression.Expression;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.web.FilterInvocation;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Simple expression configuration attribute for use in web request authorizations.
@@ -53,8 +55,8 @@ class WebExpressionConfigAttribute implements ConfigAttribute, EvaluationContext
 		return (this.postProcessor != null) ? this.postProcessor.postProcess(context, fi) : context;
 	}
 
-	@Override
-	public String getAttribute() {
+	@NullUnmarked @Override
+	public @Nullable String getAttribute() {
 		return null;
 	}
 

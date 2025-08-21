@@ -30,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Performs a logout by modifying the
@@ -64,7 +65,7 @@ public class SecurityContextLogoutHandler implements LogoutHandler {
 	 * @param authentication not used (can be <code>null</code>)
 	 */
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		Assert.notNull(request, "HttpServletRequest required");
 		if (this.invalidateHttpSession) {
 			HttpSession session = request.getSession(false);

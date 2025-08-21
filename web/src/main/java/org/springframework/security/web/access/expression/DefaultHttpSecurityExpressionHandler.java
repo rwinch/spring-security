@@ -28,6 +28,7 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A {@link SecurityExpressionHandler} that uses a {@link RequestAuthorizationContext} to
@@ -43,7 +44,7 @@ public class DefaultHttpSecurityExpressionHandler extends AbstractSecurityExpres
 
 	private String defaultRolePrefix = "ROLE_";
 
-	@Override
+	@NullUnmarked @Override
 	public EvaluationContext createEvaluationContext(Supplier<Authentication> authentication,
 			RequestAuthorizationContext context) {
 		WebSecurityExpressionRoot root = createSecurityExpressionRoot(authentication, context);
@@ -59,7 +60,7 @@ public class DefaultHttpSecurityExpressionHandler extends AbstractSecurityExpres
 		return createSecurityExpressionRoot(() -> authentication, context);
 	}
 
-	private WebSecurityExpressionRoot createSecurityExpressionRoot(Supplier<Authentication> authentication,
+	@NullUnmarked private WebSecurityExpressionRoot createSecurityExpressionRoot(Supplier<Authentication> authentication,
 			RequestAuthorizationContext context) {
 		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(authentication, context.getRequest());
 		root.setRoleHierarchy(getRoleHierarchy());

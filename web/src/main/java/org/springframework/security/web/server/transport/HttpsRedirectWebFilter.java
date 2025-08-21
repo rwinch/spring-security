@@ -31,6 +31,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Redirects any non-HTTPS request to its HTTPS equivalent.
@@ -88,7 +89,7 @@ public final class HttpsRedirectWebFilter implements WebFilter {
 		return !"https".equals(exchange.getRequest().getURI().getScheme());
 	}
 
-	private URI createRedirectUri(ServerWebExchange exchange) {
+	@NullUnmarked private URI createRedirectUri(ServerWebExchange exchange) {
 		int port = exchange.getRequest().getURI().getPort();
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUri(exchange.getRequest().getURI());
 		if (port > 0) {

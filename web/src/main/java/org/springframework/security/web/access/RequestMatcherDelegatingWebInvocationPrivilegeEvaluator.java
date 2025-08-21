@@ -28,6 +28,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link WebInvocationPrivilegeEvaluator} which delegates to a list of
@@ -46,7 +47,7 @@ public final class RequestMatcherDelegatingWebInvocationPrivilegeEvaluator
 
 	private final List<RequestMatcherEntry<List<WebInvocationPrivilegeEvaluator>>> delegates;
 
-	private ServletContext servletContext;
+	private @Nullable ServletContext servletContext;
 
 	public RequestMatcherDelegatingWebInvocationPrivilegeEvaluator(
 			List<RequestMatcherEntry<List<WebInvocationPrivilegeEvaluator>>> requestMatcherPrivilegeEvaluatorsEntries) {
@@ -119,7 +120,7 @@ public final class RequestMatcherDelegatingWebInvocationPrivilegeEvaluator
 		return true;
 	}
 
-	private List<WebInvocationPrivilegeEvaluator> getDelegate(String contextPath, String uri, String method) {
+	private List<WebInvocationPrivilegeEvaluator> getDelegate(@Nullable String contextPath, String uri, @Nullable String method) {
 		FilterInvocation filterInvocation = new FilterInvocation(contextPath, uri, method, this.servletContext);
 		HttpServletRequest request = filterInvocation.getHttpRequest();
 		for (RequestMatcherEntry<List<WebInvocationPrivilegeEvaluator>> delegate : this.delegates) {

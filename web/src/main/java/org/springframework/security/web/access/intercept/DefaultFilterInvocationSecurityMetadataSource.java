@@ -32,6 +32,8 @@ import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.annotation.SecurityAnnotationScanner;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Default implementation of <tt>FilterInvocationDefinitionSource</tt>.
@@ -84,8 +86,8 @@ public class DefaultFilterInvocationSecurityMetadataSource implements FilterInvo
 		return allAttributes;
 	}
 
-	@Override
-	public Collection<ConfigAttribute> getAttributes(Object object) {
+	@NullUnmarked @Override
+	public @Nullable Collection<ConfigAttribute> getAttributes(Object object) {
 		final HttpServletRequest request = getHttpServletRequest(object);
 		int count = 0;
 		for (Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : this.requestMap.entrySet()) {

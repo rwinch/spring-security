@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Simple <tt>PersistentTokenRepository</tt> implementation backed by a Map. Intended for
@@ -42,7 +44,7 @@ public class InMemoryTokenRepositoryImpl implements PersistentTokenRepository {
 		this.seriesTokens.put(token.getSeries(), token);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public synchronized void updateToken(String series, String tokenValue, Date lastUsed) {
 		PersistentRememberMeToken token = getTokenForSeries(series);
 		PersistentRememberMeToken newToken = new PersistentRememberMeToken(token.getUsername(), series, tokenValue,
@@ -52,11 +54,11 @@ public class InMemoryTokenRepositoryImpl implements PersistentTokenRepository {
 	}
 
 	@Override
-	public synchronized PersistentRememberMeToken getTokenForSeries(String seriesId) {
+	public synchronized @Nullable PersistentRememberMeToken getTokenForSeries(String seriesId) {
 		return this.seriesTokens.get(seriesId);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public synchronized void removeUserTokens(String username) {
 		Iterator<String> series = this.seriesTokens.keySet().iterator();
 		while (series.hasNext()) {

@@ -30,6 +30,7 @@ import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Redirect using an auto-submitting HTML form using the POST method. All query params

@@ -30,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Converts from a {@link ServerWebExchange} to an {@link Authentication} that can be
@@ -48,7 +49,7 @@ public class ServerHttpBasicAuthenticationConverter implements Function<ServerWe
 
 	private Charset credentialsCharset = StandardCharsets.UTF_8;
 
-	@Override
+	@NullUnmarked @Override
 	@Deprecated
 	public Mono<Authentication> apply(ServerWebExchange exchange) {
 		ServerHttpRequest request = exchange.getRequest();

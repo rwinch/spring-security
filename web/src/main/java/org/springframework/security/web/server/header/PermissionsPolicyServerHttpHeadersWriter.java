@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.security.web.server.header.StaticServerHttpHeadersWriter.Builder;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Writes the {@code Permissions-Policy} response header with configured policy
@@ -33,7 +34,7 @@ public final class PermissionsPolicyServerHttpHeadersWriter implements ServerHtt
 
 	public static final String PERMISSIONS_POLICY = "Permissions-Policy";
 
-	private ServerHttpHeadersWriter delegate;
+	private @Nullable ServerHttpHeadersWriter delegate;
 
 	@Override
 	public Mono<Void> writeHttpHeaders(ServerWebExchange exchange) {

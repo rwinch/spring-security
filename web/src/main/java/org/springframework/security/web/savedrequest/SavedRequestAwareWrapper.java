@@ -34,6 +34,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.http.HttpHeaders;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Provides request parameters, headers and cookies from either an original request or a
@@ -59,7 +61,7 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 
 	protected static final TimeZone GMT_ZONE = TimeZone.getTimeZone("GMT");
 
-	protected SavedRequest savedRequest;
+	protected @Nullable SavedRequest savedRequest;
 
 	/**
 	 * The set of SimpleDateFormat formats to use in getDateHeader(). Notice that because
@@ -68,7 +70,7 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 	 */
 	protected final SimpleDateFormat[] formats = new SimpleDateFormat[3];
 
-	SavedRequestAwareWrapper(SavedRequest saved, HttpServletRequest request) {
+	SavedRequestAwareWrapper(@Nullable SavedRequest saved, HttpServletRequest request) {
 		super(request);
 		this.savedRequest = saved;
 		this.formats[0] = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
@@ -93,18 +95,18 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 		throw new IllegalArgumentException(value);
 	}
 
-	@Override
-	public String getHeader(String name) {
+	@NullUnmarked @Override
+	public @Nullable String getHeader(String name) {
 		List<String> values = this.savedRequest.getHeaderValues(name);
 		return values.isEmpty() ? null : values.get(0);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Enumeration<String> getHeaderNames() {
 		return new Enumerator<>(this.savedRequest.getHeaderNames());
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Enumeration<String> getHeaders(String name) {
 		return new Enumerator<>(this.savedRequest.getHeaderValues(name));
 	}
@@ -115,13 +117,13 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 		return (value != null) ? Integer.parseInt(value) : -1;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Locale getLocale() {
 		List<Locale> locales = this.savedRequest.getLocales();
 		return locales.isEmpty() ? Locale.getDefault() : locales.get(0);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Enumeration<Locale> getLocales() {
 		List<Locale> locales = this.savedRequest.getLocales();
 		if (locales.isEmpty()) {
@@ -132,13 +134,13 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 		return new Enumerator<>(locales);
 	}
 
-	@Override
-	public String getMethod() {
+	@NullUnmarked @Override
+	public @Nullable String getMethod() {
 		return this.savedRequest.getMethod();
 	}
 
 	@Override
-	public String getContentType() {
+	public @Nullable String getContentType() {
 		return getHeader(HttpHeaders.CONTENT_TYPE);
 	}
 
@@ -152,8 +154,8 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 	 * If the value from the wrapped request is null, an attempt will be made to retrieve
 	 * the parameter from the saved request.
 	 */
-	@Override
-	public String getParameter(String name) {
+	@NullUnmarked @Override
+	public @Nullable String getParameter(String name) {
 		String value = super.getParameter(name);
 		if (value != null) {
 			return value;
@@ -175,7 +177,7 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 		return parameterMap;
 	}
 
-	private Set<String> getCombinedParameterNames() {
+	@NullUnmarked private Set<String> getCombinedParameterNames() {
 		Set<String> names = new HashSet<>();
 		names.addAll(super.getParameterMap().keySet());
 		names.addAll(this.savedRequest.getParameterMap().keySet());
@@ -187,7 +189,7 @@ class SavedRequestAwareWrapper extends HttpServletRequestWrapper {
 		return new Enumerator<>(getCombinedParameterNames());
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public String[] getParameterValues(String name) {
 		String[] savedRequestParams = this.savedRequest.getParameterValues(name);
 		String[] wrappedRequestParams = super.getParameterValues(name);

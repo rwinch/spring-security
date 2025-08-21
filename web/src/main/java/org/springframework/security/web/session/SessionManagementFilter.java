@@ -39,6 +39,7 @@ import org.springframework.security.web.authentication.session.SessionFixationPr
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Detects that a user has been authenticated since the start of the request and, if they
@@ -63,7 +64,7 @@ public class SessionManagementFilter extends GenericFilterBean {
 
 	private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
-	private InvalidSessionStrategy invalidSessionStrategy = null;
+	private @Nullable InvalidSessionStrategy invalidSessionStrategy = null;
 
 	private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 

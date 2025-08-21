@@ -38,6 +38,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Registers the {@link DelegatingFilterProxy} to use the springSecurityFilterChain before
@@ -77,7 +78,7 @@ public abstract class AbstractSecurityWebApplicationInitializer implements WebAp
 
 	public static final String DEFAULT_FILTER_NAME = "springSecurityFilterChain";
 
-	private final Class<?>[] configurationClasses;
+	private final Class<?>@Nullable [] configurationClasses;
 
 	/**
 	 * Creates a new instance that assumes the Spring Security configuration is loaded by
@@ -212,7 +213,7 @@ public abstract class AbstractSecurityWebApplicationInitializer implements WebAp
 	 * @return the {@link DelegatingFilterProxy#getContextAttribute()} or null if the
 	 * parent {@link ApplicationContext} should be used
 	 */
-	private String getWebApplicationContextAttribute() {
+	private @Nullable String getWebApplicationContextAttribute() {
 		String dispatcherServletName = getDispatcherWebApplicationContextSuffix();
 		if (dispatcherServletName == null) {
 			return null;
@@ -255,7 +256,7 @@ public abstract class AbstractSecurityWebApplicationInitializer implements WebAp
 	 * {@link WebApplicationContext} or null (default) to use the parent
 	 * {@link ApplicationContext}.
 	 */
-	protected String getDispatcherWebApplicationContextSuffix() {
+	protected @Nullable String getDispatcherWebApplicationContextSuffix() {
 		return null;
 	}
 

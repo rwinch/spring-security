@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Checks if the provided password was leaked by relying on
@@ -60,7 +61,7 @@ public final class HaveIBeenPwnedRestApiPasswordChecker implements CompromisedPa
 	}
 
 	@Override
-	public CompromisedPasswordDecision check(String password) {
+	public CompromisedPasswordDecision check(@Nullable String password) {
 		if (password == null) {
 			return new CompromisedPasswordDecision(false);
 		}

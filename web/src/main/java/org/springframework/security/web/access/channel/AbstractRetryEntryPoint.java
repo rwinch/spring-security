@@ -31,6 +31,7 @@ import org.springframework.security.web.PortResolver;
 import org.springframework.security.web.PortResolverImpl;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Luke Taylor
@@ -79,7 +80,7 @@ public abstract class AbstractRetryEntryPoint implements ChannelEntryPoint {
 		this.redirectStrategy.sendRedirect(request, response, redirectUrl);
 	}
 
-	protected abstract Integer getMappedPort(Integer mapFromPort);
+	protected abstract @Nullable Integer getMappedPort(Integer mapFromPort);
 
 	protected final PortMapper getPortMapper() {
 		return this.portMapper;

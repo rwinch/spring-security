@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link org.springframework.security.core.Authentication} implementation for
@@ -34,7 +35,7 @@ public class PreAuthenticatedAuthenticationToken extends AbstractAuthenticationT
 
 	private final Object principal;
 
-	private final Object credentials;
+	private final @Nullable Object credentials;
 
 	/**
 	 * Constructor used for an authentication request. The
@@ -43,7 +44,7 @@ public class PreAuthenticatedAuthenticationToken extends AbstractAuthenticationT
 	 * @param aPrincipal The pre-authenticated principal
 	 * @param aCredentials The pre-authenticated credentials
 	 */
-	public PreAuthenticatedAuthenticationToken(Object aPrincipal, Object aCredentials) {
+	public PreAuthenticatedAuthenticationToken(Object aPrincipal, @Nullable Object aCredentials) {
 		super(null);
 		this.principal = aPrincipal;
 		this.credentials = aCredentials;
@@ -56,7 +57,7 @@ public class PreAuthenticatedAuthenticationToken extends AbstractAuthenticationT
 	 * @param aPrincipal The authenticated principal
 	 * @param anAuthorities The granted authorities
 	 */
-	public PreAuthenticatedAuthenticationToken(Object aPrincipal, Object aCredentials,
+	public PreAuthenticatedAuthenticationToken(Object aPrincipal, @Nullable Object aCredentials,
 			Collection<? extends GrantedAuthority> anAuthorities) {
 		super(anAuthorities);
 		this.principal = aPrincipal;
@@ -68,7 +69,7 @@ public class PreAuthenticatedAuthenticationToken extends AbstractAuthenticationT
 	 * Get the credentials
 	 */
 	@Override
-	public Object getCredentials() {
+	public @Nullable Object getCredentials() {
 		return this.credentials;
 	}
 

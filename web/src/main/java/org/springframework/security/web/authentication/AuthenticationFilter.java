@@ -39,6 +39,7 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link Filter} that performs authentication of a particular request. An outline of
@@ -218,7 +219,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 		this.successHandler.onAuthenticationSuccess(request, response, chain, authentication);
 	}
 
-	private Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+	private @Nullable Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, ServletException {
 		Authentication authentication = this.authenticationConverter.convert(request);
 		if (authentication == null) {

@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ public class Enumerator<T> implements Enumeration<T> {
 	 * The <code>Iterator</code> over which the <code>Enumeration</code> represented by
 	 * this class actually operates.
 	 */
-	private Iterator<T> iterator = null;
+	@SuppressWarnings("NullAway") private Iterator<T> iterator = null;
 
 	/**
 	 * Return an Enumeration over the values of the specified Collection.

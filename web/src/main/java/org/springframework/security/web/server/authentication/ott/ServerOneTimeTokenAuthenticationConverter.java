@@ -31,6 +31,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An implementation of {@link ServerAuthenticationConverter} for resolving
@@ -44,7 +46,7 @@ public final class ServerOneTimeTokenAuthenticationConverter implements ServerAu
 
 	private static final String TOKEN = "token";
 
-	@Override
+	@NullUnmarked @Override
 	public Mono<Authentication> convert(ServerWebExchange exchange) {
 		Assert.notNull(exchange, "exchange cannot be null");
 		if (isFormEncodedRequest(exchange.getRequest())) {
@@ -58,7 +60,7 @@ public final class ServerOneTimeTokenAuthenticationConverter implements ServerAu
 		return Mono.just(OneTimeTokenAuthenticationToken.unauthenticated(token));
 	}
 
-	private String resolveTokenFromRequest(ServerHttpRequest request) {
+	@NullUnmarked private @Nullable String resolveTokenFromRequest(ServerHttpRequest request) {
 		List<String> parameterTokens = request.getQueryParams().get(TOKEN);
 		if (CollectionUtils.isEmpty(parameterTokens)) {
 			return null;

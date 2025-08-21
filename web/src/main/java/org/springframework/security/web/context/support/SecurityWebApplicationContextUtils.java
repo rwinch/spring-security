@@ -21,6 +21,7 @@ import jakarta.servlet.ServletContext;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Spring Security extension to Spring's {@link WebApplicationContextUtils}.
@@ -45,7 +46,7 @@ public abstract class SecurityWebApplicationContextUtils extends WebApplicationC
 	 * @see #getWebApplicationContext(ServletContext)
 	 * @see ServletContext#getAttributeNames()
 	 */
-	public static WebApplicationContext findRequiredWebApplicationContext(ServletContext servletContext) {
+	public static @Nullable WebApplicationContext findRequiredWebApplicationContext(ServletContext servletContext) {
 		WebApplicationContext webApplicationContext = findWebApplicationContext(servletContext);
 		Assert.state(webApplicationContext != null,
 				"No WebApplicationContext found: no ContextLoaderListener registered?");

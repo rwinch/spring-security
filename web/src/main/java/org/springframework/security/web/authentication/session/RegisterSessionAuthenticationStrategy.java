@@ -23,6 +23,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Strategy used to register a user with the {@link SessionRegistry} after successful
@@ -61,8 +63,8 @@ public class RegisterSessionAuthenticationStrategy implements SessionAuthenticat
 	 * In addition to the steps from the superclass, the sessionRegistry will be updated
 	 * with the new session information.
 	 */
-	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	@NullUnmarked @Override
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
 		this.sessionRegistry.registerNewSession(request.getSession().getId(), authentication.getPrincipal());
 	}

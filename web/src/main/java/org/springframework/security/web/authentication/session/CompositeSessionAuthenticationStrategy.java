@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link SessionAuthenticationStrategy} that accepts multiple
@@ -69,7 +70,7 @@ public class CompositeSessionAuthenticationStrategy implements SessionAuthentica
 	}
 
 	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) throws SessionAuthenticationException {
 		int currentPosition = 0;
 		int size = this.delegateStrategies.size();

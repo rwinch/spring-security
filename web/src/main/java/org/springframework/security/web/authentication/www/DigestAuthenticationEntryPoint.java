@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Used by the <code>SecurityEnforcementFilter</code> to commence authentication via the
@@ -50,9 +51,9 @@ public class DigestAuthenticationEntryPoint implements AuthenticationEntryPoint,
 
 	private static final Log logger = LogFactory.getLog(DigestAuthenticationEntryPoint.class);
 
-	private String key;
+	private @Nullable String key;
 
-	private String realmName;
+	private @Nullable String realmName;
 
 	private int nonceValiditySeconds = 300;
 
@@ -95,7 +96,7 @@ public class DigestAuthenticationEntryPoint implements AuthenticationEntryPoint,
 		response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
 	}
 
-	public String getKey() {
+	public @Nullable String getKey() {
 		return this.key;
 	}
 
@@ -103,7 +104,7 @@ public class DigestAuthenticationEntryPoint implements AuthenticationEntryPoint,
 		return this.nonceValiditySeconds;
 	}
 
-	public String getRealmName() {
+	public @Nullable String getRealmName() {
 		return this.realmName;
 	}
 

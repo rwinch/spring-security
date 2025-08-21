@@ -34,6 +34,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Redirects any non-HTTPS request to its HTTPS equivalent.
@@ -96,7 +97,7 @@ public final class HttpsRedirectFilter extends OncePerRequestFilter {
 		return !"https".equals(request.getScheme());
 	}
 
-	private String createRedirectUri(HttpServletRequest request) {
+	@NullUnmarked private String createRedirectUri(HttpServletRequest request) {
 		String url = UrlUtils.buildFullRequestUrl(request);
 		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
 		UriComponents components = builder.build();

@@ -45,6 +45,8 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.util.ThrowableAnalyzer;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Handles any <code>AccessDeniedException</code> and <code>AuthenticationException</code>
@@ -169,7 +171,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean implements Mes
 	}
 
 	private void handleSpringSecurityException(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain, RuntimeException exception) throws IOException, ServletException {
+			FilterChain chain, @Nullable RuntimeException exception) throws IOException, ServletException {
 		if (exception instanceof AuthenticationException) {
 			handleAuthenticationException(request, response, chain, (AuthenticationException) exception);
 		}
@@ -184,7 +186,7 @@ public class ExceptionTranslationFilter extends GenericFilterBean implements Mes
 		sendStartAuthentication(request, response, chain, exception);
 	}
 
-	private void handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response,
+	@NullUnmarked private void handleAccessDeniedException(HttpServletRequest request, HttpServletResponse response,
 			FilterChain chain, AccessDeniedException exception) throws ServletException, IOException {
 		Authentication authentication = this.securityContextHolderStrategy.getContext().getAuthentication();
 		boolean isAnonymous = this.authenticationTrustResolver.isAnonymous(authentication);

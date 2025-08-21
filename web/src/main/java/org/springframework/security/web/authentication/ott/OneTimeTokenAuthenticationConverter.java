@@ -24,6 +24,7 @@ import org.springframework.security.authentication.ott.OneTimeTokenAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of {@link AuthenticationConverter} that detects if the request
@@ -39,7 +40,7 @@ public class OneTimeTokenAuthenticationConverter implements AuthenticationConver
 	private final Log logger = LogFactory.getLog(getClass());
 
 	@Override
-	public Authentication convert(HttpServletRequest request) {
+	public @Nullable Authentication convert(HttpServletRequest request) {
 		String token = request.getParameter("token");
 		if (!StringUtils.hasText(token)) {
 			this.logger.debug("No token found in request");

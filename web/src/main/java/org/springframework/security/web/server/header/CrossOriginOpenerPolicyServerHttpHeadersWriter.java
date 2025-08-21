@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Inserts Cross-Origin-Opener-Policy header.
@@ -34,7 +35,7 @@ public final class CrossOriginOpenerPolicyServerHttpHeadersWriter implements Ser
 
 	public static final String OPENER_POLICY = "Cross-Origin-Opener-Policy";
 
-	private ServerHttpHeadersWriter delegate;
+	private @Nullable ServerHttpHeadersWriter delegate;
 
 	/**
 	 * Sets the {@link CrossOriginOpenerPolicy} value to be used in the

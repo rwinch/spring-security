@@ -25,6 +25,7 @@ import org.springframework.security.core.context.DeferredSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.function.SingletonSupplier;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Strategy used for persisting a {@link SecurityContext} between requests.
@@ -77,7 +78,7 @@ public interface SecurityContextRepository {
 	 * which cannot be null
 	 * @since 5.8
 	 */
-	default DeferredSecurityContext loadDeferredContext(HttpServletRequest request) {
+	default @Nullable DeferredSecurityContext loadDeferredContext(HttpServletRequest request) {
 		Supplier<SecurityContext> supplier = () -> loadContext(new HttpRequestResponseHolder(request, null));
 		return new SupplierDeferredSecurityContext(SingletonSupplier.of(supplier),
 				SecurityContextHolder.getContextHolderStrategy());
@@ -89,7 +90,7 @@ public interface SecurityContextRepository {
 	 * @param request
 	 * @param response
 	 */
-	void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response);
+	void saveContext(SecurityContext context, HttpServletRequest request, @Nullable HttpServletResponse response);
 
 	/**
 	 * Allows the repository to be queried as to whether it contains a security context

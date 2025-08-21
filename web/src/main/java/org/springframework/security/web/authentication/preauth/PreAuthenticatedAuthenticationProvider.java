@@ -31,6 +31,8 @@ import org.springframework.security.core.userdetails.AuthenticationUserDetailsSe
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * <p>
@@ -51,7 +53,7 @@ public class PreAuthenticatedAuthenticationProvider implements AuthenticationPro
 
 	private static final Log logger = LogFactory.getLog(PreAuthenticatedAuthenticationProvider.class);
 
-	private AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> preAuthenticatedUserDetailsService;
+	private @Nullable AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> preAuthenticatedUserDetailsService;
 
 	private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 
@@ -73,8 +75,8 @@ public class PreAuthenticatedAuthenticationProvider implements AuthenticationPro
 	 * If the principal contained in the authentication object is null, the request will
 	 * be ignored to allow other providers to authenticate it.
 	 */
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+	@NullUnmarked @Override
+	public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (!supports(authentication.getClass())) {
 			return null;
 		}

@@ -28,6 +28,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link ServerCsrfTokenRepository} that persists the CSRF token in a cookie named
@@ -50,15 +51,15 @@ public final class CookieServerCsrfTokenRepository implements ServerCsrfTokenRep
 
 	private String headerName = DEFAULT_CSRF_HEADER_NAME;
 
-	private String cookiePath;
+	private @Nullable String cookiePath;
 
-	private String cookieDomain;
+	private @Nullable String cookieDomain;
 
 	private String cookieName = DEFAULT_CSRF_COOKIE_NAME;
 
 	private boolean cookieHttpOnly = true;
 
-	private Boolean secure;
+	private @Nullable Boolean secure;
 
 	private int cookieMaxAge = -1;
 
@@ -94,7 +95,7 @@ public final class CookieServerCsrfTokenRepository implements ServerCsrfTokenRep
 	}
 
 	@Override
-	public Mono<Void> saveToken(ServerWebExchange exchange, CsrfToken token) {
+	public Mono<Void> saveToken(ServerWebExchange exchange, @Nullable CsrfToken token) {
 		return Mono.fromRunnable(() -> {
 			String tokenValue = (token != null) ? token.getToken() : "";
 			// @formatter:off

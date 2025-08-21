@@ -22,6 +22,7 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link RuntimeHintsRegistrar} for WebMVC classes
@@ -33,7 +34,7 @@ import org.springframework.security.web.access.expression.WebSecurityExpressionR
 class WebMvcSecurityRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
-	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
 		hints.reflection()
 			.registerType(WebSecurityExpressionRoot.class, (builder) -> builder
 				.withMembers(MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.ACCESS_DECLARED_FIELDS));

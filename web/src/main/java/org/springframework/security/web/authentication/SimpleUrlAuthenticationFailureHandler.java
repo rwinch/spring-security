@@ -32,6 +32,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * <tt>AuthenticationFailureHandler</tt> which performs a redirect to the value of the
@@ -50,7 +51,7 @@ public class SimpleUrlAuthenticationFailureHandler implements AuthenticationFail
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private String defaultFailureUrl;
+	private @Nullable String defaultFailureUrl;
 
 	private boolean forwardToDestination = false;
 

@@ -41,6 +41,8 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An implementation of {@link ServerRequestCache} that saves the requested URI in a
@@ -130,8 +132,8 @@ public class CookieServerRequestCache implements ServerRequestCache {
 		return createResponseCookieBuilder(request, null, Duration.ZERO).build();
 	}
 
-	private static ResponseCookie.ResponseCookieBuilder createResponseCookieBuilder(ServerHttpRequest request,
-			String cookieValue, Duration age) {
+	@NullUnmarked private static ResponseCookie.ResponseCookieBuilder createResponseCookieBuilder(ServerHttpRequest request,
+			@Nullable String cookieValue, Duration age) {
 		return ResponseCookie.from(REDIRECT_URI_COOKIE_NAME, cookieValue)
 			.path(request.getPath().contextPath().value() + "/")
 			.maxAge(age)

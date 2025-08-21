@@ -23,6 +23,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A RequestMatcher implementation which uses a SpEL expression
@@ -48,7 +49,7 @@ public class ELRequestMatcher implements RequestMatcher {
 		this.expression = parser.parseExpression(el);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public boolean matches(HttpServletRequest request) {
 		EvaluationContext context = createELContext(request);
 		return this.expression.getValue(context, Boolean.class);

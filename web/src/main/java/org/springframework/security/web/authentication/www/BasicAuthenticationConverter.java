@@ -30,6 +30,7 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Converts from a HttpServletRequest to {@link UsernamePasswordAuthenticationToken} that
@@ -75,7 +76,7 @@ public class BasicAuthenticationConverter implements AuthenticationConverter {
 	}
 
 	@Override
-	public UsernamePasswordAuthenticationToken convert(HttpServletRequest request) {
+	public @Nullable UsernamePasswordAuthenticationToken convert(HttpServletRequest request) {
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (header == null) {
 			return null;

@@ -34,6 +34,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * For internal use with namespace configuration in the case where a user doesn't
@@ -51,11 +53,11 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	public static final String ERROR_PARAMETER_NAME = "error";
 
-	private String loginPageUrl;
+	private @Nullable String loginPageUrl;
 
-	private String logoutSuccessUrl;
+	private @Nullable String logoutSuccessUrl;
 
-	private String failureUrl;
+	private @Nullable String failureUrl;
 
 	private boolean formLoginEnabled;
 
@@ -67,19 +69,19 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 
 	private boolean oneTimeTokenEnabled;
 
-	private String authenticationUrl;
+	private @Nullable String authenticationUrl;
 
-	private String generateOneTimeTokenUrl;
+	private @Nullable String generateOneTimeTokenUrl;
 
-	private String usernameParameter;
+	private @Nullable String usernameParameter;
 
-	private String passwordParameter;
+	private @Nullable String passwordParameter;
 
-	private String rememberMeParameter;
+	private @Nullable String rememberMeParameter;
 
-	private Map<String, String> oauth2AuthenticationUrlToClientName;
+	@SuppressWarnings("NullAway.Init") private Map<String, String> oauth2AuthenticationUrlToClientName;
 
-	private Map<String, String> saml2AuthenticationUrlToProviderName;
+	@SuppressWarnings("NullAway.Init") private Map<String, String> saml2AuthenticationUrlToProviderName;
 
 	private Function<HttpServletRequest, Map<String, String>> resolveHiddenInputs = (request) -> Collections.emptyMap();
 
@@ -136,7 +138,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		this.logoutSuccessUrl = logoutSuccessUrl;
 	}
 
-	public String getLoginPageUrl() {
+	@NullUnmarked public String getLoginPageUrl() {
 		return this.loginPageUrl;
 	}
 
@@ -361,7 +363,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 			.render();
 	}
 
-	private String renderRememberMe(String paramName) {
+	private String renderRememberMe(@Nullable String paramName) {
 		if (paramName == null) {
 			return "";
 		}
@@ -397,7 +399,7 @@ public class DefaultLoginPageGeneratingFilter extends GenericFilterBean {
 		return "<div class=\"alert alert-success\" role=\"alert\">You have been signed out</div>";
 	}
 
-	private boolean matches(HttpServletRequest request, String url) {
+	private boolean matches(HttpServletRequest request, @Nullable String url) {
 		if (!"GET".equals(request.getMethod()) || url == null) {
 			return false;
 		}

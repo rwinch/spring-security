@@ -19,6 +19,8 @@ package org.springframework.security.web.authentication.switchuser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Custom {@code GrantedAuthority} used by
@@ -38,7 +40,7 @@ public final class SwitchUserGrantedAuthority implements GrantedAuthority {
 
 	private final Authentication source;
 
-	public SwitchUserGrantedAuthority(String role, Authentication source) {
+	@NullUnmarked public SwitchUserGrantedAuthority(String role, @Nullable Authentication source) {
 		Assert.notNull(role, "role cannot be null");
 		Assert.notNull(source, "source cannot be null");
 		this.role = role;

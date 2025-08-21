@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Renders the <a href=
@@ -101,7 +102,7 @@ public final class XXssProtectionHeaderWriter implements HeaderWriter {
 			this.value = value;
 		}
 
-		public static HeaderValue from(String headerValue) {
+		public static @Nullable HeaderValue from(String headerValue) {
 			for (HeaderValue value : values()) {
 				if (value.toString().equals(headerValue)) {
 					return value;

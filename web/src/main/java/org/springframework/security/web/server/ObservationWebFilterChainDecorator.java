@@ -35,6 +35,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.WebHandler;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A
@@ -68,7 +69,7 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 		return new ObservationWebFilterChain(wrapSecured(original)::filter, wrap(filters));
 	}
 
-	private static AroundWebFilterObservation observation(ServerWebExchange exchange) {
+	@NullUnmarked private static AroundWebFilterObservation observation(ServerWebExchange exchange) {
 		return exchange.getAttribute(ATTRIBUTE);
 	}
 
@@ -303,12 +304,12 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 			}
 
 			@Override
-			public Observation contextualName(String contextualName) {
+			public Observation contextualName(@Nullable String contextualName) {
 				return this.currentObservation.observation.contextualName(contextualName);
 			}
 
 			@Override
-			public Observation parentObservation(Observation parentObservation) {
+			public Observation parentObservation(@Nullable Observation parentObservation) {
 				return this.currentObservation.observation.parentObservation(parentObservation);
 			}
 
@@ -407,12 +408,12 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 		}
 
 		@Override
-		default Observation contextualName(String contextualName) {
+		default Observation contextualName(@Nullable String contextualName) {
 			return Observation.NOOP;
 		}
 
 		@Override
-		default Observation parentObservation(Observation parentObservation) {
+		default Observation parentObservation(@Nullable Observation parentObservation) {
 			return Observation.NOOP;
 		}
 
@@ -493,12 +494,12 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 			}
 
 			@Override
-			public Observation contextualName(String contextualName) {
+			public Observation contextualName(@Nullable String contextualName) {
 				return this.observation.contextualName(contextualName);
 			}
 
 			@Override
-			public Observation parentObservation(Observation parentObservation) {
+			public Observation parentObservation(@Nullable Observation parentObservation) {
 				return this.observation.parentObservation(parentObservation);
 			}
 
@@ -575,7 +576,7 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 
 		private final String filterSection;
 
-		private String filterName;
+		private @Nullable String filterName;
 
 		private int chainPosition;
 
@@ -597,7 +598,7 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 			return this.filterSection;
 		}
 
-		String getFilterName() {
+		@Nullable String getFilterName() {
 			return this.filterName;
 		}
 
@@ -677,12 +678,12 @@ public final class ObservationWebFilterChainDecorator implements WebFilterChainP
 		}
 
 		@Override
-		public Observation contextualName(String contextualName) {
+		public Observation contextualName(@Nullable String contextualName) {
 			return this.observation.contextualName(contextualName);
 		}
 
 		@Override
-		public Observation parentObservation(Observation parentObservation) {
+		public Observation parentObservation(@Nullable Observation parentObservation) {
 			return this.observation.parentObservation(parentObservation);
 		}
 

@@ -29,6 +29,7 @@ import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Voter which handles web authorisation decisions.
@@ -66,7 +67,7 @@ public class WebExpressionVoter implements AccessDecisionVoter<FilterInvocation>
 		return ACCESS_DENIED;
 	}
 
-	private WebExpressionConfigAttribute findConfigAttribute(Collection<ConfigAttribute> attributes) {
+	private @Nullable WebExpressionConfigAttribute findConfigAttribute(Collection<ConfigAttribute> attributes) {
 		for (ConfigAttribute attribute : attributes) {
 			if (attribute instanceof WebExpressionConfigAttribute) {
 				return (WebExpressionConfigAttribute) attribute;

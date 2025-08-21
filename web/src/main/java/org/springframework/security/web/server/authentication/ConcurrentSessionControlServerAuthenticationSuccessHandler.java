@@ -27,6 +27,7 @@ import org.springframework.security.core.session.ReactiveSessionRegistry;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.util.Assert;
 import org.springframework.web.server.WebSession;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Controls the number of sessions a user can have concurrently authenticated in an
@@ -63,7 +64,7 @@ public final class ConcurrentSessionControlServerAuthenticationSuccessHandler
 			.flatMap((maxSessions) -> handleConcurrency(exchange, authentication, maxSessions));
 	}
 
-	private Mono<Void> handleConcurrency(WebFilterExchange exchange, Authentication authentication,
+	@NullUnmarked private Mono<Void> handleConcurrency(WebFilterExchange exchange, Authentication authentication,
 			Integer maximumSessions) {
 		return this.sessionRegistry.getAllSessions(authentication.getPrincipal())
 			.collectList()

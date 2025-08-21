@@ -30,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Allows users to determine whether they have privileges for a given web URI.
@@ -46,7 +47,7 @@ public class DefaultWebInvocationPrivilegeEvaluator implements WebInvocationPriv
 
 	private final AbstractSecurityInterceptor securityInterceptor;
 
-	private ServletContext servletContext;
+	private @Nullable ServletContext servletContext;
 
 	public DefaultWebInvocationPrivilegeEvaluator(AbstractSecurityInterceptor securityInterceptor) {
 		Assert.notNull(securityInterceptor, "SecurityInterceptor cannot be null");
@@ -86,7 +87,7 @@ public class DefaultWebInvocationPrivilegeEvaluator implements WebInvocationPriv
 	 * @return true if access is allowed, false if denied
 	 */
 	@Override
-	public boolean isAllowed(String contextPath, String uri, String method, Authentication authentication) {
+	public boolean isAllowed(@Nullable String contextPath, String uri, @Nullable String method, Authentication authentication) {
 		Assert.notNull(uri, "uri parameter is required");
 		FilterInvocation filterInvocation = new FilterInvocation(contextPath, uri, method, this.servletContext);
 		Collection<ConfigAttribute> attributes = this.securityInterceptor.obtainSecurityMetadataSource()

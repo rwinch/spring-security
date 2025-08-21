@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Provides factory methods for creating common {@link ServerWebExchangeMatcher}
@@ -43,7 +44,7 @@ public abstract class ServerWebExchangeMatchers {
 	 * @param patterns the patterns to match on
 	 * @return the matcher to use
 	 */
-	public static ServerWebExchangeMatcher pathMatchers(HttpMethod method, String... patterns) {
+	public static ServerWebExchangeMatcher pathMatchers(@Nullable HttpMethod method, String... patterns) {
 		List<ServerWebExchangeMatcher> matchers = new ArrayList<>(patterns.length);
 		for (String pattern : patterns) {
 			matchers.add(new PathPatternParserServerWebExchangeMatcher(pattern, method));
@@ -76,7 +77,7 @@ public abstract class ServerWebExchangeMatchers {
 	 * @param pathPatterns the {@link PathPattern}s to match on
 	 * @return the matcher to use
 	 */
-	public static ServerWebExchangeMatcher pathMatchers(HttpMethod method, PathPattern... pathPatterns) {
+	public static ServerWebExchangeMatcher pathMatchers(@Nullable HttpMethod method, PathPattern... pathPatterns) {
 		List<ServerWebExchangeMatcher> matchers = new ArrayList<>(pathPatterns.length);
 		for (PathPattern pathPattern : pathPatterns) {
 			matchers.add(new PathPatternParserServerWebExchangeMatcher(pathPattern, method));

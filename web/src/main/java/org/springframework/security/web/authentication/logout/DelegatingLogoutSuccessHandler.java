@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Delegates to logout handlers based on matched request matchers
@@ -39,7 +40,7 @@ public class DelegatingLogoutSuccessHandler implements LogoutSuccessHandler {
 
 	private final LinkedHashMap<RequestMatcher, LogoutSuccessHandler> matcherToHandler;
 
-	private LogoutSuccessHandler defaultLogoutSuccessHandler;
+	private @Nullable LogoutSuccessHandler defaultLogoutSuccessHandler;
 
 	public DelegatingLogoutSuccessHandler(LinkedHashMap<RequestMatcher, LogoutSuccessHandler> matcherToHandler) {
 		Assert.notEmpty(matcherToHandler, "matcherToHandler cannot be null");
@@ -47,7 +48,7 @@ public class DelegatingLogoutSuccessHandler implements LogoutSuccessHandler {
 	}
 
 	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication)
 			throws IOException, ServletException {
 		for (Map.Entry<RequestMatcher, LogoutSuccessHandler> entry : this.matcherToHandler.entrySet()) {
 			RequestMatcher matcher = entry.getKey();

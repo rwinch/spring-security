@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link AuthenticationConverter}, that iterates over multiple
@@ -46,7 +47,7 @@ public final class DelegatingAuthenticationConverter implements AuthenticationCo
 	}
 
 	@Override
-	public Authentication convert(HttpServletRequest request) {
+	public @Nullable Authentication convert(HttpServletRequest request) {
 		for (AuthenticationConverter delegate : this.delegates) {
 			Authentication authentication = delegate.convert(request);
 			if (authentication != null) {

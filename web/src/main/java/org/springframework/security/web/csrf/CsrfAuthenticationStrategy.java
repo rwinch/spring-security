@@ -25,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link CsrfAuthenticationStrategy} is in charge of removing the {@link CsrfToken} upon
@@ -63,7 +64,7 @@ public final class CsrfAuthenticationStrategy implements SessionAuthenticationSt
 	}
 
 	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) throws SessionAuthenticationException {
 		boolean containsToken = this.tokenRepository.loadToken(request) != null;
 		if (containsToken) {

@@ -42,6 +42,8 @@ import org.springframework.security.web.context.RequestAttributeSecurityContextR
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Processes a HTTP request's BASIC authorization headers, putting the result into the
@@ -96,7 +98,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private AuthenticationEntryPoint authenticationEntryPoint;
+	private @Nullable AuthenticationEntryPoint authenticationEntryPoint;
 
 	private AuthenticationManager authenticationManager;
 
@@ -170,7 +172,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 		}
 	}
 
-	@Override
+	@NullUnmarked @Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		try {
@@ -241,7 +243,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 			AuthenticationException failed) throws IOException {
 	}
 
-	protected AuthenticationEntryPoint getAuthenticationEntryPoint() {
+	protected @Nullable AuthenticationEntryPoint getAuthenticationEntryPoint() {
 		return this.authenticationEntryPoint;
 	}
 

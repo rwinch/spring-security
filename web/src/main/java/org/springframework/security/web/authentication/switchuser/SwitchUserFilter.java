@@ -69,6 +69,9 @@ import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
 
 import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.pathPattern;
+import com.uber.nullaway.annotations.Initializer;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Switch User processing filter responsible for user context switching.
@@ -122,7 +125,7 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private ApplicationEventPublisher eventPublisher;
+	private @Nullable ApplicationEventPublisher eventPublisher;
 
 	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
@@ -134,15 +137,15 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 
 	private String targetUrl;
 
-	private String switchFailureUrl;
+	private @Nullable String switchFailureUrl;
 
 	private String usernameParameter = SPRING_SECURITY_SWITCH_USERNAME_KEY;
 
 	private String switchAuthorityRole = ROLE_PREVIOUS_ADMINISTRATOR;
 
-	private SwitchUserAuthorityChanger switchUserAuthorityChanger;
+	private @Nullable SwitchUserAuthorityChanger switchUserAuthorityChanger;
 
-	private UserDetailsService userDetailsService;
+	private @Nullable UserDetailsService userDetailsService;
 
 	private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 
@@ -152,7 +155,7 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 
 	private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
-	@Override
+	@Initializer @Override
 	public void afterPropertiesSet() {
 		Assert.notNull(this.userDetailsService, "userDetailsService must be specified");
 		Assert.isTrue(this.successHandler != null || this.targetUrl != null,
@@ -228,7 +231,7 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 	 * @throws AccountExpiredException If the target user account is expired.
 	 * @throws CredentialsExpiredException If the target user credentials are expired.
 	 */
-	protected Authentication attemptSwitchUser(HttpServletRequest request) throws AuthenticationException {
+	@NullUnmarked protected Authentication attemptSwitchUser(HttpServletRequest request) throws AuthenticationException {
 		UsernamePasswordAuthenticationToken targetUserRequest;
 		String username = request.getParameter(this.usernameParameter);
 		username = (username != null) ? username : "";
@@ -316,7 +319,7 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 		return targetUserRequest;
 	}
 
-	private Authentication getCurrentAuthentication(HttpServletRequest request) {
+	private @Nullable Authentication getCurrentAuthentication(HttpServletRequest request) {
 		try {
 			// SEC-1763. Check first if we are already switched.
 			return attemptExitUser(request);
@@ -335,7 +338,7 @@ public class SwitchUserFilter extends GenericFilterBean implements ApplicationEv
 	 * @return The source user <code>Authentication</code> object or <code>null</code>
 	 * otherwise.
 	 */
-	private Authentication getSourceAuthentication(Authentication current) {
+	private @Nullable Authentication getSourceAuthentication(Authentication current) {
 		Authentication original = null;
 		// iterate over granted authorities and find the 'switch user' authority
 		Collection<? extends GrantedAuthority> authorities = current.getAuthorities();

@@ -40,6 +40,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An authorization filter that restricts access to the URL using
@@ -72,7 +73,7 @@ public class AuthorizationFilter extends GenericFilterBean {
 		this.authorizationManager = authorizationManager;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
 			throws ServletException, IOException {
 

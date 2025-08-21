@@ -47,6 +47,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Delegates {@code Filter} requests to a list of Spring-managed filter beans. As of
@@ -151,7 +153,7 @@ public class FilterChainProxy extends GenericFilterBean {
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private List<SecurityFilterChain> filterChains;
+	private @Nullable List<SecurityFilterChain> filterChains;
 
 	private FilterChainValidator filterChainValidator = new NullFilterChainValidator();
 
@@ -239,7 +241,7 @@ public class FilterChainProxy extends GenericFilterBean {
 	 * @param request the request to match
 	 * @return an ordered array of Filters defining the filter chain
 	 */
-	private List<Filter> getFilters(HttpServletRequest request) {
+	@NullUnmarked private @Nullable List<Filter> getFilters(HttpServletRequest request) {
 		int count = 0;
 		for (SecurityFilterChain chain : this.filterChains) {
 			if (logger.isTraceEnabled()) {
@@ -258,7 +260,7 @@ public class FilterChainProxy extends GenericFilterBean {
 	 * @param url the URL
 	 * @return matching filter list
 	 */
-	public List<Filter> getFilters(String url) {
+	public @Nullable List<Filter> getFilters(String url) {
 		PathPatternRequestTransformer requestTransformer = new PathPatternRequestTransformer();
 		HttpServletRequest transformed = requestTransformer.transform(new FilterInvocation(url, "GET").getRequest());
 		return getFilters(this.firewall.getFirewalledRequest(transformed));

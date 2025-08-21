@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.servlet.support.RequestDataValueProcessor;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Integration with Spring Web MVC that automatically adds the {@link CsrfToken} into
@@ -55,7 +56,7 @@ public final class CsrfRequestDataValueProcessor implements RequestDataValueProc
 	}
 
 	@Override
-	public String processFormFieldValue(HttpServletRequest request, String name, String value, String type) {
+	public String processFormFieldValue(HttpServletRequest request, @Nullable String name, String value, String type) {
 		return value;
 	}
 

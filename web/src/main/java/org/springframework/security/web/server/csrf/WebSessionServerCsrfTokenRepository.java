@@ -25,6 +25,7 @@ import reactor.core.scheduler.Schedulers;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link ServerCsrfTokenRepository} that stores the {@link CsrfToken} in the
@@ -54,13 +55,13 @@ public class WebSessionServerCsrfTokenRepository implements ServerCsrfTokenRepos
 	}
 
 	@Override
-	public Mono<Void> saveToken(ServerWebExchange exchange, CsrfToken token) {
+	public Mono<Void> saveToken(ServerWebExchange exchange, @Nullable CsrfToken token) {
 		return exchange.getSession()
 			.doOnNext((session) -> putToken(session.getAttributes(), token))
 			.flatMap((session) -> session.changeSessionId());
 	}
 
-	private void putToken(Map<String, Object> attributes, CsrfToken token) {
+	private void putToken(Map<String, Object> attributes, @Nullable CsrfToken token) {
 		if (token == null) {
 			attributes.remove(this.sessionAttributeName);
 		}

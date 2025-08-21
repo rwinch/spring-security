@@ -43,6 +43,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Detects if there is no {@code Authentication} object in the {@code SecurityContext},
@@ -73,9 +75,9 @@ public class RememberMeAuthenticationFilter extends GenericFilterBean implements
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private ApplicationEventPublisher eventPublisher;
+	private @Nullable ApplicationEventPublisher eventPublisher;
 
-	private AuthenticationSuccessHandler successHandler;
+	private @Nullable AuthenticationSuccessHandler successHandler;
 
 	private AuthenticationManager authenticationManager;
 
@@ -105,7 +107,7 @@ public class RememberMeAuthenticationFilter extends GenericFilterBean implements
 		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
-	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+	@NullUnmarked private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		if (this.securityContextHolderStrategy.getContext().getAuthentication() != null) {
 			this.logger.debug(LogMessage

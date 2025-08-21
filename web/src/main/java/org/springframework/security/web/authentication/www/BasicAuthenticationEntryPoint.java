@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Used by the <code>ExceptionTranslationFilter</code> to commence authentication via the
@@ -42,7 +43,7 @@ import org.springframework.util.Assert;
  */
 public class BasicAuthenticationEntryPoint implements AuthenticationEntryPoint, InitializingBean {
 
-	private String realmName;
+	private @Nullable String realmName;
 
 	@Override
 	public void afterPropertiesSet() {
@@ -56,7 +57,7 @@ public class BasicAuthenticationEntryPoint implements AuthenticationEntryPoint, 
 		response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
 	}
 
-	public String getRealmName() {
+	public @Nullable String getRealmName() {
 		return this.realmName;
 	}
 

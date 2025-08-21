@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Stores the {@link SecurityContext} on a
@@ -95,7 +96,7 @@ public final class RequestAttributeSecurityContextRepository implements Security
 	}
 
 	@Override
-	public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+	public void saveContext(SecurityContext context, HttpServletRequest request, @Nullable HttpServletResponse response) {
 		request.setAttribute(this.requestAttributeName, context);
 	}
 

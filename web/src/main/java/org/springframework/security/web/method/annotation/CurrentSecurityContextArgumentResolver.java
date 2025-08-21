@@ -40,6 +40,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Allows resolving the {@link SecurityContext} using the {@link CurrentSecurityContext}
@@ -93,7 +95,7 @@ public final class CurrentSecurityContextArgumentResolver implements HandlerMeth
 
 	private boolean useAnnotationTemplate = false;
 
-	private BeanResolver beanResolver;
+	private @Nullable BeanResolver beanResolver;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -102,8 +104,8 @@ public final class CurrentSecurityContextArgumentResolver implements HandlerMeth
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
+			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
 		SecurityContext securityContext = this.securityContextHolderStrategy.getContext();
 		if (securityContext == null) {
 			return null;
@@ -150,7 +152,7 @@ public final class CurrentSecurityContextArgumentResolver implements HandlerMeth
 		this.scanner = SecurityAnnotationScanners.requireUnique(CurrentSecurityContext.class, templateDefaults);
 	}
 
-	private Object resolveSecurityContextFromAnnotation(MethodParameter parameter, CurrentSecurityContext annotation,
+	@NullUnmarked private @Nullable Object resolveSecurityContextFromAnnotation(MethodParameter parameter, CurrentSecurityContext annotation,
 			SecurityContext securityContext) {
 		Object securityContextResult = securityContext;
 		String expressionToParse = annotation.expression();
@@ -178,7 +180,7 @@ public final class CurrentSecurityContextArgumentResolver implements HandlerMeth
 	 * @param parameter the {@link MethodParameter} to search for an {@link Annotation}
 	 * @return the {@link Annotation} that was found or null.
 	 */
-	private CurrentSecurityContext findMethodAnnotation(MethodParameter parameter) {
+	private @Nullable CurrentSecurityContext findMethodAnnotation(MethodParameter parameter) {
 		if (this.useAnnotationTemplate) {
 			return this.scanner.scan(parameter.getParameter());
 		}

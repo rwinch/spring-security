@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Render HTML templates using string substitution. Intended for internal use. Variables
@@ -57,7 +59,7 @@ final class HtmlTemplates {
 		 * @param value the value to inject
 		 * @return this instance for further templating
 		 */
-		Builder withValue(String key, String value) {
+		@NullUnmarked Builder withValue(String key, @Nullable String value) {
 			this.values.put(key, HtmlUtils.htmlEscape(value));
 			return this;
 		}

@@ -29,6 +29,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Processes an authentication form submission. Called
@@ -70,7 +71,7 @@ public class UsernamePasswordAuthenticationFilter extends AbstractAuthentication
 		super(DEFAULT_PATH_REQUEST_MATCHER, authenticationManager);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		if (this.postOnly && !request.getMethod().equals("POST")) {

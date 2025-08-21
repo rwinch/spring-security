@@ -43,6 +43,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverSupport;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Resolves the Authentication
@@ -62,7 +64,7 @@ public class AuthenticationPrincipalArgumentResolver extends HandlerMethodArgume
 
 	private boolean useAnnotationTemplate = false;
 
-	private BeanResolver beanResolver;
+	private @Nullable BeanResolver beanResolver;
 
 	public AuthenticationPrincipalArgumentResolver(ReactiveAdapterRegistry adapterRegistry) {
 		super(adapterRegistry);
@@ -93,7 +95,7 @@ public class AuthenticationPrincipalArgumentResolver extends HandlerMethodArgume
 			});
 	}
 
-	private Object resolvePrincipal(MethodParameter parameter, Object principal) {
+	@NullUnmarked private @Nullable Object resolvePrincipal(MethodParameter parameter, @Nullable Object principal) {
 		AuthenticationPrincipal annotation = findMethodAnnotation(parameter);
 		String expressionToParse = annotation.expression();
 		if (StringUtils.hasLength(expressionToParse)) {
@@ -113,7 +115,7 @@ public class AuthenticationPrincipalArgumentResolver extends HandlerMethodArgume
 		return principal;
 	}
 
-	private boolean isInvalidType(MethodParameter parameter, Object principal) {
+	private boolean isInvalidType(MethodParameter parameter, @Nullable Object principal) {
 		if (principal == null) {
 			return false;
 		}
@@ -150,7 +152,7 @@ public class AuthenticationPrincipalArgumentResolver extends HandlerMethodArgume
 	 * @param parameter the {@link MethodParameter} to search for an {@link Annotation}
 	 * @return the {@link Annotation} that was found or null.
 	 */
-	private AuthenticationPrincipal findMethodAnnotation(MethodParameter parameter) {
+	private @Nullable AuthenticationPrincipal findMethodAnnotation(MethodParameter parameter) {
 		if (this.useAnnotationTemplate) {
 			return this.scanner.scan(parameter.getParameter());
 		}

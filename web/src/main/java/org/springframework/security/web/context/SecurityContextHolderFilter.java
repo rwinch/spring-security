@@ -31,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A {@link jakarta.servlet.Filter} that uses the {@link SecurityContextRepository} to
@@ -69,7 +70,7 @@ public class SecurityContextHolderFilter extends GenericFilterBean {
 		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
-	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+	@NullUnmarked private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 		if (request.getAttribute(FILTER_APPLIED) != null) {
 			chain.doFilter(request, response);

@@ -51,6 +51,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Base class for RememberMeServices implementations.
@@ -84,7 +85,7 @@ public abstract class AbstractRememberMeServices
 
 	private String cookieName = SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY;
 
-	private String cookieDomain;
+	private @Nullable String cookieDomain;
 
 	private String parameter = DEFAULT_PARAMETER;
 
@@ -94,7 +95,7 @@ public abstract class AbstractRememberMeServices
 
 	private int tokenValiditySeconds = TWO_WEEKS_S;
 
-	private Boolean useSecureCookie = null;
+	private @Nullable Boolean useSecureCookie = null;
 
 	private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
@@ -123,7 +124,7 @@ public abstract class AbstractRememberMeServices
 	 * which in turn is used to create a valid authentication token.
 	 */
 	@Override
-	public Authentication autoLogin(HttpServletRequest request, HttpServletResponse response) {
+	public @Nullable Authentication autoLogin(HttpServletRequest request, HttpServletResponse response) {
 		String rememberMeCookie = extractRememberMeCookie(request);
 		if (rememberMeCookie == null) {
 			return null;
@@ -168,7 +169,7 @@ public abstract class AbstractRememberMeServices
 	 * @param request the submitted request which is to be authenticated
 	 * @return the cookie value (if present), null otherwise.
 	 */
-	protected String extractRememberMeCookie(HttpServletRequest request) {
+	protected @Nullable String extractRememberMeCookie(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if ((cookies == null) || (cookies.length == 0)) {
 			return null;
@@ -390,7 +391,7 @@ public abstract class AbstractRememberMeServices
 	 * {@code cancelCookie()}.
 	 */
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		this.logger.debug(LogMessage
 			.of(() -> "Logout of user " + ((authentication != null) ? authentication.getName() : "Unknown")));
 		cancelCookie(request, response);

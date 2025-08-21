@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Strategy that is called after a successful logout by the {@link LogoutFilter}, to
@@ -37,7 +38,7 @@ import org.springframework.security.core.Authentication;
  */
 public interface LogoutSuccessHandler {
 
-	void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+	void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication)
 			throws IOException, ServletException;
 
 }

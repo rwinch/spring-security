@@ -46,6 +46,8 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Base class for processing filters that handle pre-authenticated authentication
@@ -96,11 +98,11 @@ public abstract class AbstractPreAuthenticatedProcessingFilter extends GenericFi
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private ApplicationEventPublisher eventPublisher = null;
+	private @Nullable ApplicationEventPublisher eventPublisher = null;
 
 	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
-	private AuthenticationManager authenticationManager = null;
+	private @Nullable AuthenticationManager authenticationManager = null;
 
 	private boolean continueFilterChainOnUnsuccessfulAuthentication = true;
 
@@ -108,9 +110,9 @@ public abstract class AbstractPreAuthenticatedProcessingFilter extends GenericFi
 
 	private boolean invalidateSessionOnPrincipalChange = true;
 
-	private AuthenticationSuccessHandler authenticationSuccessHandler = null;
+	private @Nullable AuthenticationSuccessHandler authenticationSuccessHandler = null;
 
-	private AuthenticationFailureHandler authenticationFailureHandler = null;
+	private @Nullable AuthenticationFailureHandler authenticationFailureHandler = null;
 
 	private RequestMatcher requiresAuthenticationRequestMatcher = new PreAuthenticatedProcessingRequestMatcher();
 
@@ -188,7 +190,7 @@ public abstract class AbstractPreAuthenticatedProcessingFilter extends GenericFi
 	/**
 	 * Do the actual authentication for a pre-authenticated user.
 	 */
-	private void doAuthenticate(HttpServletRequest request, HttpServletResponse response)
+	@NullUnmarked private void doAuthenticate(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		Object principal = getPreAuthenticatedPrincipal(request);
 		if (principal == null) {
@@ -357,14 +359,14 @@ public abstract class AbstractPreAuthenticatedProcessingFilter extends GenericFi
 	/**
 	 * Override to extract the principal information from the current request
 	 */
-	protected abstract Object getPreAuthenticatedPrincipal(HttpServletRequest request);
+	protected abstract @Nullable Object getPreAuthenticatedPrincipal(HttpServletRequest request);
 
 	/**
 	 * Override to extract the credentials (if applicable) from the current request.
 	 * Should not return null for a valid principal, though some implementations may
 	 * return a dummy value.
 	 */
-	protected abstract Object getPreAuthenticatedCredentials(HttpServletRequest request);
+	protected abstract @Nullable Object getPreAuthenticatedCredentials(HttpServletRequest request);
 
 	/**
 	 * Request matcher for default auth check logic

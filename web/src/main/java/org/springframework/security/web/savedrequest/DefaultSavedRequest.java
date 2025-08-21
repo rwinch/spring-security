@@ -37,6 +37,7 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents central information from a {@code HttpServletRequest}.
@@ -77,33 +78,33 @@ public class DefaultSavedRequest implements SavedRequest {
 
 	private final Map<String, String[]> parameters = new TreeMap<>();
 
-	private final String contextPath;
+	private final @Nullable String contextPath;
 
-	private final String method;
+	private final @Nullable String method;
 
-	private final String pathInfo;
+	private final @Nullable String pathInfo;
 
-	private final String queryString;
+	private final @Nullable String queryString;
 
-	private final String requestURI;
+	private final @Nullable String requestURI;
 
-	private final String requestURL;
+	private final @Nullable String requestURL;
 
-	private final String scheme;
+	private final @Nullable String scheme;
 
-	private final String serverName;
+	private final @Nullable String serverName;
 
-	private final String servletPath;
+	private final @Nullable String servletPath;
 
 	private final int serverPort;
 
-	private final String matchingRequestParameterName;
+	private final @Nullable String matchingRequestParameterName;
 
 	public DefaultSavedRequest(HttpServletRequest request) {
 		this(request, (String) null);
 	}
 
-	public DefaultSavedRequest(HttpServletRequest request, String matchingRequestParameterName) {
+	public DefaultSavedRequest(HttpServletRequest request, @Nullable String matchingRequestParameterName) {
 		this(request, PortResolver.NO_OP, matchingRequestParameterName);
 	}
 
@@ -115,7 +116,7 @@ public class DefaultSavedRequest implements SavedRequest {
 	@SuppressWarnings("unchecked")
 	@Deprecated(forRemoval = true)
 	public DefaultSavedRequest(HttpServletRequest request, PortResolver portResolver,
-			String matchingRequestParameterName) {
+			@Nullable String matchingRequestParameterName) {
 		Assert.notNull(request, "Request required");
 		Assert.notNull(portResolver, "PortResolver required");
 		// Cookies
@@ -268,7 +269,7 @@ public class DefaultSavedRequest implements SavedRequest {
 
 	}
 
-	public String getContextPath() {
+	public @Nullable String getContextPath() {
 		return this.contextPath;
 	}
 
@@ -309,7 +310,7 @@ public class DefaultSavedRequest implements SavedRequest {
 	}
 
 	@Override
-	public String getMethod() {
+	public @Nullable String getMethod() {
 		return this.method;
 	}
 
@@ -323,31 +324,31 @@ public class DefaultSavedRequest implements SavedRequest {
 	}
 
 	@Override
-	public String[] getParameterValues(String name) {
+	public String@Nullable [] getParameterValues(String name) {
 		return this.parameters.get(name);
 	}
 
-	public String getPathInfo() {
+	public @Nullable String getPathInfo() {
 		return this.pathInfo;
 	}
 
-	public String getQueryString() {
+	public @Nullable String getQueryString() {
 		return (this.queryString);
 	}
 
-	public String getRequestURI() {
+	public @Nullable String getRequestURI() {
 		return (this.requestURI);
 	}
 
-	public String getRequestURL() {
+	public @Nullable String getRequestURL() {
 		return this.requestURL;
 	}
 
-	public String getScheme() {
+	public @Nullable String getScheme() {
 		return this.scheme;
 	}
 
-	public String getServerName() {
+	public @Nullable String getServerName() {
 		return this.serverName;
 	}
 
@@ -355,11 +356,11 @@ public class DefaultSavedRequest implements SavedRequest {
 		return this.serverPort;
 	}
 
-	public String getServletPath() {
+	public @Nullable String getServletPath() {
 		return this.servletPath;
 	}
 
-	private boolean propertyEquals(Object arg1, Object arg2) {
+	private boolean propertyEquals(@Nullable Object arg1, Object arg2) {
 		if ((arg1 == null) && (arg2 == null)) {
 			return true;
 		}
@@ -374,7 +375,7 @@ public class DefaultSavedRequest implements SavedRequest {
 		return "DefaultSavedRequest [" + getRedirectUrl() + "]";
 	}
 
-	private static String createQueryString(String queryString, String matchingRequestParameterName) {
+	private static @Nullable String createQueryString(@Nullable String queryString, @Nullable String matchingRequestParameterName) {
 		if (matchingRequestParameterName == null) {
 			return queryString;
 		}
@@ -396,35 +397,35 @@ public class DefaultSavedRequest implements SavedRequest {
 	@JsonPOJOBuilder(withPrefix = "set")
 	public static class Builder {
 
-		private List<SavedCookie> cookies = null;
+		private @Nullable List<SavedCookie> cookies = null;
 
-		private List<Locale> locales = null;
+		private @Nullable List<Locale> locales = null;
 
 		private Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 		private Map<String, String[]> parameters = new TreeMap<>();
 
-		private String contextPath;
+		private @Nullable String contextPath;
 
-		private String method;
+		private @Nullable String method;
 
-		private String pathInfo;
+		private @Nullable String pathInfo;
 
-		private String queryString;
+		private @Nullable String queryString;
 
-		private String requestURI;
+		private @Nullable String requestURI;
 
-		private String requestURL;
+		private @Nullable String requestURL;
 
-		private String scheme;
+		private @Nullable String scheme;
 
-		private String serverName;
+		private @Nullable String serverName;
 
-		private String servletPath;
+		private @Nullable String servletPath;
 
 		private int serverPort = 80;
 
-		private String matchingRequestParameterName;
+		private @Nullable String matchingRequestParameterName;
 
 		public Builder setCookies(List<SavedCookie> cookies) {
 			this.cookies = cookies;
@@ -461,12 +462,12 @@ public class DefaultSavedRequest implements SavedRequest {
 			return this;
 		}
 
-		public Builder setQueryString(String queryString) {
+		public Builder setQueryString(@Nullable String queryString) {
 			this.queryString = queryString;
 			return this;
 		}
 
-		public Builder setRequestURI(String requestURI) {
+		public Builder setRequestURI(@Nullable String requestURI) {
 			this.requestURI = requestURI;
 			return this;
 		}
@@ -476,12 +477,12 @@ public class DefaultSavedRequest implements SavedRequest {
 			return this;
 		}
 
-		public Builder setScheme(String scheme) {
+		public Builder setScheme(@Nullable String scheme) {
 			this.scheme = scheme;
 			return this;
 		}
 
-		public Builder setServerName(String serverName) {
+		public Builder setServerName(@Nullable String serverName) {
 			this.serverName = serverName;
 			return this;
 		}

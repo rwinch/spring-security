@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A do nothing implementation of {@link ServerSecurityContextRepository}. Used in
@@ -36,7 +37,7 @@ public final class NoOpServerSecurityContextRepository implements ServerSecurity
 	}
 
 	@Override
-	public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
+	public Mono<Void> save(ServerWebExchange exchange, @Nullable SecurityContext context) {
 		return Mono.empty();
 	}
 

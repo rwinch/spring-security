@@ -31,6 +31,8 @@ import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Identifies previously remembered users by a Base-64 encoded cookie.
@@ -194,7 +196,7 @@ public class TokenBasedRememberMeServices extends AbstractRememberMeServices {
 	 * Calculates the digital signature to be put in the cookie.
 	 * @since 5.8
 	 */
-	protected String makeTokenSignature(long tokenExpiryTime, String username, String password,
+	protected String makeTokenSignature(long tokenExpiryTime, String username, @Nullable String password,
 			RememberMeTokenAlgorithm algorithm) {
 		String data = username + ":" + tokenExpiryTime + ":" + password + ":" + getKey();
 		try {
@@ -272,14 +274,14 @@ public class TokenBasedRememberMeServices extends AbstractRememberMeServices {
 		return getTokenValiditySeconds();
 	}
 
-	protected String retrieveUserName(Authentication authentication) {
+	@NullUnmarked protected String retrieveUserName(Authentication authentication) {
 		if (isInstanceOfUserDetails(authentication)) {
 			return ((UserDetails) authentication.getPrincipal()).getUsername();
 		}
 		return authentication.getPrincipal().toString();
 	}
 
-	protected String retrievePassword(Authentication authentication) {
+	@NullUnmarked protected @Nullable String retrievePassword(Authentication authentication) {
 		if (isInstanceOfUserDetails(authentication)) {
 			return ((UserDetails) authentication.getPrincipal()).getPassword();
 		}
@@ -302,7 +304,7 @@ public class TokenBasedRememberMeServices extends AbstractRememberMeServices {
 		return MessageDigest.isEqual(expectedBytes, actualBytes);
 	}
 
-	private static byte[] bytesUtf8(String s) {
+	private static byte@Nullable [] bytesUtf8(String s) {
 		return (s != null) ? Utf8.encode(s) : null;
 	}
 

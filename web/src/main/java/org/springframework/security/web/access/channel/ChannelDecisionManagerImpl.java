@@ -28,6 +28,8 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Implementation of {@link ChannelDecisionManager}.
@@ -53,14 +55,14 @@ public class ChannelDecisionManagerImpl implements ChannelDecisionManager, Initi
 
 	public static final String ANY_CHANNEL = "ANY_CHANNEL";
 
-	private List<ChannelProcessor> channelProcessors;
+	private @Nullable List<ChannelProcessor> channelProcessors;
 
 	@Override
 	public void afterPropertiesSet() {
 		Assert.notEmpty(this.channelProcessors, "A list of ChannelProcessors is required");
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void decide(FilterInvocation invocation, Collection<ConfigAttribute> config)
 			throws IOException, ServletException {
 		for (ConfigAttribute attribute : config) {
@@ -76,7 +78,7 @@ public class ChannelDecisionManagerImpl implements ChannelDecisionManager, Initi
 		}
 	}
 
-	protected List<ChannelProcessor> getChannelProcessors() {
+	protected @Nullable List<ChannelProcessor> getChannelProcessors() {
 		return this.channelProcessors;
 	}
 
@@ -91,7 +93,7 @@ public class ChannelDecisionManagerImpl implements ChannelDecisionManager, Initi
 		}
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public boolean supports(ConfigAttribute attribute) {
 		if (ANY_CHANNEL.equals(attribute.getAttribute())) {
 			return true;

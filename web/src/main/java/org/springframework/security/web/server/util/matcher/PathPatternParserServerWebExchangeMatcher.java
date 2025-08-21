@@ -30,6 +30,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Matches if the {@link PathPattern} matches the path within the application.
@@ -44,19 +46,19 @@ public final class PathPatternParserServerWebExchangeMatcher implements ServerWe
 
 	private final PathPattern pattern;
 
-	private final HttpMethod method;
+	private final @Nullable HttpMethod method;
 
 	public PathPatternParserServerWebExchangeMatcher(PathPattern pattern) {
 		this(pattern, null);
 	}
 
-	public PathPatternParserServerWebExchangeMatcher(PathPattern pattern, HttpMethod method) {
+	public PathPatternParserServerWebExchangeMatcher(PathPattern pattern, @Nullable HttpMethod method) {
 		Assert.notNull(pattern, "pattern cannot be null");
 		this.pattern = pattern;
 		this.method = method;
 	}
 
-	public PathPatternParserServerWebExchangeMatcher(String pattern, HttpMethod method) {
+	public PathPatternParserServerWebExchangeMatcher(String pattern, @Nullable HttpMethod method) {
 		Assert.notNull(pattern, "pattern cannot be null");
 		this.pattern = parse(pattern);
 		this.method = method;
@@ -72,7 +74,7 @@ public final class PathPatternParserServerWebExchangeMatcher implements ServerWe
 		return parser.parse(pattern);
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Mono<MatchResult> matches(ServerWebExchange exchange) {
 		ServerHttpRequest request = exchange.getRequest();
 		PathContainer path = request.getPath().pathWithinApplication();

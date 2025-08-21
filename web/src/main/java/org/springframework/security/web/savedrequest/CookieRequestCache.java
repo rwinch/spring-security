@@ -34,6 +34,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.WebUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An Implementation of {@code RequestCache} which saves the original request URI in a
@@ -72,7 +73,7 @@ public class CookieRequestCache implements RequestCache {
 	}
 
 	@Override
-	public SavedRequest getRequest(HttpServletRequest request, HttpServletResponse response) {
+	public @Nullable SavedRequest getRequest(HttpServletRequest request, HttpServletResponse response) {
 		Cookie savedRequestCookie = WebUtils.getCookie(request, COOKIE_NAME);
 		if (savedRequestCookie == null) {
 			return null;
@@ -106,7 +107,7 @@ public class CookieRequestCache implements RequestCache {
 	}
 
 	@Override
-	public HttpServletRequest getMatchingRequest(HttpServletRequest request, HttpServletResponse response) {
+	public @Nullable HttpServletRequest getMatchingRequest(HttpServletRequest request, HttpServletResponse response) {
 		SavedRequest saved = this.getRequest(request, response);
 		if (!this.matchesSavedRequest(request, saved)) {
 			this.logger.debug("saved request doesn't match");
@@ -130,7 +131,7 @@ public class CookieRequestCache implements RequestCache {
 		return Base64.getEncoder().encodeToString(cookieValue.getBytes());
 	}
 
-	private String decodeCookie(String encodedCookieValue) {
+	private @Nullable String decodeCookie(String encodedCookieValue) {
 		try {
 			return new String(Base64.getDecoder().decode(encodedCookieValue.getBytes()));
 		}
@@ -145,7 +146,7 @@ public class CookieRequestCache implements RequestCache {
 		return (StringUtils.hasLength(contextPath)) ? contextPath : "/";
 	}
 
-	private boolean matchesSavedRequest(HttpServletRequest request, SavedRequest savedRequest) {
+	private boolean matchesSavedRequest(HttpServletRequest request, @Nullable SavedRequest savedRequest) {
 		if (savedRequest == null) {
 			return false;
 		}

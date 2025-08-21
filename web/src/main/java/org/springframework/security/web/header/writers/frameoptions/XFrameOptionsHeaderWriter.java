@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * {@code HeaderWriter} implementation for the X-Frame-Options headers. When using the
@@ -35,7 +37,7 @@ public final class XFrameOptionsHeaderWriter implements HeaderWriter {
 
 	public static final String XFRAME_OPTIONS_HEADER = "X-Frame-Options";
 
-	private final AllowFromStrategy allowFromStrategy;
+	private final @Nullable AllowFromStrategy allowFromStrategy;
 
 	private final XFrameOptionsMode frameOptionsMode;
 
@@ -84,7 +86,7 @@ public final class XFrameOptionsHeaderWriter implements HeaderWriter {
 	 * @param request the servlet request
 	 * @param response the servlet response
 	 */
-	@Override
+	@NullUnmarked @Override
 	public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
 		if (XFrameOptionsMode.ALLOW_FROM.equals(this.frameOptionsMode)) {
 			String allowFromValue = this.allowFromStrategy.getAllowFromValue(request);

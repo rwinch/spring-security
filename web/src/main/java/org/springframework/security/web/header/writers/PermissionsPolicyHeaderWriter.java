@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Provides support for
@@ -39,7 +40,7 @@ public final class PermissionsPolicyHeaderWriter implements HeaderWriter {
 
 	private static final String PERMISSIONS_POLICY_HEADER = "Permissions-Policy";
 
-	private String policy;
+	private @Nullable String policy;
 
 	/**
 	 * Create a new instance of {@link PermissionsPolicyHeaderWriter}.

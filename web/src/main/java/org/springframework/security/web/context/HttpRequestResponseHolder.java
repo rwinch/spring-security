@@ -18,6 +18,7 @@ package org.springframework.security.web.context;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Used to pass the incoming request to
@@ -35,9 +36,9 @@ public final class HttpRequestResponseHolder {
 
 	private HttpServletRequest request;
 
-	private HttpServletResponse response;
+	private @Nullable HttpServletResponse response;
 
-	public HttpRequestResponseHolder(HttpServletRequest request, HttpServletResponse response) {
+	public HttpRequestResponseHolder(HttpServletRequest request, @Nullable HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 	}
@@ -50,7 +51,7 @@ public final class HttpRequestResponseHolder {
 		this.request = request;
 	}
 
-	public HttpServletResponse getResponse() {
+	public @Nullable HttpServletResponse getResponse() {
 		return this.response;
 	}
 

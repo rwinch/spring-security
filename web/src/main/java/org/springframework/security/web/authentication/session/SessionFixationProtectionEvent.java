@@ -21,6 +21,8 @@ import java.io.Serial;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Indicates a session ID was changed for the purposes of session fixation protection.
@@ -44,7 +46,7 @@ public class SessionFixationProtectionEvent extends AbstractAuthenticationEvent 
 	 * @param oldSessionId The old session ID before it was changed
 	 * @param newSessionId The new session ID after it was changed
 	 */
-	public SessionFixationProtectionEvent(Authentication authentication, String oldSessionId, String newSessionId) {
+	@NullUnmarked public SessionFixationProtectionEvent(@Nullable Authentication authentication, String oldSessionId, String newSessionId) {
 		super(authentication);
 		Assert.hasLength(oldSessionId, "oldSessionId must have length");
 		Assert.hasLength(newSessionId, "newSessionId must have length");

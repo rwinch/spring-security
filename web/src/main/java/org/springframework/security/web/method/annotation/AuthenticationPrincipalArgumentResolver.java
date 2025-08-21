@@ -41,6 +41,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Allows resolving the {@link Authentication#getPrincipal()} using the
@@ -107,16 +109,16 @@ public final class AuthenticationPrincipalArgumentResolver implements HandlerMet
 
 	private boolean useAnnotationTemplate = false;
 
-	private BeanResolver beanResolver;
+	private @Nullable BeanResolver beanResolver;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return findMethodAnnotation(parameter) != null;
 	}
 
-	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	@NullUnmarked @Override
+	public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
+			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
 		Authentication authentication = this.securityContextHolderStrategy.getContext().getAuthentication();
 		if (authentication == null) {
 			return null;
@@ -181,7 +183,7 @@ public final class AuthenticationPrincipalArgumentResolver implements HandlerMet
 	 * @return the {@link Annotation} that was found or null.
 	 */
 	@SuppressWarnings("unchecked")
-	private AuthenticationPrincipal findMethodAnnotation(MethodParameter parameter) {
+	private @Nullable AuthenticationPrincipal findMethodAnnotation(MethodParameter parameter) {
 		if (this.useAnnotationTemplate) {
 			return this.scanner.scan(parameter.getParameter());
 		}

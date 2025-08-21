@@ -43,6 +43,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolverSupport;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Resolves the {@link SecurityContext}
@@ -62,7 +64,7 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 
 	private boolean useAnnotationTemplate = false;
 
-	private BeanResolver beanResolver;
+	private @Nullable BeanResolver beanResolver;
 
 	public CurrentSecurityContextArgumentResolver(ReactiveAdapterRegistry adapterRegistry) {
 		super(adapterRegistry);
@@ -109,8 +111,8 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 		return false;
 	}
 
-	@Override
-	public Mono<Object> resolveArgument(MethodParameter parameter, BindingContext bindingContext,
+	@NullUnmarked @Override
+	public @Nullable Mono<Object> resolveArgument(MethodParameter parameter, BindingContext bindingContext,
 			ServerWebExchange exchange) {
 		ReactiveAdapter adapter = getAdapterRegistry().getAdapter(parameter.getParameterType());
 		Mono<SecurityContext> reactiveSecurityContext = ReactiveSecurityContextHolder.getContext();
@@ -132,7 +134,7 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 	 * @param securityContext the security context.
 	 * @return the resolved object from expression.
 	 */
-	private Object resolveSecurityContext(MethodParameter parameter, SecurityContext securityContext) {
+	private @Nullable Object resolveSecurityContext(MethodParameter parameter, SecurityContext securityContext) {
 		CurrentSecurityContext annotation = findMethodAnnotation(parameter);
 		if (annotation != null) {
 			return resolveSecurityContextFromAnnotation(annotation, parameter, securityContext);
@@ -140,7 +142,7 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 		return securityContext;
 	}
 
-	private Object resolveSecurityContextFromAnnotation(CurrentSecurityContext annotation, MethodParameter parameter,
+	@NullUnmarked private @Nullable Object resolveSecurityContextFromAnnotation(CurrentSecurityContext annotation, MethodParameter parameter,
 			Object securityContext) {
 		Object securityContextResult = securityContext;
 		String expressionToParse = annotation.expression();
@@ -168,7 +170,7 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 	 * @param reactiveSecurityContext the security context.
 	 * @return true = is not invalid type.
 	 */
-	private boolean isInvalidType(MethodParameter parameter, Object reactiveSecurityContext) {
+	private boolean isInvalidType(MethodParameter parameter, @Nullable Object reactiveSecurityContext) {
 		if (reactiveSecurityContext == null) {
 			return false;
 		}
@@ -190,7 +192,7 @@ public class CurrentSecurityContextArgumentResolver extends HandlerMethodArgumen
 	 * @param parameter the {@link MethodParameter} to search for an {@link Annotation}
 	 * @return the {@link Annotation} that was found or null.
 	 */
-	private CurrentSecurityContext findMethodAnnotation(MethodParameter parameter) {
+	private @Nullable CurrentSecurityContext findMethodAnnotation(MethodParameter parameter) {
 		if (this.useAnnotationTemplate) {
 			return this.scanner.scan(parameter.getParameter());
 		}

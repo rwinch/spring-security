@@ -25,6 +25,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * JDBC based persistent login token repository implementation.
@@ -60,20 +62,20 @@ public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements Persisten
 
 	private boolean createTableOnStartup;
 
-	@Override
+	@NullUnmarked @Override
 	protected void initDao() {
 		if (this.createTableOnStartup) {
 			getJdbcTemplate().execute(CREATE_TABLE_SQL);
 		}
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void createNewToken(PersistentRememberMeToken token) {
 		getJdbcTemplate().update(this.insertTokenSql, token.getUsername(), token.getSeries(), token.getTokenValue(),
 				token.getDate());
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void updateToken(String series, String tokenValue, Date lastUsed) {
 		getJdbcTemplate().update(this.updateTokenSql, tokenValue, lastUsed, series);
 	}
@@ -87,8 +89,8 @@ public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements Persisten
 	 * @return the token matching the series, or null if no match found or an exception
 	 * occurred.
 	 */
-	@Override
-	public PersistentRememberMeToken getTokenForSeries(String seriesId) {
+	@NullUnmarked @Override
+	public @Nullable PersistentRememberMeToken getTokenForSeries(String seriesId) {
 		try {
 			return getJdbcTemplate().queryForObject(this.tokensBySeriesSql, this::createRememberMeToken, seriesId);
 		}
@@ -110,7 +112,7 @@ public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements Persisten
 		return new PersistentRememberMeToken(rs.getString(1), rs.getString(2), rs.getString(3), rs.getTimestamp(4));
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void removeUserTokens(String username) {
 		getJdbcTemplate().update(this.removeUserTokensSql, username);
 	}

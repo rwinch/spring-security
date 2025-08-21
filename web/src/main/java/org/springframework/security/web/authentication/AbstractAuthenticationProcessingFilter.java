@@ -51,6 +51,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
 
 import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.pathPattern;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Abstract processor of browser-based HTTP-based authentication requests.
@@ -120,7 +122,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	protected ApplicationEventPublisher eventPublisher;
+	@Nullable protected ApplicationEventPublisher eventPublisher;
 
 	protected AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
@@ -129,13 +131,13 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 				"Please either configure an AuthenticationConverter or override attemptAuthentication when extending AbstractAuthenticationProcessingFilter");
 	};
 
-	private AuthenticationManager authenticationManager;
+	private @Nullable AuthenticationManager authenticationManager;
 
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	private RememberMeServices rememberMeServices = new NullRememberMeServices();
 
-	private RequestMatcher requiresAuthenticationRequestMatcher;
+	private @Nullable RequestMatcher requiresAuthenticationRequestMatcher;
 
 	private boolean continueChainBeforeSuccessfulAuthentication = false;
 
@@ -275,7 +277,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	 * @return <code>true</code> if the filter should attempt authentication,
 	 * <code>false</code> otherwise.
 	 */
-	protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+	@NullUnmarked protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		if (this.requiresAuthenticationRequestMatcher.matches(request)) {
 			return true;
 		}
@@ -305,7 +307,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 	 * @return the authenticated user token, or null if authentication is incomplete.
 	 * @throws AuthenticationException if authentication fails.
 	 */
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+	@NullUnmarked public @Nullable Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
 		Authentication authentication = this.authenticationConverter.convert(request);
 		if (authentication == null) {
@@ -383,7 +385,7 @@ public abstract class AbstractAuthenticationProcessingFilter extends GenericFilt
 		this.continueChainWhenNoAuthenticationResult = true;
 	}
 
-	protected AuthenticationManager getAuthenticationManager() {
+	protected @Nullable AuthenticationManager getAuthenticationManager() {
 		return this.authenticationManager;
 	}
 

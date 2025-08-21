@@ -24,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * @author Luke Taylor
@@ -37,7 +38,7 @@ public class DefaultWebSecurityExpressionHandler extends AbstractSecurityExpress
 
 	private String defaultRolePrefix = "ROLE_";
 
-	@Override
+	@NullUnmarked @Override
 	protected SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
 			FilterInvocation fi) {
 		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(authentication, fi);

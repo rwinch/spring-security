@@ -38,6 +38,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Generates a default log in page used for authenticating users.
@@ -55,7 +56,7 @@ public class LoginPageGeneratingWebFilter implements WebFilter {
 
 	private boolean oneTimeTokenEnabled = false;
 
-	private String generateOneTimeTokenUrl;
+	private @Nullable String generateOneTimeTokenUrl;
 
 	/**
 	 * Specifies the URL that a One-Time Token generate request will be processed.

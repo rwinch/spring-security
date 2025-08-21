@@ -32,6 +32,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Rob Winch
@@ -97,7 +98,7 @@ public class ExceptionTranslationWebFilter implements WebFilter {
 		this.authenticationTrustResolver = authenticationTrustResolver;
 	}
 
-	private <T> Mono<T> commenceAuthentication(ServerWebExchange exchange, Authentication authentication) {
+	private <T> Mono<T> commenceAuthentication(ServerWebExchange exchange, @Nullable Authentication authentication) {
 		AuthenticationException cause = new InsufficientAuthenticationException(
 				"Full authentication is required to access this resource");
 		AuthenticationException ex = new AuthenticationCredentialsNotFoundException("Not Authenticated", cause);

@@ -27,6 +27,8 @@ import java.util.Map;
 import jakarta.servlet.http.Cookie;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A Bean implementation of SavedRequest
@@ -39,11 +41,11 @@ public class SimpleSavedRequest implements SavedRequest {
 	@Serial
 	private static final long serialVersionUID = 807650604272166969L;
 
-	private String redirectUrl;
+	private @Nullable String redirectUrl;
 
 	private List<Cookie> cookies = new ArrayList<>();
 
-	private String method = "GET";
+	private @Nullable String method = "GET";
 
 	private Map<String, List<String>> headers = new HashMap<>();
 
@@ -69,8 +71,8 @@ public class SimpleSavedRequest implements SavedRequest {
 		this.method = request.getMethod();
 	}
 
-	@Override
-	public String getRedirectUrl() {
+	@NullUnmarked @Override
+	public @Nullable String getRedirectUrl() {
 		return this.redirectUrl;
 	}
 
@@ -80,7 +82,7 @@ public class SimpleSavedRequest implements SavedRequest {
 	}
 
 	@Override
-	public String getMethod() {
+	public @Nullable String getMethod() {
 		return this.method;
 	}
 

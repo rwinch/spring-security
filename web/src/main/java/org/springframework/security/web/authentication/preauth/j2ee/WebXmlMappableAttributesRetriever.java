@@ -45,6 +45,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.authority.mapping.MappableAttributesRetriever;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * This <tt>MappableAttributesRetriever</tt> implementation reads the list of defined J2EE
@@ -60,17 +62,17 @@ public class WebXmlMappableAttributesRetriever
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private ResourceLoader resourceLoader;
+	private @Nullable ResourceLoader resourceLoader;
 
-	private Set<String> mappableAttributes;
+	private @Nullable Set<String> mappableAttributes;
 
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
-	@Override
-	public Set<String> getMappableAttributes() {
+	@NullUnmarked @Override
+	public @Nullable Set<String> getMappableAttributes() {
 		return this.mappableAttributes;
 	}
 
@@ -79,7 +81,7 @@ public class WebXmlMappableAttributesRetriever
 	 * role-name elements from it, using these as the set of <tt>mappableAttributes</tt>.
 	 */
 
-	@Override
+	@NullUnmarked @Override
 	public void afterPropertiesSet() throws Exception {
 		Resource webXml = this.resourceLoader.getResource("/WEB-INF/web.xml");
 		Document doc = getDocument(webXml.getInputStream());

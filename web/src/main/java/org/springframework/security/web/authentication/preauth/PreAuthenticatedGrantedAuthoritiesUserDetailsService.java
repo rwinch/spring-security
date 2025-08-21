@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.AuthenticationUserDetailsSe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ public class PreAuthenticatedGrantedAuthoritiesUserDetailsService
 	 * the GrantedAuthorities as returned by the GrantedAuthoritiesContainer
 	 * implementation as returned by the token.getDetails() method.
 	 */
-	@Override
+	@NullUnmarked @Override
 	public final UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws AuthenticationException {
 		Assert.notNull(token.getDetails(), "token.getDetails() cannot be null");
 		Assert.isInstanceOf(GrantedAuthoritiesContainer.class, token.getDetails());

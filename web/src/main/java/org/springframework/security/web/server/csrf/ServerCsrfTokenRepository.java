@@ -19,6 +19,7 @@ package org.springframework.security.web.server.csrf;
 import reactor.core.publisher.Mono;
 
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An API to allow changing the method in which the expected {@link CsrfToken} is
@@ -45,7 +46,7 @@ public interface ServerCsrfTokenRepository {
 	 * @param exchange the {@link ServerWebExchange} to use
 	 * @param token the {@link CsrfToken} to save or null to delete
 	 */
-	Mono<Void> saveToken(ServerWebExchange exchange, CsrfToken token);
+	Mono<Void> saveToken(ServerWebExchange exchange, @Nullable CsrfToken token);
 
 	/**
 	 * Loads the expected {@link CsrfToken} from the {@link ServerWebExchange}

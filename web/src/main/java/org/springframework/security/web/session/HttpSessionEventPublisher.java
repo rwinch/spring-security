@@ -28,6 +28,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Declared in web.xml as
@@ -50,7 +52,7 @@ public class HttpSessionEventPublisher implements HttpSessionListener, HttpSessi
 
 	private static final String LOGGER_NAME = HttpSessionEventPublisher.class.getName();
 
-	ApplicationContext getContext(ServletContext servletContext) {
+	@Nullable ApplicationContext getContext(ServletContext servletContext) {
 		return SecurityWebApplicationContextUtils.findRequiredWebApplicationContext(servletContext);
 	}
 
@@ -82,7 +84,7 @@ public class HttpSessionEventPublisher implements HttpSessionListener, HttpSessi
 		extracted(event.getSession(), new HttpSessionIdChangedEvent(event.getSession(), oldSessionId));
 	}
 
-	private void extracted(HttpSession session, ApplicationEvent e) {
+	@NullUnmarked private void extracted(HttpSession session, ApplicationEvent e) {
 		Log log = LogFactory.getLog(LOGGER_NAME);
 		log.debug(LogMessage.format("Publishing event: %s", e));
 		getContext(session.getServletContext()).publishEvent(e);

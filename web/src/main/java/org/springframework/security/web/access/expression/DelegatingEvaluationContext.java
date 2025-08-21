@@ -28,6 +28,7 @@ import org.springframework.expression.TypeComparator;
 import org.springframework.expression.TypeConverter;
 import org.springframework.expression.TypeLocator;
 import org.springframework.expression.TypedValue;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An instance of {@link EvaluationContext} that delegates to another implementation.
@@ -84,17 +85,17 @@ class DelegatingEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public BeanResolver getBeanResolver() {
+	public @Nullable BeanResolver getBeanResolver() {
 		return this.delegate.getBeanResolver();
 	}
 
 	@Override
-	public void setVariable(String name, Object value) {
+	public void setVariable(String name, @Nullable Object value) {
 		this.delegate.setVariable(name, value);
 	}
 
 	@Override
-	public Object lookupVariable(String name) {
+	public @Nullable Object lookupVariable(String name) {
 		return this.delegate.lookupVariable(name);
 	}
 

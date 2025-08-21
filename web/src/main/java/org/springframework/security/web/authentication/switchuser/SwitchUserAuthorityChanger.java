@@ -21,6 +21,7 @@ import java.util.Collection;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Allows subclasses to modify the {@link GrantedAuthority} list that will be assigned to
@@ -47,6 +48,6 @@ public interface SwitchUserAuthorityChanger {
 	 * @return the modified list of granted authorities.
 	 */
 	Collection<? extends GrantedAuthority> modifyGrantedAuthorities(UserDetails targetUser,
-			Authentication currentAuthentication, Collection<? extends GrantedAuthority> authoritiesToBeGranted);
+			@Nullable Authentication currentAuthentication, Collection<? extends GrantedAuthority> authoritiesToBeGranted);
 
 }

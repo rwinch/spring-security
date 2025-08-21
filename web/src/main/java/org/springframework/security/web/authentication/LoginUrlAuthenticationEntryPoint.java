@@ -40,6 +40,7 @@ import org.springframework.security.web.util.RedirectUrlBuilder;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Used by the {@link ExceptionTranslationFilter} to commence a form login authentication
@@ -187,7 +188,7 @@ public class LoginUrlAuthenticationEntryPoint implements AuthenticationEntryPoin
 	 * Builds a URL to redirect the supplied request to HTTPS. Used to redirect the
 	 * current request to HTTPS, before doing a forward to the login page.
 	 */
-	protected String buildHttpsRedirectUrlForRequest(HttpServletRequest request) throws IOException, ServletException {
+	protected @Nullable String buildHttpsRedirectUrlForRequest(HttpServletRequest request) throws IOException, ServletException {
 		int serverPort = this.portResolver.getServerPort(request);
 		Integer httpsPort = this.portMapper.lookupHttpsPort(serverPort);
 		if (httpsPort != null) {

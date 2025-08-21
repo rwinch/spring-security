@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Performs a logout through all the {@link LogoutHandler} implementations. If any
@@ -49,7 +50,7 @@ public final class CompositeLogoutHandler implements LogoutHandler {
 	}
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		for (LogoutHandler handler : this.logoutHandlers) {
 			handler.logout(request, response, authentication);
 		}

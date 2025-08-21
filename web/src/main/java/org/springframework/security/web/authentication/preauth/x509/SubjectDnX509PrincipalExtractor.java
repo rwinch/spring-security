@@ -30,6 +30,8 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Obtains the principal from a certificate using a regular expression match against the
@@ -52,13 +54,13 @@ public class SubjectDnX509PrincipalExtractor implements X509PrincipalExtractor, 
 
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
-	private Pattern subjectDnPattern;
+	private @Nullable Pattern subjectDnPattern;
 
 	public SubjectDnX509PrincipalExtractor() {
 		setSubjectDnRegex("CN=(.*?)(?:,|$)");
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Object extractPrincipal(X509Certificate clientCert) {
 		// String subjectDN = clientCert.getSubjectX500Principal().getName();
 		String subjectDN = clientCert.getSubjectDN().getName();

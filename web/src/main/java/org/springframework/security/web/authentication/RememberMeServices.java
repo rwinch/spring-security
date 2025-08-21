@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Implement by a class that is capable of providing a remember-me service.
@@ -69,7 +70,7 @@ public interface RememberMeServices {
 	 * @return a valid authentication object, or <code>null</code> if the request should
 	 * not be authenticated
 	 */
-	Authentication autoLogin(HttpServletRequest request, HttpServletResponse response);
+	@Nullable Authentication autoLogin(HttpServletRequest request, HttpServletResponse response);
 
 	/**
 	 * Called whenever an interactive authentication attempt was made, but the credentials

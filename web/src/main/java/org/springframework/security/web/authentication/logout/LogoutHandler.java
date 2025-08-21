@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Indicates a class that is able to participate in logout handling.
@@ -37,6 +38,6 @@ public interface LogoutHandler {
 	 * @param response the HTTP response
 	 * @param authentication the current principal details
 	 */
-	void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
+	void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication);
 
 }

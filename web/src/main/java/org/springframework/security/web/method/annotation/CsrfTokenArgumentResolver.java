@@ -24,6 +24,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Allows resolving the current {@link CsrfToken}. For example, the following
@@ -51,8 +52,8 @@ public final class CsrfTokenArgumentResolver implements HandlerMethodArgumentRes
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+	public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
+			NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
 		CsrfToken token = (CsrfToken) webRequest.getAttribute(CsrfToken.class.getName(),
 				RequestAttributes.SCOPE_REQUEST);
 		return token;

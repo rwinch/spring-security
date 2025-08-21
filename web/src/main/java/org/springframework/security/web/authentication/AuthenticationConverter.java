@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A strategy used for converting from a {@link HttpServletRequest} to an
@@ -35,6 +36,6 @@ import org.springframework.security.core.AuthenticationException;
  */
 public interface AuthenticationConverter {
 
-	Authentication convert(HttpServletRequest request);
+	@Nullable Authentication convert(HttpServletRequest request);
 
 }

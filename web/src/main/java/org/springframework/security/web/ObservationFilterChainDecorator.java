@@ -40,6 +40,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A {@link org.springframework.security.web.FilterChainProxy.FilterChainDecorator} that
@@ -305,12 +307,12 @@ public final class ObservationFilterChainDecorator implements FilterChainProxy.F
 				}
 			}
 
-			@Override
+			@NullUnmarked @Override
 			public void error(Throwable ex) {
 				this.reference.get().error(ex);
 			}
 
-			@Override
+			@NullUnmarked @Override
 			public void stop() {
 				this.reference.get().stop();
 			}
@@ -496,7 +498,7 @@ public final class ObservationFilterChainDecorator implements FilterChainProxy.F
 
 		private final String filterSection;
 
-		private String filterName;
+		private @Nullable String filterName;
 
 		private int chainPosition;
 
@@ -519,7 +521,7 @@ public final class ObservationFilterChainDecorator implements FilterChainProxy.F
 			return this.filterSection;
 		}
 
-		String getFilterName() {
+		@Nullable String getFilterName() {
 			return this.filterName;
 		}
 

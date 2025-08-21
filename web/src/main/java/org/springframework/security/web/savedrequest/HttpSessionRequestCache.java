@@ -30,6 +30,7 @@ import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@code RequestCache} which stores the {@code SavedRequest} in the HttpSession.
@@ -86,7 +87,7 @@ public class HttpSessionRequestCache implements RequestCache {
 	}
 
 	@Override
-	public SavedRequest getRequest(HttpServletRequest currentRequest, HttpServletResponse response) {
+	public @Nullable SavedRequest getRequest(HttpServletRequest currentRequest, HttpServletResponse response) {
 		HttpSession session = currentRequest.getSession(false);
 		return (session != null) ? (SavedRequest) session.getAttribute(this.sessionAttrName) : null;
 	}
@@ -101,7 +102,7 @@ public class HttpSessionRequestCache implements RequestCache {
 	}
 
 	@Override
-	public HttpServletRequest getMatchingRequest(HttpServletRequest request, HttpServletResponse response) {
+	public @Nullable HttpServletRequest getMatchingRequest(HttpServletRequest request, HttpServletResponse response) {
 		if (this.matchingRequestParameterName != null) {
 			if (!StringUtils.hasText(request.getQueryString())
 					|| !UriComponentsBuilder.fromUriString(UrlUtils.buildRequestUrl(request))

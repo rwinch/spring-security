@@ -25,6 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.DeferredSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * @author Steve Riesenberg
@@ -48,9 +50,9 @@ public final class DelegatingSecurityContextRepository implements SecurityContex
 	 * @deprecated
 	 * @see SecurityContextRepository#loadContext
 	 */
-	@Override
+	@NullUnmarked @Override
 	@Deprecated
-	public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
+	public @Nullable SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
 		SecurityContext result = null;
 		for (SecurityContextRepository delegate : this.delegates) {
 			SecurityContext delegateResult = delegate.loadContext(requestResponseHolder);
@@ -62,7 +64,7 @@ public final class DelegatingSecurityContextRepository implements SecurityContex
 	}
 
 	@Override
-	public DeferredSecurityContext loadDeferredContext(HttpServletRequest request) {
+	public @Nullable DeferredSecurityContext loadDeferredContext(HttpServletRequest request) {
 		DeferredSecurityContext deferredSecurityContext = null;
 		for (SecurityContextRepository delegate : this.delegates) {
 			if (deferredSecurityContext == null) {
@@ -77,7 +79,7 @@ public final class DelegatingSecurityContextRepository implements SecurityContex
 	}
 
 	@Override
-	public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+	public void saveContext(SecurityContext context, HttpServletRequest request, @Nullable HttpServletResponse response) {
 		for (SecurityContextRepository delegate : this.delegates) {
 			delegate.saveContext(context, request, response);
 		}
@@ -99,7 +101,7 @@ public final class DelegatingSecurityContextRepository implements SecurityContex
 
 		private final DeferredSecurityContext next;
 
-		DelegatingDeferredSecurityContext(DeferredSecurityContext previous, DeferredSecurityContext next) {
+		@NullUnmarked DelegatingDeferredSecurityContext(DeferredSecurityContext previous, @Nullable DeferredSecurityContext next) {
 			this.previous = previous;
 			this.next = next;
 		}

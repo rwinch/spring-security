@@ -17,6 +17,8 @@
 package org.springframework.security.web.util;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Internal class for building redirect URLs.
@@ -28,19 +30,19 @@ import org.springframework.util.Assert;
  */
 public class RedirectUrlBuilder {
 
-	private String scheme;
+	private @Nullable String scheme;
 
-	private String serverName;
+	private @Nullable String serverName;
 
 	private int port;
 
-	private String contextPath;
+	private @Nullable String contextPath;
 
-	private String servletPath;
+	private @Nullable String servletPath;
 
-	private String pathInfo;
+	private @Nullable String pathInfo;
 
-	private String query;
+	private @Nullable String query;
 
 	public void setScheme(String scheme) {
 		Assert.isTrue("http".equals(scheme) || "https".equals(scheme), () -> "Unsupported scheme '" + scheme + "'");
@@ -71,7 +73,7 @@ public class RedirectUrlBuilder {
 		this.query = query;
 	}
 
-	public String getUrl() {
+	@NullUnmarked public String getUrl() {
 		StringBuilder sb = new StringBuilder();
 		Assert.notNull(this.scheme, "scheme cannot be null");
 		Assert.notNull(this.serverName, "serverName cannot be null");

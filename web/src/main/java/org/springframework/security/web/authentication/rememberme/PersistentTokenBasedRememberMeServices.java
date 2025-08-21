@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link RememberMeServices} implementation based on Barry Jaspan's <a href=
@@ -156,7 +157,7 @@ public class PersistentTokenBasedRememberMeServices extends AbstractRememberMeSe
 	}
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		super.logout(request, response, authentication);
 		if (authentication != null) {
 			this.tokenRepository.removeUserTokens(authentication.getName());

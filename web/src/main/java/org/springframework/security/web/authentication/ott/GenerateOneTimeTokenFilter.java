@@ -32,6 +32,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Filter that process a One-Time Token generation request.
@@ -61,7 +62,7 @@ public final class GenerateOneTimeTokenFilter extends OncePerRequestFilter {
 		this.tokenGenerationSuccessHandler = tokenGenerationSuccessHandler;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		if (!this.requestMatcher.matches(request)) {

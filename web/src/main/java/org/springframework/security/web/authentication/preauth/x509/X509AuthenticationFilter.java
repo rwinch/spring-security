@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Luke Taylor
@@ -31,17 +32,17 @@ public class X509AuthenticationFilter extends AbstractPreAuthenticatedProcessing
 	private X509PrincipalExtractor principalExtractor = new SubjectX500PrincipalExtractor();
 
 	@Override
-	protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+	protected @Nullable Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
 		X509Certificate cert = extractClientCertificate(request);
 		return (cert != null) ? this.principalExtractor.extractPrincipal(cert) : null;
 	}
 
 	@Override
-	protected Object getPreAuthenticatedCredentials(HttpServletRequest request) {
+	protected @Nullable Object getPreAuthenticatedCredentials(HttpServletRequest request) {
 		return extractClientCertificate(request);
 	}
 
-	private X509Certificate extractClientCertificate(HttpServletRequest request) {
+	private @Nullable X509Certificate extractClientCertificate(HttpServletRequest request) {
 		X509Certificate[] certs = (X509Certificate[]) request.getAttribute("jakarta.servlet.request.X509Certificate");
 		if (certs != null && certs.length > 0) {
 			this.logger.debug(LogMessage.format("X.509 client authentication certificate:%s", certs[0]));

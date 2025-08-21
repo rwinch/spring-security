@@ -34,6 +34,8 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Ensures a web request is delivered over the required channel.
@@ -88,9 +90,9 @@ import org.springframework.web.filter.GenericFilterBean;
 @Deprecated
 public class ChannelProcessingFilter extends GenericFilterBean {
 
-	private ChannelDecisionManager channelDecisionManager;
+	private @Nullable ChannelDecisionManager channelDecisionManager;
 
-	private FilterInvocationSecurityMetadataSource securityMetadataSource;
+	@SuppressWarnings("NullAway.Init") private FilterInvocationSecurityMetadataSource securityMetadataSource;
 
 	@Override
 	public void afterPropertiesSet() {
@@ -108,7 +110,7 @@ public class ChannelProcessingFilter extends GenericFilterBean {
 		this.logger.info("Validated configuration attributes");
 	}
 
-	private Set<ConfigAttribute> getUnsupportedAttributes(Collection<ConfigAttribute> attrDefs) {
+	@NullUnmarked private Set<ConfigAttribute> getUnsupportedAttributes(Collection<ConfigAttribute> attrDefs) {
 		Set<ConfigAttribute> unsupportedAttributes = new HashSet<>();
 		for (ConfigAttribute attr : attrDefs) {
 			if (!this.channelDecisionManager.supports(attr)) {
@@ -118,7 +120,7 @@ public class ChannelProcessingFilter extends GenericFilterBean {
 		return unsupportedAttributes;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
@@ -135,7 +137,7 @@ public class ChannelProcessingFilter extends GenericFilterBean {
 		chain.doFilter(request, response);
 	}
 
-	protected ChannelDecisionManager getChannelDecisionManager() {
+	protected @Nullable ChannelDecisionManager getChannelDecisionManager() {
 		return this.channelDecisionManager;
 	}
 

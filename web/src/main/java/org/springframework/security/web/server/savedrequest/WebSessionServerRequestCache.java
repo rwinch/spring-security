@@ -38,6 +38,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of {@link ServerRequestCache} that saves the
@@ -59,7 +60,7 @@ public class WebSessionServerRequestCache implements ServerRequestCache {
 
 	private ServerWebExchangeMatcher saveRequestMatcher = createDefaultRequestMatcher();
 
-	private String matchingRequestParameterName;
+	private @Nullable String matchingRequestParameterName;
 
 	/**
 	 * Sets the matcher to determine if the request should be saved. The default is to

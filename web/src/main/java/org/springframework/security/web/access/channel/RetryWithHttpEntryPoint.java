@@ -17,6 +17,7 @@
 package org.springframework.security.web.access.channel;
 
 import org.springframework.security.web.PortMapper;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Commences an insecure channel by retrying the original request using HTTP.
@@ -38,7 +39,7 @@ public class RetryWithHttpEntryPoint extends AbstractRetryEntryPoint {
 	}
 
 	@Override
-	protected Integer getMappedPort(Integer mapFromPort) {
+	protected @Nullable Integer getMappedPort(Integer mapFromPort) {
 		return getPortMapper().lookupHttpPort(mapFromPort);
 	}
 

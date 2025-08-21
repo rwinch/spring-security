@@ -23,6 +23,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.authentication.event.LogoutSuccessEvent;
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A logout handler which publishes {@link LogoutSuccessEvent}
@@ -32,10 +33,10 @@ import org.springframework.security.core.Authentication;
  */
 public final class LogoutSuccessEventPublishingLogoutHandler implements LogoutHandler, ApplicationEventPublisherAware {
 
-	private ApplicationEventPublisher eventPublisher;
+	private @Nullable ApplicationEventPublisher eventPublisher;
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		if (this.eventPublisher == null) {
 			return;
 		}

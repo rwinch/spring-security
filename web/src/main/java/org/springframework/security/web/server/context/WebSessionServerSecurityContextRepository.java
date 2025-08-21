@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebSession;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Stores the {@link SecurityContext} in the
@@ -69,7 +70,7 @@ public class WebSessionServerSecurityContextRepository implements ServerSecurity
 	}
 
 	@Override
-	public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
+	public Mono<Void> save(ServerWebExchange exchange, @Nullable SecurityContext context) {
 		return exchange.getSession().doOnNext((session) -> {
 			if (context == null) {
 				session.getAttributes().remove(this.springSecurityContextAttrName);

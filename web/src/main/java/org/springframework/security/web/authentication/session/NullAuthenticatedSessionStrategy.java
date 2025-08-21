@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Luke Taylor
@@ -28,7 +29,7 @@ import org.springframework.security.core.Authentication;
 public final class NullAuthenticatedSessionStrategy implements SessionAuthenticationStrategy {
 
 	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
 	}
 

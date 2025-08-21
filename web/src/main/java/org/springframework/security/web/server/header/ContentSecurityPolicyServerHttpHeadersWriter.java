@@ -21,6 +21,8 @@ import reactor.core.publisher.Mono;
 import org.springframework.security.web.server.header.StaticServerHttpHeadersWriter.Builder;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import com.uber.nullaway.annotations.Initializer;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Writes the {@code Content-Security-Policy} response header with configured policy
@@ -39,7 +41,7 @@ public final class ContentSecurityPolicyServerHttpHeadersWriter implements Serve
 
 	private boolean reportOnly;
 
-	private ServerHttpHeadersWriter delegate;
+	private @Nullable ServerHttpHeadersWriter delegate;
 
 	@Override
 	public Mono<Void> writeHttpHeaders(ServerWebExchange exchange) {
@@ -51,7 +53,7 @@ public final class ContentSecurityPolicyServerHttpHeadersWriter implements Serve
 	 * @param policyDirectives the policy directive(s)
 	 * @throws IllegalArgumentException if policyDirectives is {@code null} or empty
 	 */
-	public void setPolicyDirectives(String policyDirectives) {
+	@Initializer public void setPolicyDirectives(String policyDirectives) {
 		Assert.hasLength(policyDirectives, "policyDirectives must not be null or empty");
 		this.policyDirectives = policyDirectives;
 		this.delegate = createDelegate();
@@ -67,7 +69,7 @@ public final class ContentSecurityPolicyServerHttpHeadersWriter implements Serve
 		this.delegate = createDelegate();
 	}
 
-	private ServerHttpHeadersWriter createDelegate() {
+	private @Nullable ServerHttpHeadersWriter createDelegate() {
 		if (this.policyDirectives == null) {
 			return null;
 		}

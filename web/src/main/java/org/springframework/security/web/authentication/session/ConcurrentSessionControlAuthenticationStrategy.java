@@ -35,6 +35,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Strategy which handles concurrent session-control.
@@ -91,8 +93,8 @@ public class ConcurrentSessionControlAuthenticationStrategy
 	 * In addition to the steps from the superclass, the sessionRegistry will be updated
 	 * with the new session information.
 	 */
-	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	@NullUnmarked @Override
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
 		int allowedSessions = getMaximumSessionsForThisUser(authentication);
 		if (allowedSessions == -1) {
@@ -129,7 +131,7 @@ public class ConcurrentSessionControlAuthenticationStrategy
 	 * @param authentication to determine the maximum sessions for
 	 * @return either -1 meaning unlimited, or a positive integer to limit (never zero)
 	 */
-	protected int getMaximumSessionsForThisUser(Authentication authentication) {
+	protected int getMaximumSessionsForThisUser(@Nullable Authentication authentication) {
 		return this.sessionLimit.apply(authentication);
 	}
 

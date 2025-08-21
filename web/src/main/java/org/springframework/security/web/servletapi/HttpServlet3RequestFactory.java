@@ -48,6 +48,8 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Provides integration with the Servlet 3 APIs. The additional methods that are
@@ -87,11 +89,11 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 
 	private final AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
-	private AuthenticationEntryPoint authenticationEntryPoint;
+	private @Nullable AuthenticationEntryPoint authenticationEntryPoint;
 
-	private AuthenticationManager authenticationManager;
+	private @Nullable AuthenticationManager authenticationManager;
 
-	private List<LogoutHandler> logoutHandlers;
+	private @Nullable List<LogoutHandler> logoutHandlers;
 
 	private SecurityContextRepository securityContextRepository;
 
@@ -117,7 +119,7 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 	 * is not authenticated.
 	 */
 
-	void setAuthenticationEntryPoint(AuthenticationEntryPoint authenticationEntryPoint) {
+	void setAuthenticationEntryPoint(@Nullable AuthenticationEntryPoint authenticationEntryPoint) {
 		this.authenticationEntryPoint = authenticationEntryPoint;
 	}
 
@@ -135,7 +137,7 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 	 * @param authenticationManager the {@link AuthenticationManager} to use when invoking
 	 * {@link HttpServletRequest#login(String, String)}
 	 */
-	void setAuthenticationManager(AuthenticationManager authenticationManager) {
+	void setAuthenticationManager(@Nullable AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
 
@@ -154,7 +156,7 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 	 * @param logoutHandlers the {@code List<LogoutHandler>}s when invoking
 	 * {@link HttpServletRequest#logout()}.
 	 */
-	void setLogoutHandlers(List<LogoutHandler> logoutHandlers) {
+	void setLogoutHandlers(@Nullable List<LogoutHandler> logoutHandlers) {
 		this.logoutHandlers = logoutHandlers;
 	}
 
@@ -193,7 +195,7 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 		}
 
 		@Override
-		public AsyncContext getAsyncContext() {
+		public @Nullable AsyncContext getAsyncContext() {
 			AsyncContext asyncContext = super.getAsyncContext();
 			if (asyncContext == null) {
 				return null;
@@ -266,7 +268,7 @@ final class HttpServlet3RequestFactory implements HttpServletRequestFactory {
 			}
 		}
 
-		@Override
+		@NullUnmarked @Override
 		public void logout() throws ServletException {
 			List<LogoutHandler> handlers = HttpServlet3RequestFactory.this.logoutHandlers;
 			if (CollectionUtils.isEmpty(handlers)) {

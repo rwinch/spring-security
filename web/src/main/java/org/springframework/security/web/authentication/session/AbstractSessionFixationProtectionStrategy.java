@@ -29,6 +29,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.web.util.WebUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A base class for performing session fixation protection.
@@ -70,7 +71,7 @@ public abstract class AbstractSessionFixationProtectionStrategy
 	 * exist.
 	 */
 	@Override
-	public void onAuthentication(Authentication authentication, HttpServletRequest request,
+	public void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request,
 			HttpServletResponse response) {
 		boolean hadSessionAlready = request.getSession(false) != null;
 		if (!hadSessionAlready && !this.alwaysCreateSession) {
@@ -124,7 +125,7 @@ public abstract class AbstractSessionFixationProtectionStrategy
 	 * @param newSession the newly created session
 	 * @param auth the token for the newly authenticated principal
 	 */
-	protected void onSessionChange(String originalSessionId, HttpSession newSession, Authentication auth) {
+	protected void onSessionChange(String originalSessionId, HttpSession newSession, @Nullable Authentication auth) {
 		this.applicationEventPublisher
 			.publishEvent(new SessionFixationProtectionEvent(auth, originalSessionId, newSession.getId()));
 	}

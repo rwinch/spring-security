@@ -39,6 +39,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher.MatchResult;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An {@link AuthorizationManager} which delegates to a specific
@@ -63,7 +64,7 @@ public final class RequestMatcherDelegatingAuthorizationManager implements Autho
 	}
 
 	@Override
-	public AuthorizationResult authorize(Supplier<Authentication> authentication, HttpServletRequest request) {
+	public @Nullable AuthorizationResult authorize(Supplier<Authentication> authentication, HttpServletRequest request) {
 		if (this.logger.isTraceEnabled()) {
 			this.logger.trace(LogMessage.format("Authorizing %s", requestLine(request)));
 		}

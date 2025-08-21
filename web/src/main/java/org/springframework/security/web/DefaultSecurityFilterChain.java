@@ -35,6 +35,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.lang.NonNull;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Standard implementation of {@code SecurityFilterChain}.
@@ -51,9 +52,9 @@ public final class DefaultSecurityFilterChain implements SecurityFilterChain, Be
 
 	private final List<Filter> filters;
 
-	private String beanName;
+	private @Nullable String beanName;
 
-	private ConfigurableListableBeanFactory beanFactory;
+	private @Nullable ConfigurableListableBeanFactory beanFactory;
 
 	public DefaultSecurityFilterChain(RequestMatcher requestMatcher, Filter... filters) {
 		this(requestMatcher, Arrays.asList(filters));

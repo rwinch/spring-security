@@ -36,6 +36,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import static org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.pathPattern;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Logs a principal out.
@@ -57,7 +59,7 @@ public class LogoutFilter extends GenericFilterBean {
 	private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
 		.getContextHolderStrategy();
 
-	private RequestMatcher logoutRequestMatcher;
+	private @Nullable RequestMatcher logoutRequestMatcher;
 
 	private final LogoutHandler handler;
 
@@ -114,7 +116,7 @@ public class LogoutFilter extends GenericFilterBean {
 	 * @param response the response
 	 * @return <code>true</code> if logout should occur, <code>false</code> otherwise
 	 */
-	protected boolean requiresLogout(HttpServletRequest request, HttpServletResponse response) {
+	@NullUnmarked protected boolean requiresLogout(HttpServletRequest request, HttpServletResponse response) {
 		if (this.logoutRequestMatcher.matches(request)) {
 			return true;
 		}

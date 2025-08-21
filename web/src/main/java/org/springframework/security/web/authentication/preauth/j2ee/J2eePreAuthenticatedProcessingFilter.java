@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.jspecify.annotations.Nullable;
 
 /**
  * This AbstractPreAuthenticatedProcessingFilter implementation is based on the J2EE
@@ -35,7 +36,7 @@ public class J2eePreAuthenticatedProcessingFilter extends AbstractPreAuthenticat
 	 * Return the J2EE user name.
 	 */
 	@Override
-	protected Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
+	protected @Nullable Object getPreAuthenticatedPrincipal(HttpServletRequest httpRequest) {
 		Object principal = (httpRequest.getUserPrincipal() != null) ? httpRequest.getUserPrincipal().getName() : null;
 		this.logger.debug(LogMessage.format("PreAuthenticated J2EE principal: %s", principal));
 		return principal;

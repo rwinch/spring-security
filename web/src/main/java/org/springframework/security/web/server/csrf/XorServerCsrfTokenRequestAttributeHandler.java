@@ -27,6 +27,7 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of the {@link ServerCsrfTokenRequestAttributeHandler} and
@@ -72,7 +73,7 @@ public final class XorServerCsrfTokenRequestAttributeHandler extends ServerCsrfT
 			.flatMap((actualToken) -> Mono.justOrEmpty(getTokenValue(actualToken, csrfToken.getToken())));
 	}
 
-	private static String getTokenValue(String actualToken, String token) {
+	private static @Nullable String getTokenValue(String actualToken, String token) {
 		byte[] actualBytes;
 		try {
 			actualBytes = Base64.getUrlDecoder().decode(actualToken);

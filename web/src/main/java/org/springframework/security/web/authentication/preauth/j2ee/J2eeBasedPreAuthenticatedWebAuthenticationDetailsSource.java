@@ -34,6 +34,8 @@ import org.springframework.security.core.authority.mapping.MappableAttributesRet
 import org.springframework.security.core.authority.mapping.SimpleAttributes2GrantedAuthoritiesMapper;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesWebAuthenticationDetails;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Implementation of AuthenticationDetailsSource which converts the user's J2EE roles (as
@@ -52,7 +54,7 @@ public class J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource implements
 	/**
 	 * The role attributes returned by the configured {@code MappableAttributesRetriever}
 	 */
-	protected Set<String> j2eeMappableRoles;
+	protected @Nullable Set<String> j2eeMappableRoles;
 
 	protected Attributes2GrantedAuthoritiesMapper j2eeUserRoles2GrantedAuthoritiesMapper = new SimpleAttributes2GrantedAuthoritiesMapper();
 
@@ -74,7 +76,7 @@ public class J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource implements
 	 * @return The subset of {@code j2eeMappableRoles} which applies to the current user
 	 * making the request.
 	 */
-	protected Collection<String> getUserRoles(HttpServletRequest request) {
+	@NullUnmarked protected Collection<String> getUserRoles(HttpServletRequest request) {
 		ArrayList<String> j2eeUserRolesList = new ArrayList<>();
 		for (String role : this.j2eeMappableRoles) {
 			if (request.isUserInRole(role)) {

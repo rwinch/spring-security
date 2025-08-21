@@ -25,6 +25,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * <p>
@@ -59,7 +61,7 @@ public class ReferrerPolicyHeaderWriter implements HeaderWriter {
 
 	private static final String REFERRER_POLICY_HEADER = "Referrer-Policy";
 
-	private ReferrerPolicy policy;
+	private @Nullable ReferrerPolicy policy;
 
 	/**
 	 * Creates a new instance. Default value: no-referrer.
@@ -91,7 +93,7 @@ public class ReferrerPolicyHeaderWriter implements HeaderWriter {
 	 * @see org.springframework.security.web.header.HeaderWriter#writeHeaders(HttpServletRequest,
 	 * HttpServletResponse)
 	 */
-	@Override
+	@NullUnmarked @Override
 	public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
 		if (!response.containsHeader(REFERRER_POLICY_HEADER)) {
 			response.setHeader(REFERRER_POLICY_HEADER, this.policy.getPolicy());
@@ -136,7 +138,7 @@ public class ReferrerPolicyHeaderWriter implements HeaderWriter {
 			return this.policy;
 		}
 
-		public static ReferrerPolicy get(String referrerPolicy) {
+		public static @Nullable ReferrerPolicy get(String referrerPolicy) {
 			return REFERRER_POLICIES.get(referrerPolicy);
 		}
 

@@ -40,6 +40,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.springframework.web.util.WebUtils;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A {@code SecurityContextRepository} implementation which stores the security context in
@@ -146,8 +148,8 @@ public class HttpSessionSecurityContextRepository implements SecurityContextRepo
 		return new SupplierDeferredSecurityContext(supplier, this.securityContextHolderStrategy);
 	}
 
-	@Override
-	public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
+	@NullUnmarked @Override
+	public void saveContext(SecurityContext context, HttpServletRequest request, @Nullable HttpServletResponse response) {
 		SaveContextOnUpdateOrErrorResponseWrapper responseWrapper = WebUtils.getNativeResponse(response,
 				SaveContextOnUpdateOrErrorResponseWrapper.class);
 		if (responseWrapper == null) {
@@ -203,7 +205,7 @@ public class HttpSessionSecurityContextRepository implements SecurityContextRepo
 	/**
 	 * @param httpSession the session obtained from the request.
 	 */
-	private SecurityContext readSecurityContextFromSession(HttpSession httpSession) {
+	private @Nullable SecurityContext readSecurityContextFromSession(HttpSession httpSession) {
 		if (httpSession == null) {
 			this.logger.trace("No HttpSession currently exists");
 			return null;
@@ -295,7 +297,7 @@ public class HttpSessionSecurityContextRepository implements SecurityContextRepo
 		this.contextObject = this.securityContextHolderStrategy.createEmptyContext();
 	}
 
-	private boolean isTransient(Object object) {
+	private boolean isTransient(@Nullable Object object) {
 		if (object == null) {
 			return false;
 		}
@@ -355,7 +357,7 @@ public class HttpSessionSecurityContextRepository implements SecurityContextRepo
 
 		private final SecurityContext contextBeforeExecution;
 
-		private final Authentication authBeforeExecution;
+		private final @Nullable Authentication authBeforeExecution;
 
 		private boolean isSaveContextInvoked;
 
@@ -438,7 +440,7 @@ public class HttpSessionSecurityContextRepository implements SecurityContextRepo
 					|| context.getAuthentication() != this.authBeforeExecution;
 		}
 
-		private HttpSession createNewSessionIfAllowed(SecurityContext context) {
+		private @Nullable HttpSession createNewSessionIfAllowed(SecurityContext context) {
 			if (this.httpSessionExistedAtStartOfRequest) {
 				this.logger.debug("HttpSession is now null, but was not null at start of request; "
 						+ "session was invalidated, so do not create a new session");

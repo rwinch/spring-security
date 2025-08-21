@@ -54,6 +54,8 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Processes a HTTP request's Digest authorization headers, putting the result into the
@@ -99,13 +101,13 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 
 	private AuthenticationDetailsSource<HttpServletRequest, ?> authenticationDetailsSource = new WebAuthenticationDetailsSource();
 
-	private DigestAuthenticationEntryPoint authenticationEntryPoint;
+	@SuppressWarnings("NullAway.Init") private DigestAuthenticationEntryPoint authenticationEntryPoint;
 
 	protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
 	private UserCache userCache = new NullUserCache();
 
-	private UserDetailsService userDetailsService;
+	private @Nullable UserDetailsService userDetailsService;
 
 	private boolean passwordAlreadyEncoded = false;
 
@@ -125,7 +127,7 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 		doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
-	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+	@NullUnmarked private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		String header = request.getHeader("Authorization");
 		if (header == null || !header.startsWith("Digest ")) {
@@ -232,7 +234,7 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 		return this.userCache;
 	}
 
-	public UserDetailsService getUserDetailsService() {
+	public @Nullable UserDetailsService getUserDetailsService() {
 		return this.userDetailsService;
 	}
 
@@ -304,27 +306,27 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 
 	private class DigestData {
 
-		private final String username;
+		private final @Nullable String username;
 
-		private final String realm;
+		private final @Nullable String realm;
 
-		private final String nonce;
+		private final @Nullable String nonce;
 
-		private final String uri;
+		private final @Nullable String uri;
 
-		private final String response;
+		private final @Nullable String response;
 
-		private final String qop;
+		private final @Nullable String qop;
 
-		private final String nc;
+		private final @Nullable String nc;
 
-		private final String cnonce;
+		private final @Nullable String cnonce;
 
 		private final String section212response;
 
 		private long nonceExpiryTime;
 
-		DigestData(String header) {
+		@NullUnmarked DigestData(String header) {
 			this.section212response = header.substring(7);
 			String[] headerEntries = DigestAuthUtils.splitIgnoringQuotes(this.section212response, ',');
 			Map<String, String> headerMap = DigestAuthUtils.splitEachArrayElementAndCreateMap(headerEntries, "=", "\"");
@@ -341,7 +343,7 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 							this.username, this.realm, this.nonce, this.uri, this.response));
 		}
 
-		void validateAndDecode(String entryPointKey, String expectedRealm) throws BadCredentialsException {
+		@NullUnmarked void validateAndDecode(@Nullable String entryPointKey, @Nullable String expectedRealm) throws BadCredentialsException {
 			// Check all required parameters were supplied (ie RFC 2069)
 			if ((this.username == null) || (this.realm == null) || (this.nonce == null) || (this.uri == null)
 					|| (this.response == null)) {
@@ -401,7 +403,7 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 			}
 		}
 
-		String calculateServerDigest(String password, String httpMethod) {
+		String calculateServerDigest(@Nullable String password, String httpMethod) {
 			// Compute the expected response-digest (will be in hex form). Don't catch
 			// IllegalArgumentException (already checked validity)
 			return DigestAuthUtils.generateDigest(DigestAuthenticationFilter.this.passwordAlreadyEncoded, this.username,
@@ -413,11 +415,11 @@ public class DigestAuthenticationFilter extends GenericFilterBean implements Mes
 			return this.nonceExpiryTime < now;
 		}
 
-		String getUsername() {
+		@Nullable String getUsername() {
 			return this.username;
 		}
 
-		String getResponse() {
+		@Nullable String getResponse() {
 			return this.response;
 		}
 

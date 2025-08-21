@@ -23,6 +23,7 @@ import org.springframework.security.core.session.ReactiveSessionInformation;
 import org.springframework.security.core.session.ReactiveSessionRegistry;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An implementation of {@link ServerAuthenticationSuccessHandler} that will register a
@@ -40,7 +41,7 @@ public final class RegisterSessionServerAuthenticationSuccessHandler implements 
 		this.sessionRegistry = sessionRegistry;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public Mono<Void> onAuthenticationSuccess(WebFilterExchange exchange, Authentication authentication) {
 		return exchange.getExchange()
 			.getSession()

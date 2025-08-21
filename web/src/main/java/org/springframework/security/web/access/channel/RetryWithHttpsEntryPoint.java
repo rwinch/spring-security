@@ -17,6 +17,7 @@
 package org.springframework.security.web.access.channel;
 
 import org.springframework.security.web.PortMapper;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Commences a secure channel by retrying the original request using HTTPS.
@@ -39,7 +40,7 @@ public class RetryWithHttpsEntryPoint extends AbstractRetryEntryPoint {
 	}
 
 	@Override
-	protected Integer getMappedPort(Integer mapFromPort) {
+	protected @Nullable Integer getMappedPort(Integer mapFromPort) {
 		return getPortMapper().lookupHttpsPort(mapFromPort);
 	}
 

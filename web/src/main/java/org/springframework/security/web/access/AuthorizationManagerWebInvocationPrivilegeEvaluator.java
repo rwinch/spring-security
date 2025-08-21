@@ -25,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
+import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of {@link WebInvocationPrivilegeEvaluator} which delegates the checks
@@ -38,7 +39,7 @@ public final class AuthorizationManagerWebInvocationPrivilegeEvaluator
 
 	private final AuthorizationManager<HttpServletRequest> authorizationManager;
 
-	private ServletContext servletContext;
+	private @Nullable ServletContext servletContext;
 
 	private HttpServletRequestTransformer requestTransformer = HttpServletRequestTransformer.IDENTITY;
 
@@ -54,7 +55,7 @@ public final class AuthorizationManagerWebInvocationPrivilegeEvaluator
 	}
 
 	@Override
-	public boolean isAllowed(String contextPath, String uri, String method, Authentication authentication) {
+	public boolean isAllowed(@Nullable String contextPath, String uri, @Nullable String method, Authentication authentication) {
 		FilterInvocation filterInvocation = new FilterInvocation(contextPath, uri, method, this.servletContext);
 		HttpServletRequest httpRequest = this.requestTransformer.transform(filterInvocation.getHttpRequest());
 		AuthorizationResult result = this.authorizationManager.authorize(() -> authentication, httpRequest);

@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * {@link LogoutSuccessHandler} implementation that will perform a request dispatcher
@@ -47,7 +48,7 @@ public class ForwardLogoutSuccessHandler implements LogoutSuccessHandler {
 	}
 
 	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication)
 			throws IOException, ServletException {
 		request.getRequestDispatcher(this.targetUrl).forward(request, response);
 	}

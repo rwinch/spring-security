@@ -39,6 +39,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A <code>Filter</code> which populates the <code>ServletRequest</code> with a request
@@ -76,13 +78,13 @@ public class SecurityContextHolderAwareRequestFilter extends GenericFilterBean {
 
 	private String rolePrefix = "ROLE_";
 
-	private HttpServletRequestFactory requestFactory;
+	private @Nullable HttpServletRequestFactory requestFactory;
 
-	private AuthenticationEntryPoint authenticationEntryPoint;
+	private @Nullable AuthenticationEntryPoint authenticationEntryPoint;
 
-	private AuthenticationManager authenticationManager;
+	private @Nullable AuthenticationManager authenticationManager;
 
-	private List<LogoutHandler> logoutHandlers;
+	private @Nullable List<LogoutHandler> logoutHandlers;
 
 	private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
@@ -173,7 +175,7 @@ public class SecurityContextHolderAwareRequestFilter extends GenericFilterBean {
 		this.logoutHandlers = logoutHandlers;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		chain.doFilter(this.requestFactory.create((HttpServletRequest) req, (HttpServletResponse) res), res);

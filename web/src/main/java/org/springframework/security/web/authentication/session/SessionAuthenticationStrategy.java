@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Allows pluggable support for HttpSession-related behaviour when an authentication
@@ -39,7 +40,7 @@ public interface SessionAuthenticationStrategy {
 	 * not allowed for the session. This will typically be because the user has too many
 	 * sessions open at once.
 	 */
-	void onAuthentication(Authentication authentication, HttpServletRequest request, HttpServletResponse response)
+	void onAuthentication(@Nullable Authentication authentication, HttpServletRequest request, HttpServletResponse response)
 			throws SessionAuthenticationException;
 
 }

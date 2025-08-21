@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Jackson mixin class to serialize/deserialize {@link DefaultSavedRequest}. This mixin
@@ -45,6 +46,6 @@ import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 abstract class DefaultSavedRequestMixin {
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	String matchingRequestParameterName;
+	@Nullable String matchingRequestParameterName;
 
 }

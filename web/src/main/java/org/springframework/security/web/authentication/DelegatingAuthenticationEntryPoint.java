@@ -33,6 +33,8 @@ import org.springframework.security.web.util.matcher.ELRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcherEditor;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An {@code AuthenticationEntryPoint} which selects a concrete
@@ -66,13 +68,13 @@ public class DelegatingAuthenticationEntryPoint implements AuthenticationEntryPo
 
 	private final LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> entryPoints;
 
-	private AuthenticationEntryPoint defaultEntryPoint;
+	private @Nullable AuthenticationEntryPoint defaultEntryPoint;
 
 	public DelegatingAuthenticationEntryPoint(LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> entryPoints) {
 		this.entryPoints = entryPoints;
 	}
 
-	@Override
+	@NullUnmarked @Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		for (RequestMatcher requestMatcher : this.entryPoints.keySet()) {

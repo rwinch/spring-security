@@ -20,6 +20,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Provides static methods for composing URLs.
@@ -48,8 +50,8 @@ public final class UrlUtils {
 	 * HTTP or HTTPS (80 and 443 respectively).
 	 * @return the full URL, suitable for redirects (not decoded).
 	 */
-	public static String buildFullRequestUrl(String scheme, String serverName, int serverPort, String requestURI,
-			String queryString) {
+	@NullUnmarked public static String buildFullRequestUrl(@Nullable String scheme, @Nullable String serverName, int serverPort, @Nullable String requestURI,
+			@Nullable String queryString) {
 		scheme = scheme.toLowerCase(Locale.ENGLISH);
 		StringBuilder url = new StringBuilder();
 		url.append(scheme).append("://").append(serverName);

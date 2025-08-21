@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.header.HeaderWriter;
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * @author Rafiullah Hamedy
@@ -42,7 +43,7 @@ public final class HeaderWriterLogoutHandler implements LogoutHandler {
 	}
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(HttpServletRequest request, HttpServletResponse response, @Nullable Authentication authentication) {
 		this.headerWriter.writeHeaders(request, response);
 	}
 

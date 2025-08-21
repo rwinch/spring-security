@@ -40,6 +40,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Filter required by concurrent session handling package.
@@ -73,9 +75,9 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 
 	private final SessionRegistry sessionRegistry;
 
-	private String expiredUrl;
+	private @Nullable String expiredUrl;
 
-	private RedirectStrategy redirectStrategy;
+	private @Nullable RedirectStrategy redirectStrategy;
 
 	private LogoutHandler handlers = new CompositeLogoutHandler(new SecurityContextLogoutHandler());
 
@@ -95,7 +97,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 	 * {@link #ConcurrentSessionFilter(SessionRegistry, SessionInformationExpiredStrategy)}
 	 * with {@link SimpleRedirectSessionInformationExpiredStrategy} instead.
 	 */
-	@Deprecated
+	@NullUnmarked @Deprecated
 	public ConcurrentSessionFilter(SessionRegistry sessionRegistry, String expiredUrl) {
 		Assert.notNull(sessionRegistry, "SessionRegistry required");
 		Assert.isTrue(expiredUrl == null || UrlUtils.isValidRedirectUrl(expiredUrl),
@@ -161,7 +163,7 @@ public class ConcurrentSessionFilter extends GenericFilterBean {
 	 * instead.
 	 */
 	@Deprecated
-	protected String determineExpiredUrl(HttpServletRequest request, SessionInformation info) {
+	protected @Nullable String determineExpiredUrl(HttpServletRequest request, SessionInformation info) {
 		return this.expiredUrl;
 	}
 

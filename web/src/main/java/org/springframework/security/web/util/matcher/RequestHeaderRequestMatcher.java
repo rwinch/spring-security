@@ -19,6 +19,7 @@ package org.springframework.security.web.util.matcher;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.util.Assert;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link RequestMatcher} that can be used to match request that contain a header with
@@ -54,7 +55,7 @@ public final class RequestHeaderRequestMatcher implements RequestMatcher {
 
 	private final String expectedHeaderName;
 
-	private final String expectedHeaderValue;
+	private final @Nullable String expectedHeaderValue;
 
 	/**
 	 * Creates a new instance that will match if a header by the name of
@@ -75,7 +76,7 @@ public final class RequestHeaderRequestMatcher implements RequestMatcher {
 	 * @param expectedHeaderValue the expected header value or null if the value does not
 	 * matter
 	 */
-	public RequestHeaderRequestMatcher(String expectedHeaderName, String expectedHeaderValue) {
+	public RequestHeaderRequestMatcher(String expectedHeaderName, @Nullable String expectedHeaderValue) {
 		Assert.notNull(expectedHeaderName, "headerName cannot be null");
 		this.expectedHeaderName = expectedHeaderName;
 		this.expectedHeaderValue = expectedHeaderValue;

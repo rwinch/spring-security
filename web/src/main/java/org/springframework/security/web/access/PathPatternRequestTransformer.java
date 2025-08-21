@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.web.util.ServletRequestPathUtils;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Prepares the privilege evaluator's request for {@link PathPatternRequestMatcher}
@@ -51,7 +52,7 @@ public final class PathPatternRequestTransformer
 		}
 
 		@Override
-		public Object getAttribute(String name) {
+		public @Nullable Object getAttribute(String name) {
 			return this.attributes.get(name);
 		}
 
