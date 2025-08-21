@@ -25,6 +25,8 @@ import java.util.Set;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.access.ConfigAttribute;
@@ -32,8 +34,6 @@ import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.annotation.SecurityAnnotationScanner;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.jspecify.annotations.Nullable;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Default implementation of <tt>FilterInvocationDefinitionSource</tt>.

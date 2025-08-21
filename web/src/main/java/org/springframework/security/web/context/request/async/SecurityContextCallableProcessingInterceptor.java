@@ -18,14 +18,15 @@ package org.springframework.security.web.context.request.async;
 
 import java.util.concurrent.Callable;
 
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
-import org.jspecify.annotations.Nullable;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * <p>

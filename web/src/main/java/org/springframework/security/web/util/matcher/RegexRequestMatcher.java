@@ -21,12 +21,12 @@ import java.util.regex.Pattern;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Uses a regular expression to decide whether a supplied the URL of a supplied

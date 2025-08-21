@@ -21,6 +21,7 @@ import java.util.List;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,6 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link WebInvocationPrivilegeEvaluator} which delegates to a list of

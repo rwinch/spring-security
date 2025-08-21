@@ -19,11 +19,11 @@ package org.springframework.security.web.session;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An event for when a {@link SessionInformation} is expired.

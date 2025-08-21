@@ -17,7 +17,6 @@
 package org.springframework.security.web.csrf;
 
 import java.util.function.Supplier;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An interface that allows delayed access to a {@link CsrfToken} that may be generated.

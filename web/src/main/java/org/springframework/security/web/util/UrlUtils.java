@@ -20,8 +20,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Provides static methods for composing URLs.

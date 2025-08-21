@@ -24,11 +24,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of the {@link CsrfTokenRequestHandler} interface that is capable of

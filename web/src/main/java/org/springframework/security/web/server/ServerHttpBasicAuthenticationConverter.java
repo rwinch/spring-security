@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.function.Function;
 
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Converts from a {@link ServerWebExchange} to an {@link Authentication} that can be

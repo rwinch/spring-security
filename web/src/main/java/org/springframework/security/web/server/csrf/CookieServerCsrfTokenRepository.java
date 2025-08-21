@@ -19,6 +19,7 @@ package org.springframework.security.web.server.csrf;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -28,7 +29,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link ServerCsrfTokenRepository} that persists the CSRF token in a cookie named

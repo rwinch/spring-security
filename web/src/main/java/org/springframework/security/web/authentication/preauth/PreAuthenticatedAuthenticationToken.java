@@ -18,9 +18,10 @@ package org.springframework.security.web.authentication.preauth;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.jspecify.annotations.Nullable;
 
 /**
  * {@link org.springframework.security.core.Authentication} implementation for

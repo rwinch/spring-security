@@ -24,6 +24,7 @@ import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -35,7 +36,6 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.lang.NonNull;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Standard implementation of {@code SecurityFilterChain}.

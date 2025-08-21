@@ -16,11 +16,11 @@
 
 package org.springframework.security.web.server.header;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Inserts Cross-Origin-Opener-Policy header.

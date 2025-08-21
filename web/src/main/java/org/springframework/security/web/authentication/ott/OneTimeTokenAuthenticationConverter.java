@@ -19,12 +19,12 @@ package org.springframework.security.web.authentication.ott;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.authentication.ott.OneTimeTokenAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.util.StringUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of {@link AuthenticationConverter} that detects if the request

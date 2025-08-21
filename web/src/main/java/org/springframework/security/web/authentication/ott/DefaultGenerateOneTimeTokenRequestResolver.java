@@ -19,11 +19,11 @@ package org.springframework.security.web.authentication.ott;
 import java.time.Duration;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.authentication.ott.GenerateOneTimeTokenRequest;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Default implementation of {@link GenerateOneTimeTokenRequestResolver}. Resolves

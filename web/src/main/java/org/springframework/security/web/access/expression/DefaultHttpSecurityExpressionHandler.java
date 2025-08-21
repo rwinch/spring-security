@@ -18,6 +18,8 @@ package org.springframework.security.web.access.expression;
 
 import java.util.function.Supplier;
 
+import org.jspecify.annotations.NullUnmarked;
+
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.security.access.expression.AbstractSecurityExpressionHandler;
@@ -28,7 +30,6 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A {@link SecurityExpressionHandler} that uses a {@link RequestAuthorizationContext} to

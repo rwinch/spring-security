@@ -25,6 +25,7 @@ import jakarta.servlet.Filter;
 import jakarta.servlet.FilterRegistration.Dynamic;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.SessionTrackingMode;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Conventions;
@@ -38,7 +39,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Registers the {@link DelegatingFilterProxy} to use the springSecurityFilterChain before

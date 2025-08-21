@@ -18,6 +18,7 @@ package org.springframework.security.web.authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NullUnmarked;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
@@ -29,7 +30,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Processes an authentication form submission. Called

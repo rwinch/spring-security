@@ -22,6 +22,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NullUnmarked;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ott.GenerateOneTimeTokenRequest;
@@ -32,7 +33,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Filter that process a One-Time Token generation request.

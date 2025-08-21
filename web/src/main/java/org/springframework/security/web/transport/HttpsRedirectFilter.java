@@ -22,6 +22,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NullUnmarked;
 
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.PortMapper;
@@ -34,7 +35,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Redirects any non-HTTPS request to its HTTPS equivalent.

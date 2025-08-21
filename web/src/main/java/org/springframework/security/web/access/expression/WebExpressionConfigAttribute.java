@@ -16,13 +16,14 @@
 
 package org.springframework.security.web.access.expression;
 
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.web.FilterInvocation;
-import org.jspecify.annotations.Nullable;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Simple expression configuration attribute for use in web request authorizations.

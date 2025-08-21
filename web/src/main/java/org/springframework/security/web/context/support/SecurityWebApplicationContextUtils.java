@@ -17,11 +17,11 @@
 package org.springframework.security.web.context.support;
 
 import jakarta.servlet.ServletContext;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Spring Security extension to Spring's {@link WebApplicationContextUtils}.

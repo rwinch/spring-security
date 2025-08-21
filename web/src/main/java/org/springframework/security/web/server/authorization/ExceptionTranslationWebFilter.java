@@ -16,6 +16,7 @@
 
 package org.springframework.security.web.server.authorization;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import org.jspecify.annotations.Nullable;
 
 /**
  * @author Rob Winch

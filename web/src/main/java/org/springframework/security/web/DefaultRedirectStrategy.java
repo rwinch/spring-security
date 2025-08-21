@@ -28,7 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Simple implementation of <tt>RedirectStrategy</tt> which is the default used throughout

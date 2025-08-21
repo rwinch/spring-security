@@ -21,10 +21,10 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.web.util.ServletRequestPathUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Prepares the privilege evaluator's request for {@link PathPatternRequestMatcher}

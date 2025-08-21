@@ -17,11 +17,11 @@
 package org.springframework.security.web.authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A strategy used for converting from a {@link HttpServletRequest} to an

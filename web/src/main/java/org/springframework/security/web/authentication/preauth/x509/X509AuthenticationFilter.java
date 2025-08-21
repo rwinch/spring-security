@@ -19,10 +19,10 @@ package org.springframework.security.web.authentication.preauth.x509;
 import java.security.cert.X509Certificate;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.jspecify.annotations.Nullable;
 
 /**
  * @author Luke Taylor

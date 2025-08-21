@@ -21,13 +21,13 @@ import java.util.Base64;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of the {@link ServerCsrfTokenRequestAttributeHandler} and

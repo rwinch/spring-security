@@ -20,11 +20,11 @@ import java.io.IOException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Implementation of the {@link LogoutSuccessHandler}. By default returns an HTTP status

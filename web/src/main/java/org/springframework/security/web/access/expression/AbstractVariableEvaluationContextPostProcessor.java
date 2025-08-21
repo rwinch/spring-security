@@ -19,10 +19,10 @@ package org.springframework.security.web.access.expression;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.expression.EvaluationContext;
 import org.springframework.security.web.FilterInvocation;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Exposes URI template variables as variables on the {@link EvaluationContext}. For

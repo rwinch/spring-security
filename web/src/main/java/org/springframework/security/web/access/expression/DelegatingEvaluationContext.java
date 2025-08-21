@@ -18,6 +18,8 @@ package org.springframework.security.web.access.expression;
 
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.ConstructorResolver;
 import org.springframework.expression.EvaluationContext;
@@ -28,7 +30,6 @@ import org.springframework.expression.TypeComparator;
 import org.springframework.expression.TypeConverter;
 import org.springframework.expression.TypeLocator;
 import org.springframework.expression.TypedValue;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An instance of {@link EvaluationContext} that delegates to another implementation.

@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.log.LogMessage;
@@ -52,7 +53,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Switch User processing filter responsible for user context switching. A common use-case

@@ -17,13 +17,13 @@
 package org.springframework.security.web.util.matcher;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.NullUnmarked;
 
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.security.web.authentication.DelegatingAuthenticationEntryPoint;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * A RequestMatcher implementation which uses a SpEL expression

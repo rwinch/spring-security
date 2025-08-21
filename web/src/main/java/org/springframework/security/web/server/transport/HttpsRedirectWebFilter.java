@@ -18,6 +18,7 @@ package org.springframework.security.web.server.transport;
 
 import java.net.URI;
 
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.web.PortMapper;
@@ -31,7 +32,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Redirects any non-HTTPS request to its HTTPS equivalent.

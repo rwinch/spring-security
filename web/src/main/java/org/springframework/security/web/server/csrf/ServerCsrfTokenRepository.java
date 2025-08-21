@@ -16,10 +16,10 @@
 
 package org.springframework.security.web.server.csrf;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An API to allow changing the method in which the expected {@link CsrfToken} is

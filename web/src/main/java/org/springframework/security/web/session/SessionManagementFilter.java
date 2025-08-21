@@ -24,6 +24,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -39,7 +40,6 @@ import org.springframework.security.web.authentication.session.SessionFixationPr
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.GenericFilterBean;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Detects that a user has been authenticated since the start of the request and, if they

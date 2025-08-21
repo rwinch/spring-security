@@ -18,6 +18,7 @@ package org.springframework.security.web.server;
 
 import java.util.function.Function;
 
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Converts a ServerWebExchange into a UsernamePasswordAuthenticationToken from the form

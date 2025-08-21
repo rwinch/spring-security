@@ -22,10 +22,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.servlet.support.RequestDataValueProcessor;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Integration with Spring Web MVC that automatically adds the {@link CsrfToken} into

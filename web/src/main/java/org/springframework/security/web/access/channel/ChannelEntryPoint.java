@@ -23,7 +23,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.PortMapper;
-import org.jspecify.annotations.Nullable;
 
 /**
  * May be used by a {@link ChannelProcessor} to launch a web channel.

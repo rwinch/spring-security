@@ -17,9 +17,9 @@
 package org.springframework.security.web.authentication.preauth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A simple pre-authenticated filter which obtains the username from request attributes,

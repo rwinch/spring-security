@@ -19,12 +19,12 @@ package org.springframework.security.web.server.util.matcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Provides factory methods for creating common {@link ServerWebExchangeMatcher}

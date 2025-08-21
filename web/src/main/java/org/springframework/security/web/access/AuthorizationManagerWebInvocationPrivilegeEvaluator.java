@@ -18,6 +18,7 @@ package org.springframework.security.web.access;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.AuthorizationResult;
@@ -25,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An implementation of {@link WebInvocationPrivilegeEvaluator} which delegates the checks

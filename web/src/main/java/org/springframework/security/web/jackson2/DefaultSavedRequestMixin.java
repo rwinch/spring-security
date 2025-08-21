@@ -20,9 +20,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Jackson mixin class to serialize/deserialize {@link DefaultSavedRequest}. This mixin

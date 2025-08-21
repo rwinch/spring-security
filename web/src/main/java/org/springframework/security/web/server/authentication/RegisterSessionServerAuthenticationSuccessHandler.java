@@ -16,6 +16,7 @@
 
 package org.springframework.security.web.server.authentication;
 
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,6 @@ import org.springframework.security.core.session.ReactiveSessionInformation;
 import org.springframework.security.core.session.ReactiveSessionRegistry;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * An implementation of {@link ServerAuthenticationSuccessHandler} that will register a

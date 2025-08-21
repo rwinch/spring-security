@@ -16,8 +16,9 @@
 
 package org.springframework.security.web.access.channel;
 
-import org.springframework.security.web.PortMapper;
 import org.jspecify.annotations.Nullable;
+
+import org.springframework.security.web.PortMapper;
 
 /**
  * Commences an insecure channel by retrying the original request using HTTP.

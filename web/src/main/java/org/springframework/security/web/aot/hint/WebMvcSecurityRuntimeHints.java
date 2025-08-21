@@ -16,13 +16,14 @@
 
 package org.springframework.security.web.aot.hint;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.TypeReference;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.web.access.expression.WebSecurityExpressionRoot;
-import org.jspecify.annotations.Nullable;
 
 /**
  * {@link RuntimeHintsRegistrar} for WebMVC classes

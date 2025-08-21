@@ -24,8 +24,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.springframework.util.Assert;
 import org.jspecify.annotations.Nullable;
+
+import org.springframework.util.Assert;
 
 /**
  * Handler for analyzing {@link Throwable} instances.

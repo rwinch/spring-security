@@ -16,9 +16,10 @@
 
 package org.springframework.security.web.util;
 
-import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
+
+import org.springframework.util.Assert;
 
 /**
  * Internal class for building redirect URLs.

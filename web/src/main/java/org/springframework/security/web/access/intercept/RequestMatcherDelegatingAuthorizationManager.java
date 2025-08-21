@@ -24,6 +24,7 @@ import java.util.function.Supplier;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
@@ -39,7 +40,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher.MatchResult;
 import org.springframework.security.web.util.matcher.RequestMatcherEntry;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An {@link AuthorizationManager} which delegates to a specific

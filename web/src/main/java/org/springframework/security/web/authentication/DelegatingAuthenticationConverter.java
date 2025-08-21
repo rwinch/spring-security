@@ -19,10 +19,10 @@ package org.springframework.security.web.authentication;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link AuthenticationConverter}, that iterates over multiple

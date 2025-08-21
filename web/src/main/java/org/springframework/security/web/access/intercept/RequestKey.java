@@ -16,8 +16,9 @@
 
 package org.springframework.security.web.access.intercept;
 
-import org.springframework.util.Assert;
 import org.jspecify.annotations.Nullable;
+
+import org.springframework.util.Assert;
 
 /**
  * @author Luke Taylor

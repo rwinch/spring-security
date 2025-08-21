@@ -30,9 +30,9 @@ import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.core.log.LogMessage;
-import org.jspecify.annotations.Nullable;
 
 /**
  * WebSphere Security helper class to allow retrieval of the current username and groups.

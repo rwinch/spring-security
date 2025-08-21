@@ -19,9 +19,9 @@ package org.springframework.security.web;
 import java.util.Locale;
 
 import jakarta.servlet.ServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Concrete implementation of {@link PortResolver} that obtains the port from

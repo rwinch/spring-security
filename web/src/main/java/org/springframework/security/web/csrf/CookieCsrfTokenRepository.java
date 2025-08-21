@@ -22,13 +22,13 @@ import java.util.function.Consumer;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link CsrfTokenRepository} that persists the CSRF token in a cookie named

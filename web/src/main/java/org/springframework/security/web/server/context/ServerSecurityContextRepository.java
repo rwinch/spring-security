@@ -16,11 +16,11 @@
 
 package org.springframework.security.web.server.context;
 
+import org.jspecify.annotations.Nullable;
 import reactor.core.publisher.Mono;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.server.ServerWebExchange;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Strategy used for persisting a {@link SecurityContext} between requests.

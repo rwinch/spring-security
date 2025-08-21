@@ -18,6 +18,7 @@ package org.springframework.security.web.server.authentication;
 
 import java.util.List;
 
+import org.jspecify.annotations.NullUnmarked;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
@@ -27,7 +28,6 @@ import org.springframework.security.core.session.ReactiveSessionRegistry;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.util.Assert;
 import org.springframework.web.server.WebSession;
-import org.jspecify.annotations.NullUnmarked;
 
 /**
  * Controls the number of sessions a user can have concurrently authenticated in an

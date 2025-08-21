@@ -18,9 +18,9 @@ package org.springframework.security.web.authentication.logout;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.security.core.Authentication;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Indicates a class that is able to participate in logout handling.

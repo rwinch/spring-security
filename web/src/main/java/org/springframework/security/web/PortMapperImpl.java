@@ -19,8 +19,9 @@ package org.springframework.security.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.util.Assert;
 import org.jspecify.annotations.Nullable;
+
+import org.springframework.util.Assert;
 
 /**
  * Concrete implementation of {@link PortMapper} that obtains HTTP:HTTPS pairs from the

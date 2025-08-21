@@ -17,9 +17,9 @@
 package org.springframework.security.web.util.matcher;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.Nullable;
 
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link RequestMatcher} that can be used to match request that contain a header with

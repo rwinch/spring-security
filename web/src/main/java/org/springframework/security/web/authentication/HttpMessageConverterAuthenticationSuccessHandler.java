@@ -32,7 +32,6 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.Assert;
-import org.jspecify.annotations.Nullable;
 
 /**
  * An {@link AuthenticationSuccessHandler} that writes a JSON response with the redirect

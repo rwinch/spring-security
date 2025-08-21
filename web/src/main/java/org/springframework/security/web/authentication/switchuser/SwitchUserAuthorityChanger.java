@@ -18,10 +18,11 @@ package org.springframework.security.web.authentication.switchuser;
 
 import java.util.Collection;
 
+import org.jspecify.annotations.Nullable;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Allows subclasses to modify the {@link GrantedAuthority} list that will be assigned to
