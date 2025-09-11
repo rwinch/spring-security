@@ -295,16 +295,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 	}
 
 	private AuthenticationEntryPoint createDefaultEntryPoint(H http) {
-		AuthenticationEntryPoint defaults = entryPointFrom(this.defaultEntryPointMappings);
-		if (this.authorityToMatchingEntryPoint.isEmpty()) {
-			return defaults;
-		}
-		Map<String, AuthenticationEntryPoint> entryPoints = new LinkedHashMap<>();
-		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.authorityToMatchingEntryPoint
-			.entrySet()) {
-			entryPoints.put(entry.getKey(), entryPointFrom(entry.getValue()));
-		}
-		return new AuthenticationFactorDelegatingAuthenticationEntryPoint(entryPoints, defaults);
+		return entryPointFrom(this.defaultEntryPointMappings);
 	}
 
 	private AuthenticationEntryPoint entryPointFrom(
@@ -334,56 +325,6 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 			return result;
 		}
 		return new HttpSessionRequestCache();
-	}
-
-	private static final class AuthenticationFactorDelegatingAuthenticationEntryPoint
-			implements AuthenticationEntryPoint {
-
-		private final ThrowableAnalyzer throwableAnalyzer = new ThrowableAnalyzer();
-
-		private final Map<String, AuthenticationEntryPoint> entryPoints;
-
-		private final AuthenticationEntryPoint defaults;
-
-		private AuthenticationFactorDelegatingAuthenticationEntryPoint(
-				Map<String, AuthenticationEntryPoint> entryPoints, AuthenticationEntryPoint defaults) {
-			this.entryPoints = new LinkedHashMap<>(entryPoints);
-			this.defaults = defaults;
-		}
-
-		@Override
-		public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex)
-				throws IOException, ServletException {
-			Collection<GrantedAuthority> authorization = authorizationRequest(ex);
-			entryPoint(authorization).commence(request, response, ex);
-		}
-
-		private AuthenticationEntryPoint entryPoint(Collection<GrantedAuthority> authorities) {
-			if (authorities == null) {
-				return this.defaults;
-			}
-			for (GrantedAuthority needed : authorities) {
-				AuthenticationEntryPoint entryPoint = this.entryPoints.get(needed.getAuthority());
-				if (entryPoint != null) {
-					return entryPoint;
-				}
-			}
-			return this.defaults;
-		}
-
-		private Collection<GrantedAuthority> authorizationRequest(Exception ex) {
-			Throwable[] chain = this.throwableAnalyzer.determineCauseChain(ex);
-			AuthorizationDeniedException denied = (AuthorizationDeniedException) this.throwableAnalyzer
-				.getFirstThrowableOfType(AuthorizationDeniedException.class, chain);
-			if (denied == null) {
-				return List.of();
-			}
-			if (!(denied.getAuthorizationResult() instanceof AuthorityAuthorizationDecision authorization)) {
-				return List.of();
-			}
-			return authorization.getAuthorities();
-		}
-
 	}
 
 	private static final class AuthenticationEntryPointAccessDeniedHandlerAdapter implements AccessDeniedHandler {
