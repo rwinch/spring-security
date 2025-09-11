@@ -91,7 +91,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private LinkedHashMap<RequestMatcher, AccessDeniedHandler> defaultDeniedHandlerMappings = new LinkedHashMap<>();
 
-	private Map<String, AuthenticationEntryPoint> authorityToEntryPoint = new LinkedHashMap<>();
+	private Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint = new LinkedHashMap<>();
 
 	/**
 	 * Creates a new instance
@@ -185,7 +185,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	public ExceptionHandlingConfigurer<H> defaultAuthenticationEntryPointFor(AuthenticationEntryPoint entryPoint,
 			String authority) {
-		this.authorityToEntryPoint.put(authority, entryPoint);
+		this.missingAuthorityToEntryPoint.put(authority, entryPoint);
 		return this;
 	}
 
@@ -249,11 +249,11 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private AccessDeniedHandler createDefaultDeniedHandler(H http) {
 		AccessDeniedHandler defaults = createDefaultAccessDeniedHandler(http);
-		if (this.authorityToEntryPoint.isEmpty()) {
+		if (this.missingAuthorityToEntryPoint.isEmpty()) {
 			return defaults;
 		}
 		Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint = new LinkedHashMap<>();
-		for (Map.Entry<String, AuthenticationEntryPoint> entry : this.authorityToEntryPoint.entrySet()) {
+		for (Map.Entry<String, AuthenticationEntryPoint> entry : this.missingAuthorityToEntryPoint.entrySet()) {
 			AuthenticationEntryPoint entryPoint = entry.getValue();
 			missingAuthorityToEntryPoint.put(entry.getKey(), entryPoint);
 		}
