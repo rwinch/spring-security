@@ -45,7 +45,6 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 
@@ -92,7 +91,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private LinkedHashMap<RequestMatcher, AccessDeniedHandler> defaultDeniedHandlerMappings = new LinkedHashMap<>();
 
-	private Map<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> authorityToMatchingEntryPoint = new LinkedHashMap<>();
+	private Map<String, AuthenticationEntryPoint> authorityToEntryPoint = new LinkedHashMap<>();
 
 	/**
 	 * Creates a new instance
@@ -185,23 +184,8 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 	}
 
 	public ExceptionHandlingConfigurer<H> defaultAuthenticationEntryPointFor(AuthenticationEntryPoint entryPoint,
-			RequestMatcher preferredMatcher, String authority) {
-		this.defaultEntryPointMappings.put(preferredMatcher, entryPoint);
-		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> byMatcher = this.authorityToMatchingEntryPoint
-			.get(authority);
-		if (byMatcher == null) {
-			byMatcher = new LinkedHashMap<>();
-		}
-		byMatcher.put(preferredMatcher, entryPoint);
-		this.authorityToMatchingEntryPoint.put(authority, byMatcher);
-		return this;
-	}
-
-	public ExceptionHandlingConfigurer<H> defaultAuthenticationEntryPointFor(AuthenticationEntryPoint entryPoint,
 			String authority) {
-		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> byMatcher = new LinkedHashMap<>();
-		byMatcher.put(AnyRequestMatcher.INSTANCE, entryPoint);
-		this.authorityToMatchingEntryPoint.put(authority, byMatcher);
+		this.authorityToEntryPoint.put(authority, entryPoint);
 		return this;
 	}
 
@@ -265,13 +249,12 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private AccessDeniedHandler createDefaultDeniedHandler(H http) {
 		AccessDeniedHandler defaults = createDefaultAccessDeniedHandler(http);
-		if (this.authorityToMatchingEntryPoint.isEmpty()) {
+		if (this.authorityToEntryPoint.isEmpty()) {
 			return defaults;
 		}
 		Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint = new LinkedHashMap<>();
-		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.authorityToMatchingEntryPoint
-			.entrySet()) {
-			AuthenticationEntryPoint entryPoint = entryPointFrom(entry.getValue());
+		for (Map.Entry<String, AuthenticationEntryPoint> entry : this.authorityToEntryPoint.entrySet()) {
+			AuthenticationEntryPoint entryPoint = entry.getValue();
 			missingAuthorityToEntryPoint.put(entry.getKey(), entryPoint);
 		}
 		DelegatingMissingAuthorityAccessDeniedHandler result = new DelegatingMissingAuthorityAccessDeniedHandler(
@@ -331,15 +314,14 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 		private final Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint;
 
-		private final AccessDeniedHandler defaultDeniedHandler;
+		private final AccessDeniedHandler deniedHandler;
 
 		private RequestCache requestCache = new NullRequestCache();
 
 		private DelegatingMissingAuthorityAccessDeniedHandler(
-				Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint,
-				AccessDeniedHandler defaultDeniedHandler) {
+				Map<String, AuthenticationEntryPoint> missingAuthorityToEntryPoint, AccessDeniedHandler deniedHandler) {
 			this.missingAuthorityToEntryPoint = missingAuthorityToEntryPoint;
-			this.defaultDeniedHandler = defaultDeniedHandler;
+			this.deniedHandler = deniedHandler;
 		}
 
 		public void setRequestCache(RequestCache requestCache) {
@@ -358,7 +340,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 						new InsufficientAuthenticationException("Missing Authentication", ex));
 			}
 			else {
-				this.defaultDeniedHandler.handle(request, response, ex);
+				this.deniedHandler.handle(request, response, ex);
 			}
 		}
 
