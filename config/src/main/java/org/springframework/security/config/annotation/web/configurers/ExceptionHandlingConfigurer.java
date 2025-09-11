@@ -93,7 +93,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private LinkedHashMap<RequestMatcher, AccessDeniedHandler> defaultDeniedHandlerMappings = new LinkedHashMap<>();
 
-	private Map<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entryPoints = new LinkedHashMap<>();
+	private Map<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> authorityToMatchingEntryPoint = new LinkedHashMap<>();
 
 	/**
 	 * Creates a new instance
@@ -188,12 +188,12 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 	public ExceptionHandlingConfigurer<H> defaultAuthenticationEntryPointFor(AuthenticationEntryPoint entryPoint,
 			RequestMatcher preferredMatcher, String authority) {
 		this.defaultEntryPointMappings.put(preferredMatcher, entryPoint);
-		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> byMatcher = this.entryPoints.get(authority);
+		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> byMatcher = this.authorityToMatchingEntryPoint.get(authority);
 		if (byMatcher == null) {
 			byMatcher = new LinkedHashMap<>();
 		}
 		byMatcher.put(preferredMatcher, entryPoint);
-		this.entryPoints.put(authority, byMatcher);
+		this.authorityToMatchingEntryPoint.put(authority, byMatcher);
 		return this;
 	}
 
@@ -201,7 +201,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 			String authority) {
 		LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> byMatcher = new LinkedHashMap<>();
 		byMatcher.put(AnyRequestMatcher.INSTANCE, entryPoint);
-		this.entryPoints.put(authority, byMatcher);
+		this.authorityToMatchingEntryPoint.put(authority, byMatcher);
 		return this;
 	}
 
@@ -265,11 +265,11 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private AccessDeniedHandler createDefaultDeniedHandler(H http) {
 		AccessDeniedHandler defaults = createDefaultAccessDeniedHandler(http);
-		if (this.entryPoints.isEmpty()) {
+		if (this.authorityToMatchingEntryPoint.isEmpty()) {
 			return defaults;
 		}
 		Map<String, AccessDeniedHandler> deniedHandlers = new LinkedHashMap<>();
-		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.entryPoints
+		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.authorityToMatchingEntryPoint
 			.entrySet()) {
 			AuthenticationEntryPoint entryPoint = entryPointFrom(entry.getValue());
 			AuthenticationEntryPointAccessDeniedHandlerAdapter deniedHandler = new AuthenticationEntryPointAccessDeniedHandlerAdapter(
@@ -296,11 +296,11 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 
 	private AuthenticationEntryPoint createDefaultEntryPoint(H http) {
 		AuthenticationEntryPoint defaults = entryPointFrom(this.defaultEntryPointMappings);
-		if (this.entryPoints.isEmpty()) {
+		if (this.authorityToMatchingEntryPoint.isEmpty()) {
 			return defaults;
 		}
 		Map<String, AuthenticationEntryPoint> entryPoints = new LinkedHashMap<>();
-		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.entryPoints
+		for (Map.Entry<String, LinkedHashMap<RequestMatcher, AuthenticationEntryPoint>> entry : this.authorityToMatchingEntryPoint
 			.entrySet()) {
 			entryPoints.put(entry.getKey(), entryPointFrom(entry.getValue()));
 		}
