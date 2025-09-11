@@ -227,7 +227,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 	AccessDeniedHandler getAccessDeniedHandler(H http) {
 		AccessDeniedHandler deniedHandler = this.accessDeniedHandler;
 		if (deniedHandler == null) {
-			deniedHandler = createDefaultDeniedHandler(http);
+			deniedHandler = createMissingAuthorityDeniedHandler(http);
 		}
 		return deniedHandler;
 	}
@@ -247,7 +247,7 @@ public final class ExceptionHandlingConfigurer<H extends HttpSecurityBuilder<H>>
 		return entryPoint;
 	}
 
-	private AccessDeniedHandler createDefaultDeniedHandler(H http) {
+	private AccessDeniedHandler createMissingAuthorityDeniedHandler(H http) {
 		AccessDeniedHandler defaults = createDefaultAccessDeniedHandler(http);
 		if (this.missingAuthorityToEntryPoint.isEmpty()) {
 			return defaults;
