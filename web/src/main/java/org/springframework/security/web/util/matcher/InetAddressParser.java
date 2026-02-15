@@ -58,6 +58,9 @@ final class InetAddressParser {
 	}
 
 	private static boolean isIpAddress(String ipAddress) {
+		if (!org.springframework.util.StringUtils.hasText(ipAddress)) {
+			return false;
+		}
 		// @formatter:off
 		return IPV4.matcher(ipAddress).matches()
 			|| ipAddress.charAt(0) == '['

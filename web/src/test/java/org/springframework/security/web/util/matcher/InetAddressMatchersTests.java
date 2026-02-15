@@ -303,8 +303,22 @@ class InetAddressMatchersTests {
 		}
 
 		@ParameterizedTest
-		@ValueSource(strings = { "172.16.0.1", "172.16.255.255" })
+		@ValueSource(strings = { "169.254.0.0", "169.254.169.254", "169.254.255.255" })
+		void matchesWhenIpv4LinkLocalThenReturnsTrue(String address) throws Exception {
+			InetAddressMatcher matcher = InetAddressMatchers.matchInternal().build();
+			assertThat(matcher.matches(InetAddress.getByName(address))).isTrue();
+		}
+
+		@ParameterizedTest
+		@ValueSource(strings = { "172.16.0.1", "172.16.255.255", "172.17.1.1", "172.31.255.255" })
 		void matchesWhenIpv4PrivateClass172ThenReturnsTrue(String address) throws Exception {
+			InetAddressMatcher matcher = InetAddressMatchers.matchInternal().build();
+			assertThat(matcher.matches(InetAddress.getByName(address))).isTrue();
+		}
+
+		@ParameterizedTest
+		@ValueSource(strings = { "::ffff:192.168.1.1", "::ffff:169.254.169.254", "::ffff:10.0.0.1" })
+		void matchesWhenIpv4MappedIpv6InternalThenReturnsTrue(String address) throws Exception {
 			InetAddressMatcher matcher = InetAddressMatchers.matchInternal().build();
 			assertThat(matcher.matches(InetAddress.getByName(address))).isTrue();
 		}
@@ -384,8 +398,8 @@ class InetAddressMatchersTests {
 		}
 
 		@ParameterizedTest
-		@ValueSource(strings = { "172.15.1.1", "172.17.1.1", "172.31.1.1" })
-		void matchesWhenIpv4StartsWith172ButNot16ThenReturnsFalse(String address) throws Exception {
+		@ValueSource(strings = { "172.15.1.1", "172.32.1.1" })
+		void matchesWhenIpv4StartsWith172ButNotPrivate16To31ThenReturnsFalse(String address) throws Exception {
 			InetAddressMatcher matcher = InetAddressMatchers.matchInternal().build();
 			assertThat(matcher.matches(InetAddress.getByName(address))).isFalse();
 		}
@@ -425,6 +439,13 @@ class InetAddressMatchersTests {
 		void matchesWhenIpv4LoopbackThenReturnsFalse() throws Exception {
 			InetAddressMatcher matcher = InetAddressMatchers.matchExternal().build();
 			assertThat(matcher.matches(InetAddress.getByName("127.0.0.1"))).isFalse();
+		}
+
+		@ParameterizedTest
+		@ValueSource(strings = { "169.254.0.0", "169.254.169.254", "169.254.255.255" })
+		void matchesWhenIpv4LinkLocalThenReturnsFalse(String address) throws Exception {
+			InetAddressMatcher matcher = InetAddressMatchers.matchExternal().build();
+			assertThat(matcher.matches(InetAddress.getByName(address))).isFalse();
 		}
 
 		@Test
